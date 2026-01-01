@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CER Interactive Questions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --main-text: #333;
+            --light-text: #555;
+            --peach: #fcece3;
+            --teal: #d7eded;
+            --blue-light: #e7f5ff;
+            --border-color: #dee2e6;
+            --correct-color: #28a745;
+            --incorrect-color: #dc3545;
+            --primary-blue: #007bff;
+            --secondary-blue: #6c757d;
+            --disabled-grey: #b0b8c0;
+            --label-color: #aab5c0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--main-text);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            border-right: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-nav button {
+            display: block;
+            width: 100%;
+            padding: 0.9rem 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 50px;
+            border: 2px solid var(--border-color);
+            background-color: transparent;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-nav button.active {
+            background-color: var(--teal);
+            border-color: #bedbdb;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2.5rem 3rem;
+        }
+
+        .question-container {
+            margin-bottom: 3rem;
+        }
+
+        .main-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--light-text);
+            line-height: 1.8;
+        }
+
+        .question-diagram {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .results-table {
+            width: 100%;
+            max-width: 700px;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .results-table thead {
+            background-color: var(--peach);
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: var(--main-text);
+        }
+
+        .answer-box {
+            background-color: var(--blue-light);
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .answer-template {
+            font-size: 1.1rem;
+            line-height: 2.8;
+            color: var(--main-text);
+        }
+
+        .answer-blank {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 0.2rem;
+        }
+
+        .answer-input {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            border: none;
+            border-bottom: 2px solid var(--main-text);
+            background: transparent;
+            width: 100px;
+            text-align: center;
+            padding: 0.2rem;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-bottom-color: var(--primary-blue);
+        }
+
+        .feedback-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 24px;
+            height: 24px;
+            margin-left: 0.5rem;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .feedback-icon.visible.correct,
+        .feedback-icon.visible.incorrect {
+            transform: scale(1);
+            opacity: 1;
+            animation: circle-pop 0.4s ease-out;
+        }
+
+        .feedback-icon.correct {
+            background-color: var(--correct-color);
+        }
+
+        .feedback-icon.incorrect {
+            background-color: var(--incorrect-color);
+        }
+
+        @keyframes circle-pop {
+            0% {
+                transform: scale(0);
+            }
+
+            60% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .cer-segment {
+            position: relative;
+            display: block;
+            padding: 1.5rem 1.5rem 2.5rem 1.5rem;
+            border: 1.5px solid var(--label-color);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .cer-segment:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .cer-segment::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--blue-light);
+            padding: 0 0.5rem;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--light-text);
+            font-weight: 500;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .btn {
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-blue);
+            color: #fff;
+        }
+
+        .submit-btn:disabled {
+            background-color: var(--disabled-grey);
+            cursor: not-allowed;
+        }
+
+        .next-btn {
+            background-color: var(--secondary-blue);
+            color: #fff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Top Navigation Tabs */
+        .app-header {
+            padding: 1rem 1rem 0;
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            /* Align tabs to bottom so they grow up */
+            position: relative;
+            z-index: 10;
+        }
+
+        .app-logo {
+            height: 55px;
+            margin-right: 1.5rem;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .app-logo:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .tab-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            background-color: #eee;
+            /* Default offline color */
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #555;
+            cursor: pointer;
+            border-radius: 10px 10px 0 0;
+            transition: all 0.2s ease;
+            position: relative;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 0;
+            /* Align with border */
+            opacity: 0.8;
+        }
+
+        /* Folder Tab Look: Dynamic Height on Hover/Active */
+        .tab-btn:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            opacity: 1;
+            padding-bottom: 0.8rem;
+            /* Make it look connected */
+            font-weight: 600;
+            color: #000;
+            z-index: 20;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            /* Stick to the bottom */
+        }
+
+        /* Specific Pastel Colors for Tabs */
+        .tab-btn[data-type="cer"] {
+            background-color: #AEC6CF;
+        }
+
+        .tab-btn[data-type="single-relationship"] {
+            background-color: #FFB7B2;
+        }
+
+        .tab-btn[data-type="double-relationship"] {
+            background-color: #FFDAC1;
+        }
+
+        .tab-btn[data-type="fairness"] {
+            background-color: #E2F0CB;
+        }
+
+        .tab-btn[data-type="reliability"] {
+            background-color: #C7CEEA;
+        }
+
+        .tab-btn[data-type="accuracy"] {
+            background-color: #FDFD96;
+        }
+
+        .tab-btn[data-type="constant-variable"] {
+            background-color: #B5EAD7;
+        }
+
+        .tab-btn[data-type="explanation"] {
+            background-color: #FF9AA2;
+        }
+
+        .tab-btn[data-type="control-setup"] {
+            background-color: #E0BBE4;
+        }
+
+        .app-body {
+            display: none;
+            flex-grow: 1;
+            background: #fff;
+            border-top: 5px solid #AEC6CF;
+            /* Default to CER color */
+            position: relative;
+            z-index: 15;
+            /* Below active tab? active tab is 20, so active tab sits on top? No tab needs to be on top of border. */
+        }
+
+        /* 
+           To make the tab look connected:
+           The active tab should be ON TOP of the app-body border.
+           We can achieve this by negative margin on the body or high z-index on tab.
+           And the tab needs to cover the body's top border.
+        */
+
+        .app-body.active {
+            display: flex;
+        }
+
+        .app-container {
+            flex-direction: column;
+            padding: 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            /* Softer shadow */
+            background: transparent;
+            /* Container is transparent, body creates the white box */
+        }
+
+        .app-body>.sidebar {
+            border-right: 1px solid var(--border-color);
+            background: #fdfdfd;
+            /* Keep sidebar slightly distinct */
+        }
+
+        .placeholder-content {
+            padding: 3rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Variable Labels & Tooltips */
+        .answer-group {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: bottom;
+            /* Sit on baseline relative to sibling text */
+            margin: 0 0.2rem;
+            position: relative;
+            top: 10px;
+            /* Slight adjustment to align input with text baseline better since label pushes it up? No, flex-direction column grows down. If vertical-align is bottom, the bottom of the container aligns with baseline. */
+        }
+
+        .answer-group .answer-blank {
+            margin: 0;
+            /* Remove margin as group handles it */
+        }
+
+        .variable-label {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 4px;
+            border-bottom: 1px dotted #ccc;
+            cursor: help;
+            position: relative;
+        }
+
+        .variable-label:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            width: 220px;
+            text-align: center;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            line-height: 1.4;
+        }
+
+        /* Tiny arrow for tooltip */
+        .variable-label:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #333;
+        }
+
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .sidebar,
+            .app-header,
+            .controls,
+            .submit-btn,
+            .next-btn,
+            .tab-btn {
+                display: none !important;
+            }
+
+            .app-container {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                max-width: none;
+                overflow: visible;
+            }
+
+            /* Print Single Question Mode */
+            body.print-single .question-container.printing,
+            body.print-single .question-container.printing * {
+                visibility: visible;
+            }
+
+            body.print-single .question-container.printing {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Print All Mode */
+            body.print-all * {
+                visibility: visible;
+            }
+
+            body.print-all .app-body,
+            body.print-all .topic-content,
+            body.print-all .question-container {
+                display: block !important;
+                visibility: visible;
+            }
+
+            body.print-all .hidden {
+                display: block !important;
+            }
+
+            body.print-all .question-container {
+                break-inside: avoid;
+                page-break-after: always;
+                border-bottom: 2px solid #ccc;
+                margin-bottom: 2rem;
+            }
+
+            body.print-all .sidebar,
+            body.print-all .app-header,
+            body.print-all .controls,
+            body.print-all .print-btn {
+                display: none !important;
+            }
+        }
+
+        .print-btn {
+            background-color: #ffda9e;
+            /* Pastel Peach for Print */
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            /* Rounded rectangle */
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #555;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffc978;
+        }
+
+        /* Header specific print button adjustment */
+        .app-header .print-btn {
+            margin-left: auto;
+            /* Push to the right */
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <header class="app-header">
+            <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
+                alt="Polymath Logo" class="app-logo">
+            <button class="tab-btn active" data-type="cer">CER</button>
+            <button class="tab-btn" data-type="definition">Definition</button>
+            <button class="tab-btn" data-type="single-relationship">Single Relationship</button>
+            <button class="tab-btn" data-type="double-relationship">Double Relationship</button>
+            <button class="tab-btn" data-type="fairness">Fairness</button>
+            <button class="tab-btn" data-type="reliability">Reliability</button>
+            <button class="tab-btn" data-type="accuracy">Accuracy</button>
+            <button class="tab-btn" data-type="constant-variable">Constant Variable</button>
+            <button class="tab-btn" data-type="explanation">Explanation</button>
+            <button class="tab-btn" data-type="control-setup">Control Set-up</button>
+            <button class="print-btn" onclick="printAll()">🖨️ Print All</button>
+        </header>
+
+        <!-- View: CER (Existing) -->
+        <div id="view-cer" class="app-body active">
+            <aside class="sidebar">
+                <h2>CER Questions</h2>
+                <nav class="sidebar-nav">
+                    <button id="btn-heat">Heat</button>
+                    <button id="btn-light">Light</button>
+                    <button id="btn-materials">Materials</button>
+                </nav>
+            </aside>
+
+            <main class="main-content">
+
+                <!-- TOPIC: HEAT -->
+                <div id="topic-heat" class="topic-content hidden">
+                    <!-- Question 1: Heat -->
+                    <div id="heat-question-1" class="question-container">
+                        <h3>Question 1</h3>
+                        <p>Peter conducted an experiment to find out how the materials of bowls affect the time taken
+                            for the water in them to cool down. He measured the temperature of the water in the three
+                            bowls every two minutes and recorded it in the table.</p>
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="vertical-align: middle;">Time (min)</th>
+                                    <th colspan="3">Temperature of Water (°C)</th>
+                                </tr>
+                                <tr>
+                                    <th>Bowl A</th>
+                                    <th>Bowl B</th>
+                                    <th>Bowl C</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                    <td>80</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>79</td>
+                                    <td>74</td>
+                                    <td>78</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>78</td>
+                                    <td>68</td>
+                                    <td>74</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>78</td>
+                                    <td>61</td>
+                                    <td>72</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>76</td>
+                                    <td>55</td>
+                                    <td>69</td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>74</td>
+                                    <td>49</td>
+                                    <td>66</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="question-title">Which bowl is the most suitable for storing frozen ice-cream? Explain
+                            your answer.</p>
+                        <div class="answer-box">
+                            <div class="answer-template" id="heat-form-1">
+                                <div class="cer-segment" data-label="claim">Bowl<div class="answer-blank"><input
+                                            type="text" class="answer-input" data-answer="A"></div>.<span
+                                        class="feedback-icon"></span></div>
+                                <div class="cer-segment" data-label="evidence">The temperature of water in bowl A
+                                    decreased by the<div class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="least"></div> amount,<span class="feedback-icon"></span></div>
+                                <div class="cer-segment" data-label="reasoning">showing that bowl A is the poorest<div
+                                        class="answer-blank"><input type="text" class="answer-input"
+                                            style="width: 120px;" data-answer="conductor"></div>of<div
+                                        class="answer-blank"><input type="text" class="answer-input" data-answer="heat">
+                                    </div>, allowing the ice-cream to<div class="answer-blank"><input type="text"
+                                            class="answer-input" data-answer="gain"></div>heat from the warmer
+                                    surrounding air slowest to melt the slowest.<span class="feedback-icon"></span>
+                                </div>
+                            </div>
+                            <div class="controls"><button class="submit-btn btn">Submit</button><button
+                                    class="print-btn" onclick="printQuestion(this)">🖨️ Print</button><button
+                                    class="next-btn btn hidden">Next Question</button></div>
+                        </div>
+                    </div>
+                    <!-- Question 2: Heat -->
+                    <div id="heat-question-2" class="question-container">
+                        <h3>Question 2</h3>
+                        <p>Warren conducted an experiment on three solid blocks made of materials, A, B and C, of the
+                            same size and thickness. He heated the three materials and measured the time taken for each
+                            to increase from 30°C to 50°C. The table below shows his results.</p>
+                        <img src="https://www.dropbox.com/scl/fi/tsjlvlar0etwnhd3wyple/Screenshot-2025-10-18-at-8.42.36-AM.png?rlkey=l15xphdym7bmg352669a8ykt1&raw=1"
+                            alt="Cooler Box Experiment Diagram" class="question-diagram">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Materials</th>
+                                    <th>Time taken for the experiment (second)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A</td>
+                                    <td>50</td>
+                                </tr>
+                                <tr>
+                                    <td>B</td>
+                                    <td>80</td>
+                                </tr>
+                                <tr>
+                                    <td>C</td>
+                                    <td>35</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="question-title">Which material A, B or C, should Warren choose to keep the ice cold
+                            for the longest time? Explain why.</p>
+                        <div class="answer-box">
+                            <div class="answer-template" id="heat-form-2">
+                                <div class="cer-segment" data-label="claim">Material<div class="answer-blank"><input
+                                            type="text" class="answer-input" data-answer="B"></div>.<span
+                                        class="feedback-icon"></span></div>
+                                <div class="cer-segment" data-label="evidence">The time taken for the temperature of the
+                                    block made of material B to increase from 30°C to 50°C is the<div
+                                        class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="longest"></div>,<span class="feedback-icon"></span></div>
+                                <div class="cer-segment" data-label="reasoning">showing that material B is the poorest
+                                    <div class="answer-blank"><input type="text" class="answer-input"
+                                            style="width: 120px;" data-answer="conductor"></div>of<div
+                                        class="answer-blank"><input type="text" class="answer-input" data-answer="heat">
+                                    </div>, allowing the ice in the ice box to<div class="answer-blank"><input
+                                            type="text" class="answer-input" data-answer="gain"></div>heat from the
+                                    warmer surrounding air<div class="answer-blank"><input type="text"
+                                            class="answer-input" data-answer="slowest"></div>to melt<div
+                                        class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="slowest"></div>.<span class="feedback-icon"></span>
+                                </div>
+                            </div>
+                            <div class="controls"><button class="submit-btn btn">Submit</button><button
+                                    class="print-btn" onclick="printQuestion(this)">🖨️ Print</button><button
+                                    class="next-btn btn hidden">Next Question</button></div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3: Heat (Jarrell/Double-Glazed) -->
+                    <div id="heat-question-3" class="question-container">
+                        <h3>Question 3</h3>
+                        <p>Jarrell wanted to investigate which glass, A or B, keeps water cold for a longer time. Both
+                            glasses were made of the same material.</p>
+                        <p>He measured the temperature of water in each glass at the start of the experiment and every
+                            10 minutes for 50 minutes. He plotted the results in the graph.</p>
+
+                        <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: flex-start;">
+                            <img src="https://www.dropbox.com/scl/fi/6k92e3bl2ypvtoj2z3vgh/Screenshot-2026-01-01-at-1.23.56-AM.png?rlkey=sod3j1qoo1luvqt9of4vsfbak&raw=1"
+                                alt="Glasses Diagram (A: Double vs B: Single)" class="question-diagram"
+                                style="max-width: 45%; border: 1px dashed #ccc; min-height: 150px; background: #f9f9f9;">
+                            <img src="https://www.dropbox.com/scl/fi/qlxcbhuj6m9awgtd3xb2z/Screenshot-2026-01-01-at-1.27.47-AM.png?rlkey=cd4cwykuja7k335j2qwymavmn&raw=1"
+                                alt="Graph Diagram (Line X vs Line Y)" class="question-diagram"
+                                style="max-width: 45%; border: 1px dashed #ccc; min-height: 150px; background: #f9f9f9;">
+                        </div>
+
+                        <p>The table shows the daily average temperature for Singapore during the day.</p>
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Average temperature (°C) in the day</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Inside the house</td>
+                                    <td>28°C</td>
+                                </tr>
+                                <tr>
+                                    <td>Outside the house</td>
+                                    <td>32°C</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p class="question-title">Are double-layered or single-layered glass windows more suitable for
+                            houses in Singapore, so that it is cooler inside the house? Explain your answer.</p>
+
+                        <div class="answer-box">
+                            <div class="answer-template" id="heat-form-3">
+                                <!-- Claim -->
+                                <div class="cer-segment" data-label="claim">
+                                    <div class="answer-blank"><input type="text" class="answer-input"
+                                            style="width: 150px;" data-answer="Double-layered"></div>glass windows are
+                                    more suitable.<span class="feedback-icon"></span>
+                                </div>
+
+                                <!-- Evidence -->
+                                <div class="cer-segment" data-label="evidence">
+                                    The temperature of water increases <div class="answer-blank"><input type="text"
+                                            class="answer-input" data-answer="slower"></div> for glass <div
+                                        class="answer-blank"><input type="text" class="answer-input" data-answer="A">
+                                    </div> when compared to <div class="answer-blank"><input type="text"
+                                            class="answer-input" data-answer="B"></div> over 50 minutes.<span
+                                        class="feedback-icon"></span>
+                                </div>
+
+                                <!-- Reasoning -->
+                                <div class="cer-segment" data-label="reasoning">
+                                    The layer of <div class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="air"></div> trapped between the glass layer is a <div
+                                        class="answer-blank"><input type="text" class="answer-input" data-answer="poor">
+                                    </div> conductor of <div class="answer-blank"><input type="text"
+                                            class="answer-input" data-answer="heat"></div>.<span
+                                        class="feedback-icon"></span>
+                                </div>
+
+                                <!-- Link -->
+                                <div class="cer-segment" data-label="link">
+                                    This <div class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="reduces"></div> the heat <div class="answer-blank"><input
+                                            type="text" class="answer-input" data-answer="gained"></div> from the <div
+                                        class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="warmer"></div> surrounding air outside the house into the
+                                    inside of the house, thus, keeping the inside of the house <div
+                                        class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="cooler"></div>.<span class="feedback-icon"></span>
+                                </div>
+                            </div>
+                            <div class="controls"><button class="submit-btn btn">Submit</button><button
+                                    class="print-btn" onclick="printQuestion(this)">🖨️ Print</button></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOPIC: LIGHT -->
+                <div id="topic-light" class="topic-content hidden">
+                    <div id="light-question-1" class="question-container">
+                        <p>Jeremy conducted an experiment in a dark room to investigate the properties of materials P,
+                            Q, R and S. He placed different materials at positions 1 and 2 respectively each time.</p>
+                        <img src="https://www.dropbox.com/scl/fi/m72szjzburi7sqf8u9vcj/Screenshot-2025-10-18-at-8.06.48-AM.png?rlkey=h2pcg2ig894ot07xjx7bld0fn&raw=1"
+                            alt="Light Experiment Diagram" class="question-diagram">
+                        <p>The amount of light detected by the light sensor was recorded as shown in the table.</p>
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Material at position 1</th>
+                                    <th>Material at position 2</th>
+                                    <th>Amount of light detected (lux)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>P</td>
+                                    <td>Q</td>
+                                    <td>2000</td>
+                                </tr>
+                                <tr>
+                                    <td>Q</td>
+                                    <td>R</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>R</td>
+                                    <td>S</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>S</td>
+                                    <td>P</td>
+                                    <td>300</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="question-title">Which material would be most suitable to make a bedroom curtain that
+                            keeps the room totally dark? Explain your answer.</p>
+                        <div class="answer-box">
+                            <div class="answer-template" id="light-form-1">
+                                <div class="cer-segment" data-label="claim">Material<div class="answer-blank"><input
+                                            type="text" class="answer-input" data-answer="R"></div>.<span
+                                        class="feedback-icon"></span></div>
+                                <div class="cer-segment" data-label="evidence">The amount of light detected is<div
+                                        class="answer-blank"><input type="text" class="answer-input" data-answer="0">
+                                    </div>lux when material<div class="answer-blank"><input type="text"
+                                            class="answer-input" data-answer="R"></div>is placed in either position 1 or
+                                    position 2,<span class="feedback-icon"></span></div>
+                                <div class="cer-segment" data-label="reasoning">showing that material R is the only<div
+                                        class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="opaque"></div>material, allowing the curtain to block<div
+                                        class="answer-blank"><input type="text" class="answer-input" data-answer="all">
+                                    </div>light and keep the room totally dark.<span class="feedback-icon"></span></div>
+                            </div>
+                            <div class="controls"><button class="submit-btn btn">Submit</button><button
+                                    class="print-btn" onclick="printQuestion(this)">🖨️ Print</button></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOPIC: MATERIALS -->
+                <div id="topic-materials" class="topic-content hidden">
+                    <div id="materials-question-1" class="question-container">
+                        <p>Tony set up an experiment to compare the property of four strips, A, B, C and D, made of
+                            different materials but of the same thickness.</p>
+                        <img src="https://www.dropbox.com/scl/fi/jsxkxtz7ryrm3s4i04x49/Screenshot-2025-10-18-at-2.29.33-AM.png?rlkey=cib9nnrvpxta2imuncs4j9ugw&raw=1"
+                            alt="Flexibility Experiment Diagram" class="question-diagram">
+                        <p>He recorded the distance, x, in the table below.</p>
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Distance x (cm)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>B</td>
+                                    <td>9</td>
+                                </tr>
+                                <tr>
+                                    <td>C</td>
+                                    <td>30</td>
+                                </tr>
+                                <tr>
+                                    <td>D</td>
+                                    <td>10</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="question-title">Based on the results, which strip is most suitable for making a belt?
+                            Explain your answer.</p>
+                        <div class="answer-box">
+                            <div class="answer-template" id="materials-form-1">
+                                <div class="cer-segment" data-label="claim">Material<div class="answer-blank"><input
+                                            type="text" class="answer-input" data-answer="C"></div>.<span
+                                        class="feedback-icon"></span></div>
+                                <div class="cer-segment" data-label="evidence">The<div class="answer-blank"><input
+                                            type="text" class="answer-input" data-answer="distance"></div>X for material
+                                    <div class="answer-blank"><input type="text" class="answer-input" data-answer="C">
+                                    </div>is the<div class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="greatest"></div>,<span class="feedback-icon"></span>
+                                </div>
+                                <div class="cer-segment" data-label="reasoning">showing that material<div
+                                        class="answer-blank"><input type="text" class="answer-input" data-answer="C">
+                                    </div>is the most<div class="answer-blank"><input type="text" class="answer-input"
+                                            style="width: 120px;" data-answer="flexible"></div>material, allowing a belt
+                                    made of it to wrap around a person’s waist most easily.<span
+                                        class="feedback-icon"></span></div>
+                            </div>
+                            <div class="controls"><button class="submit-btn btn">Submit</button><button
+                                    class="print-btn" onclick="printQuestion(this)">🖨️ Print</button></div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+        <!-- View: Single Relationship -->
+        <div id="view-single-relationship" class="app-body hidden">
+            <aside class="sidebar">
+                <h2>Single Relationship</h2>
+                <nav class="sidebar-nav">
+                    <button id="btn-sr-forces" class="active">Forces</button>
+                </nav>
+            </aside>
+
+            <main class="main-content">
+                <!-- TOPIC: FORCES -->
+                <div id="topic-sr-forces" class="topic-content">
+                    <div id="sr-forces-question-1" class="question-container">
+                        <p>Meiling conducted an experiment by placing a 1 kg block on a flat surface and measured the
+                            amount of force needed to pull it along the surface using a spring balance.</p>
+                        <img src="https://www.dropbox.com/scl/fi/xvhgx31uk82s32edfv6a6/spring-block.jpg?rlkey=8aejaocw35svctiogmy9mbbwt&raw=1"
+                            alt="Spring Block Diagram" class="question-diagram">
+                        <p>She repeated the experiment using three similar blocks that are of different masses and
+                            recorded the results in the graph.</p>
+                        <img src="https://www.dropbox.com/scl/fi/j1kumnl75vervdk5he9p7/graph-app.jpg?rlkey=4gqp7teop1dy2wa38yr20iu2n&raw=1"
+                            alt="Force Graph Diagram" class="question-diagram">
+
+                        <p class="question-title">State what Meiling could conclude based on the results of her
+                            experiment.</p>
+
+                        <div class="answer-box">
+                            <div class="answer-template" id="sr-forces-form-1">
+                                <div class="cer-segment" style="border:none; padding:0; margin-bottom:0;" data-label="">
+                                    As the
+                                    <div class="answer-group">
+                                        <div class="answer-blank"><input type="text" class="answer-input"
+                                                style="width: 200px;" data-answer="mass of the block|mass"></div>
+                                        <span class="variable-label"
+                                            data-tooltip="The variable that is changed or controlled in a scientific experiment to test the effects on the dependent variable.">independent
+                                            variable</span>
+                                    </div>
+                                    increases, the
+                                    <div class="answer-group">
+                                        <div class="answer-blank"><input type="text" class="answer-input"
+                                                style="width: 350px;"
+                                                data-answer="amount of force needed to pull it along the surface|amount of force|force">
+                                        </div>
+                                        <span class="variable-label"
+                                            data-tooltip="The variable being tested and measured in a scientific experiment.">dependent
+                                            variable</span>
+                                    </div>
+                                    <div class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="increases"></div>.
+                                    <span class="feedback-icon" style="margin-left: 10px;"></span>
+                                </div>
+                            </div>
+                            <div class="controls"><button class="submit-btn btn">Submit</button><button
+                                    class="print-btn" onclick="printQuestion(this)">🖨️ Print</button></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="view-double-relationship" class="app-body hidden">
+            <div class="placeholder-content">
+                <h2>Double Relationship Questions</h2>
+                <p>Coming Soon</p>
+            </div>
+        </div>
+
+        <div id="view-definition" class="app-body hidden">
+            <aside class="sidebar">
+                <h2>Definition</h2>
+                <nav class="sidebar-nav">
+                    <button id="btn-def-evap" class="active">Evaporation</button>
+                </nav>
+            </aside>
+            <main class="main-content">
+                <div id="topic-def-evap" class="topic-content">
+                    <div id="def-evap-question-1" class="question-container">
+                        <h3>Question 1</h3>
+                        <p class="question-title">Define evaporation.</p>
+                        <div class="answer-box">
+                            <div class="answer-template" id="def-form-1" style="font-size: 1.2rem; line-height: 2;">
+                                <div class="cer-segment" data-label="definition">
+                                    Evaporation is a process where a <div class="answer-blank"><input type="text"
+                                            class="answer-input" data-answer="liquid"></div>
+                                    <div class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="gains"></div>
+                                    <div class="answer-blank"><input type="text" class="answer-input"
+                                            data-answer="heat">
+                                    </div> from a heat source to become <div class="answer-blank"><input type="text"
+                                            class="answer-input" data-answer="gas"></div> at <div class="answer-blank">
+                                        <input type="text" class="answer-input" data-answer="any">
+                                    </div>
+                                    <div class="answer-blank"><input type="text" class="answer-input"
+                                            style="width: 150px;" data-answer="temperature"></div>.
+                                    <span class="feedback-icon"></span>
+                                </div>
+                            </div>
+                            <div class="controls"><button class="submit-btn btn">Submit</button><button
+                                    class="print-btn" onclick="printQuestion(this)">🖨️ Print</button></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="view-fairness" class="app-body hidden">
+            <div class="placeholder-content">
+                <h2>Fairness Questions</h2>
+                <p>Coming Soon</p>
+            </div>
+        </div>
+        <div id="view-reliability" class="app-body hidden">
+            <div class="placeholder-content">
+                <h2>Reliability Questions</h2>
+                <p>Coming Soon</p>
+            </div>
+        </div>
+        <div id="view-accuracy" class="app-body hidden">
+            <div class="placeholder-content">
+                <h2>Accuracy Questions</h2>
+                <p>Coming Soon</p>
+            </div>
+        </div>
+        <div id="view-constant-variable" class="app-body hidden">
+            <div class="placeholder-content">
+                <h2>Constant Variable Questions</h2>
+                <p>Coming Soon</p>
+            </div>
+        </div>
+        <div id="view-explanation" class="app-body hidden">
+            <div class="placeholder-content">
+                <h2>Explanation Questions</h2>
+                <p>Coming Soon</p>
+            </div>
+        </div>
+        <div id="view-control-setup" class="app-body hidden">
+            <div class="placeholder-content">
+                <h2>Control Set-up Questions</h2>
+                <p>Coming Soon</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navButtons = {
+                heat: document.getElementById('btn-heat'),
+                light: document.getElementById('btn-light'),
+                materials: document.getElementById('btn-materials')
+            };
+            const topics = {
+                heat: document.getElementById('topic-heat'),
+                light: document.getElementById('topic-light'),
+                materials: document.getElementById('topic-materials')
+            };
+
+            function switchTopic(topic) {
+                Object.values(navButtons).forEach(btn => btn.classList.remove('active'));
+                Object.values(topics).forEach(t => t.classList.add('hidden'));
+                navButtons[topic].classList.add('active');
+                topics[topic].classList.remove('hidden');
+            }
+
+            window.printQuestion = function (btn) {
+                const container = btn.closest('.question-container');
+                container.classList.add('printing');
+                document.body.classList.add('print-single');
+                window.print();
+                document.body.classList.remove('print-single');
+                container.classList.remove('printing');
+            };
+
+            window.printAll = function () {
+                document.body.classList.add('print-all');
+                window.print();
+                document.body.classList.remove('print-all');
+            };
+
+            Object.keys(navButtons).forEach(topic => {
+                navButtons[topic].addEventListener('click', () => switchTopic(topic));
+            });
+
+            function setupQuestionForm(formId) {
+                const form = document.getElementById(formId);
+                const questionContainer = form.closest('.question-container');
+                const submitBtn = questionContainer.querySelector('.submit-btn');
+                const nextBtn = questionContainer.querySelector('.next-btn');
+                const segments = form.querySelectorAll('.cer-segment');
+
+                submitBtn.addEventListener('click', () => {
+                    segments.forEach(segment => {
+                        const inputs = segment.querySelectorAll('.answer-input');
+                        const icon = segment.querySelector('.feedback-icon');
+                        let isGroupCorrect = true;
+                        inputs.forEach(input => {
+                            const userAnswer = input.value.trim().toLowerCase();
+                            const answerString = input.dataset.answer.toLowerCase();
+                            // Support multiple valid answers separated by |
+                            const validAnswers = answerString.split('|').map(a => a.trim());
+
+                            if (validAnswers.includes(userAnswer)) {
+                                input.style.borderBottomColor = 'var(--correct-color)';
+                            } else {
+                                input.style.borderBottomColor = 'var(--incorrect-color)';
+                                // Show the first/canonical answer
+                                input.value = validAnswers[0];
+                                isGroupCorrect = false;
+                            }
+                        });
+                        icon.textContent = isGroupCorrect ? '✔' : '✖';
+                        icon.classList.add(isGroupCorrect ? 'correct' : 'incorrect', 'visible');
+                    });
+
+                    form.querySelectorAll('.answer-input').forEach(input => input.disabled = true);
+                    submitBtn.disabled = true;
+                    if (nextBtn) {
+                        nextBtn.classList.remove('hidden');
+                    }
+                });
+            }
+
+            document.querySelectorAll('.next-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const currentQuestion = button.closest('.question-container');
+                    const nextQuestion = currentQuestion.nextElementSibling;
+                    if (nextQuestion && nextQuestion.classList.contains('question-container')) {
+                        nextQuestion.classList.remove('hidden');
+                        nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            document.querySelectorAll('.answer-template').forEach(form => {
+                setupQuestionForm(form.id);
+            });
+
+            // Top-Level Tab Switching
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const viewContainers = document.querySelectorAll('.app-body');
+
+            // Colors map for JS to update border
+            const typeColors = {
+                'cer': '#AEC6CF',
+                'single-relationship': '#FFB7B2',
+                'double-relationship': '#FFDAC1',
+                'fairness': '#E2F0CB',
+                'reliability': '#C7CEEA',
+                'accuracy': '#FDFD96',
+                'constant-variable': '#B5EAD7',
+                'explanation': '#FF9AA2',
+                'control-setup': '#E0BBE4'
+            };
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active from all tabs
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    // Add active to clicked tab
+                    btn.classList.add('active');
+
+                    // Hide all views
+                    viewContainers.forEach(view => {
+                        view.classList.remove('active');
+                        view.classList.add('hidden');
+                    });
+
+                    // Show target view & Update color
+                    const targetType = btn.dataset.type;
+                    const targetView = document.getElementById(`view-${targetType}`);
+                    if (targetView) {
+                        targetView.classList.remove('hidden');
+                        targetView.classList.add('active');
+                        // Update border color to match the tab
+                        targetView.style.borderTopColor = typeColors[targetType] || '#AEC6CF';
+                    }
+                });
+            });
+
+            switchTopic('heat');
+        });
+    </script>
+
+</body>
+
+</html>
