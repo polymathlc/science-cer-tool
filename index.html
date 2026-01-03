@@ -1020,11 +1020,12 @@
             transform: translateY(0) scale(1);
         }
 
-        /* Arrow pointing down to the button */
-        .table-grid-selector::after {
+        /* Arrow pointing down to the button (default, when selector is above) */
+        .table-grid-selector.arrow-down::after {
             content: '';
             position: absolute;
             bottom: -10px;
+            top: auto;
             left: 50%;
             transform: translateX(-50%);
             border-width: 10px 10px 0 10px;
@@ -1032,15 +1033,41 @@
             border-color: white transparent transparent transparent;
         }
         
-        .table-grid-selector::before {
+        .table-grid-selector.arrow-down::before {
             content: '';
             position: absolute;
             bottom: -13px;
+            top: auto;
             left: 50%;
             transform: translateX(-50%);
             border-width: 12px 12px 0 12px;
             border-style: solid;
             border-color: #81c784 transparent transparent transparent;
+        }
+        
+        /* Arrow pointing up to the button (when selector is below) */
+        .table-grid-selector.arrow-up::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            bottom: auto;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 10px 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent white transparent;
+        }
+        
+        .table-grid-selector.arrow-up::before {
+            content: '';
+            position: absolute;
+            top: -13px;
+            bottom: auto;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 12px 12px 12px;
+            border-style: solid;
+            border-color: transparent transparent #81c784 transparent;
         }
 
         .table-grid-selector h4 {
@@ -1272,28 +1299,6 @@
         .add-block-btn.table-btn:hover {
             background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
             border-color: #66bb6a;
-        }
-
-        /* Table Grid Selector (PowerPoint-style) */
-        .table-grid-selector {
-            position: absolute;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 1000;
-            display: none;
-        }
-
-        .table-grid-selector.visible {
-            display: block;
-        }
-
-        .table-grid-selector h4 {
-            margin: 0 0 10px 0;
-            font-size: 0.9rem;
-            color: #555;
         }
 
         .table-grid {
@@ -3352,31 +3357,58 @@
                 initTableGridSelector();
             }
             
-            // Position the selector ABOVE the button
+            // Get button position relative to viewport
             const rect = btn.getBoundingClientRect();
-            const selectorHeight = 320; // approximate height of the selector
+            const selectorWidth = 280;
+            const selectorHeight = 320;
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+            const padding = 15;
             
-            // Position above the button, centered horizontally on the button
-            let top = rect.top - selectorHeight - 10;
-            let left = rect.left + (rect.width / 2) - 140; // center it (selector is ~280px wide)
+            let top, left;
+            let showAbove = true;
             
-            // Make sure it doesn't go off the left edge
-            if (left < 10) {
-                left = 10;
+            // Calculate horizontal position (centered on button)
+            left = rect.left + (rect.width / 2) - (selectorWidth / 2);
+            
+            // Keep within horizontal bounds
+            if (left < padding) {
+                left = padding;
+            } else if (left + selectorWidth > viewportWidth - padding) {
+                left = viewportWidth - selectorWidth - padding;
             }
             
-            // Make sure it doesn't go off the right edge
-            if (left + 280 > window.innerWidth) {
-                left = window.innerWidth - 290;
-            }
+            // Determine vertical position
+            const spaceAbove = rect.top;
+            const spaceBelow = viewportHeight - rect.bottom;
             
-            // If not enough space above, show below instead
-            if (top < 10) {
+            if (spaceAbove >= selectorHeight + padding) {
+                // Enough space above - show above
+                top = rect.top - selectorHeight - 10;
+                showAbove = true;
+            } else if (spaceBelow >= selectorHeight + padding) {
+                // Not enough above but enough below - show below
                 top = rect.bottom + 10;
+                showAbove = false;
+            } else {
+                // Not enough space either way - center in viewport
+                top = Math.max(padding, (viewportHeight - selectorHeight) / 2);
+                showAbove = spaceAbove > spaceBelow; // Arrow points to closer edge
             }
             
+            // Apply position
             selector.style.top = top + 'px';
             selector.style.left = left + 'px';
+            
+            // Update arrow direction
+            if (showAbove) {
+                selector.classList.remove('arrow-up');
+                selector.classList.add('arrow-down');
+            } else {
+                selector.classList.remove('arrow-down');
+                selector.classList.add('arrow-up');
+            }
+            
             selector.classList.add('visible');
             
             // Reset grid selection
