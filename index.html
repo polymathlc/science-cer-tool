@@ -3770,23 +3770,27 @@
             
             previewSection.classList.remove('hidden');
 
-            let html = '';
+            let mainHtml = '';
+            let afterAnswerHtml = '';
+            
             window.adminBlocks.forEach(block => {
                 if (block.type === 'text' && block.value) {
-                    html += `<div style="margin-bottom: 1.5rem; color: var(--main-text); font-size: 1.1rem;">${block.value.replace(/\n/g, '<br>')}</div>`;
+                    mainHtml += `<div style="margin-bottom: 1.5rem; color: var(--main-text); font-size: 1.1rem;">${block.value.replace(/\n/g, '<br>')}</div>`;
                 } else if (block.type === 'answer' && block.value) {
                     const words = block.value.split(/\s+/);
                     const wrappedWords = words.map(word => `<span class="admin-word" onclick="toggleBlank(this)" style="cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: all 0.2s;">${word}</span>`).join(' ');
-                    html += `<div class="cer-segment" style="margin-bottom: 1.5rem; line-height: 2;">${wrappedWords}</div>`;
+                    mainHtml += `<div class="cer-segment" style="margin-bottom: 1.5rem; line-height: 2;">${wrappedWords}</div>`;
                 } else if (block.type === 'explanation' && block.value) {
-                    html += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1.5rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px; display: none;">
+                    // Explanation goes after the answer/MCQ options
+                    afterAnswerHtml += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1.5rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px; display: none;">
                                 <h4 style="margin-bottom: 0.8rem; color: #007bff; display: flex; align-items: center; gap: 8px;">💡 Explanation</h4>
                                 <div style="color: #444; line-height: 1.6;">${block.value.replace(/\n/g, '<br>')}</div>
                              </div>`;
                 } else if (block.type === 'image' && block.value) {
                     const imageUrl = convertDropboxUrl(block.value);
-                    html += `<img src="${imageUrl}" style="max-width: 100%; border-radius: 8px; margin-bottom: 1.5rem; display: block; margin-left: auto; margin-right: auto;" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<p style=\\'color:#dc3545;\\'>⚠️ Image failed to load. Check URL.</p>');">`;
+                    mainHtml += `<img src="${imageUrl}" style="max-width: 100%; border-radius: 8px; margin-bottom: 1.5rem; display: block; margin-left: auto; margin-right: auto;" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<p style=\\'color:#dc3545;\\'>⚠️ Image failed to load. Check URL.</p>');">`;
                 } else if (block.type === 'video' && block.value) {
+                    // Video goes after the answer/MCQ options
                     let videoUrl = block.value;
                     if (videoUrl.includes('dropbox.com')) {
                         videoUrl = videoUrl.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '').replace('?raw=1', '');
@@ -3795,7 +3799,7 @@
                     } else if (videoUrl.includes('youtu.be/')) {
                         videoUrl = videoUrl.replace('youtu.be/', 'youtube.com/embed/');
                     }
-                    html += `<div class="video-container hidden-until-answered" style="margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: none;">
+                    afterAnswerHtml += `<div class="video-container hidden-until-answered" style="margin-top: 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: none;">
                                 <iframe src="${videoUrl}" style="width: 100%; height: 315px; border: none;" allowfullscreen></iframe>
                              </div>`;
                 } else if (block.type === 'table' && block.value) {
@@ -3815,10 +3819,13 @@
                     }
                     
                     tableHtml += '</table>';
-                    html += tableHtml;
+                    mainHtml += tableHtml;
                 }
             });
 
+            // Build final HTML: main content first, then MCQ options (if MCQ), then after-answer content
+            let html = mainHtml;
+            
             if (category === 'mcq') {
                 const opts = [
                     document.getElementById('mcq-opt-1').value,
@@ -3840,6 +3847,9 @@
                 });
                 html += `</div>`;
             }
+            
+            // Add explanation and video at the end (after MCQ options / answer areas)
+            html += afterAnswerHtml;
 
             previewContent.innerHTML = html;
             previewSection.scrollIntoView({ behavior: 'smooth' });
@@ -3921,25 +3931,31 @@
                     finalHtml = clone.innerHTML;
                 } else {
                     // Build HTML directly from blocks (no preview)
+                    // Separate main content from after-answer content
+                    let mainHtml = '';
+                    let afterAnswerHtml = '';
+                    
                     window.adminBlocks.forEach(block => {
                         if (block.type === 'text' && block.value) {
-                            finalHtml += `<div style="margin-bottom: 1.5rem; color: var(--main-text); font-size: 1.1rem;">${block.value.replace(/\n/g, '<br>')}</div>`;
+                            mainHtml += `<div style="margin-bottom: 1.5rem; color: var(--main-text); font-size: 1.1rem;">${block.value.replace(/\n/g, '<br>')}</div>`;
                         } else if (block.type === 'answer' && block.value) {
                             // Parse [word] as blanks
                             let answerHtml = block.value.replace(/\[([^\]]+)\]/g, (match, answer) => {
                                 const calcWidth = Math.max(90, (answer.length * 1.5) * 10);
                                 return `<input type="text" class="answer-input" data-answer="${answer.trim()}" placeholder="..." style="width: ${calcWidth}px;">`;
                             });
-                            finalHtml += `<div class="cer-segment" style="margin-bottom: 1.5rem; line-height: 2;">${answerHtml}<span class="feedback-icon"></span></div>`;
+                            mainHtml += `<div class="cer-segment" style="margin-bottom: 1.5rem; line-height: 2;">${answerHtml}<span class="feedback-icon"></span></div>`;
                         } else if (block.type === 'explanation' && block.value) {
-                            finalHtml += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1.5rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px; display: none;">
+                            // Explanation goes after MCQ/answer section
+                            afterAnswerHtml += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1.5rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px; display: none;">
                                 <h4 style="margin-bottom: 0.8rem; color: #007bff; display: flex; align-items: center; gap: 8px;">💡 Explanation</h4>
                                 <div style="color: #444; line-height: 1.6;">${block.value.replace(/\n/g, '<br>')}</div>
                              </div>`;
                         } else if (block.type === 'image' && block.value) {
                             const imageUrl = convertDropboxUrl(block.value);
-                            finalHtml += `<img src="${imageUrl}" class="question-diagram" style="max-width: 100%; border-radius: 8px; margin-bottom: 1.5rem; display: block; margin-left: auto; margin-right: auto;">`;
+                            mainHtml += `<img src="${imageUrl}" class="question-diagram" style="max-width: 100%; border-radius: 8px; margin-bottom: 1.5rem; display: block; margin-left: auto; margin-right: auto;">`;
                         } else if (block.type === 'video' && block.value) {
+                            // Video goes after MCQ/answer section
                             let videoUrl = block.value;
                             if (videoUrl.includes('dropbox.com')) {
                                 videoUrl = videoUrl.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '').replace('?raw=1', '');
@@ -3948,7 +3964,7 @@
                             } else if (videoUrl.includes('youtu.be/')) {
                                 videoUrl = videoUrl.replace('youtu.be/', 'youtube.com/embed/');
                             }
-                            finalHtml += `<div class="video-container hidden-until-answered" style="margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: none;">
+                            afterAnswerHtml += `<div class="video-container hidden-until-answered" style="margin-top: 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: none;">
                                 <iframe src="${videoUrl}" style="width: 100%; height: 315px; border: none;" allowfullscreen></iframe>
                              </div>`;
                         } else if (block.type === 'table' && block.value) {
@@ -3968,10 +3984,14 @@
                             }
                             
                             tableHtml += '</table>';
-                            finalHtml += tableHtml;
+                            mainHtml += tableHtml;
                         }
                     });
 
+                    // Start with main content
+                    finalHtml = mainHtml;
+
+                    // Add MCQ options if MCQ category
                     if (category === 'mcq') {
                         const opts = [
                             document.getElementById('mcq-opt-1').value,
@@ -3993,6 +4013,9 @@
                         });
                         finalHtml += `</div>`;
                     }
+                    
+                    // Add explanation and video at the very end
+                    finalHtml += afterAnswerHtml;
                 }
 
                 const { doc, setDoc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
