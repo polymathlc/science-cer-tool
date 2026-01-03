@@ -917,6 +917,453 @@
             z-index: 9999;
         }
 
+        /* Table Grid Selector (PowerPoint-style) */
+        .table-grid-selector {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+
+        .table-grid-selector.visible {
+            display: block;
+        }
+
+        .table-grid-selector h4 {
+            margin: 0 0 12px 0;
+            font-size: 0.95rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 28px);
+            grid-template-rows: repeat(8, 28px);
+            gap: 3px;
+        }
+
+        .table-grid-cell {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .table-grid-cell.selected {
+            background: #AEC6CF;
+            border-color: #7fb3c2;
+        }
+
+        .table-grid-cell:hover {
+            background: #e0f0f5;
+        }
+
+        .grid-size-label {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        /* Admin Table Editor */
+        .admin-table-wrapper {
+            margin-top: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .admin-table-container {
+            overflow-x: auto;
+            padding: 10px;
+            background: white;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Century Gothic', 'Segoe UI', 'Poppins', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .admin-table td,
+        .admin-table th {
+            border: 1px solid #bbb;
+            padding: 10px 14px;
+            min-width: 100px;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .admin-table td[contenteditable="true"],
+        .admin-table th[contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        .admin-table td[contenteditable="true"]:focus,
+        .admin-table th[contenteditable="true"]:focus {
+            box-shadow: inset 0 0 0 2px #007bff;
+            background: #f8fbff !important;
+        }
+
+        .admin-table th {
+            background: #e8e8e8;
+            font-weight: 600;
+        }
+
+        .admin-table td.selected-cell,
+        .admin-table th.selected-cell {
+            outline: 3px solid #007bff;
+            outline-offset: -3px;
+        }
+
+        /* Table Toolbar */
+        .table-toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #ddd;
+            align-items: center;
+        }
+
+        .table-toolbar-group {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            padding-right: 12px;
+            border-right: 1px solid #ccc;
+        }
+
+        .table-toolbar-group:last-child {
+            border-right: none;
+        }
+
+        .table-toolbar-group label {
+            font-size: 0.75rem;
+            color: #555;
+            margin-right: 6px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-toolbar button {
+            padding: 7px 12px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .table-toolbar button:hover {
+            background: #e7f5ff;
+            border-color: #007bff;
+            transform: translateY(-1px);
+        }
+
+        .table-toolbar button.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .table-toolbar button.danger {
+            color: #dc3545;
+        }
+
+        .table-toolbar button.danger:hover {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        /* Pastel Color Palette */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(6, 28px);
+            gap: 5px;
+        }
+
+        .color-swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.15);
+            border-color: #555;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .color-swatch.selected {
+            border-color: #333;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #333;
+        }
+
+        /* Color picker dropdown */
+        .color-picker-dropdown {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+            z-index: 1002;
+            display: none;
+        }
+
+        .color-picker-dropdown.visible {
+            display: block;
+        }
+
+        .color-picker-dropdown h5 {
+            margin: 0 0 10px 0;
+            font-size: 0.8rem;
+            color: #555;
+            font-weight: 600;
+        }
+
+        /* Row/Column highlight on hover */
+        .admin-table tr:hover td {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+        /* Add Table Button */
+        .add-block-btn.table-btn {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-color: #81c784;
+            color: #2e7d32;
+        }
+
+        .add-block-btn.table-btn:hover {
+            background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+            border-color: #66bb6a;
+        }
+
+        /* Table Grid Selector (PowerPoint-style) */
+        .table-grid-selector {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+        }
+
+        .table-grid-selector.visible {
+            display: block;
+        }
+
+        .table-grid-selector h4 {
+            margin: 0 0 10px 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 24px);
+            grid-template-rows: repeat(8, 24px);
+            gap: 2px;
+        }
+
+        .table-grid-cell {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .table-grid-cell.selected {
+            background: #AEC6CF;
+            border-color: #8eb3be;
+        }
+
+        .table-grid-cell:hover {
+            background: #d7eded;
+        }
+
+        .grid-size-label {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Admin Table Editor */
+        .admin-table-container {
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Century Gothic', 'Poppins', sans-serif;
+        }
+
+        .admin-table td,
+        .admin-table th {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            min-width: 80px;
+            position: relative;
+        }
+
+        .admin-table td[contenteditable="true"],
+        .admin-table th[contenteditable="true"] {
+            outline: none;
+        }
+
+        .admin-table td[contenteditable="true"]:focus,
+        .admin-table th[contenteditable="true"]:focus {
+            box-shadow: inset 0 0 0 2px #007bff;
+        }
+
+        .admin-table th {
+            background: #f0f0f0;
+            font-weight: 600;
+        }
+
+        /* Table Toolbar */
+        .table-toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .table-toolbar-group {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            padding-right: 10px;
+            border-right: 1px solid #ddd;
+        }
+
+        .table-toolbar-group:last-child {
+            border-right: none;
+        }
+
+        .table-toolbar-group label {
+            font-size: 0.75rem;
+            color: #666;
+            margin-right: 5px;
+        }
+
+        .table-toolbar button {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .table-toolbar button:hover {
+            background: #e7f5ff;
+            border-color: #007bff;
+        }
+
+        .table-toolbar button.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        /* Pastel Color Palette */
+        .color-palette {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            max-width: 200px;
+        }
+
+        .color-swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+            border-color: #333;
+        }
+
+        .color-swatch.selected {
+            border-color: #333;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #333;
+        }
+
+        /* Row/Column Selection */
+        .admin-table tr.row-selected td,
+        .admin-table tr.row-selected th {
+            outline: 2px solid #007bff;
+            outline-offset: -2px;
+        }
+
+        .admin-table td.col-selected,
+        .admin-table th.col-selected {
+            outline: 2px solid #28a745;
+            outline-offset: -2px;
+        }
+
+        /* Color picker dropdown */
+        .color-picker-dropdown {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 1001;
+            display: none;
+        }
+
+        .color-picker-dropdown.visible {
+            display: block;
+        }
+
+        .color-picker-dropdown h5 {
+            margin: 0 0 8px 0;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
         /* --- PRINT STYLES --- */
         @media print {
 
@@ -1875,21 +2322,31 @@
                             </div>
                             <div id="admin-blocks"></div>
                             <div
-                                style="display: flex; gap: 1rem; margin-top: 2rem; border-top: 2px dashed #eee; padding-top: 1.5rem;">
+                                style="display: flex; gap: 0.8rem; margin-top: 2rem; border-top: 2px dashed #eee; padding-top: 1.5rem; flex-wrap: wrap; justify-content: center;">
                                 <button class="btn" onclick="addAdminBlock('text')"
-                                    style="background: #e7f5ff; color: #007bff; flex: 1;">+ Add Text</button>
+                                    style="background: #e7f5ff; color: #007bff; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+ Add Text</button>
                                 <button class="btn" onclick="addAdminBlock('answer')"
-                                    style="background: #fff9c4; color: #fbc02d; border: 1px solid #fbc02d; flex: 1;">+
+                                    style="background: #fff9c4; color: #f9a825; border: 1px solid #fbc02d; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+
                                     Add Answer</button>
                                 <button class="btn" onclick="addAdminBlock('explanation')"
-                                    style="background: #f0f4ff; color: #007bff; border: 1px solid #007bff; flex: 1;">+
+                                    style="background: #f0f4ff; color: #007bff; border: 1px solid #007bff; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+
                                     Add Explanation</button>
                                 <button class="btn" onclick="addAdminBlock('video')"
-                                    style="background: #fff5f5; color: #dc3545; border: 1px solid #dc3545; flex: 1;">+
+                                    style="background: #fff5f5; color: #dc3545; border: 1px solid #dc3545; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+
                                     Add Video URL</button>
                                 <button class="btn" onclick="addAdminBlock('image')"
-                                    style="background: #fdfdfd; border: 1px solid #ddd; color: #555; flex: 1;">+ Add
+                                    style="background: #fdfdfd; border: 1px solid #ddd; color: #555; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem;">+ Add
                                     Image URL</button>
+                                <button class="btn" onclick="showTableGridSelector(this)" id="add-table-btn"
+                                    style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border: 1px solid #81c784; color: #2e7d32; padding: 10px 16px; border-radius: 20px; font-size: 0.85rem; position: relative;">+ Add
+                                    Table</button>
+                            </div>
+                            
+                            <!-- PowerPoint-style Table Grid Selector -->
+                            <div id="table-grid-selector" class="table-grid-selector">
+                                <h4>📊 Insert Table</h4>
+                                <div class="table-grid" id="table-grid"></div>
+                                <div class="grid-size-label" id="grid-size-label">Select size</div>
                             </div>
                             <div id="admin-actions" class="controls"
                                 style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #eee;">
@@ -2464,6 +2921,11 @@
             const container = document.getElementById('admin-blocks');
             if (!container) return;
             container.innerHTML = window.adminBlocks.map((block) => {
+                // Handle table blocks specially
+                if (block.type === 'table') {
+                    return renderTableBlock(block);
+                }
+                
                 let inputHtml = '';
                 if (block.type === 'text' || block.type === 'answer' || block.type === 'explanation') {
                     const placeholders = {
@@ -2523,6 +2985,429 @@
                 }
             }
         };
+
+        // ==================== TABLE EDITOR FUNCTIONS ====================
+        
+        // Pastel colors for table
+        const pastelColors = [
+            '#FFFFFF', '#F5F5F5', '#E8E8E8',  // Whites/Grays
+            '#FFB3BA', '#FFDFBA', '#FFFFBA',  // Light Pink, Peach, Yellow
+            '#BAFFC9', '#BAE1FF', '#E0BBE4',  // Mint, Sky Blue, Lavender
+            '#FFC6D9', '#C9FFE5', '#D4F0F0',  // Rose, Seafoam, Aqua
+            '#FCE4EC', '#E8F5E9', '#E3F2FD',  // Pale Pink, Pale Green, Pale Blue
+            '#FFF8E1', '#F3E5F5', '#ECEFF1'   // Cream, Pale Purple, Blue Gray
+        ];
+
+        // Initialize table grid selector
+        window.initTableGridSelector = function() {
+            const grid = document.getElementById('table-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'table-grid-cell';
+                    cell.dataset.row = row + 1;
+                    cell.dataset.col = col + 1;
+                    cell.addEventListener('mouseenter', handleGridHover);
+                    cell.addEventListener('click', handleGridClick);
+                    grid.appendChild(cell);
+                }
+            }
+        };
+
+        function handleGridHover(e) {
+            const targetRow = parseInt(e.target.dataset.row);
+            const targetCol = parseInt(e.target.dataset.col);
+            const cells = document.querySelectorAll('.table-grid-cell');
+            
+            cells.forEach(cell => {
+                const cellRow = parseInt(cell.dataset.row);
+                const cellCol = parseInt(cell.dataset.col);
+                if (cellRow <= targetRow && cellCol <= targetCol) {
+                    cell.classList.add('selected');
+                } else {
+                    cell.classList.remove('selected');
+                }
+            });
+            
+            document.getElementById('grid-size-label').textContent = `${targetCol} × ${targetRow} Table`;
+        }
+
+        function handleGridClick(e) {
+            const rows = parseInt(e.target.dataset.row);
+            const cols = parseInt(e.target.dataset.col);
+            createTableBlock(rows, cols);
+            hideTableGridSelector();
+        }
+
+        window.showTableGridSelector = function(btn) {
+            const selector = document.getElementById('table-grid-selector');
+            if (!selector) return;
+            
+            // Initialize grid if needed
+            if (!document.querySelector('.table-grid-cell')) {
+                initTableGridSelector();
+            }
+            
+            // Position the selector near the button
+            const rect = btn.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            selector.style.top = (rect.bottom + scrollTop + 10) + 'px';
+            selector.style.left = Math.max(10, rect.left - 100) + 'px';
+            selector.classList.add('visible');
+            
+            // Reset grid selection
+            document.querySelectorAll('.table-grid-cell').forEach(c => c.classList.remove('selected'));
+            document.getElementById('grid-size-label').textContent = 'Select size';
+            
+            // Close when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeGridSelectorOnClickOutside);
+            }, 10);
+        };
+
+        function hideTableGridSelector() {
+            const selector = document.getElementById('table-grid-selector');
+            if (selector) {
+                selector.classList.remove('visible');
+            }
+            document.removeEventListener('click', closeGridSelectorOnClickOutside);
+        }
+
+        function closeGridSelectorOnClickOutside(e) {
+            const selector = document.getElementById('table-grid-selector');
+            const btn = document.getElementById('add-table-btn');
+            if (selector && !selector.contains(e.target) && e.target !== btn) {
+                hideTableGridSelector();
+            }
+        }
+
+        function createTableBlock(rows, cols) {
+            // Create table data structure
+            const tableData = {
+                rows: rows,
+                cols: cols,
+                cells: [],
+                headerRow: true,
+                colWidths: Array(cols).fill('auto')
+            };
+            
+            // Initialize cells with empty content
+            for (let r = 0; r < rows; r++) {
+                const rowData = [];
+                for (let c = 0; c < cols; c++) {
+                    rowData.push({
+                        content: r === 0 ? `Header ${c + 1}` : '',
+                        align: 'left',
+                        bgColor: r === 0 ? '#E8E8E8' : '#FFFFFF'
+                    });
+                }
+                tableData.cells.push(rowData);
+            }
+            
+            const blockId = Date.now();
+            window.adminBlocks.push({
+                id: blockId,
+                type: 'table',
+                value: tableData
+            });
+            
+            renderAdminBlocks();
+            
+            // Scroll to the new table
+            setTimeout(() => {
+                const tableBlock = document.getElementById(`table-block-${blockId}`);
+                if (tableBlock) {
+                    tableBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 100);
+        }
+
+        // Render table in admin blocks
+        window.renderTableBlock = function(block) {
+            const tableData = block.value;
+            const blockId = block.id;
+            
+            let tableHtml = `<table class="admin-table" id="admin-table-${blockId}">`;
+            
+            for (let r = 0; r < tableData.rows; r++) {
+                tableHtml += `<tr data-row="${r}">`;
+                for (let c = 0; c < tableData.cols; c++) {
+                    const cell = tableData.cells[r][c];
+                    const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
+                    tableHtml += `<${tag} 
+                        contenteditable="true" 
+                        data-row="${r}" 
+                        data-col="${c}" 
+                        data-block="${blockId}"
+                        style="text-align: ${cell.align}; background-color: ${cell.bgColor};"
+                        onfocus="selectTableCell(this)"
+                        onblur="updateTableCell(this)"
+                        oninput="updateTableCell(this)"
+                    >${cell.content}</${tag}>`;
+                }
+                tableHtml += '</tr>';
+            }
+            
+            tableHtml += '</table>';
+            
+            return `
+                <div class="admin-block" id="table-block-${blockId}" style="margin-bottom: 1rem; position: relative; padding: 1rem; border: 1px solid #81c784; border-radius: 8px; background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%);">
+                    <span style="font-size: 0.8rem; color: #2e7d32; font-weight: 600;">📊 TABLE BLOCK</span>
+                    <button onclick="removeAdminBlock(${blockId})" style="position: absolute; right: 10px; top: 10px; border: none; background: none; cursor: pointer; color: #dc3545; font-size: 1.2rem;">✕</button>
+                    
+                    <div class="admin-table-wrapper" style="margin-top: 10px;">
+                        <div class="table-toolbar">
+                            <div class="table-toolbar-group">
+                                <label>Align:</label>
+                                <button onclick="setTableAlignment(${blockId}, 'left')" title="Align Left">⬅</button>
+                                <button onclick="setTableAlignment(${blockId}, 'center')" title="Align Center">⬌</button>
+                                <button onclick="setTableAlignment(${blockId}, 'right')" title="Align Right">➡</button>
+                                <button onclick="setTableAlignment(${blockId}, 'justify')" title="Justify">☰</button>
+                            </div>
+                            <div class="table-toolbar-group">
+                                <label>Color:</label>
+                                <button onclick="showColorPicker(${blockId}, 'row')" title="Color Row">🎨 Row</button>
+                                <button onclick="showColorPicker(${blockId}, 'col')" title="Color Column">🎨 Col</button>
+                                <button onclick="showColorPicker(${blockId}, 'cell')" title="Color Cell">🎨 Cell</button>
+                            </div>
+                            <div class="table-toolbar-group">
+                                <label>Rows:</label>
+                                <button onclick="addTableRow(${blockId})" title="Add Row">+ Row</button>
+                                <button onclick="deleteTableRow(${blockId})" class="danger" title="Delete Row">− Row</button>
+                            </div>
+                            <div class="table-toolbar-group">
+                                <label>Cols:</label>
+                                <button onclick="addTableColumn(${blockId})" title="Add Column">+ Col</button>
+                                <button onclick="deleteTableColumn(${blockId})" class="danger" title="Delete Column">− Col</button>
+                            </div>
+                        </div>
+                        <div class="admin-table-container">
+                            ${tableHtml}
+                        </div>
+                    </div>
+                    
+                    <!-- Color Picker Dropdown -->
+                    <div id="color-picker-${blockId}" class="color-picker-dropdown">
+                        <h5 id="color-picker-title-${blockId}">Select Color</h5>
+                        <div class="color-palette">
+                            ${pastelColors.map(color => `
+                                <div class="color-swatch" 
+                                    style="background-color: ${color};" 
+                                    onclick="applyTableColor(${blockId}, '${color}')"
+                                    title="${color}">
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Track selected cell for operations
+        window.selectedTableCell = null;
+        window.colorPickerMode = null; // 'row', 'col', or 'cell'
+        window.colorPickerBlockId = null;
+
+        window.selectTableCell = function(cell) {
+            // Remove previous selection
+            document.querySelectorAll('.admin-table td.selected-cell, .admin-table th.selected-cell').forEach(c => {
+                c.classList.remove('selected-cell');
+            });
+            
+            cell.classList.add('selected-cell');
+            window.selectedTableCell = cell;
+        };
+
+        window.updateTableCell = function(cell) {
+            const blockId = parseInt(cell.dataset.block);
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (block && block.type === 'table') {
+                block.value.cells[row][col].content = cell.textContent;
+            }
+        };
+
+        window.setTableAlignment = function(blockId, alignment) {
+            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
+                alert('Please click on a cell first to select it.');
+                return;
+            }
+            
+            const cell = window.selectedTableCell;
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            
+            cell.style.textAlign = alignment;
+            
+            // Update the block data
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (block && block.type === 'table') {
+                block.value.cells[row][col].align = alignment;
+            }
+        };
+
+        window.showColorPicker = function(blockId, mode) {
+            const picker = document.getElementById(`color-picker-${blockId}`);
+            const title = document.getElementById(`color-picker-title-${blockId}`);
+            
+            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
+                alert('Please click on a cell first to select it.');
+                return;
+            }
+            
+            window.colorPickerMode = mode;
+            window.colorPickerBlockId = blockId;
+            
+            const modeLabels = {
+                'row': 'Select Row Color',
+                'col': 'Select Column Color',
+                'cell': 'Select Cell Color'
+            };
+            title.textContent = modeLabels[mode];
+            
+            picker.classList.add('visible');
+            
+            // Position near the selected cell
+            const cellRect = window.selectedTableCell.getBoundingClientRect();
+            const pickerRect = picker.getBoundingClientRect();
+            const parentRect = picker.parentElement.getBoundingClientRect();
+            
+            picker.style.top = (cellRect.bottom - parentRect.top + 10) + 'px';
+            picker.style.left = Math.max(0, cellRect.left - parentRect.left) + 'px';
+            
+            // Close when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closeColorPicker(e) {
+                    if (!picker.contains(e.target) && !e.target.textContent.includes('🎨')) {
+                        picker.classList.remove('visible');
+                        document.removeEventListener('click', closeColorPicker);
+                    }
+                });
+            }, 10);
+        };
+
+        window.applyTableColor = function(blockId, color) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table' || !window.selectedTableCell) return;
+            
+            const row = parseInt(window.selectedTableCell.dataset.row);
+            const col = parseInt(window.selectedTableCell.dataset.col);
+            const table = document.getElementById(`admin-table-${blockId}`);
+            
+            if (window.colorPickerMode === 'cell') {
+                // Color single cell
+                window.selectedTableCell.style.backgroundColor = color;
+                block.value.cells[row][col].bgColor = color;
+            } 
+            else if (window.colorPickerMode === 'row') {
+                // Color entire row
+                const rowCells = table.querySelectorAll(`tr[data-row="${row}"] td, tr[data-row="${row}"] th`);
+                rowCells.forEach((cell, c) => {
+                    cell.style.backgroundColor = color;
+                    block.value.cells[row][c].bgColor = color;
+                });
+            } 
+            else if (window.colorPickerMode === 'col') {
+                // Color entire column
+                for (let r = 0; r < block.value.rows; r++) {
+                    const cell = table.querySelector(`[data-row="${r}"][data-col="${col}"]`);
+                    if (cell) {
+                        cell.style.backgroundColor = color;
+                        block.value.cells[r][col].bgColor = color;
+                    }
+                }
+            }
+            
+            // Hide color picker
+            document.getElementById(`color-picker-${blockId}`).classList.remove('visible');
+        };
+
+        window.addTableRow = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table') return;
+            
+            const newRow = [];
+            for (let c = 0; c < block.value.cols; c++) {
+                newRow.push({
+                    content: '',
+                    align: 'left',
+                    bgColor: '#FFFFFF'
+                });
+            }
+            
+            block.value.cells.push(newRow);
+            block.value.rows++;
+            
+            renderAdminBlocks();
+        };
+
+        window.deleteTableRow = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table' || block.value.rows <= 1) {
+                alert('Table must have at least one row.');
+                return;
+            }
+            
+            let rowToDelete = block.value.rows - 1; // Default to last row
+            
+            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
+                rowToDelete = parseInt(window.selectedTableCell.dataset.row);
+            }
+            
+            block.value.cells.splice(rowToDelete, 1);
+            block.value.rows--;
+            
+            window.selectedTableCell = null;
+            renderAdminBlocks();
+        };
+
+        window.addTableColumn = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table') return;
+            
+            for (let r = 0; r < block.value.rows; r++) {
+                block.value.cells[r].push({
+                    content: r === 0 && block.value.headerRow ? `Header ${block.value.cols + 1}` : '',
+                    align: 'left',
+                    bgColor: r === 0 && block.value.headerRow ? '#E8E8E8' : '#FFFFFF'
+                });
+            }
+            
+            block.value.cols++;
+            
+            renderAdminBlocks();
+        };
+
+        window.deleteTableColumn = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table' || block.value.cols <= 1) {
+                alert('Table must have at least one column.');
+                return;
+            }
+            
+            let colToDelete = block.value.cols - 1; // Default to last column
+            
+            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
+                colToDelete = parseInt(window.selectedTableCell.dataset.col);
+            }
+            
+            for (let r = 0; r < block.value.rows; r++) {
+                block.value.cells[r].splice(colToDelete, 1);
+            }
+            
+            block.value.cols--;
+            
+            window.selectedTableCell = null;
+            renderAdminBlocks();
+        };
+
+        // ==================== END TABLE EDITOR FUNCTIONS ====================
 
         window.removeAdminBlock = function (id) {
             window.adminBlocks = window.adminBlocks.filter(b => b.id !== id);
@@ -2586,6 +3471,24 @@
                     html += `<div class="video-container" style="margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                                 <iframe src="${videoUrl}" style="width: 100%; height: 315px; border: none;" allowfullscreen></iframe>
                              </div>`;
+                } else if (block.type === 'table' && block.value) {
+                    // Render table for preview
+                    const tableData = block.value;
+                    let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem;">`;
+                    
+                    for (let r = 0; r < tableData.rows; r++) {
+                        tableHtml += '<tr>';
+                        for (let c = 0; c < tableData.cols; c++) {
+                            const cell = tableData.cells[r][c];
+                            const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
+                            const fontWeight = (r === 0 && tableData.headerRow) ? 'font-weight: 600;' : '';
+                            tableHtml += `<${tag} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; background-color: ${cell.bgColor}; ${fontWeight}">${cell.content}</${tag}>`;
+                        }
+                        tableHtml += '</tr>';
+                    }
+                    
+                    tableHtml += '</table>';
+                    html += tableHtml;
                 }
             });
 
@@ -2710,6 +3613,24 @@
                             finalHtml += `<div class="video-container" style="margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                                 <iframe src="${videoUrl}" style="width: 100%; height: 315px; border: none;" allowfullscreen></iframe>
                              </div>`;
+                        } else if (block.type === 'table' && block.value) {
+                            // Generate table HTML for saving
+                            const tableData = block.value;
+                            let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem;">`;
+                            
+                            for (let r = 0; r < tableData.rows; r++) {
+                                tableHtml += '<tr>';
+                                for (let c = 0; c < tableData.cols; c++) {
+                                    const cell = tableData.cells[r][c];
+                                    const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
+                                    const fontWeight = (r === 0 && tableData.headerRow) ? 'font-weight: 600;' : '';
+                                    tableHtml += `<${tag} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; background-color: ${cell.bgColor}; ${fontWeight}">${cell.content}</${tag}>`;
+                                }
+                                tableHtml += '</tr>';
+                            }
+                            
+                            tableHtml += '</table>';
+                            finalHtml += tableHtml;
                         }
                     });
 
