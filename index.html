@@ -4239,167 +4239,270 @@
 
             window.adminBlocks = [];
             
-            // ========== EXTRACT CONTENT ==========
+            // ========== EXTRACT CONTENT IN DOM ORDER ==========
+            // Find the question body container
+            const questionBody = container.querySelector('.question-body, .answer-template, .mcq-body') || container;
             
-            // 1. Get all text paragraphs (question stem)
-            const paragraphs = container.querySelectorAll('p:not(.question-title)');
-            let questionText = '';
-            paragraphs.forEach(p => {
-                const text = p.textContent.trim();
-                // Exclude paragraphs inside answer-box, mcq-option, or explanation-box
-                if (text && !p.closest('.answer-box') && !p.closest('.mcq-option') && !p.closest('.explanation-box')) {
-                    questionText += text + '\n\n';
+            // Get all direct children and walk through them in order
+            const processElement = (element, blockIdOffset) => {
+                if (!element || element.classList?.contains('controls')) return;
+                
+                const tagName = element.tagName?.toLowerCase();
+                
+                // Skip certain elements
+                if (element.classList?.contains('feedback-icon')) return;
+                if (element.classList?.contains('mcq-option')) return; // MCQ options handled separately
+                if (element.classList?.contains('mcq-container')) return; // MCQ container handled separately
+                if (tagName === 'button') return;
+                if (tagName === 'h3') return; // Title is handled separately
+                
+                // Check for explanation box
+                if (element.classList?.contains('explanation-box')) {
+                    const contentDiv = element.querySelector('div:last-child') || element.querySelector('div');
+                    let explainText = '';
+                    if (contentDiv) {
+                        explainText = contentDiv.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim();
+                    } else {
+                        explainText = element.textContent.replace(/💡\s*Explanation/i, '').trim();
+                    }
+                    if (explainText) {
+                        window.adminBlocks.push({ 
+                            id: Date.now() + blockIdOffset, 
+                            type: 'explanation', 
+                            value: explainText
+                        });
+                    }
+                    return;
                 }
+                
+                // Check for video container
+                if (element.classList?.contains('video-container')) {
+                    const iframe = element.querySelector('iframe');
+                    if (iframe && iframe.src) {
+                        window.adminBlocks.push({ 
+                            id: Date.now() + blockIdOffset, 
+                            type: 'video', 
+                            value: iframe.src
+                        });
+                    }
+                    return;
+                }
+                
+                // Check for standalone iframe (video)
+                if (tagName === 'iframe' && (element.src?.includes('youtube') || element.src?.includes('dropbox'))) {
+                    window.adminBlocks.push({ 
+                        id: Date.now() + blockIdOffset, 
+                        type: 'video', 
+                        value: element.src
+                    });
+                    return;
+                }
+                
+                // Check for image
+                if (tagName === 'img' && element.src && !element.src.includes('data:')) {
+                    window.adminBlocks.push({ 
+                        id: Date.now() + blockIdOffset, 
+                        type: 'image', 
+                        value: element.src 
+                    });
+                    return;
+                }
+                
+                // Check for table
+                if (tagName === 'table') {
+                    // Extract table data
+                    const rows = element.querySelectorAll('tr');
+                    const tableData = {
+                        rows: rows.length,
+                        cols: rows[0]?.querySelectorAll('th, td').length || 0,
+                        cells: [],
+                        headerRow: !!rows[0]?.querySelector('th')
+                    };
+                    
+                    rows.forEach(row => {
+                        const rowData = [];
+                        row.querySelectorAll('th, td').forEach(cell => {
+                            rowData.push({
+                                content: cell.textContent.trim(),
+                                align: cell.style.textAlign || 'left',
+                                bgColor: cell.style.backgroundColor || '#FFFFFF'
+                            });
+                        });
+                        tableData.cells.push(rowData);
+                    });
+                    
+                    if (tableData.rows > 0 && tableData.cols > 0) {
+                        window.adminBlocks.push({ 
+                            id: Date.now() + blockIdOffset, 
+                            type: 'table', 
+                            value: tableData
+                        });
+                    }
+                    return;
+                }
+                
+                // Check for CER segment (fill-in-blank)
+                if (element.classList?.contains('cer-segment')) {
+                    let segText = '';
+                    const label = element.getAttribute('data-label') || '';
+                    
+                    // Walk through all nodes to build the text with blanks marked
+                    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+                    let node;
+                    while (node = walker.nextNode()) {
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            segText += node.textContent;
+                        } else if (node.nodeType === Node.ELEMENT_NODE) {
+                            if (node.classList?.contains('answer-input') || node.tagName === 'INPUT') {
+                                const answer = node.dataset?.answer || node.value || '';
+                                if (answer) {
+                                    segText += `[${answer}]`;
+                                }
+                            }
+                        }
+                    }
+                    
+                    segText = segText.replace(/\s+/g, ' ').trim();
+                    // Remove feedback icons text
+                    segText = segText.replace(/[✔✖]/g, '').trim();
+                    
+                    if (segText) {
+                        window.adminBlocks.push({ 
+                            id: Date.now() + blockIdOffset, 
+                            type: 'answer', 
+                            value: (label ? `(${label}) ` : '') + segText
+                        });
+                    }
+                    return;
+                }
+                
+                // Check for div with text content (but not containers)
+                if (tagName === 'div') {
+                    // Skip if it's a container div with children that we'll process
+                    const hasProcessableChildren = element.querySelector('img, table, iframe, .cer-segment, .explanation-box, .video-container');
+                    if (hasProcessableChildren) {
+                        // Process children instead
+                        Array.from(element.children).forEach((child, idx) => {
+                            processElement(child, blockIdOffset + idx * 10);
+                        });
+                        return;
+                    }
+                    
+                    // It's a text div
+                    const text = element.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim();
+                    if (text && text.length > 0) {
+                        window.adminBlocks.push({ 
+                            id: Date.now() + blockIdOffset, 
+                            type: 'text', 
+                            value: text
+                        });
+                    }
+                    return;
+                }
+                
+                // Check for paragraph
+                if (tagName === 'p') {
+                    // Skip if inside mcq-option or explanation
+                    if (element.closest('.mcq-option') || element.closest('.explanation-box')) return;
+                    
+                    const text = element.textContent.trim();
+                    if (text) {
+                        // Check if this is a question-title
+                        if (element.classList?.contains('question-title')) {
+                            window.adminBlocks.push({ 
+                                id: Date.now() + blockIdOffset, 
+                                type: 'text', 
+                                value: text
+                            });
+                        } else {
+                            window.adminBlocks.push({ 
+                                id: Date.now() + blockIdOffset, 
+                                type: 'text', 
+                                value: text
+                            });
+                        }
+                    }
+                    return;
+                }
+            };
+            
+            // Process all children of the question body in order
+            let blockOffset = 0;
+            Array.from(questionBody.children).forEach((child, idx) => {
+                processElement(child, blockOffset);
+                blockOffset += 100;
             });
             
-            if (questionText.trim()) {
-                window.adminBlocks.push({ 
-                    id: Date.now(), 
-                    type: 'text', 
-                    value: questionText.trim() 
+            // If no blocks were extracted, try a simpler approach for older question formats
+            if (window.adminBlocks.length === 0) {
+                // Get text content
+                const allText = [];
+                container.querySelectorAll('p:not(.question-title), div[style*="margin-bottom"]').forEach(el => {
+                    if (!el.closest('.mcq-option') && !el.closest('.explanation-box') && !el.closest('.controls')) {
+                        const text = el.textContent.trim();
+                        if (text) allText.push(text);
+                    }
                 });
-            }
-            
-            // 2. Get all images (exclude images inside explanation box)
-            const images = container.querySelectorAll('img.question-diagram, img[src*="dropbox"], img[src*="imgur"], img[style*="max-width"]');
-            images.forEach((img, idx) => {
-                if (img.src && !img.src.includes('data:') && !img.closest('.explanation-box')) {
+                if (allText.length > 0) {
                     window.adminBlocks.push({ 
-                        id: Date.now() + idx + 100, 
-                        type: 'image', 
-                        value: img.src 
+                        id: Date.now(), 
+                        type: 'text', 
+                        value: allText.join('\n\n')
                     });
                 }
-            });
-            
-            // 3. Get the question title/prompt (exclude if inside explanation)
-            const questionTitle = container.querySelector('.question-title');
-            if (questionTitle && !questionTitle.closest('.explanation-box')) {
-                window.adminBlocks.push({ 
-                    id: Date.now() + 200, 
-                    type: 'text', 
-                    value: questionTitle.textContent.trim() 
+                
+                // Get images
+                container.querySelectorAll('img').forEach((img, idx) => {
+                    if (img.src && !img.src.includes('data:') && !img.closest('.explanation-box')) {
+                        window.adminBlocks.push({ 
+                            id: Date.now() + idx + 100, 
+                            type: 'image', 
+                            value: img.src
+                        });
+                    }
                 });
+                
+                // Get explanation
+                const explanation = container.querySelector('.explanation-box');
+                if (explanation) {
+                    const contentDiv = explanation.querySelector('div:last-child') || explanation.querySelector('div');
+                    let explainText = contentDiv ? contentDiv.textContent.trim() : explanation.textContent.replace(/💡\s*Explanation/i, '').trim();
+                    if (explainText) {
+                        window.adminBlocks.push({ 
+                            id: Date.now() + 500, 
+                            type: 'explanation', 
+                            value: explainText
+                        });
+                    }
+                }
+                
+                // Get video
+                const video = container.querySelector('iframe[src*="youtube"], iframe[src*="dropbox"], .video-container iframe');
+                if (video && video.src) {
+                    window.adminBlocks.push({ 
+                        id: Date.now() + 600, 
+                        type: 'video', 
+                        value: video.src
+                    });
+                }
             }
             
-            // 4. Handle MCQ specific content
+            // Handle MCQ specific content - fill in the option fields
             if (category === 'mcq') {
                 const mcqOptions = container.querySelectorAll('.mcq-option');
                 mcqOptions.forEach((opt, idx) => {
                     const input = opt.querySelector('input[type="radio"]');
                     const span = opt.querySelector('span');
                     if (span && idx < 4) {
-                        // Extract just the option text (remove the number prefix)
                         let optText = span.textContent.trim();
                         optText = optText.replace(/^\d+\.\s*/, '');
-                        document.getElementById(`mcq-opt-${idx + 1}`).value = optText;
-                        
-                        // Check if this is the correct answer
-                        if (input && input.dataset.correct === 'true') {
-                            document.getElementById('mcq-correct').value = (idx + 1).toString();
-                        }
-                    }
-                });
-                
-                // Also check for options in different format (A, B, C, D style)
-                if (mcqOptions.length === 0) {
-                    const optionDivs = container.querySelectorAll('[class*="option"], p');
-                    let optIdx = 0;
-                    optionDivs.forEach(div => {
-                        const text = div.textContent.trim();
-                        const match = text.match(/^[A-D]\.\s*(.+)/);
-                        if (match && optIdx < 4) {
-                            document.getElementById(`mcq-opt-${optIdx + 1}`).value = match[1];
-                            optIdx++;
-                        }
-                    });
-                }
-            } else {
-                // 5. Handle fill-in-the-blank content (CER, definition, etc.)
-                const answerTemplate = container.querySelector('.answer-template');
-                const segments = container.querySelectorAll('.cer-segment');
-                
-                if (segments.length > 0) {
-                    segments.forEach((seg, idx) => {
-                        let segText = '';
-                        const label = seg.getAttribute('data-label') || '';
-                        
-                        // Walk through all nodes to build the text with blanks marked
-                        const walker = document.createTreeWalker(seg, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
-                        let node;
-                        while (node = walker.nextNode()) {
-                            if (node.nodeType === Node.TEXT_NODE) {
-                                segText += node.textContent;
-                            } else if (node.nodeType === Node.ELEMENT_NODE) {
-                                if (node.classList.contains('answer-input') || node.tagName === 'INPUT') {
-                                    const answer = node.dataset?.answer || node.value || '';
-                                    if (answer) {
-                                        segText += `[${answer}]`;
-                                    }
-                                } else if (node.classList.contains('feedback-icon')) {
-                                    // Skip feedback icons
-                                }
+                        setTimeout(() => {
+                            document.getElementById(`mcq-opt-${idx + 1}`).value = optText;
+                            if (input && input.dataset.correct === 'true') {
+                                document.getElementById('mcq-correct').value = (idx + 1).toString();
                             }
-                        }
-                        
-                        segText = segText.replace(/\s+/g, ' ').trim();
-                        
-                        if (segText && !segText.match(/^[✔✖]$/)) {
-                            window.adminBlocks.push({ 
-                                id: Date.now() + 300 + idx, 
-                                type: 'answer', 
-                                value: (label ? `(${label}) ` : '') + segText
-                            });
-                        }
-                    });
-                } else if (answerTemplate) {
-                    // Fallback: extract from answer template directly
-                    let templateText = '';
-                    answerTemplate.querySelectorAll('input.answer-input').forEach(input => {
-                        const answer = input.dataset.answer || '';
-                        if (answer) {
-                            templateText += `[${answer}] `;
-                        }
-                    });
-                    
-                    if (templateText.trim()) {
-                        window.adminBlocks.push({ 
-                            id: Date.now() + 400, 
-                            type: 'answer', 
-                            value: templateText.trim()
-                        });
+                        }, 150);
                     }
-                }
-            }
-            
-            // 6. Get explanation if exists
-            const explanation = container.querySelector('.explanation-box');
-            if (explanation) {
-                // Get the content div (second div or div after h4)
-                const contentDiv = explanation.querySelector('div:last-child') || explanation.querySelector('div');
-                let explainText = '';
-                if (contentDiv) {
-                    explainText = contentDiv.textContent.trim();
-                } else {
-                    // Fallback: get all text but remove the header
-                    explainText = explanation.textContent.replace(/💡\s*Explanation/i, '').trim();
-                }
-                if (explainText) {
-                    window.adminBlocks.push({ 
-                        id: Date.now() + 500, 
-                        type: 'explanation', 
-                        value: explainText
-                    });
-                }
-            }
-            
-            // 7. Get video if exists
-            const video = container.querySelector('iframe[src*="youtube"], iframe[src*="dropbox"], .video-container iframe');
-            if (video && video.src) {
-                window.adminBlocks.push({ 
-                    id: Date.now() + 600, 
-                    type: 'video', 
-                    value: video.src
                 });
             }
 
