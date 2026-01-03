@@ -1133,15 +1133,73 @@
             border-collapse: collapse;
             font-family: 'Century Gothic', 'Segoe UI', 'Poppins', sans-serif;
             font-size: 0.95rem;
+            table-layout: fixed;
         }
 
         .admin-table td,
         .admin-table th {
             border: 1px solid #bbb;
             padding: 10px 14px;
-            min-width: 100px;
+            min-width: 60px;
             position: relative;
             vertical-align: middle;
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+        
+        /* Column resize handle */
+        .admin-table th .col-resize-handle,
+        .admin-table td .col-resize-handle {
+            position: absolute;
+            right: -3px;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            cursor: col-resize;
+            background: transparent;
+            z-index: 10;
+            transition: background 0.15s;
+        }
+        
+        .admin-table th .col-resize-handle:hover,
+        .admin-table td .col-resize-handle:hover,
+        .admin-table .col-resize-handle.resizing {
+            background: #007bff;
+        }
+        
+        /* Row resize handle */
+        .admin-table td .row-resize-handle,
+        .admin-table th .row-resize-handle {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -3px;
+            height: 6px;
+            cursor: row-resize;
+            background: transparent;
+            z-index: 10;
+            transition: background 0.15s;
+        }
+        
+        .admin-table td .row-resize-handle:hover,
+        .admin-table th .row-resize-handle:hover,
+        .admin-table .row-resize-handle.resizing {
+            background: #007bff;
+        }
+        
+        /* Resize overlay to capture mouse during drag */
+        .table-resize-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 99999;
+            cursor: col-resize;
+        }
+        
+        .table-resize-overlay.row-resize {
+            cursor: row-resize;
         }
 
         .admin-table td[contenteditable="true"],
@@ -3490,16 +3548,22 @@
                 for (let c = 0; c < tableData.cols; c++) {
                     const cell = tableData.cells[r][c];
                     const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
+                    const isLastCol = c === tableData.cols - 1;
+                    const isLastRow = r === tableData.rows - 1;
+                    // Add resize handles
+                    const colResizeHandle = !isLastCol ? `<div class="col-resize-handle" onmousedown="startColResize(event, ${blockId}, ${c})"></div>` : '';
+                    const rowResizeHandle = !isLastRow ? `<div class="row-resize-handle" onmousedown="startRowResize(event, ${blockId}, ${r})"></div>` : '';
+                    
                     tableHtml += `<${tag} 
                         contenteditable="true" 
                         data-row="${r}" 
                         data-col="${c}" 
                         data-block="${blockId}"
-                        style="text-align: ${cell.align}; background-color: ${cell.bgColor};"
+                        style="text-align: ${cell.align}; background-color: ${cell.bgColor}; ${tableData.colWidths && tableData.colWidths[c] ? 'width: ' + tableData.colWidths[c] + 'px;' : ''} ${tableData.rowHeights && tableData.rowHeights[r] ? 'height: ' + tableData.rowHeights[r] + 'px;' : ''}"
                         onfocus="selectTableCell(this)"
                         onblur="updateTableCell(this)"
                         oninput="updateTableCell(this)"
-                    >${cell.content}</${tag}>`;
+                    >${cell.content}${colResizeHandle}${rowResizeHandle}</${tag}>`;
                 }
                 tableHtml += '</tr>';
             }
@@ -3703,6 +3767,11 @@
             block.value.cells.push(newRow);
             block.value.rows++;
             
+            // Add default height for new row if rowHeights exists
+            if (block.value.rowHeights) {
+                block.value.rowHeights.push(40);
+            }
+            
             renderAdminBlocks();
         };
 
@@ -3722,6 +3791,11 @@
             block.value.cells.splice(rowToDelete, 1);
             block.value.rows--;
             
+            // Also remove row height if stored
+            if (block.value.rowHeights) {
+                block.value.rowHeights.splice(rowToDelete, 1);
+            }
+            
             window.selectedTableCell = null;
             renderAdminBlocks();
         };
@@ -3739,6 +3813,11 @@
             }
             
             block.value.cols++;
+            
+            // Add default width for new column if colWidths exists
+            if (block.value.colWidths) {
+                block.value.colWidths.push(100);
+            }
             
             renderAdminBlocks();
         };
@@ -3762,9 +3841,181 @@
             
             block.value.cols--;
             
+            // Also remove column width if stored
+            if (block.value.colWidths) {
+                block.value.colWidths.splice(colToDelete, 1);
+            }
+            
             window.selectedTableCell = null;
             renderAdminBlocks();
         };
+        
+        // ==================== TABLE RESIZE FUNCTIONS ====================
+        
+        window.tableResizeState = {
+            isResizing: false,
+            type: null, // 'col' or 'row'
+            blockId: null,
+            index: null,
+            startX: 0,
+            startY: 0,
+            startSize: 0,
+            overlay: null
+        };
+        
+        window.startColResize = function(event, blockId, colIndex) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block) return;
+            
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            // Get current column width
+            const firstRowCells = table.querySelectorAll('tr:first-child th, tr:first-child td');
+            const cell = firstRowCells[colIndex];
+            const startWidth = cell ? cell.offsetWidth : 100;
+            
+            // Initialize colWidths array if not exists
+            if (!block.value.colWidths) {
+                block.value.colWidths = [];
+                firstRowCells.forEach((c, idx) => {
+                    block.value.colWidths[idx] = c.offsetWidth;
+                });
+            }
+            
+            window.tableResizeState = {
+                isResizing: true,
+                type: 'col',
+                blockId: blockId,
+                index: colIndex,
+                startX: event.clientX,
+                startY: 0,
+                startSize: startWidth,
+                overlay: null
+            };
+            
+            // Add overlay to capture mouse
+            const overlay = document.createElement('div');
+            overlay.className = 'table-resize-overlay';
+            document.body.appendChild(overlay);
+            window.tableResizeState.overlay = overlay;
+            
+            // Mark the handle as resizing
+            event.target.classList.add('resizing');
+            
+            document.addEventListener('mousemove', handleTableResize);
+            document.addEventListener('mouseup', stopTableResize);
+        };
+        
+        window.startRowResize = function(event, blockId, rowIndex) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block) return;
+            
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            // Get current row height
+            const rows = table.querySelectorAll('tr');
+            const row = rows[rowIndex];
+            const startHeight = row ? row.offsetHeight : 40;
+            
+            // Initialize rowHeights array if not exists
+            if (!block.value.rowHeights) {
+                block.value.rowHeights = [];
+                rows.forEach((r, idx) => {
+                    block.value.rowHeights[idx] = r.offsetHeight;
+                });
+            }
+            
+            window.tableResizeState = {
+                isResizing: true,
+                type: 'row',
+                blockId: blockId,
+                index: rowIndex,
+                startX: 0,
+                startY: event.clientY,
+                startSize: startHeight,
+                overlay: null
+            };
+            
+            // Add overlay to capture mouse
+            const overlay = document.createElement('div');
+            overlay.className = 'table-resize-overlay row-resize';
+            document.body.appendChild(overlay);
+            window.tableResizeState.overlay = overlay;
+            
+            // Mark the handle as resizing
+            event.target.classList.add('resizing');
+            
+            document.addEventListener('mousemove', handleTableResize);
+            document.addEventListener('mouseup', stopTableResize);
+        };
+        
+        function handleTableResize(event) {
+            if (!window.tableResizeState.isResizing) return;
+            
+            const state = window.tableResizeState;
+            const block = window.adminBlocks.find(b => b.id === state.blockId);
+            if (!block) return;
+            
+            const table = document.getElementById(`admin-table-${state.blockId}`);
+            if (!table) return;
+            
+            if (state.type === 'col') {
+                const deltaX = event.clientX - state.startX;
+                const newWidth = Math.max(40, state.startSize + deltaX);
+                
+                // Update all cells in this column
+                const cells = table.querySelectorAll(`td[data-col="${state.index}"], th[data-col="${state.index}"]`);
+                cells.forEach(cell => {
+                    cell.style.width = newWidth + 'px';
+                });
+                
+                // Store width
+                if (!block.value.colWidths) block.value.colWidths = [];
+                block.value.colWidths[state.index] = newWidth;
+                
+            } else if (state.type === 'row') {
+                const deltaY = event.clientY - state.startY;
+                const newHeight = Math.max(25, state.startSize + deltaY);
+                
+                // Update all cells in this row
+                const cells = table.querySelectorAll(`td[data-row="${state.index}"], th[data-row="${state.index}"]`);
+                cells.forEach(cell => {
+                    cell.style.height = newHeight + 'px';
+                });
+                
+                // Store height
+                if (!block.value.rowHeights) block.value.rowHeights = [];
+                block.value.rowHeights[state.index] = newHeight;
+            }
+        }
+        
+        function stopTableResize(event) {
+            if (!window.tableResizeState.isResizing) return;
+            
+            // Remove overlay
+            if (window.tableResizeState.overlay) {
+                window.tableResizeState.overlay.remove();
+            }
+            
+            // Remove resizing class from handles
+            document.querySelectorAll('.col-resize-handle.resizing, .row-resize-handle.resizing').forEach(h => {
+                h.classList.remove('resizing');
+            });
+            
+            window.tableResizeState.isResizing = false;
+            document.removeEventListener('mousemove', handleTableResize);
+            document.removeEventListener('mouseup', stopTableResize);
+        }
+        
+        // ==================== END TABLE RESIZE FUNCTIONS ====================
 
         // ==================== END TABLE EDITOR FUNCTIONS ====================
 
@@ -3837,15 +4088,17 @@
                 } else if (block.type === 'table' && block.value) {
                     // Render table for preview
                     const tableData = block.value;
-                    let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem;">`;
+                    let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem; table-layout: fixed;">`;
                     
                     for (let r = 0; r < tableData.rows; r++) {
-                        tableHtml += '<tr>';
+                        const rowHeightStyle = tableData.rowHeights && tableData.rowHeights[r] ? `height: ${tableData.rowHeights[r]}px;` : '';
+                        tableHtml += `<tr style="${rowHeightStyle}">`;
                         for (let c = 0; c < tableData.cols; c++) {
                             const cell = tableData.cells[r][c];
                             const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
                             const fontWeight = (r === 0 && tableData.headerRow) ? 'font-weight: 600;' : '';
-                            tableHtml += `<${tag} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; background-color: ${cell.bgColor}; ${fontWeight}">${cell.content}</${tag}>`;
+                            const colWidthStyle = tableData.colWidths && tableData.colWidths[c] ? `width: ${tableData.colWidths[c]}px;` : '';
+                            tableHtml += `<${tag} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; background-color: ${cell.bgColor}; ${fontWeight} ${colWidthStyle}">${cell.content}</${tag}>`;
                         }
                         tableHtml += '</tr>';
                     }
@@ -3872,7 +4125,7 @@
                         html += `
                             <label class="mcq-option">
                                 <input type="radio" name="temp-mcq-preview" value="${i + 1}" data-correct="${correct == i + 1}">
-                                <span>${i + 1}. ${opt}</span>
+                                <span>${opt}</span>
                             </label>
                         `;
                     }
@@ -4002,15 +4255,17 @@
                         } else if (block.type === 'table' && block.value) {
                             // Generate table HTML for saving
                             const tableData = block.value;
-                            let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem;">`;
+                            let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem; table-layout: fixed;">`;
                             
                             for (let r = 0; r < tableData.rows; r++) {
-                                tableHtml += '<tr>';
+                                const rowHeightStyle = tableData.rowHeights && tableData.rowHeights[r] ? `height: ${tableData.rowHeights[r]}px;` : '';
+                                tableHtml += `<tr style="${rowHeightStyle}">`;
                                 for (let c = 0; c < tableData.cols; c++) {
                                     const cell = tableData.cells[r][c];
                                     const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
                                     const fontWeight = (r === 0 && tableData.headerRow) ? 'font-weight: 600;' : '';
-                                    tableHtml += `<${tag} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; background-color: ${cell.bgColor}; ${fontWeight}">${cell.content}</${tag}>`;
+                                    const colWidthStyle = tableData.colWidths && tableData.colWidths[c] ? `width: ${tableData.colWidths[c]}px;` : '';
+                                    tableHtml += `<${tag} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; background-color: ${cell.bgColor}; ${fontWeight} ${colWidthStyle}">${cell.content}</${tag}>`;
                                 }
                                 tableHtml += '</tr>';
                             }
@@ -4038,7 +4293,7 @@
                                 finalHtml += `
                                     <label class="mcq-option">
                                         <input type="radio" name="mcq-answer" value="${i + 1}" data-correct="${correct == i + 1}">
-                                        <span>${i + 1}. ${opt}</span>
+                                        <span>${opt}</span>
                                     </label>
                                 `;
                             }
@@ -4348,20 +4603,44 @@
                         rows: rows.length,
                         cols: rows[0]?.querySelectorAll('th, td').length || 0,
                         cells: [],
-                        headerRow: !!rows[0]?.querySelector('th')
+                        headerRow: !!rows[0]?.querySelector('th'),
+                        colWidths: [],
+                        rowHeights: []
                     };
                     
-                    rows.forEach(row => {
+                    rows.forEach((row, rowIdx) => {
                         const rowData = [];
-                        row.querySelectorAll('th, td').forEach(cell => {
+                        // Extract row height
+                        const rowHeight = parseInt(row.style.height) || null;
+                        if (rowHeight) {
+                            tableData.rowHeights[rowIdx] = rowHeight;
+                        }
+                        
+                        row.querySelectorAll('th, td').forEach((cell, colIdx) => {
                             rowData.push({
                                 content: cell.textContent.trim(),
                                 align: cell.style.textAlign || 'left',
                                 bgColor: cell.style.backgroundColor || '#FFFFFF'
                             });
+                            
+                            // Extract column width from first row
+                            if (rowIdx === 0) {
+                                const colWidth = parseInt(cell.style.width) || null;
+                                if (colWidth) {
+                                    tableData.colWidths[colIdx] = colWidth;
+                                }
+                            }
                         });
                         tableData.cells.push(rowData);
                     });
+                    
+                    // Clean up empty arrays
+                    if (tableData.colWidths.length === 0 || tableData.colWidths.every(w => !w)) {
+                        delete tableData.colWidths;
+                    }
+                    if (tableData.rowHeights.length === 0 || tableData.rowHeights.every(h => !h)) {
+                        delete tableData.rowHeights;
+                    }
                     
                     if (tableData.rows > 0 && tableData.cols > 0) {
                         window.adminBlocks.push({ 
