@@ -229,6 +229,20 @@
             background-color: var(--incorrect-color);
         }
 
+        /* Explanation box - hidden by default, shown after answering */
+        .explanation-box {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f0f4ff;
+            border-left: 4px solid #007bff;
+            border-radius: 8px;
+        }
+        
+        .explanation-box.visible {
+            display: block;
+        }
+
         @keyframes circle-pop {
             0% {
                 transform: scale(0);
@@ -2938,6 +2952,12 @@
                 radio.disabled = true;
             });
             container.querySelector('.submit-btn').disabled = true;
+            
+            // Show explanation if it exists
+            const explanationBox = container.querySelector('.explanation-box');
+            if (explanationBox) {
+                explanationBox.style.display = 'block';
+            }
         };
 
         // =====================================================
@@ -3560,7 +3580,7 @@
                     const wrappedWords = words.map(word => `<span class="admin-word" onclick="toggleBlank(this)" style="cursor: pointer; padding: 2px 4px; border-radius: 4px; transition: all 0.2s;">${word}</span>`).join(' ');
                     html += `<div class="cer-segment" style="margin-bottom: 1.5rem; line-height: 2;">${wrappedWords}</div>`;
                 } else if (block.type === 'explanation' && block.value) {
-                    html += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1.5rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px;">
+                    html += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1.5rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px; display: none;">
                                 <h4 style="margin-bottom: 0.8rem; color: #007bff; display: flex; align-items: center; gap: 8px;">💡 Explanation</h4>
                                 <div style="color: #444; line-height: 1.6;">${block.value.replace(/\n/g, '<br>')}</div>
                              </div>`;
@@ -3668,6 +3688,11 @@
                     // Remove any controls that might be in the preview
                     clone.querySelectorAll('.controls, button.submit-btn, button.next-btn, button.print-btn, button.btn-primary').forEach(el => el.remove());
                     
+                    // Ensure explanation boxes are hidden by default
+                    clone.querySelectorAll('.explanation-box').forEach(el => {
+                        el.style.display = 'none';
+                    });
+                    
                     const selectedWords = clone.querySelectorAll('.admin-word.is-blank');
                     selectedWords.forEach(word => {
                         const answer = word.textContent.trim().replace(/[.,!?;:]/g, '');
@@ -3702,7 +3727,7 @@
                             });
                             finalHtml += `<div class="cer-segment" style="margin-bottom: 1.5rem; line-height: 2;">${answerHtml}<span class="feedback-icon"></span></div>`;
                         } else if (block.type === 'explanation' && block.value) {
-                            finalHtml += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1.5rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px;">
+                            finalHtml += `<div class="explanation-box" style="margin-top: 1.5rem; padding: 1.5rem; background: #f0f4ff; border-left: 4px solid #007bff; border-radius: 8px; display: none;">
                                 <h4 style="margin-bottom: 0.8rem; color: #007bff; display: flex; align-items: center; gap: 8px;">💡 Explanation</h4>
                                 <div style="color: #444; line-height: 1.6;">${block.value.replace(/\n/g, '<br>')}</div>
                              </div>`;
@@ -3993,7 +4018,8 @@
             let questionText = '';
             paragraphs.forEach(p => {
                 const text = p.textContent.trim();
-                if (text && !p.closest('.answer-box') && !p.closest('.mcq-option')) {
+                // Exclude paragraphs inside answer-box, mcq-option, or explanation-box
+                if (text && !p.closest('.answer-box') && !p.closest('.mcq-option') && !p.closest('.explanation-box')) {
                     questionText += text + '\n\n';
                 }
             });
@@ -4006,10 +4032,10 @@
                 });
             }
             
-            // 2. Get all images
+            // 2. Get all images (exclude images inside explanation box)
             const images = container.querySelectorAll('img.question-diagram, img[src*="dropbox"], img[src*="imgur"], img[style*="max-width"]');
             images.forEach((img, idx) => {
-                if (img.src && !img.src.includes('data:')) {
+                if (img.src && !img.src.includes('data:') && !img.closest('.explanation-box')) {
                     window.adminBlocks.push({ 
                         id: Date.now() + idx + 100, 
                         type: 'image', 
@@ -4018,9 +4044,9 @@
                 }
             });
             
-            // 3. Get the question title/prompt
+            // 3. Get the question title/prompt (exclude if inside explanation)
             const questionTitle = container.querySelector('.question-title');
-            if (questionTitle) {
+            if (questionTitle && !questionTitle.closest('.explanation-box')) {
                 window.adminBlocks.push({ 
                     id: Date.now() + 200, 
                     type: 'text', 
@@ -4121,12 +4147,20 @@
             // 6. Get explanation if exists
             const explanation = container.querySelector('.explanation-box');
             if (explanation) {
-                const explainText = explanation.querySelector('div')?.textContent || explanation.textContent;
-                if (explainText.trim()) {
+                // Get the content div (second div or div after h4)
+                const contentDiv = explanation.querySelector('div:last-child') || explanation.querySelector('div');
+                let explainText = '';
+                if (contentDiv) {
+                    explainText = contentDiv.textContent.trim();
+                } else {
+                    // Fallback: get all text but remove the header
+                    explainText = explanation.textContent.replace(/💡\s*Explanation/i, '').trim();
+                }
+                if (explainText) {
                     window.adminBlocks.push({ 
                         id: Date.now() + 500, 
                         type: 'explanation', 
-                        value: explainText.trim()
+                        value: explainText
                     });
                 }
             }
@@ -4197,6 +4231,12 @@
                 form.querySelectorAll('.answer-input').forEach(input => input.disabled = true);
                 submitBtn.disabled = true;
                 if (nextBtn) nextBtn.classList.remove('hidden');
+                
+                // Show explanation if it exists
+                const explanationBox = form.querySelector('.explanation-box');
+                if (explanationBox) {
+                    explanationBox.style.display = 'block';
+                }
             });
         }
         window.setupQuestionFormGlobal = setupQuestionForm;
@@ -4535,6 +4575,10 @@
                                     if (el.textContent.trim().includes('Check Answer')) {
                                         el.remove();
                                     }
+                                });
+                                // Ensure explanation boxes are hidden by default
+                                tempDiv.querySelectorAll('.explanation-box').forEach(el => {
+                                    el.style.display = 'none';
                                 });
                                 processedHtml = tempDiv.innerHTML;
                                 
