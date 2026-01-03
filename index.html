@@ -1133,7 +1133,6 @@
             border-collapse: collapse;
             font-family: 'Century Gothic', 'Segoe UI', 'Poppins', sans-serif;
             font-size: 0.95rem;
-            table-layout: fixed;
         }
 
         .admin-table td,
@@ -1143,48 +1142,29 @@
             min-width: 60px;
             position: relative;
             vertical-align: middle;
-            overflow: hidden;
             word-wrap: break-word;
         }
         
-        /* Column resize handle */
-        .admin-table th .col-resize-handle,
-        .admin-table td .col-resize-handle {
-            position: absolute;
-            right: -3px;
-            top: 0;
-            bottom: 0;
-            width: 6px;
-            cursor: col-resize;
-            background: transparent;
-            z-index: 10;
-            transition: background 0.15s;
+        /* Selection styles */
+        .admin-table td.selected-row,
+        .admin-table th.selected-row {
+            background-color: #e3f2fd !important;
+            outline: 2px solid #2196f3;
+            outline-offset: -2px;
         }
         
-        .admin-table th .col-resize-handle:hover,
-        .admin-table td .col-resize-handle:hover,
-        .admin-table .col-resize-handle.resizing {
-            background: #007bff;
+        .admin-table td.selected-col,
+        .admin-table th.selected-col {
+            background-color: #e8f5e9 !important;
+            outline: 2px solid #4caf50;
+            outline-offset: -2px;
         }
         
-        /* Row resize handle */
-        .admin-table td .row-resize-handle,
-        .admin-table th .row-resize-handle {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -3px;
-            height: 6px;
-            cursor: row-resize;
-            background: transparent;
-            z-index: 10;
-            transition: background 0.15s;
-        }
-        
-        .admin-table td .row-resize-handle:hover,
-        .admin-table th .row-resize-handle:hover,
-        .admin-table .row-resize-handle.resizing {
-            background: #007bff;
+        .admin-table.selected-all td,
+        .admin-table.selected-all th {
+            background-color: #fff3e0 !important;
+            outline: 2px solid #ff9800;
+            outline-offset: -2px;
         }
         
         /* Resize overlay to capture mouse during drag */
@@ -3548,22 +3528,20 @@
                 for (let c = 0; c < tableData.cols; c++) {
                     const cell = tableData.cells[r][c];
                     const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
-                    const isLastCol = c === tableData.cols - 1;
-                    const isLastRow = r === tableData.rows - 1;
-                    // Add resize handles
-                    const colResizeHandle = !isLastCol ? `<div class="col-resize-handle" onmousedown="startColResize(event, ${blockId}, ${c})"></div>` : '';
-                    const rowResizeHandle = !isLastRow ? `<div class="row-resize-handle" onmousedown="startRowResize(event, ${blockId}, ${r})"></div>` : '';
+                    const colWidth = tableData.colWidths && tableData.colWidths[c] ? `width: ${tableData.colWidths[c]}px;` : '';
+                    const rowHeight = tableData.rowHeights && tableData.rowHeights[r] ? `height: ${tableData.rowHeights[r]}px;` : '';
                     
                     tableHtml += `<${tag} 
                         contenteditable="true" 
                         data-row="${r}" 
                         data-col="${c}" 
                         data-block="${blockId}"
-                        style="text-align: ${cell.align}; background-color: ${cell.bgColor}; ${tableData.colWidths && tableData.colWidths[c] ? 'width: ' + tableData.colWidths[c] + 'px;' : ''} ${tableData.rowHeights && tableData.rowHeights[r] ? 'height: ' + tableData.rowHeights[r] + 'px;' : ''}"
+                        style="text-align: ${cell.align}; background-color: ${cell.bgColor}; ${colWidth} ${rowHeight}"
                         onfocus="selectTableCell(this)"
                         onblur="updateTableCell(this)"
                         oninput="updateTableCell(this)"
-                    >${cell.content}${colResizeHandle}${rowResizeHandle}</${tag}>`;
+                        onmousedown="handleTableCellMouseDown(event, ${blockId}, ${r}, ${c})"
+                    >${cell.content}</${tag}>`;
                 }
                 tableHtml += '</tr>';
             }
@@ -3585,27 +3563,30 @@
                     <div class="admin-table-wrapper" style="margin-top: 10px;">
                         <div class="table-toolbar">
                             <div class="table-toolbar-group">
+                                <label>Select:</label>
+                                <button onclick="selectTableRow(${blockId})" title="Select Entire Row">☰ Row</button>
+                                <button onclick="selectTableColumn(${blockId})" title="Select Entire Column">║ Col</button>
+                                <button onclick="selectEntireTable(${blockId})" title="Select Entire Table">▣ All</button>
+                            </div>
+                            <div class="table-toolbar-group">
                                 <label>Align:</label>
                                 <button onclick="setTableAlignment(${blockId}, 'left')" title="Align Left">⬅</button>
                                 <button onclick="setTableAlignment(${blockId}, 'center')" title="Align Center">⬌</button>
                                 <button onclick="setTableAlignment(${blockId}, 'right')" title="Align Right">➡</button>
-                                <button onclick="setTableAlignment(${blockId}, 'justify')" title="Justify">☰</button>
                             </div>
                             <div class="table-toolbar-group">
                                 <label>Color:</label>
-                                <button onclick="showColorPicker(${blockId}, 'row')" title="Color Row">🎨 Row</button>
-                                <button onclick="showColorPicker(${blockId}, 'col')" title="Color Column">🎨 Col</button>
-                                <button onclick="showColorPicker(${blockId}, 'cell')" title="Color Cell">🎨 Cell</button>
+                                <button onclick="showColorPicker(${blockId}, 'selection')" title="Color Selection">🎨 Color</button>
                             </div>
                             <div class="table-toolbar-group">
                                 <label>Rows:</label>
-                                <button onclick="addTableRow(${blockId})" title="Add Row">+ Row</button>
-                                <button onclick="deleteTableRow(${blockId})" class="danger" title="Delete Row">− Row</button>
+                                <button onclick="addTableRow(${blockId})" title="Add Row">+</button>
+                                <button onclick="deleteTableRow(${blockId})" class="danger" title="Delete Row">−</button>
                             </div>
                             <div class="table-toolbar-group">
                                 <label>Cols:</label>
-                                <button onclick="addTableColumn(${blockId})" title="Add Column">+ Col</button>
-                                <button onclick="deleteTableColumn(${blockId})" class="danger" title="Delete Column">− Col</button>
+                                <button onclick="addTableColumn(${blockId})" title="Add Column">+</button>
+                                <button onclick="deleteTableColumn(${blockId})" class="danger" title="Delete Column">−</button>
                             </div>
                         </div>
                         <div class="admin-table-container">
@@ -3657,8 +3638,54 @@
         };
 
         window.setTableAlignment = function(blockId, alignment) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table') return;
+            
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            // Check for table selection first
+            if (window.tableSelection.blockId === blockId && window.tableSelection.type) {
+                const sel = window.tableSelection;
+                
+                if (sel.type === 'all') {
+                    // Align entire table
+                    for (let r = 0; r < block.value.rows; r++) {
+                        for (let c = 0; c < block.value.cols; c++) {
+                            const cell = table.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+                            if (cell) {
+                                cell.style.textAlign = alignment;
+                                block.value.cells[r][c].align = alignment;
+                            }
+                        }
+                    }
+                } else if (sel.type === 'row') {
+                    // Align selected row
+                    const row = sel.row;
+                    for (let c = 0; c < block.value.cols; c++) {
+                        const cell = table.querySelector(`[data-row="${row}"][data-col="${c}"]`);
+                        if (cell) {
+                            cell.style.textAlign = alignment;
+                            block.value.cells[row][c].align = alignment;
+                        }
+                    }
+                } else if (sel.type === 'col') {
+                    // Align selected column
+                    const col = sel.col;
+                    for (let r = 0; r < block.value.rows; r++) {
+                        const cell = table.querySelector(`[data-row="${r}"][data-col="${col}"]`);
+                        if (cell) {
+                            cell.style.textAlign = alignment;
+                            block.value.cells[r][col].align = alignment;
+                        }
+                    }
+                }
+                return;
+            }
+            
+            // Fall back to single cell
             if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
-                alert('Please click on a cell first to select it.');
+                alert('Please select a cell, row, column, or table first.');
                 return;
             }
             
@@ -3667,42 +3694,45 @@
             const col = parseInt(cell.dataset.col);
             
             cell.style.textAlign = alignment;
-            
-            // Update the block data
-            const block = window.adminBlocks.find(b => b.id === blockId);
-            if (block && block.type === 'table') {
-                block.value.cells[row][col].align = alignment;
-            }
+            block.value.cells[row][col].align = alignment;
         };
 
         window.showColorPicker = function(blockId, mode) {
             const picker = document.getElementById(`color-picker-${blockId}`);
             const title = document.getElementById(`color-picker-title-${blockId}`);
             
-            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
-                alert('Please click on a cell first to select it.');
+            // Check if we have a selection or selected cell
+            const hasSelection = window.tableSelection.blockId === blockId && window.tableSelection.type;
+            const hasCell = window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId;
+            
+            if (!hasSelection && !hasCell) {
+                alert('Please select a cell, row, column, or table first.');
                 return;
             }
             
             window.colorPickerMode = mode;
             window.colorPickerBlockId = blockId;
             
-            const modeLabels = {
-                'row': 'Select Row Color',
-                'col': 'Select Column Color',
-                'cell': 'Select Cell Color'
-            };
-            title.textContent = modeLabels[mode];
+            // Determine title based on selection type
+            let titleText = 'Select Color';
+            if (hasSelection) {
+                const typeLabels = { 'row': 'Row', 'col': 'Column', 'all': 'Table' };
+                titleText = `Color ${typeLabels[window.tableSelection.type] || 'Selection'}`;
+            } else {
+                titleText = 'Color Cell';
+            }
+            title.textContent = titleText;
             
             picker.classList.add('visible');
             
-            // Position near the selected cell
-            const cellRect = window.selectedTableCell.getBoundingClientRect();
-            const pickerRect = picker.getBoundingClientRect();
-            const parentRect = picker.parentElement.getBoundingClientRect();
-            
-            picker.style.top = (cellRect.bottom - parentRect.top + 10) + 'px';
-            picker.style.left = Math.max(0, cellRect.left - parentRect.left) + 'px';
+            // Position picker
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (table) {
+                const tableRect = table.getBoundingClientRect();
+                const parentRect = picker.parentElement.getBoundingClientRect();
+                picker.style.top = (tableRect.bottom - parentRect.top + 10) + 'px';
+                picker.style.left = '0px';
+            }
             
             // Close when clicking outside
             setTimeout(() => {
@@ -3717,34 +3747,57 @@
 
         window.applyTableColor = function(blockId, color) {
             const block = window.adminBlocks.find(b => b.id === blockId);
-            if (!block || block.type !== 'table' || !window.selectedTableCell) return;
+            if (!block || block.type !== 'table') return;
             
-            const row = parseInt(window.selectedTableCell.dataset.row);
-            const col = parseInt(window.selectedTableCell.dataset.col);
             const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
             
-            if (window.colorPickerMode === 'cell') {
-                // Color single cell
-                window.selectedTableCell.style.backgroundColor = color;
-                block.value.cells[row][col].bgColor = color;
-            } 
-            else if (window.colorPickerMode === 'row') {
-                // Color entire row
-                const rowCells = table.querySelectorAll(`tr[data-row="${row}"] td, tr[data-row="${row}"] th`);
-                rowCells.forEach((cell, c) => {
-                    cell.style.backgroundColor = color;
-                    block.value.cells[row][c].bgColor = color;
-                });
-            } 
-            else if (window.colorPickerMode === 'col') {
-                // Color entire column
-                for (let r = 0; r < block.value.rows; r++) {
-                    const cell = table.querySelector(`[data-row="${r}"][data-col="${col}"]`);
-                    if (cell) {
-                        cell.style.backgroundColor = color;
-                        block.value.cells[r][col].bgColor = color;
+            // Check for table selection first
+            if (window.tableSelection.blockId === blockId && window.tableSelection.type) {
+                const sel = window.tableSelection;
+                
+                if (sel.type === 'all') {
+                    // Color entire table
+                    for (let r = 0; r < block.value.rows; r++) {
+                        for (let c = 0; c < block.value.cols; c++) {
+                            const cell = table.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+                            if (cell) {
+                                cell.style.backgroundColor = color;
+                                block.value.cells[r][c].bgColor = color;
+                            }
+                        }
+                    }
+                } else if (sel.type === 'row') {
+                    // Color selected row
+                    const row = sel.row;
+                    for (let c = 0; c < block.value.cols; c++) {
+                        const cell = table.querySelector(`[data-row="${row}"][data-col="${c}"]`);
+                        if (cell) {
+                            cell.style.backgroundColor = color;
+                            block.value.cells[row][c].bgColor = color;
+                        }
+                    }
+                } else if (sel.type === 'col') {
+                    // Color selected column
+                    const col = sel.col;
+                    for (let r = 0; r < block.value.rows; r++) {
+                        const cell = table.querySelector(`[data-row="${r}"][data-col="${col}"]`);
+                        if (cell) {
+                            cell.style.backgroundColor = color;
+                            block.value.cells[r][col].bgColor = color;
+                        }
                     }
                 }
+                
+                // Clear selection visual after applying
+                clearTableSelection(blockId);
+            } 
+            // Fall back to single cell
+            else if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
+                const row = parseInt(window.selectedTableCell.dataset.row);
+                const col = parseInt(window.selectedTableCell.dataset.col);
+                window.selectedTableCell.style.backgroundColor = color;
+                block.value.cells[row][col].bgColor = color;
             }
             
             // Hide color picker
@@ -3850,6 +3903,131 @@
             renderAdminBlocks();
         };
         
+        // ==================== TABLE SELECTION FUNCTIONS ====================
+        
+        window.tableSelection = {
+            blockId: null,
+            type: null, // 'cell', 'row', 'col', 'all'
+            row: null,
+            col: null
+        };
+        
+        window.selectTableRow = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block) return;
+            
+            // Use currently selected cell's row, or default to first row
+            let rowIndex = 0;
+            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
+                rowIndex = parseInt(window.selectedTableCell.dataset.row);
+            }
+            
+            window.tableSelection = { blockId, type: 'row', row: rowIndex, col: null };
+            
+            // Clear previous selection
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            table.classList.remove('selected-all');
+            table.querySelectorAll('.selected-row, .selected-col').forEach(c => {
+                c.classList.remove('selected-row', 'selected-col');
+            });
+            
+            // Highlight row
+            table.querySelectorAll(`td[data-row="${rowIndex}"], th[data-row="${rowIndex}"]`).forEach(c => {
+                c.classList.add('selected-row');
+            });
+        };
+        
+        window.selectTableColumn = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block) return;
+            
+            // Use currently selected cell's column, or default to first column
+            let colIndex = 0;
+            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
+                colIndex = parseInt(window.selectedTableCell.dataset.col);
+            }
+            
+            window.tableSelection = { blockId, type: 'col', row: null, col: colIndex };
+            
+            // Clear previous selection
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            table.classList.remove('selected-all');
+            table.querySelectorAll('.selected-row, .selected-col').forEach(c => {
+                c.classList.remove('selected-row', 'selected-col');
+            });
+            
+            // Highlight column
+            table.querySelectorAll(`td[data-col="${colIndex}"], th[data-col="${colIndex}"]`).forEach(c => {
+                c.classList.add('selected-col');
+            });
+        };
+        
+        window.selectEntireTable = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block) return;
+            
+            window.tableSelection = { blockId, type: 'all', row: null, col: null };
+            
+            // Clear previous selection
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            table.querySelectorAll('.selected-row, .selected-col').forEach(c => {
+                c.classList.remove('selected-row', 'selected-col');
+            });
+            
+            // Highlight entire table
+            table.classList.add('selected-all');
+        };
+        
+        window.clearTableSelection = function(blockId) {
+            window.tableSelection = { blockId: null, type: null, row: null, col: null };
+            
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            table.classList.remove('selected-all');
+            table.querySelectorAll('.selected-row, .selected-col').forEach(c => {
+                c.classList.remove('selected-row', 'selected-col');
+            });
+        };
+        
+        // Add mousemove listener for cursor changes on table cells
+        document.addEventListener('mousemove', function(event) {
+            const cell = event.target.closest('.admin-table td, .admin-table th');
+            if (!cell) return;
+            
+            const rect = cell.getBoundingClientRect();
+            const edgeThreshold = 8;
+            
+            const isRightEdge = event.clientX >= rect.right - edgeThreshold;
+            const isBottomEdge = event.clientY >= rect.bottom - edgeThreshold;
+            
+            const blockId = parseInt(cell.dataset.block);
+            const col = parseInt(cell.dataset.col);
+            const row = parseInt(cell.dataset.row);
+            const block = window.adminBlocks?.find(b => b.id === blockId);
+            
+            if (!block) return;
+            
+            // Not last column and on right edge
+            if (isRightEdge && col < block.value.cols - 1) {
+                cell.style.cursor = 'col-resize';
+            }
+            // Not last row and on bottom edge
+            else if (isBottomEdge && row < block.value.rows - 1) {
+                cell.style.cursor = 'row-resize';
+            }
+            // Normal text cursor
+            else {
+                cell.style.cursor = 'text';
+            }
+        });
+        
         // ==================== TABLE RESIZE FUNCTIONS ====================
         
         window.tableResizeState = {
@@ -3863,10 +4041,39 @@
             overlay: null
         };
         
-        window.startColResize = function(event, blockId, colIndex) {
-            event.preventDefault();
-            event.stopPropagation();
+        // Handle mousedown on table cell to detect edge clicks for resizing
+        window.handleTableCellMouseDown = function(event, blockId, row, col) {
+            const cell = event.target.closest('td, th');
+            if (!cell) return;
             
+            const rect = cell.getBoundingClientRect();
+            const edgeThreshold = 8; // pixels from edge to trigger resize
+            
+            const isRightEdge = event.clientX >= rect.right - edgeThreshold;
+            const isBottomEdge = event.clientY >= rect.bottom - edgeThreshold;
+            
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block) return;
+            
+            // Check if on right edge (column resize) - not for last column
+            if (isRightEdge && col < block.value.cols - 1) {
+                event.preventDefault();
+                startColResize(event, blockId, col);
+                return;
+            }
+            
+            // Check if on bottom edge (row resize) - not for last row
+            if (isBottomEdge && row < block.value.rows - 1) {
+                event.preventDefault();
+                startRowResize(event, blockId, row);
+                return;
+            }
+            
+            // Normal cell selection - clear any table selections
+            clearTableSelection(blockId);
+        };
+        
+        window.startColResize = function(event, blockId, colIndex) {
             const block = window.adminBlocks.find(b => b.id === blockId);
             if (!block) return;
             
@@ -3903,17 +4110,11 @@
             document.body.appendChild(overlay);
             window.tableResizeState.overlay = overlay;
             
-            // Mark the handle as resizing
-            event.target.classList.add('resizing');
-            
             document.addEventListener('mousemove', handleTableResize);
             document.addEventListener('mouseup', stopTableResize);
         };
         
         window.startRowResize = function(event, blockId, rowIndex) {
-            event.preventDefault();
-            event.stopPropagation();
-            
             const block = window.adminBlocks.find(b => b.id === blockId);
             if (!block) return;
             
@@ -3949,9 +4150,6 @@
             overlay.className = 'table-resize-overlay row-resize';
             document.body.appendChild(overlay);
             window.tableResizeState.overlay = overlay;
-            
-            // Mark the handle as resizing
-            event.target.classList.add('resizing');
             
             document.addEventListener('mousemove', handleTableResize);
             document.addEventListener('mouseup', stopTableResize);
@@ -4004,11 +4202,6 @@
             if (window.tableResizeState.overlay) {
                 window.tableResizeState.overlay.remove();
             }
-            
-            // Remove resizing class from handles
-            document.querySelectorAll('.col-resize-handle.resizing, .row-resize-handle.resizing').forEach(h => {
-                h.classList.remove('resizing');
-            });
             
             window.tableResizeState.isResizing = false;
             document.removeEventListener('mousemove', handleTableResize);
