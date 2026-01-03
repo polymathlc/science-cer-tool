@@ -824,8 +824,8 @@
         <div id="view-cer" class="app-body active">
             <aside class="sidebar">
                 <div id="login-days-display">📅 Loading Streak...</div>
-                <button onclick="handleLogout()" class="tab-btn"
-                    style="width: 100%; border-radius: 10px; margin-bottom: 20px; background: #ffeae8; color: #dc3545;">Logout</button>
+                <button onclick="handleLogout()" class="logout-btn"
+                    style="width: 100%; border-radius: 10px; margin-bottom: 20px; background: #ffeae8; color: #dc3545; border: none; padding: 10px; cursor: pointer;">Logout</button>
                 <h2>CER Questions</h2>
                 <nav class="sidebar-nav">
                     <button id="btn-heat">Heat</button>
@@ -1413,6 +1413,7 @@
             function setupQuestionForm(formId) {
                 const form = document.getElementById(formId);
                 const questionContainer = form.closest('.question-container');
+                if (!questionContainer) return; // Fix: avoid crash if container missing
                 const submitBtn = questionContainer.querySelector('.submit-btn');
                 const nextBtn = questionContainer.querySelector('.next-btn');
                 const segments = form.querySelectorAll('.cer-segment');
@@ -1465,7 +1466,7 @@
             });
 
             // Top-Level Tab Switching
-            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabButtons = document.querySelectorAll('header .tab-btn');
             const viewContainers = document.querySelectorAll('.app-body');
 
             // Colors map for JS to update border
