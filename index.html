@@ -3884,7 +3884,32 @@
         function editQuestion(btn, isDuplicate = false) {
             const container = btn.closest('.question-container');
             const titleEl = container.querySelector('h3');
-            const title = titleEl ? titleEl.innerText.replace(/^Question\s*\d*\s*/i, '').trim() : "";
+            
+            // Determine if this is a custom question
+            const isCustomQuestion = container.classList.contains('custom-question') || container.id.includes('custom');
+            
+            let title = "";
+            if (isCustomQuestion && titleEl) {
+                // For custom questions, the h3 contains the actual title directly
+                title = titleEl.innerText.trim();
+            } else if (titleEl) {
+                // For built-in questions, h3 might say "Question 1", so try to get a better title
+                const rawTitle = titleEl.innerText.trim();
+                // If it's just "Question X", try to get the question-title paragraph instead
+                if (/^Question\s*\d*$/i.test(rawTitle)) {
+                    const questionTitleEl = container.querySelector('.question-title, p.question-title');
+                    if (questionTitleEl) {
+                        // Use first sentence or first 50 chars as title
+                        const fullText = questionTitleEl.textContent.trim();
+                        title = fullText.length > 60 ? fullText.substring(0, 57) + '...' : fullText;
+                    } else {
+                        title = rawTitle; // Fall back to "Question 1" etc
+                    }
+                } else {
+                    // h3 has actual content, use it
+                    title = rawTitle;
+                }
+            }
 
             // Detect category from container location
             let category = 'cer';
