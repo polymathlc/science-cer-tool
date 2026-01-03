@@ -774,6 +774,11 @@
             <input type="email" id="auth-email" class="auth-input" placeholder="Email Address">
             <input type="password" id="auth-pass" class="auth-input" placeholder="Password">
 
+            <div id="forgot-password-link" style="text-align: right; margin-bottom: 20px; margin-top: -10px;">
+                <span class="toggle-link" onclick="handleForgotPassword()" style="font-size: 0.85rem;">Forgot
+                    Password?</span>
+            </div>
+
             <!-- Registration Fields (Hidden by default) -->
             <div id="reg-fields" style="display: none;">
                 <input type="text" id="parent-name" class="auth-input" placeholder="Parent's Name">
@@ -1639,7 +1644,35 @@
                 } else {
                     await signInWithEmailAndPassword(auth, email, pass);
                 }
-            } catch (e) { errorMsg.innerText = e.message; }
+            } catch (e) {
+                console.error("Auth Error:", e);
+                if (e.code === 'auth/invalid-credential' || e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-email') {
+                    errorMsg.innerText = "Invalid email or password";
+                } else {
+                    errorMsg.innerText = "Invalid email or password"; // Default as requested
+                }
+            }
+        };
+
+        // Forgot Password Function
+        window.handleForgotPassword = async () => {
+            const email = document.getElementById('auth-email').value;
+            const errorMsg = document.getElementById('auth-error');
+            if (!email) {
+                errorMsg.innerText = "Please enter your email address first.";
+                errorMsg.style.color = "#dc3545";
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                errorMsg.innerText = "Password reset email sent! Check your inbox.";
+                errorMsg.style.color = "#28a745";
+            } catch (e) {
+                console.error("Reset Error:", e);
+                errorMsg.innerText = "Error sending reset email: " + e.message;
+                errorMsg.style.color = "#dc3545";
+            }
         };
 
         // Google Sign In Popup
