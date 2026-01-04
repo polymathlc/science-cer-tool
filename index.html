@@ -3789,32 +3789,35 @@
             const emptyMsg = document.getElementById('saved-worksheets-empty-msg');
             
             try {
-                const { collection, query, where, getDocs, orderBy } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 
                 const user = window.auth.currentUser;
                 if (!user) return;
                 
-                const q = query(
-                    collection(window.db_fs, "user_worksheets"),
-                    where("userId", "==", user.uid)
-                );
-                
-                const snapshot = await getDocs(q);
-                
-                if (snapshot.empty) {
-                    container.innerHTML = '';
-                    container.appendChild(emptyMsg);
-                    emptyMsg.style.display = 'block';
-                    return;
-                }
-                
-                emptyMsg.style.display = 'none';
-                container.innerHTML = '';
+                // Fetch all worksheets and filter client-side
+                const snapshot = await getDocs(collection(window.db_fs, "user_worksheets"));
                 
                 const worksheets = [];
                 snapshot.forEach(doc => {
-                    worksheets.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    if (data.userId === user.uid) {
+                        worksheets.push({ id: doc.id, ...data });
+                    }
                 });
+                
+                if (worksheets.length === 0) {
+                    container.innerHTML = '';
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.className = 'inbox-empty';
+                    emptyDiv.innerHTML = `
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📂</div>
+                        <p>No saved worksheets yet</p>
+                    `;
+                    container.appendChild(emptyDiv);
+                    return;
+                }
+                
+                container.innerHTML = '';
                 
                 // Sort by date descending
                 worksheets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -4591,38 +4594,48 @@
                 const user = window.auth?.currentUser;
                 if (!user) return;
                 
-                const { collection, query, where, getDocs, orderBy, or } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 
-                // Load messages based on current tab
-                let messagesQuery;
-                if (window.currentInboxTab === 'received') {
-                    messagesQuery = query(
-                        collection(window.db_fs, "messages"),
-                        where("recipientId", "==", user.uid),
-                        orderBy("createdAt", "desc")
-                    );
-                } else {
-                    messagesQuery = query(
-                        collection(window.db_fs, "messages"),
-                        where("senderId", "==", user.uid),
-                        orderBy("createdAt", "desc")
-                    );
-                }
+                // Fetch all messages and filter client-side (avoids need for composite indexes)
+                const snapshot = await getDocs(collection(window.db_fs, "messages"));
                 
-                const snapshot = await getDocs(messagesQuery);
+                // Filter messages based on current tab
+                let messages = [];
+                snapshot.forEach(doc => {
+                    const msg = { id: doc.id, ...doc.data() };
+                    if (window.currentInboxTab === 'received') {
+                        if (msg.recipientId === user.uid) {
+                            messages.push(msg);
+                        }
+                    } else {
+                        if (msg.senderId === user.uid) {
+                            messages.push(msg);
+                        }
+                    }
+                });
                 
-                if (snapshot.empty) {
+                // Sort by date descending (client-side)
+                messages.sort((a, b) => {
+                    const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
+                    const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
+                    return dateB - dateA;
+                });
+                
+                if (messages.length === 0) {
                     container.innerHTML = '';
-                    container.appendChild(emptyMsg);
-                    emptyMsg.style.display = 'block';
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.className = 'inbox-empty';
+                    emptyDiv.innerHTML = `
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
+                        <p>No messages yet</p>
+                    `;
+                    container.appendChild(emptyDiv);
                     return;
                 }
                 
-                emptyMsg.style.display = 'none';
                 container.innerHTML = '';
                 
-                snapshot.forEach(doc => {
-                    const msg = { id: doc.id, ...doc.data() };
+                messages.forEach(msg => {
                     const date = msg.createdAt ? new Date(msg.createdAt.toDate ? msg.createdAt.toDate() : msg.createdAt).toLocaleString() : 'Unknown';
                     const isUnread = !msg.read && window.currentInboxTab === 'received';
                     
@@ -4669,16 +4682,17 @@
                 const user = window.auth?.currentUser;
                 if (!user) return;
                 
-                const { collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 
-                const unreadQuery = query(
-                    collection(window.db_fs, "messages"),
-                    where("recipientId", "==", user.uid),
-                    where("read", "==", false)
-                );
-                
-                const snapshot = await getDocs(unreadQuery);
-                const count = snapshot.size;
+                // Fetch all messages and count unread client-side (avoids composite index)
+                const snapshot = await getDocs(collection(window.db_fs, "messages"));
+                let count = 0;
+                snapshot.forEach(doc => {
+                    const msg = doc.data();
+                    if (msg.recipientId === user.uid && msg.read === false) {
+                        count++;
+                    }
+                });
                 
                 const badge = document.getElementById('inbox-badge');
                 if (badge) {
@@ -4864,18 +4878,20 @@
                     }
                     
                     if (selectedValue === 'admin') {
-                        // Find admin user ID
-                        const adminQuery = query(collection(window.db_fs, "users"), where("email", "==", ADMIN_EMAIL));
-                        const adminSnap = await getDocs(adminQuery);
-                        if (!adminSnap.empty) {
-                            adminSnap.forEach(adminDoc => {
+                        // Find admin user ID by fetching all users and filtering
+                        const usersSnap = await getDocs(collection(window.db_fs, "users"));
+                        let adminFound = false;
+                        usersSnap.forEach(adminDoc => {
+                            if (adminDoc.data().email === ADMIN_EMAIL) {
                                 recipients.push({
                                     id: adminDoc.id,
                                     email: ADMIN_EMAIL,
                                     name: 'Mr Chung'
                                 });
-                            });
-                        } else {
+                                adminFound = true;
+                            }
+                        });
+                        if (!adminFound) {
                             // Create placeholder if admin hasn't logged in yet
                             recipients.push({
                                 id: 'admin_placeholder',
@@ -4987,22 +5003,21 @@
                     return;
                 }
                 
-                const { collection, addDoc, getDocs, query, where, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const { collection, addDoc, getDocs, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 
                 // Get sender info
                 const senderDoc = await getDoc(doc(window.db_fs, "users", user.uid));
                 const senderData = senderDoc.exists() ? senderDoc.data() : {};
                 const senderName = senderData.studentName || senderData.parentName || user.email;
                 
-                // Find admin user ID
+                // Find admin user ID by fetching all users and filtering
                 let adminId = 'admin_placeholder';
-                const adminQuery = query(collection(window.db_fs, "users"), where("email", "==", ADMIN_EMAIL));
-                const adminSnap = await getDocs(adminQuery);
-                if (!adminSnap.empty) {
-                    adminSnap.forEach(adminDoc => {
+                const usersSnap = await getDocs(collection(window.db_fs, "users"));
+                usersSnap.forEach(adminDoc => {
+                    if (adminDoc.data().email === ADMIN_EMAIL) {
                         adminId = adminDoc.id;
-                    });
-                }
+                    }
+                });
                 
                 // Create message
                 await addDoc(collection(window.db_fs, "messages"), {
