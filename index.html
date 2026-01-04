@@ -3998,11 +3998,26 @@
                 
                 if (userDoc.exists()) {
                     const data = userDoc.data();
-                    const students = data.students || [];
+                    let students = data.students || [];
                     
                     // Backwards compatibility: if no students array, create one from old format
                     if (students.length === 0 && data.studentName) {
                         students.push({ name: data.studentName, level: data.level || 'P6' });
+                    }
+                    
+                    // If admin user and no students, add default P6 student for testing
+                    if (window.isAdminUser && students.length === 0) {
+                        students.push({ name: 'Admin', level: 'P6' });
+                    }
+                    
+                    // If admin user, also add an "Admin (P6)" option at the top for testing
+                    if (window.isAdminUser) {
+                        const adminOption = document.createElement('option');
+                        adminOption.value = 'admin';
+                        adminOption.textContent = 'Admin Test Mode (P6)';
+                        adminOption.dataset.name = 'Admin';
+                        adminOption.dataset.level = 'P6';
+                        select.appendChild(adminOption);
                     }
                     
                     students.forEach((student, idx) => {
@@ -4015,9 +4030,31 @@
                     });
                     
                     window.userStudents = students;
+                } else if (window.isAdminUser) {
+                    // Admin without user doc - still allow practice as P6
+                    const adminOption = document.createElement('option');
+                    adminOption.value = 'admin';
+                    adminOption.textContent = 'Admin Test Mode (P6)';
+                    adminOption.dataset.name = 'Admin';
+                    adminOption.dataset.level = 'P6';
+                    select.appendChild(adminOption);
+                    
+                    window.userStudents = [{ name: 'Admin', level: 'P6' }];
                 }
             } catch (e) {
                 console.error("Error loading students:", e);
+                
+                // Fallback for admin if error occurs
+                if (window.isAdminUser) {
+                    const adminOption = document.createElement('option');
+                    adminOption.value = 'admin';
+                    adminOption.textContent = 'Admin Test Mode (P6)';
+                    adminOption.dataset.name = 'Admin';
+                    adminOption.dataset.level = 'P6';
+                    select.appendChild(adminOption);
+                    
+                    window.userStudents = [{ name: 'Admin', level: 'P6' }];
+                }
             }
         };
 
