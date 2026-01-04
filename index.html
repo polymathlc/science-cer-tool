@@ -2494,8 +2494,8 @@
                             </div>
                             <div id="admin-actions" class="controls"
                                 style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #eee;">
-                                <button id="admin-clear-btn" class="btn" onclick="clearAdminForm()"
-                                    style="background: #dc3545; color: white;">🗑️ Clear All</button>
+                                <button id="admin-clear-btn" class="btn" onclick="clearAdminForm(false, true)"
+                                    style="background: #dc3545; color: white;">🗑️ Clear Form</button>
                                 <button id="admin-process-btn" class="btn" onclick="processAdminQuestion()"
                                     style="background: #28a745; color: white;">👁️ Preview & Select Blanks</button>
                                 <button id="save-question-btn" class="btn" onclick="saveAdminQuestion()"
@@ -2582,6 +2582,7 @@
             }
             
             // Method 2: Fetch the page with no-cache headers to check for updates
+            // BUT skip if user is in admin mode (editing questions)
             fetch(window.location.pathname, {
                 method: 'HEAD',
                 cache: 'no-store',
@@ -2598,6 +2599,18 @@
                 const cachedVersion = localStorage.getItem('server_file_version');
                 
                 if (cachedVersion && serverVersion && cachedVersion !== serverVersion) {
+                    // Check if user is in admin mode - don't auto-reload if they're working on a question
+                    const isInAdminMode = document.getElementById('view-admin') && 
+                                          !document.getElementById('view-admin').classList.contains('hidden');
+                    const hasUnsavedWork = window.adminBlocks && window.adminBlocks.length > 0;
+                    const isSaving = window.isSavingQuestion;
+                    
+                    if (isInAdminMode || hasUnsavedWork || isSaving) {
+                        console.log('New version available but user is in admin mode - skipping auto-reload');
+                        localStorage.setItem('server_file_version', serverVersion);
+                        return;
+                    }
+                    
                     // Server file has changed - force hard reload
                     console.log('New version detected! Reloading...');
                     localStorage.setItem('server_file_version', serverVersion);
@@ -4334,19 +4347,25 @@
         };
 
         window.saveAdminQuestion = async function () {
+            // Set flag to prevent any auto-refresh during save
+            window.isSavingQuestion = true;
+            
             if (!window.auth || !window.auth.currentUser) {
+                window.isSavingQuestion = false;
                 alert("You must be logged in to save.");
                 return;
             }
             
             const title = document.getElementById('admin-title').value.trim();
             if (!title) {
+                window.isSavingQuestion = false;
                 alert("Please enter a question title.");
                 document.getElementById('admin-title').focus();
                 return;
             }
             
             if (window.adminBlocks.length === 0) {
+                window.isSavingQuestion = false;
                 alert("Please add some content blocks before saving.");
                 return;
             }
@@ -4527,13 +4546,28 @@
                 const actionText = isEditing ? "updated" : "added";
                 alert(`Question successfully ${actionText}!`);
                 
-                // Clear the form (force without confirmation since we just saved)
+                // Clear the form but preserve category/level/topic settings
                 window.editingQuestionId = null;
-                window.clearAdminForm(true);
+                window.clearAdminForm(true, true); // force clear, preserve settings
                 
-                // Reload to show changes
-                location.reload();
+                // Reset the loaded flag so questions can be reloaded
+                window.customQuestionsLoaded = false;
+                
+                // Remove existing custom questions from DOM to prevent duplicates
+                document.querySelectorAll('.custom-question').forEach(el => el.remove());
+                
+                // Scroll to title and focus for next question entry
+                const titleInput = document.getElementById('admin-title');
+                if (titleInput) {
+                    titleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => titleInput.focus(), 300);
+                }
+                
+                // Reset the saving flag
+                window.isSavingQuestion = false;
+                
             } catch (e) {
+                window.isSavingQuestion = false;
                 console.error("Save Error:", e);
                 alert("Error saving: " + e.message);
             }
@@ -4543,7 +4577,7 @@
         window.cancelEditing = function() {
             if (window.adminBlocks.length > 0 && !confirm("Cancel editing? Unsaved changes will be lost.")) return;
             window.editingQuestionId = null;
-            window.clearAdminForm(true); // force clear without confirmation
+            window.clearAdminForm(true, true); // force clear, preserve settings
             updateEditingIndicator();
         };
         
@@ -4564,16 +4598,22 @@
         };
 
         // Clear admin form
-        window.clearAdminForm = function(force = false) {
+        window.clearAdminForm = function(force = false, preserveSettings = false) {
             if (!force && window.adminBlocks.length > 0 && !confirm("Clear all content? This cannot be undone.")) return;
+            
+            // Save current settings if preserving
+            let savedCategory, savedLevel, savedTopic;
+            if (preserveSettings) {
+                savedCategory = document.getElementById('admin-category').value;
+                savedLevel = document.getElementById('admin-level')?.value;
+                savedTopic = document.getElementById('admin-topic').value;
+            }
             
             window.adminBlocks = [];
             window.editingQuestionId = null;
             renderAdminBlocks();
             
             document.getElementById('admin-title').value = '';
-            document.getElementById('admin-category').value = 'cer';
-            document.getElementById('admin-topic').value = 'heat';
             document.getElementById('admin-new-topic').value = '';
             document.getElementById('admin-new-topic').classList.add('hidden');
             document.getElementById('mcq-opt-1').value = '';
@@ -4582,7 +4622,30 @@
             document.getElementById('mcq-opt-4').value = '';
             document.getElementById('mcq-correct').value = '1';
             
-            handleCategoryChange('cer');
+            if (preserveSettings && savedCategory) {
+                // Restore saved settings
+                document.getElementById('admin-category').value = savedCategory;
+                handleCategoryChange(savedCategory);
+                
+                if (savedCategory === 'mcq' && savedLevel) {
+                    document.getElementById('admin-level').value = savedLevel;
+                    updateAdminTopicsByLevel(savedLevel);
+                }
+                
+                // Restore topic after a small delay to ensure options are populated
+                setTimeout(() => {
+                    const topicSelect = document.getElementById('admin-topic');
+                    const topicExists = Array.from(topicSelect.options).some(opt => opt.value === savedTopic);
+                    if (topicExists) {
+                        topicSelect.value = savedTopic;
+                    }
+                }, 50);
+            } else {
+                // Reset to defaults
+                document.getElementById('admin-category').value = 'cer';
+                document.getElementById('admin-topic').value = 'heat';
+                handleCategoryChange('cer');
+            }
             
             document.getElementById('admin-preview-section').classList.add('hidden');
             document.getElementById('admin-preview-content').innerHTML = '';
