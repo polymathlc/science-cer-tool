@@ -1978,6 +1978,42 @@
             margin: 0 0 1.5rem;
             color: #333;
         }
+
+        /* Student Entry Styles */
+        .student-entry {
+            transition: all 0.3s ease;
+        }
+
+        .add-student-btn:hover {
+            background: #bbdefb !important;
+        }
+
+        /* Practice Mode Styles */
+        #practice-question-content .question-container {
+            margin-bottom: 0;
+            box-shadow: none;
+            border: none;
+            padding: 0;
+        }
+
+        #practice-question-content .mcq-option,
+        #practice-question-content label {
+            transition: all 0.2s ease;
+        }
+
+        .practice-progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .practice-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7b1fa2, #9c27b0);
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 
@@ -2007,7 +2043,25 @@
             <!-- Registration Fields (Hidden by default) -->
             <div id="reg-fields" style="display: none;">
                 <input type="text" id="parent-name" class="auth-input" placeholder="Parent's Name">
-                <input type="text" id="student-name" class="auth-input" placeholder="Student's Name">
+                
+                <div id="students-container">
+                    <div class="student-entry" data-student-index="0">
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <input type="text" class="auth-input student-name" placeholder="Student's Name" style="flex: 1; margin-bottom: 0;">
+                            <select class="auth-input student-level" style="width: 100px; margin-bottom: 0;">
+                                <option value="">Level</option>
+                                <option value="P3">P3</option>
+                                <option value="P4">P4</option>
+                                <option value="P5">P5</option>
+                                <option value="P6">P6</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="button" onclick="addStudentEntry()" class="add-student-btn" style="width: 100%; padding: 10px; margin-bottom: 15px; background: #e3f2fd; border: 2px dashed #1976d2; border-radius: 8px; color: #1976d2; font-weight: 600; cursor: pointer;">
+                    ➕ Add Another Student
+                </button>
             </div>
 
             <div id="legal-box" class="legal-check" style="display: none;">
@@ -2094,6 +2148,10 @@
                 <button id="btn-sidebar-saved-worksheets" onclick="switchTab('saved-worksheets', this)"
                     style="width: 100%; border-radius: 10px; margin-bottom: 10px; background: #e8f5e9; color: #388e3c; border: none; padding: 10px; cursor: pointer; font-weight: 600;">📚
                     Saved Worksheets</button>
+
+                <button id="btn-sidebar-practice" onclick="switchTab('practice', this)"
+                    style="width: 100%; border-radius: 10px; margin-bottom: 10px; background: #f3e5f5; color: #7b1fa2; border: none; padding: 10px; cursor: pointer; font-weight: 600;">🎯
+                    Practice Mode</button>
 
                 <button id="btn-sidebar-lessons" onclick="switchTab('lessons', this)"
                     style="width: 100%; border-radius: 10px; margin-bottom: 20px; background: #fff3e0; color: #f57c00; border: none; padding: 10px; cursor: pointer; font-weight: 600;">🎓
@@ -2864,6 +2922,72 @@
                         <div id="lesson-detail-content"></div>
                     </div>
                 </div>
+
+                <!-- PRACTICE MODE VIEW -->
+                <div id="view-practice" class="view-content hidden" style="flex: 1;">
+                    <div style="max-width: 900px; margin: 0 auto; padding: 2rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <h2 style="margin: 0; color: #7b1fa2;">🎯 Practice Mode</h2>
+                                <p style="margin: 0.5rem 0 0; color: #666;" id="practice-student-info">Select a student to start practicing</p>
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <select id="practice-student-select" class="auth-input" style="height: 40px; margin: 0; border-radius: 8px;" onchange="selectPracticeStudent()">
+                                    <option value="">-- Select Student --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Practice Stats -->
+                        <div id="practice-stats" class="hidden" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                            <div style="background: #e8f5e9; padding: 1rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #28a745;" id="stat-correct">0</div>
+                                <div style="color: #666; font-size: 0.9rem;">Correct</div>
+                            </div>
+                            <div style="background: #ffebee; padding: 1rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #dc3545;" id="stat-wrong">0</div>
+                                <div style="color: #666; font-size: 0.9rem;">Wrong</div>
+                            </div>
+                            <div style="background: #e3f2fd; padding: 1rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #1976d2;" id="stat-remaining">0</div>
+                                <div style="color: #666; font-size: 0.9rem;">Remaining</div>
+                            </div>
+                            <div style="background: #f3e5f5; padding: 1rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #7b1fa2;" id="stat-streak">0</div>
+                                <div style="color: #666; font-size: 0.9rem;">Streak 🔥</div>
+                            </div>
+                        </div>
+
+                        <!-- Start Practice Button -->
+                        <div id="practice-start-container" style="text-align: center; padding: 3rem;">
+                            <button id="btn-start-practice" class="btn" style="background: #7b1fa2; color: white; font-size: 1.2rem; padding: 15px 40px;" onclick="startPractice()" disabled>
+                                🚀 Start Practice
+                            </button>
+                            <p style="color: #888; margin-top: 1rem; font-size: 0.9rem;">Questions will be served based on your level, starting with unanswered questions.</p>
+                        </div>
+
+                        <!-- Current Question Container -->
+                        <div id="practice-question-container" class="hidden">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <span style="background: #f3e5f5; color: #7b1fa2; padding: 5px 15px; border-radius: 20px; font-weight: 600;" id="practice-question-level">P6</span>
+                                <span style="color: #888; font-size: 0.9rem;" id="practice-question-topic">Topic: Forces</span>
+                            </div>
+                            <div id="practice-question-content" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+                            <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;">
+                                <button class="btn" style="background: #7b1fa2; color: white;" onclick="nextPracticeQuestion()">Next Question →</button>
+                                <button class="btn" style="background: #666; color: white;" onclick="endPractice()">End Practice</button>
+                            </div>
+                        </div>
+
+                        <!-- Practice Complete -->
+                        <div id="practice-complete" class="hidden" style="text-align: center; padding: 3rem;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+                            <h3 style="color: #7b1fa2;">Practice Complete!</h3>
+                            <p style="color: #666;" id="practice-summary">Great job!</p>
+                            <button class="btn" style="background: #7b1fa2; color: white; margin-top: 1rem;" onclick="restartPractice()">Practice Again</button>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
@@ -2992,6 +3116,7 @@
             'admin': '#ffd1dc',
             'worksheet': '#e3f2fd',
             'saved-worksheets': '#e8f5e9',
+            'practice': '#f3e5f5',
             'lessons': '#fff3e0',
             'lesson-detail': '#fff3e0',
             // MCQ level colors
@@ -3727,40 +3852,38 @@
                                         return;
                                     }
                                     const isCorrect = selected.dataset.correct === 'true';
-                                    const label = selected.closest('label');
                                     
-                                    // Show correct answer highlighting
-                                    mcqContainer.querySelectorAll('label').forEach(l => {
-                                        const radio = l.querySelector('input');
+                                    // Show correct answer highlighting with icons inside options
+                                    mcqContainer.querySelectorAll('label, .mcq-option').forEach(opt => {
+                                        const radio = opt.querySelector('input');
+                                        opt.querySelectorAll('.option-feedback-icon').forEach(i => i.remove());
+                                        
                                         if (radio && radio.dataset.correct === 'true') {
-                                            l.style.background = '#d4edda';
-                                            l.style.borderColor = '#28a745';
-                                        } else if (l === label && !isCorrect) {
-                                            l.style.background = '#f8d7da';
-                                            l.style.borderColor = '#dc3545';
+                                            opt.style.background = '#d4edda';
+                                            opt.style.borderColor = '#28a745';
+                                            const icon = document.createElement('span');
+                                            icon.className = 'option-feedback-icon';
+                                            icon.textContent = '✔';
+                                            icon.style.cssText = 'font-size: 1.3rem; font-weight: bold; color: #28a745; margin-left: auto; padding-left: 10px;';
+                                            opt.style.display = 'flex';
+                                            opt.style.alignItems = 'center';
+                                            opt.appendChild(icon);
+                                        } else if (radio && radio.checked && !isCorrect) {
+                                            opt.style.background = '#f8d7da';
+                                            opt.style.borderColor = '#dc3545';
+                                            const icon = document.createElement('span');
+                                            icon.className = 'option-feedback-icon';
+                                            icon.textContent = '✘';
+                                            icon.style.cssText = 'font-size: 1.3rem; font-weight: bold; color: #dc3545; margin-left: auto; padding-left: 10px;';
+                                            opt.style.display = 'flex';
+                                            opt.style.alignItems = 'center';
+                                            opt.appendChild(icon);
                                         }
                                     });
                                     
                                     // Disable all radios
                                     mcqContainer.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
                                     btn.disabled = true;
-                                    
-                                    // Add feedback icon
-                                    let feedbackIcon = btn.parentElement.querySelector('.answer-feedback-icon');
-                                    if (!feedbackIcon) {
-                                        feedbackIcon = document.createElement('span');
-                                        feedbackIcon.className = 'answer-feedback-icon';
-                                        feedbackIcon.style.cssText = 'font-size: 1.5rem; margin-left: 10px; font-weight: bold;';
-                                        btn.insertAdjacentElement('afterend', feedbackIcon);
-                                    }
-                                    
-                                    if (isCorrect) {
-                                        feedbackIcon.textContent = '✔';
-                                        feedbackIcon.style.color = '#28a745';
-                                    } else {
-                                        feedbackIcon.textContent = '✘';
-                                        feedbackIcon.style.color = '#dc3545';
-                                    }
                                     
                                     // Show explanation if exists
                                     const explanationBox = body.querySelector('.explanation-box');
@@ -3802,6 +3925,379 @@
         };
 
         // =====================================================
+        // MULTI-STUDENT REGISTRATION
+        // =====================================================
+        
+        window.studentEntryCount = 1;
+        
+        window.addStudentEntry = function() {
+            const container = document.getElementById('students-container');
+            const index = window.studentEntryCount++;
+            
+            const entry = document.createElement('div');
+            entry.className = 'student-entry';
+            entry.dataset.studentIndex = index;
+            entry.innerHTML = `
+                <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                    <input type="text" class="auth-input student-name" placeholder="Student's Name" style="flex: 1; margin-bottom: 0;">
+                    <select class="auth-input student-level" style="width: 100px; margin-bottom: 0;">
+                        <option value="">Level</option>
+                        <option value="P3">P3</option>
+                        <option value="P4">P4</option>
+                        <option value="P5">P5</option>
+                        <option value="P6">P6</option>
+                    </select>
+                    <button type="button" onclick="removeStudentEntry(${index})" style="background: #dc3545; color: white; border: none; border-radius: 8px; width: 35px; height: 35px; cursor: pointer; font-size: 1.2rem;">×</button>
+                </div>
+            `;
+            container.appendChild(entry);
+        };
+        
+        window.removeStudentEntry = function(index) {
+            const entry = document.querySelector(`.student-entry[data-student-index="${index}"]`);
+            if (entry) entry.remove();
+        };
+        
+        window.getStudentsData = function() {
+            const students = [];
+            document.querySelectorAll('.student-entry').forEach(entry => {
+                const name = entry.querySelector('.student-name').value.trim();
+                const level = entry.querySelector('.student-level').value;
+                if (name && level) {
+                    students.push({ name, level });
+                }
+            });
+            return students;
+        };
+
+        // =====================================================
+        // PRACTICE MODE
+        // =====================================================
+        
+        window.practiceState = {
+            currentStudent: null,
+            questions: [],
+            currentIndex: 0,
+            correct: 0,
+            wrong: 0,
+            streak: 0,
+            answeredQuestions: new Set()
+        };
+
+        window.loadPracticeMode = async function() {
+            const select = document.getElementById('practice-student-select');
+            select.innerHTML = '<option value="">-- Select Student --</option>';
+            
+            try {
+                const user = window.auth?.currentUser;
+                if (!user) return;
+                
+                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const userDoc = await getDoc(doc(window.db_fs, "users", user.uid));
+                
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    const students = data.students || [];
+                    
+                    // Backwards compatibility: if no students array, create one from old format
+                    if (students.length === 0 && data.studentName) {
+                        students.push({ name: data.studentName, level: data.level || 'P6' });
+                    }
+                    
+                    students.forEach((student, idx) => {
+                        const option = document.createElement('option');
+                        option.value = idx;
+                        option.textContent = `${student.name} (${student.level})`;
+                        option.dataset.name = student.name;
+                        option.dataset.level = student.level;
+                        select.appendChild(option);
+                    });
+                    
+                    window.userStudents = students;
+                }
+            } catch (e) {
+                console.error("Error loading students:", e);
+            }
+        };
+
+        window.selectPracticeStudent = function() {
+            const select = document.getElementById('practice-student-select');
+            const selectedOption = select.options[select.selectedIndex];
+            const startBtn = document.getElementById('btn-start-practice');
+            
+            if (select.value && selectedOption.dataset.name) {
+                window.practiceState.currentStudent = {
+                    index: parseInt(select.value),
+                    name: selectedOption.dataset.name,
+                    level: selectedOption.dataset.level
+                };
+                document.getElementById('practice-student-info').textContent = 
+                    `Student: ${selectedOption.dataset.name} | Level: ${selectedOption.dataset.level}`;
+                startBtn.disabled = false;
+            } else {
+                window.practiceState.currentStudent = null;
+                document.getElementById('practice-student-info').textContent = 'Select a student to start practicing';
+                startBtn.disabled = true;
+            }
+        };
+
+        window.startPractice = async function() {
+            if (!window.practiceState.currentStudent) {
+                alert("Please select a student first.");
+                return;
+            }
+            
+            const student = window.practiceState.currentStudent;
+            const level = student.level;
+            
+            // Reset state
+            window.practiceState.questions = [];
+            window.practiceState.currentIndex = 0;
+            window.practiceState.correct = 0;
+            window.practiceState.wrong = 0;
+            window.practiceState.streak = 0;
+            
+            // Load answered questions from storage
+            await loadAnsweredQuestions();
+            
+            // Collect questions from current level and one level down
+            const levels = ['P3', 'P4', 'P5', 'P6'];
+            const currentLevelIndex = levels.indexOf(level);
+            const targetLevels = [level];
+            if (currentLevelIndex > 0) {
+                targetLevels.push(levels[currentLevelIndex - 1]);
+            }
+            
+            // Gather MCQ questions from the DOM
+            const allQuestions = [];
+            
+            targetLevels.forEach(lvl => {
+                const topics = window.mcqCurriculum[lvl] || [];
+                topics.forEach(topic => {
+                    const topicId = topic.toLowerCase().replace(/\s+/g, '-');
+                    const container = document.getElementById(`topic-mcq-${topicId}`);
+                    if (container) {
+                        container.querySelectorAll('.question-container').forEach(q => {
+                            const qId = q.id;
+                            const isAnswered = window.practiceState.answeredQuestions.has(qId);
+                            allQuestions.push({
+                                id: qId,
+                                level: lvl,
+                                topic: topic,
+                                element: q,
+                                answered: isAnswered,
+                                priority: lvl === level ? 0 : 1 // Current level first
+                            });
+                        });
+                    }
+                });
+            });
+            
+            // Sort: unanswered first, then by priority (current level first)
+            allQuestions.sort((a, b) => {
+                if (a.answered !== b.answered) return a.answered ? 1 : -1;
+                return a.priority - b.priority;
+            });
+            
+            window.practiceState.questions = allQuestions;
+            
+            // Update UI
+            document.getElementById('practice-start-container').classList.add('hidden');
+            document.getElementById('practice-stats').classList.remove('hidden');
+            document.getElementById('practice-stats').style.display = 'grid';
+            document.getElementById('practice-question-container').classList.remove('hidden');
+            document.getElementById('practice-complete').classList.add('hidden');
+            
+            updatePracticeStats();
+            showCurrentPracticeQuestion();
+        };
+
+        window.showCurrentPracticeQuestion = function() {
+            const state = window.practiceState;
+            if (state.currentIndex >= state.questions.length) {
+                endPractice();
+                return;
+            }
+            
+            const question = state.questions[state.currentIndex];
+            const container = document.getElementById('practice-question-content');
+            
+            // Clone the question
+            const clone = question.element.cloneNode(true);
+            clone.id = 'practice-q-' + question.id;
+            
+            // Reset any answered state
+            clone.querySelectorAll('input[type="radio"]').forEach(r => {
+                r.checked = false;
+                r.disabled = false;
+                r.name = 'practice-mcq-' + state.currentIndex; // Unique name for this question
+            });
+            clone.querySelectorAll('.mcq-option, label').forEach(opt => {
+                opt.style.borderColor = '';
+                opt.style.background = '';
+                opt.querySelectorAll('.option-feedback-icon').forEach(i => i.remove());
+            });
+            clone.querySelectorAll('.explanation-box').forEach(e => e.style.display = 'none');
+            clone.querySelectorAll('.submit-btn').forEach(b => b.disabled = false);
+            
+            // Update submit button to use practice check
+            const submitBtn = clone.querySelector('.submit-btn');
+            if (submitBtn) {
+                submitBtn.onclick = () => checkPracticeAnswer();
+            }
+            
+            container.innerHTML = '';
+            container.appendChild(clone);
+            
+            // Update level and topic display
+            document.getElementById('practice-question-level').textContent = question.level;
+            document.getElementById('practice-question-topic').textContent = `Topic: ${question.topic}`;
+            
+            updatePracticeStats();
+        };
+
+        window.checkPracticeAnswer = function() {
+            const state = window.practiceState;
+            const question = state.questions[state.currentIndex];
+            const container = document.getElementById('practice-question-content');
+            
+            const selected = container.querySelector('input[type="radio"]:checked');
+            if (!selected) {
+                alert("Please select an answer!");
+                return;
+            }
+            
+            const isCorrect = selected.dataset.correct === 'true';
+            
+            // Show feedback on options
+            container.querySelectorAll('.mcq-option, label').forEach(opt => {
+                const radio = opt.querySelector('input');
+                opt.querySelectorAll('.option-feedback-icon').forEach(i => i.remove());
+                
+                if (radio && radio.dataset.correct === 'true') {
+                    opt.style.background = '#d4edda';
+                    opt.style.borderColor = '#28a745';
+                    const icon = document.createElement('span');
+                    icon.className = 'option-feedback-icon';
+                    icon.textContent = '✔';
+                    icon.style.cssText = 'font-size: 1.3rem; font-weight: bold; color: #28a745; margin-left: auto; padding-left: 10px;';
+                    opt.style.display = 'flex';
+                    opt.style.alignItems = 'center';
+                    opt.appendChild(icon);
+                } else if (radio && radio.checked && !isCorrect) {
+                    opt.style.background = '#f8d7da';
+                    opt.style.borderColor = '#dc3545';
+                    const icon = document.createElement('span');
+                    icon.className = 'option-feedback-icon';
+                    icon.textContent = '✘';
+                    icon.style.cssText = 'font-size: 1.3rem; font-weight: bold; color: #dc3545; margin-left: auto; padding-left: 10px;';
+                    opt.style.display = 'flex';
+                    opt.style.alignItems = 'center';
+                    opt.appendChild(icon);
+                }
+            });
+            
+            // Disable radios
+            container.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+            
+            // Show explanation
+            const explanation = container.querySelector('.explanation-box');
+            if (explanation) explanation.style.display = 'block';
+            
+            // Update stats
+            if (isCorrect) {
+                state.correct++;
+                state.streak++;
+            } else {
+                state.wrong++;
+                state.streak = 0;
+            }
+            
+            // Mark as answered
+            state.answeredQuestions.add(question.id);
+            saveAnsweredQuestions();
+            
+            // Disable submit button
+            container.querySelectorAll('.submit-btn').forEach(b => b.disabled = true);
+            
+            updatePracticeStats();
+        };
+
+        window.nextPracticeQuestion = function() {
+            window.practiceState.currentIndex++;
+            showCurrentPracticeQuestion();
+        };
+
+        window.endPractice = function() {
+            const state = window.practiceState;
+            
+            document.getElementById('practice-question-container').classList.add('hidden');
+            document.getElementById('practice-complete').classList.remove('hidden');
+            
+            const total = state.correct + state.wrong;
+            const percentage = total > 0 ? Math.round((state.correct / total) * 100) : 0;
+            
+            document.getElementById('practice-summary').textContent = 
+                `You got ${state.correct} out of ${total} correct (${percentage}%)!`;
+        };
+
+        window.restartPractice = function() {
+            document.getElementById('practice-complete').classList.add('hidden');
+            document.getElementById('practice-start-container').classList.remove('hidden');
+            document.getElementById('practice-stats').classList.add('hidden');
+            document.getElementById('practice-question-container').classList.add('hidden');
+        };
+
+        window.updatePracticeStats = function() {
+            const state = window.practiceState;
+            document.getElementById('stat-correct').textContent = state.correct;
+            document.getElementById('stat-wrong').textContent = state.wrong;
+            document.getElementById('stat-remaining').textContent = 
+                Math.max(0, state.questions.length - state.currentIndex - 1);
+            document.getElementById('stat-streak').textContent = state.streak;
+        };
+
+        window.loadAnsweredQuestions = async function() {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user) return;
+                
+                const studentIndex = window.practiceState.currentStudent?.index || 0;
+                const key = `answered_${user.uid}_${studentIndex}`;
+                const stored = localStorage.getItem(key);
+                
+                if (stored) {
+                    window.practiceState.answeredQuestions = new Set(JSON.parse(stored));
+                } else {
+                    window.practiceState.answeredQuestions = new Set();
+                }
+            } catch (e) {
+                console.error("Error loading answered questions:", e);
+                window.practiceState.answeredQuestions = new Set();
+            }
+        };
+
+        window.saveAnsweredQuestions = function() {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user) return;
+                
+                const studentIndex = window.practiceState.currentStudent?.index || 0;
+                const key = `answered_${user.uid}_${studentIndex}`;
+                const data = Array.from(window.practiceState.answeredQuestions);
+                localStorage.setItem(key, JSON.stringify(data));
+            } catch (e) {
+                console.error("Error saving answered questions:", e);
+            }
+        };
+
+        // Track answer for practice mode (called from checkMcq)
+        window.trackAnswerForPractice = function(questionId, isCorrect) {
+            // This can be expanded to track performance over time
+            console.log(`Question ${questionId}: ${isCorrect ? 'Correct' : 'Wrong'}`);
+        };
+
+        // =====================================================
         // TAB & VIEW SWITCHING
         // =====================================================
 
@@ -3809,7 +4305,7 @@
             window.currentActiveTab = type;
 
             // Update button states
-            const allBtns = document.querySelectorAll('.tab-btn, #btn-sidebar-admin, #btn-sidebar-worksheet, #btn-sidebar-saved-worksheets, #btn-sidebar-lessons');
+            const allBtns = document.querySelectorAll('.tab-btn, #btn-sidebar-admin, #btn-sidebar-worksheet, #btn-sidebar-saved-worksheets, #btn-sidebar-practice, #btn-sidebar-lessons');
             allBtns.forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
@@ -3832,7 +4328,7 @@
             // List of all OEQ tabs
             const oeqTabs = ['cer', 'definition', 'single-relationship', 'double-relationship', 'fairness', 'reliability', 'accuracy', 'constant-variable', 'explanation', 'control-setup'];
             // List of special tabs (admin, worksheet, etc)
-            const specialTabs = ['admin', 'worksheet', 'saved-worksheets', 'lessons', 'lesson-detail'];
+            const specialTabs = ['admin', 'worksheet', 'saved-worksheets', 'practice', 'lessons', 'lesson-detail'];
             
             if (oeqSidebarContent && mcqSidebarContent) {
                 if (oeqTabs.includes(type)) {
@@ -3876,6 +4372,11 @@
             // Load shared lessons when switching to lessons tab
             if (type === 'lessons') {
                 loadSharedLessons();
+            }
+            
+            // Load practice mode when switching to practice tab
+            if (type === 'practice') {
+                loadPracticeMode();
             }
         };
         
@@ -4012,35 +4513,37 @@
             const allOptions = container.querySelectorAll('.mcq-option');
             allOptions.forEach(opt => {
                 const radio = opt.querySelector('input');
+                // Remove any existing feedback icons
+                opt.querySelectorAll('.option-feedback-icon').forEach(i => i.remove());
+                
                 if (radio.dataset.correct === 'true') {
                     opt.style.borderColor = 'var(--correct-color)';
                     opt.style.background = '#e8f5e9';
+                    // Add checkmark inside the correct answer option
+                    const icon = document.createElement('span');
+                    icon.className = 'option-feedback-icon';
+                    icon.textContent = '✔';
+                    icon.style.cssText = 'font-size: 1.3rem; font-weight: bold; color: #28a745; margin-left: auto; padding-left: 10px;';
+                    opt.style.display = 'flex';
+                    opt.style.alignItems = 'center';
+                    opt.appendChild(icon);
                 } else if (radio.checked) {
                     opt.style.borderColor = 'var(--incorrect-color)';
                     opt.style.background = '#ffebee';
+                    // Add cross inside the wrong selected option
+                    const icon = document.createElement('span');
+                    icon.className = 'option-feedback-icon';
+                    icon.textContent = '✘';
+                    icon.style.cssText = 'font-size: 1.3rem; font-weight: bold; color: #dc3545; margin-left: auto; padding-left: 10px;';
+                    opt.style.display = 'flex';
+                    opt.style.alignItems = 'center';
+                    opt.appendChild(icon);
                 }
                 radio.disabled = true;
             });
             
             const submitBtn = container.querySelector('.submit-btn');
             submitBtn.disabled = true;
-            
-            // Add feedback icon to the right of the button
-            let feedbackIcon = submitBtn.parentElement.querySelector('.answer-feedback-icon');
-            if (!feedbackIcon) {
-                feedbackIcon = document.createElement('span');
-                feedbackIcon.className = 'answer-feedback-icon';
-                feedbackIcon.style.cssText = 'font-size: 1.5rem; margin-left: 10px; font-weight: bold;';
-                submitBtn.insertAdjacentElement('afterend', feedbackIcon);
-            }
-            
-            if (isCorrect) {
-                feedbackIcon.textContent = '✔';
-                feedbackIcon.style.color = '#28a745';
-            } else {
-                feedbackIcon.textContent = '✘';
-                feedbackIcon.style.color = '#dc3545';
-            }
             
             // Show explanation if it exists
             const explanationBox = container.querySelector('.explanation-box');
@@ -4052,6 +4555,14 @@
             const videoContainer = container.querySelector('.video-container');
             if (videoContainer) {
                 videoContainer.style.display = 'block';
+            }
+            
+            // Track answer for practice mode
+            if (window.trackAnswerForPractice) {
+                const questionId = container.closest('.question-container')?.id;
+                if (questionId) {
+                    window.trackAnswerForPractice(questionId, isCorrect);
+                }
             }
         };
 
@@ -6594,23 +7105,6 @@
                 form.querySelectorAll('.answer-input').forEach(input => input.disabled = true);
                 submitBtn.disabled = true;
                 
-                // Add feedback icon to the right of the button
-                let feedbackIcon = submitBtn.parentElement.querySelector('.answer-feedback-icon');
-                if (!feedbackIcon) {
-                    feedbackIcon = document.createElement('span');
-                    feedbackIcon.className = 'answer-feedback-icon';
-                    feedbackIcon.style.cssText = 'font-size: 1.5rem; margin-left: 10px; font-weight: bold;';
-                    submitBtn.insertAdjacentElement('afterend', feedbackIcon);
-                }
-                
-                if (allCorrect) {
-                    feedbackIcon.textContent = '✔';
-                    feedbackIcon.style.color = '#28a745';
-                } else {
-                    feedbackIcon.textContent = '✘';
-                    feedbackIcon.style.color = '#dc3545';
-                }
-                
                 if (nextBtn) nextBtn.classList.remove('hidden');
                 
                 // Show explanation if it exists
@@ -6820,13 +7314,23 @@
             try {
                 if (isSignUpMode) {
                     const pName = document.getElementById('parent-name').value;
-                    const sName = document.getElementById('student-name').value;
-                    if (!pName || !sName || !document.getElementById('legal-agree').checked) {
-                        errorMsg.innerText = "Fill all fields and agree to terms."; return;
+                    const students = getStudentsData();
+                    
+                    if (!pName || students.length === 0 || !document.getElementById('legal-agree').checked) {
+                        errorMsg.innerText = "Please fill parent name, at least one student with level, and agree to terms."; 
+                        return;
                     }
+                    
                     const cred = await createUserWithEmailAndPassword(auth, email, pass);
                     await setDoc(doc(db_fs, "users", cred.user.uid), {
-                        email, parentName: pName, studentName: sName, loginDays: 1, lastLoginDate: new Date().toDateString(), agreedToTerms: true
+                        email, 
+                        parentName: pName, 
+                        students: students,
+                        studentName: students[0].name, // Backwards compatibility
+                        level: students[0].level, // Backwards compatibility
+                        loginDays: 1, 
+                        lastLoginDate: new Date().toDateString(), 
+                        agreedToTerms: true
                     });
                 } else {
                     await signInWithEmailAndPassword(auth, email, pass);
