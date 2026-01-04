@@ -1145,6 +1145,14 @@
             word-wrap: break-word;
         }
         
+        /* Multi-cell selection highlight */
+        .admin-table td.cell-selected,
+        .admin-table th.cell-selected {
+            background-color: #bbdefb !important;
+            outline: 2px solid #1976d2;
+            outline-offset: -2px;
+        }
+        
         /* Selection styles */
         .admin-table td.selected-row,
         .admin-table th.selected-row {
@@ -1167,6 +1175,18 @@
             outline-offset: -2px;
         }
         
+        /* Merged cell indicator */
+        .admin-table td.merged-cell,
+        .admin-table th.merged-cell {
+            background: linear-gradient(135deg, transparent 0%, transparent 95%, #1976d2 95%, #1976d2 100%);
+        }
+        
+        /* Hidden cells (covered by merge) */
+        .admin-table td.hidden-by-merge,
+        .admin-table th.hidden-by-merge {
+            display: none;
+        }
+        
         /* Resize overlay to capture mouse during drag */
         .table-resize-overlay {
             position: fixed;
@@ -1180,6 +1200,17 @@
         
         .table-resize-overlay.row-resize {
             cursor: row-resize;
+        }
+        
+        /* Selection overlay for drag selection */
+        .table-selection-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 99998;
+            cursor: crosshair;
         }
 
         .admin-table td[contenteditable="true"],
@@ -3505,6 +3536,7 @@
                     rowData.push({
                         content: r === 0 ? `Header ${c + 1}` : '',
                         align: 'left',
+                        vAlign: 'middle',
                         bgColor: r === 0 ? '#E8E8E8' : '#FFFFFF'
                     });
                 }
@@ -3534,23 +3566,62 @@
             const tableData = block.value;
             const blockId = block.id;
             
+            // Build a map of cells that are hidden due to merging
+            const hiddenCells = new Set();
+            if (tableData.mergedCells) {
+                tableData.mergedCells.forEach(merge => {
+                    for (let r = merge.startRow; r <= merge.endRow; r++) {
+                        for (let c = merge.startCol; c <= merge.endCol; c++) {
+                            if (r !== merge.startRow || c !== merge.startCol) {
+                                hiddenCells.add(`${r}-${c}`);
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Build a map of merge info for cells that start a merge
+            const mergeMap = {};
+            if (tableData.mergedCells) {
+                tableData.mergedCells.forEach(merge => {
+                    mergeMap[`${merge.startRow}-${merge.startCol}`] = {
+                        colspan: merge.endCol - merge.startCol + 1,
+                        rowspan: merge.endRow - merge.startRow + 1
+                    };
+                });
+            }
+            
             let tableHtml = `<table class="admin-table" id="admin-table-${blockId}">`;
             
             for (let r = 0; r < tableData.rows; r++) {
                 tableHtml += `<tr data-row="${r}">`;
                 for (let c = 0; c < tableData.cols; c++) {
+                    // Skip hidden cells
+                    if (hiddenCells.has(`${r}-${c}`)) {
+                        continue;
+                    }
+                    
                     const cell = tableData.cells[r][c];
                     const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
                     const colWidth = tableData.colWidths && tableData.colWidths[c] ? `width: ${tableData.colWidths[c]}px;` : '';
                     const rowHeight = tableData.rowHeights && tableData.rowHeights[r] ? `height: ${tableData.rowHeights[r]}px;` : '';
+                    
+                    // Check for merge attributes
+                    const mergeInfo = mergeMap[`${r}-${c}`];
+                    const colspanAttr = mergeInfo && mergeInfo.colspan > 1 ? `colspan="${mergeInfo.colspan}"` : '';
+                    const rowspanAttr = mergeInfo && mergeInfo.rowspan > 1 ? `rowspan="${mergeInfo.rowspan}"` : '';
+                    const mergedClass = mergeInfo ? 'merged-cell' : '';
                     
                     tableHtml += `<${tag} 
                         contenteditable="true" 
                         data-row="${r}" 
                         data-col="${c}" 
                         data-block="${blockId}"
-                        style="text-align: ${cell.align}; background-color: ${cell.bgColor}; ${colWidth} ${rowHeight}"
-                        onfocus="selectTableCell(this)"
+                        ${colspanAttr}
+                        ${rowspanAttr}
+                        class="${mergedClass}"
+                        style="text-align: ${cell.align}; vertical-align: ${cell.vAlign || 'middle'}; background-color: ${cell.bgColor}; ${colWidth} ${rowHeight}"
+                        onclick="selectTableCell(this, event)"
                         onblur="updateTableCell(this)"
                         oninput="updateTableCell(this)"
                         onmousedown="handleTableCellMouseDown(event, ${blockId}, ${r}, ${c})"
@@ -3580,6 +3651,12 @@
                                 <button onclick="selectTableRow(${blockId})" title="Select Entire Row">☰ Row</button>
                                 <button onclick="selectTableColumn(${blockId})" title="Select Entire Column">║ Col</button>
                                 <button onclick="selectEntireTable(${blockId})" title="Select Entire Table">▣ All</button>
+                                <button onclick="clearCellSelection(${blockId})" title="Clear Selection">✕</button>
+                            </div>
+                            <div class="table-toolbar-group">
+                                <label>Merge:</label>
+                                <button onclick="mergeCells(${blockId})" title="Merge Selected Cells">⊞ Merge</button>
+                                <button onclick="unmergeCells(${blockId})" title="Unmerge Cell">⊟ Unmerge</button>
                             </div>
                             <div class="table-toolbar-group">
                                 <label>Align:</label>
@@ -3588,8 +3665,14 @@
                                 <button onclick="setTableAlignment(${blockId}, 'right')" title="Align Right">➡</button>
                             </div>
                             <div class="table-toolbar-group">
+                                <label>V-Align:</label>
+                                <button onclick="setTableVerticalAlignment(${blockId}, 'top')" title="Align Top">⬆</button>
+                                <button onclick="setTableVerticalAlignment(${blockId}, 'middle')" title="Align Middle">⬍</button>
+                                <button onclick="setTableVerticalAlignment(${blockId}, 'bottom')" title="Align Bottom">⬇</button>
+                            </div>
+                            <div class="table-toolbar-group">
                                 <label>Color:</label>
-                                <button onclick="showColorPicker(${blockId}, 'selection')" title="Color Selection">🎨 Color</button>
+                                <button onclick="showColorPicker(${blockId}, 'selection')" title="Color Selection">🎨</button>
                             </div>
                             <div class="table-toolbar-group">
                                 <label>Rows:</label>
@@ -3602,6 +3685,7 @@
                                 <button onclick="deleteTableColumn(${blockId})" class="danger" title="Delete Column">−</button>
                             </div>
                         </div>
+                        <p style="font-size: 0.75rem; color: #666; margin: 5px 0; padding: 0 15px;">💡 Shift+Click or Ctrl+Click to select multiple cells for merging</p>
                         <div class="admin-table-container">
                             ${tableHtml}
                         </div>
@@ -3626,18 +3710,208 @@
 
         // Track selected cell for operations
         window.selectedTableCell = null;
+        window.selectedCells = []; // Array of {row, col, blockId} for multi-select
         window.colorPickerMode = null; // 'row', 'col', or 'cell'
         window.colorPickerBlockId = null;
 
-        window.selectTableCell = function(cell) {
-            // Remove previous selection
-            document.querySelectorAll('.admin-table td.selected-cell, .admin-table th.selected-cell').forEach(c => {
-                c.classList.remove('selected-cell');
-            });
+        window.selectTableCell = function(cell, event) {
+            const blockId = parseInt(cell.dataset.block);
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
             
-            cell.classList.add('selected-cell');
+            // Check for Shift or Ctrl key for multi-selection
+            if (event && (event.shiftKey || event.ctrlKey || event.metaKey)) {
+                // Multi-select mode
+                const cellKey = `${row}-${col}`;
+                const existingIndex = window.selectedCells.findIndex(c => 
+                    c.row === row && c.col === col && c.blockId === blockId
+                );
+                
+                if (event.shiftKey && window.selectedCells.length > 0) {
+                    // Shift+Click: Select range from last selected to current
+                    const lastCell = window.selectedCells[window.selectedCells.length - 1];
+                    if (lastCell.blockId === blockId) {
+                        const startRow = Math.min(lastCell.row, row);
+                        const endRow = Math.max(lastCell.row, row);
+                        const startCol = Math.min(lastCell.col, col);
+                        const endCol = Math.max(lastCell.col, col);
+                        
+                        // Clear existing selection and select range
+                        window.selectedCells = [];
+                        for (let r = startRow; r <= endRow; r++) {
+                            for (let c = startCol; c <= endCol; c++) {
+                                window.selectedCells.push({ row: r, col: c, blockId });
+                            }
+                        }
+                    }
+                } else if (existingIndex >= 0) {
+                    // Ctrl+Click on already selected: deselect
+                    window.selectedCells.splice(existingIndex, 1);
+                } else {
+                    // Ctrl+Click on new cell: add to selection
+                    window.selectedCells.push({ row, col, blockId });
+                }
+                
+                // Update visual selection
+                updateCellSelectionVisual(blockId);
+            } else {
+                // Single selection mode - clear multi-select
+                window.selectedCells = [{ row, col, blockId }];
+                
+                // Remove all previous selections
+                document.querySelectorAll('.admin-table td.selected-cell, .admin-table th.selected-cell').forEach(c => {
+                    c.classList.remove('selected-cell');
+                });
+                document.querySelectorAll('.admin-table td.cell-selected, .admin-table th.cell-selected').forEach(c => {
+                    c.classList.remove('cell-selected');
+                });
+                
+                cell.classList.add('selected-cell');
+            }
+            
             window.selectedTableCell = cell;
         };
+        
+        window.updateCellSelectionVisual = function(blockId) {
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            // Clear existing selection visual
+            table.querySelectorAll('.cell-selected').forEach(c => c.classList.remove('cell-selected'));
+            table.querySelectorAll('.selected-cell').forEach(c => c.classList.remove('selected-cell'));
+            
+            // Apply selection visual to all selected cells
+            window.selectedCells.forEach(sel => {
+                if (sel.blockId === blockId) {
+                    const cell = table.querySelector(`[data-row="${sel.row}"][data-col="${sel.col}"]`);
+                    if (cell) {
+                        cell.classList.add('cell-selected');
+                    }
+                }
+            });
+        };
+        
+        window.clearCellSelection = function(blockId) {
+            window.selectedCells = [];
+            window.selectedTableCell = null;
+            
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (table) {
+                table.querySelectorAll('.cell-selected, .selected-cell, .selected-row, .selected-col').forEach(c => {
+                    c.classList.remove('cell-selected', 'selected-cell', 'selected-row', 'selected-col');
+                });
+                table.classList.remove('selected-all');
+            }
+            
+            // Also clear table selection
+            window.tableSelection = { blockId: null, type: null, row: null, col: null };
+        };
+        
+        // ==================== MERGE CELLS FUNCTIONS ====================
+        
+        window.mergeCells = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table') return;
+            
+            // Get selected cells for this block
+            const selectedForBlock = window.selectedCells.filter(c => c.blockId === blockId);
+            
+            if (selectedForBlock.length < 2) {
+                alert('Please select at least 2 cells to merge. Use Shift+Click or Ctrl+Click to select multiple cells.');
+                return;
+            }
+            
+            // Find the bounding rectangle of selected cells
+            const rows = selectedForBlock.map(c => c.row);
+            const cols = selectedForBlock.map(c => c.col);
+            const startRow = Math.min(...rows);
+            const endRow = Math.max(...rows);
+            const startCol = Math.min(...cols);
+            const endCol = Math.max(...cols);
+            
+            // Check if selection forms a complete rectangle
+            const expectedCount = (endRow - startRow + 1) * (endCol - startCol + 1);
+            if (selectedForBlock.length !== expectedCount) {
+                alert('Please select a rectangular area of cells to merge.');
+                return;
+            }
+            
+            // Check if any of the selected cells are already part of a merge
+            if (!block.value.mergedCells) {
+                block.value.mergedCells = [];
+            }
+            
+            for (const merge of block.value.mergedCells) {
+                for (let r = startRow; r <= endRow; r++) {
+                    for (let c = startCol; c <= endCol; c++) {
+                        if (r >= merge.startRow && r <= merge.endRow && 
+                            c >= merge.startCol && c <= merge.endCol) {
+                            alert('Cannot merge: some selected cells are already part of a merged region. Unmerge them first.');
+                            return;
+                        }
+                    }
+                }
+            }
+            
+            // Combine content from all cells into the top-left cell
+            let combinedContent = '';
+            for (let r = startRow; r <= endRow; r++) {
+                for (let c = startCol; c <= endCol; c++) {
+                    const cellContent = block.value.cells[r][c].content.trim();
+                    if (cellContent) {
+                        if (combinedContent) combinedContent += ' ';
+                        combinedContent += cellContent;
+                    }
+                }
+            }
+            block.value.cells[startRow][startCol].content = combinedContent;
+            
+            // Add the merge info
+            block.value.mergedCells.push({
+                startRow, endRow, startCol, endCol
+            });
+            
+            // Clear selection and re-render
+            window.selectedCells = [];
+            renderAdminBlocks();
+        };
+        
+        window.unmergeCells = function(blockId) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table' || !block.value.mergedCells) return;
+            
+            // Find which merge the selected cell belongs to
+            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
+                alert('Please click on a merged cell to unmerge it.');
+                return;
+            }
+            
+            const row = parseInt(window.selectedTableCell.dataset.row);
+            const col = parseInt(window.selectedTableCell.dataset.col);
+            
+            // Find the merge that contains this cell
+            const mergeIndex = block.value.mergedCells.findIndex(merge => 
+                row >= merge.startRow && row <= merge.endRow &&
+                col >= merge.startCol && col <= merge.endCol
+            );
+            
+            if (mergeIndex === -1) {
+                alert('This cell is not part of a merged region.');
+                return;
+            }
+            
+            // Remove the merge
+            block.value.mergedCells.splice(mergeIndex, 1);
+            
+            // Clean up empty array
+            if (block.value.mergedCells.length === 0) {
+                delete block.value.mergedCells;
+            }
+            
+            renderAdminBlocks();
+        };
+        
+        // ==================== END MERGE CELLS FUNCTIONS ====================
 
         window.updateTableCell = function(cell) {
             const blockId = parseInt(cell.dataset.block);
@@ -3657,7 +3931,7 @@
             const table = document.getElementById(`admin-table-${blockId}`);
             if (!table) return;
             
-            // Check for table selection first
+            // Check for table selection first (row/col/all)
             if (window.tableSelection.blockId === blockId && window.tableSelection.type) {
                 const sel = window.tableSelection;
                 
@@ -3696,6 +3970,19 @@
                 return;
             }
             
+            // Check for multi-cell selection
+            const selectedForBlock = window.selectedCells.filter(c => c.blockId === blockId);
+            if (selectedForBlock.length > 0) {
+                selectedForBlock.forEach(sel => {
+                    const cell = table.querySelector(`[data-row="${sel.row}"][data-col="${sel.col}"]`);
+                    if (cell) {
+                        cell.style.textAlign = alignment;
+                        block.value.cells[sel.row][sel.col].align = alignment;
+                    }
+                });
+                return;
+            }
+            
             // Fall back to single cell
             if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
                 alert('Please select a cell, row, column, or table first.');
@@ -3709,16 +3996,87 @@
             cell.style.textAlign = alignment;
             block.value.cells[row][col].align = alignment;
         };
+        
+        window.setTableVerticalAlignment = function(blockId, vAlign) {
+            const block = window.adminBlocks.find(b => b.id === blockId);
+            if (!block || block.type !== 'table') return;
+            
+            const table = document.getElementById(`admin-table-${blockId}`);
+            if (!table) return;
+            
+            // Check for table selection first (row/col/all)
+            if (window.tableSelection.blockId === blockId && window.tableSelection.type) {
+                const sel = window.tableSelection;
+                
+                if (sel.type === 'all') {
+                    for (let r = 0; r < block.value.rows; r++) {
+                        for (let c = 0; c < block.value.cols; c++) {
+                            const cell = table.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+                            if (cell) {
+                                cell.style.verticalAlign = vAlign;
+                                block.value.cells[r][c].vAlign = vAlign;
+                            }
+                        }
+                    }
+                } else if (sel.type === 'row') {
+                    const row = sel.row;
+                    for (let c = 0; c < block.value.cols; c++) {
+                        const cell = table.querySelector(`[data-row="${row}"][data-col="${c}"]`);
+                        if (cell) {
+                            cell.style.verticalAlign = vAlign;
+                            block.value.cells[row][c].vAlign = vAlign;
+                        }
+                    }
+                } else if (sel.type === 'col') {
+                    const col = sel.col;
+                    for (let r = 0; r < block.value.rows; r++) {
+                        const cell = table.querySelector(`[data-row="${r}"][data-col="${col}"]`);
+                        if (cell) {
+                            cell.style.verticalAlign = vAlign;
+                            block.value.cells[r][col].vAlign = vAlign;
+                        }
+                    }
+                }
+                return;
+            }
+            
+            // Check for multi-cell selection
+            const selectedForBlock = window.selectedCells.filter(c => c.blockId === blockId);
+            if (selectedForBlock.length > 0) {
+                selectedForBlock.forEach(sel => {
+                    const cell = table.querySelector(`[data-row="${sel.row}"][data-col="${sel.col}"]`);
+                    if (cell) {
+                        cell.style.verticalAlign = vAlign;
+                        block.value.cells[sel.row][sel.col].vAlign = vAlign;
+                    }
+                });
+                return;
+            }
+            
+            // Fall back to single cell
+            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
+                alert('Please select a cell, row, column, or table first.');
+                return;
+            }
+            
+            const cell = window.selectedTableCell;
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            
+            cell.style.verticalAlign = vAlign;
+            block.value.cells[row][col].vAlign = vAlign;
+        };
 
         window.showColorPicker = function(blockId, mode) {
             const picker = document.getElementById(`color-picker-${blockId}`);
             const title = document.getElementById(`color-picker-title-${blockId}`);
             
             // Check if we have a selection or selected cell
-            const hasSelection = window.tableSelection.blockId === blockId && window.tableSelection.type;
+            const hasTableSelection = window.tableSelection.blockId === blockId && window.tableSelection.type;
+            const hasMultiSelect = window.selectedCells.filter(c => c.blockId === blockId).length > 0;
             const hasCell = window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId;
             
-            if (!hasSelection && !hasCell) {
+            if (!hasTableSelection && !hasMultiSelect && !hasCell) {
                 alert('Please select a cell, row, column, or table first.');
                 return;
             }
@@ -3728,9 +4086,11 @@
             
             // Determine title based on selection type
             let titleText = 'Select Color';
-            if (hasSelection) {
+            if (hasTableSelection) {
                 const typeLabels = { 'row': 'Row', 'col': 'Column', 'all': 'Table' };
                 titleText = `Color ${typeLabels[window.tableSelection.type] || 'Selection'}`;
+            } else if (hasMultiSelect && window.selectedCells.length > 1) {
+                titleText = `Color ${window.selectedCells.length} Cells`;
             } else {
                 titleText = 'Color Cell';
             }
@@ -3765,7 +4125,7 @@
             const table = document.getElementById(`admin-table-${blockId}`);
             if (!table) return;
             
-            // Check for table selection first
+            // Check for table selection first (row/col/all)
             if (window.tableSelection.blockId === blockId && window.tableSelection.type) {
                 const sel = window.tableSelection;
                 
@@ -3804,13 +4164,26 @@
                 
                 // Clear selection visual after applying
                 clearTableSelection(blockId);
-            } 
-            // Fall back to single cell
-            else if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
-                const row = parseInt(window.selectedTableCell.dataset.row);
-                const col = parseInt(window.selectedTableCell.dataset.col);
-                window.selectedTableCell.style.backgroundColor = color;
-                block.value.cells[row][col].bgColor = color;
+            }
+            // Check for multi-cell selection
+            else {
+                const selectedForBlock = window.selectedCells.filter(c => c.blockId === blockId);
+                if (selectedForBlock.length > 0) {
+                    selectedForBlock.forEach(sel => {
+                        const cell = table.querySelector(`[data-row="${sel.row}"][data-col="${sel.col}"]`);
+                        if (cell) {
+                            cell.style.backgroundColor = color;
+                            block.value.cells[sel.row][sel.col].bgColor = color;
+                        }
+                    });
+                }
+                // Fall back to single cell
+                else if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
+                    const row = parseInt(window.selectedTableCell.dataset.row);
+                    const col = parseInt(window.selectedTableCell.dataset.col);
+                    window.selectedTableCell.style.backgroundColor = color;
+                    block.value.cells[row][col].bgColor = color;
+                }
             }
             
             // Hide color picker
@@ -3826,6 +4199,7 @@
                 newRow.push({
                     content: '',
                     align: 'left',
+                    vAlign: 'middle',
                     bgColor: '#FFFFFF'
                 });
             }
@@ -3874,6 +4248,7 @@
                 block.value.cells[r].push({
                     content: r === 0 && block.value.headerRow ? `Header ${block.value.cols + 1}` : '',
                     align: 'left',
+                    vAlign: 'middle',
                     bgColor: r === 0 && block.value.headerRow ? '#E8E8E8' : '#FFFFFF'
                 });
             }
@@ -4292,19 +4667,48 @@
                                 <iframe src="${videoUrl}" style="width: 100%; height: 315px; border: none;" allowfullscreen></iframe>
                              </div>`;
                 } else if (block.type === 'table' && block.value) {
-                    // Render table for preview
+                    // Render table for preview with merge support
                     const tableData = block.value;
-                    let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem; table-layout: fixed;">`;
+                    
+                    // Build hidden cells map
+                    const hiddenCells = new Set();
+                    const mergeMap = {};
+                    if (tableData.mergedCells) {
+                        tableData.mergedCells.forEach(merge => {
+                            for (let r = merge.startRow; r <= merge.endRow; r++) {
+                                for (let c = merge.startCol; c <= merge.endCol; c++) {
+                                    if (r !== merge.startRow || c !== merge.startCol) {
+                                        hiddenCells.add(`${r}-${c}`);
+                                    }
+                                }
+                            }
+                            mergeMap[`${merge.startRow}-${merge.startCol}`] = {
+                                colspan: merge.endCol - merge.startCol + 1,
+                                rowspan: merge.endRow - merge.startRow + 1
+                            };
+                        });
+                    }
+                    
+                    let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem;">`;
                     
                     for (let r = 0; r < tableData.rows; r++) {
                         const rowHeightStyle = tableData.rowHeights && tableData.rowHeights[r] ? `height: ${tableData.rowHeights[r]}px;` : '';
                         tableHtml += `<tr style="${rowHeightStyle}">`;
                         for (let c = 0; c < tableData.cols; c++) {
+                            // Skip hidden cells
+                            if (hiddenCells.has(`${r}-${c}`)) continue;
+                            
                             const cell = tableData.cells[r][c];
                             const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
                             const fontWeight = (r === 0 && tableData.headerRow) ? 'font-weight: 600;' : '';
                             const colWidthStyle = tableData.colWidths && tableData.colWidths[c] ? `width: ${tableData.colWidths[c]}px;` : '';
-                            tableHtml += `<${tag} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; background-color: ${cell.bgColor}; ${fontWeight} ${colWidthStyle}">${cell.content}</${tag}>`;
+                            
+                            // Check for merge attributes
+                            const mergeInfo = mergeMap[`${r}-${c}`];
+                            const colspanAttr = mergeInfo && mergeInfo.colspan > 1 ? `colspan="${mergeInfo.colspan}"` : '';
+                            const rowspanAttr = mergeInfo && mergeInfo.rowspan > 1 ? `rowspan="${mergeInfo.rowspan}"` : '';
+                            
+                            tableHtml += `<${tag} ${colspanAttr} ${rowspanAttr} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; vertical-align: ${cell.vAlign || 'middle'}; background-color: ${cell.bgColor}; ${fontWeight} ${colWidthStyle}">${cell.content}</${tag}>`;
                         }
                         tableHtml += '</tr>';
                     }
@@ -4465,19 +4869,48 @@
                                 <iframe src="${videoUrl}" style="width: 100%; height: 315px; border: none;" allowfullscreen></iframe>
                              </div>`;
                         } else if (block.type === 'table' && block.value) {
-                            // Generate table HTML for saving
+                            // Generate table HTML for saving with merge support
                             const tableData = block.value;
-                            let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem; table-layout: fixed;">`;
+                            
+                            // Build hidden cells map
+                            const hiddenCells = new Set();
+                            const mergeMap = {};
+                            if (tableData.mergedCells) {
+                                tableData.mergedCells.forEach(merge => {
+                                    for (let r = merge.startRow; r <= merge.endRow; r++) {
+                                        for (let c = merge.startCol; c <= merge.endCol; c++) {
+                                            if (r !== merge.startRow || c !== merge.startCol) {
+                                                hiddenCells.add(`${r}-${c}`);
+                                            }
+                                        }
+                                    }
+                                    mergeMap[`${merge.startRow}-${merge.startCol}`] = {
+                                        colspan: merge.endCol - merge.startCol + 1,
+                                        rowspan: merge.endRow - merge.startRow + 1
+                                    };
+                                });
+                            }
+                            
+                            let tableHtml = `<table class="question-table" style="width: 100%; border-collapse: collapse; font-family: 'Century Gothic', 'Segoe UI', sans-serif; margin-bottom: 1.5rem;">`;
                             
                             for (let r = 0; r < tableData.rows; r++) {
                                 const rowHeightStyle = tableData.rowHeights && tableData.rowHeights[r] ? `height: ${tableData.rowHeights[r]}px;` : '';
                                 tableHtml += `<tr style="${rowHeightStyle}">`;
                                 for (let c = 0; c < tableData.cols; c++) {
+                                    // Skip hidden cells
+                                    if (hiddenCells.has(`${r}-${c}`)) continue;
+                                    
                                     const cell = tableData.cells[r][c];
                                     const tag = (r === 0 && tableData.headerRow) ? 'th' : 'td';
                                     const fontWeight = (r === 0 && tableData.headerRow) ? 'font-weight: 600;' : '';
                                     const colWidthStyle = tableData.colWidths && tableData.colWidths[c] ? `width: ${tableData.colWidths[c]}px;` : '';
-                                    tableHtml += `<${tag} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; background-color: ${cell.bgColor}; ${fontWeight} ${colWidthStyle}">${cell.content}</${tag}>`;
+                                    
+                                    // Check for merge attributes
+                                    const mergeInfo = mergeMap[`${r}-${c}`];
+                                    const colspanAttr = mergeInfo && mergeInfo.colspan > 1 ? `colspan="${mergeInfo.colspan}"` : '';
+                                    const rowspanAttr = mergeInfo && mergeInfo.rowspan > 1 ? `rowspan="${mergeInfo.rowspan}"` : '';
+                                    
+                                    tableHtml += `<${tag} ${colspanAttr} ${rowspanAttr} style="border: 1px solid #bbb; padding: 10px 14px; text-align: ${cell.align}; vertical-align: ${cell.vAlign || 'middle'}; background-color: ${cell.bgColor}; ${fontWeight} ${colWidthStyle}">${cell.content}</${tag}>`;
                                 }
                                 tableHtml += '</tr>';
                             }
@@ -4555,6 +4988,11 @@
                 
                 // Remove existing custom questions from DOM to prevent duplicates
                 document.querySelectorAll('.custom-question').forEach(el => el.remove());
+                
+                // Reload the custom questions from database
+                if (window.loadCustomQuestions) {
+                    await window.loadCustomQuestions();
+                }
                 
                 // Scroll to title and focus for next question entry
                 const titleInput = document.getElementById('admin-title');
@@ -4853,41 +5291,117 @@
                 
                 // Check for table
                 if (tagName === 'table') {
-                    // Extract table data
+                    // Extract table data with merge support
                     const rows = element.querySelectorAll('tr');
+                    
+                    // First pass: determine actual grid dimensions and collect merge info
+                    let maxCols = 0;
+                    const mergedCells = [];
+                    
+                    // Create a grid to track which cells are occupied
+                    const occupiedGrid = {};
+                    
+                    rows.forEach((row, rowIdx) => {
+                        let colIdx = 0;
+                        row.querySelectorAll('th, td').forEach((cell) => {
+                            // Skip already occupied positions
+                            while (occupiedGrid[`${rowIdx}-${colIdx}`]) {
+                                colIdx++;
+                            }
+                            
+                            const colspan = parseInt(cell.getAttribute('colspan')) || 1;
+                            const rowspan = parseInt(cell.getAttribute('rowspan')) || 1;
+                            
+                            // Mark cells as occupied
+                            for (let r = 0; r < rowspan; r++) {
+                                for (let c = 0; c < colspan; c++) {
+                                    occupiedGrid[`${rowIdx + r}-${colIdx + c}`] = {
+                                        content: cell.textContent.trim(),
+                                        align: cell.style.textAlign || 'left',
+                                        vAlign: cell.style.verticalAlign || 'middle',
+                                        bgColor: cell.style.backgroundColor || '#FFFFFF',
+                                        isOrigin: r === 0 && c === 0,
+                                        originRow: rowIdx,
+                                        originCol: colIdx
+                                    };
+                                }
+                            }
+                            
+                            // Record merge info if this is a merged cell
+                            if (colspan > 1 || rowspan > 1) {
+                                mergedCells.push({
+                                    startRow: rowIdx,
+                                    startCol: colIdx,
+                                    endRow: rowIdx + rowspan - 1,
+                                    endCol: colIdx + colspan - 1
+                                });
+                            }
+                            
+                            maxCols = Math.max(maxCols, colIdx + colspan);
+                            colIdx += colspan;
+                        });
+                    });
+                    
+                    const numRows = rows.length;
+                    const numCols = maxCols;
+                    
+                    // Build cell data array
                     const tableData = {
-                        rows: rows.length,
-                        cols: rows[0]?.querySelectorAll('th, td').length || 0,
+                        rows: numRows,
+                        cols: numCols,
                         cells: [],
                         headerRow: !!rows[0]?.querySelector('th'),
                         colWidths: [],
                         rowHeights: []
                     };
                     
-                    rows.forEach((row, rowIdx) => {
+                    // Add merged cells data if any
+                    if (mergedCells.length > 0) {
+                        tableData.mergedCells = mergedCells;
+                    }
+                    
+                    // Build cells array from occupied grid
+                    for (let r = 0; r < numRows; r++) {
                         const rowData = [];
-                        // Extract row height
-                        const rowHeight = parseInt(row.style.height) || null;
-                        if (rowHeight) {
-                            tableData.rowHeights[rowIdx] = rowHeight;
-                        }
-                        
-                        row.querySelectorAll('th, td').forEach((cell, colIdx) => {
-                            rowData.push({
-                                content: cell.textContent.trim(),
-                                align: cell.style.textAlign || 'left',
-                                bgColor: cell.style.backgroundColor || '#FFFFFF'
-                            });
-                            
-                            // Extract column width from first row
-                            if (rowIdx === 0) {
-                                const colWidth = parseInt(cell.style.width) || null;
-                                if (colWidth) {
-                                    tableData.colWidths[colIdx] = colWidth;
-                                }
+                        for (let c = 0; c < numCols; c++) {
+                            const cellInfo = occupiedGrid[`${r}-${c}`];
+                            if (cellInfo) {
+                                rowData.push({
+                                    content: cellInfo.isOrigin ? cellInfo.content : '',
+                                    align: cellInfo.align,
+                                    vAlign: cellInfo.vAlign || 'middle',
+                                    bgColor: cellInfo.bgColor
+                                });
+                            } else {
+                                rowData.push({
+                                    content: '',
+                                    align: 'left',
+                                    vAlign: 'middle',
+                                    bgColor: '#FFFFFF'
+                                });
                             }
-                        });
+                        }
                         tableData.cells.push(rowData);
+                        
+                        // Extract row height
+                        const rowHeight = parseInt(rows[r].style.height) || null;
+                        if (rowHeight) {
+                            tableData.rowHeights[r] = rowHeight;
+                        }
+                    }
+                    
+                    // Extract column widths from first row cells
+                    let colIdx = 0;
+                    rows[0]?.querySelectorAll('th, td').forEach((cell) => {
+                        while (occupiedGrid[`0-${colIdx}`] && !occupiedGrid[`0-${colIdx}`].isOrigin) {
+                            colIdx++;
+                        }
+                        const colWidth = parseInt(cell.style.width) || null;
+                        if (colWidth) {
+                            tableData.colWidths[colIdx] = colWidth;
+                        }
+                        const colspan = parseInt(cell.getAttribute('colspan')) || 1;
+                        colIdx += colspan;
                     });
                     
                     // Clean up empty arrays
@@ -5412,7 +5926,7 @@
                 overlay.style.display = 'none';
                 trackLoginDays(user);
 
-                async function loadCustomQuestions() {
+                window.loadCustomQuestions = async function() {
                     if (window.customQuestionsLoaded) return;
                     window.customQuestionsLoaded = true;
 
@@ -5537,7 +6051,7 @@
                     document.getElementById('btn-sidebar-admin').classList.add('hidden');
                 }
 
-                loadCustomQuestions();
+                window.loadCustomQuestions();
 
                 // Add controls to all questions
                 setTimeout(() => {
