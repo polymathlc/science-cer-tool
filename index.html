@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
     <!-- AGGRESSIVE CACHE PREVENTION -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
@@ -2161,10 +2165,764 @@
             border-left: 4px solid #0288d1;
             font-size: 0.9rem;
         }
+
+        /* =====================================================
+           MOBILE MENU TOGGLE BUTTON
+           ===================================================== */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1976d2, #2196f3);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10000;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.5);
+        }
+
+        .mobile-menu-toggle.active {
+            background: linear-gradient(135deg, #d32f2f, #f44336);
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+        }
+
+        /* Sidebar overlay for mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+        }
+
+        /* =====================================================
+           TABLET STYLES (768px - 1024px)
+           ===================================================== */
+        @media screen and (max-width: 1024px) {
+            body {
+                padding: 1rem;
+            }
+
+            .app-container {
+                max-width: 100%;
+            }
+
+            .sidebar {
+                width: 220px;
+                padding: 1.5rem;
+            }
+
+            .main-content,
+            .view-content,
+            .topic-content {
+                padding: 1.5rem 2rem;
+            }
+
+            .tab-btn {
+                padding: 0.4rem 0.7rem;
+                font-size: 0.75rem;
+            }
+
+            .app-logo {
+                height: 40px;
+            }
+
+            .question-container {
+                padding: 1.25rem;
+                margin-bottom: 2rem;
+            }
+
+            .answer-box {
+                padding: 1.5rem;
+            }
+
+            .modal-box {
+                width: 95%;
+                max-width: 600px;
+                padding: 1.5rem;
+            }
+        }
+
+        /* =====================================================
+           MOBILE STYLES (max-width: 768px)
+           ===================================================== */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 0;
+                align-items: stretch;
+            }
+
+            .app-container {
+                border-radius: 0;
+                box-shadow: none;
+                min-height: 100vh;
+            }
+
+            /* Show mobile menu toggle */
+            .mobile-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .sidebar-overlay {
+                display: block;
+                pointer-events: none;
+            }
+
+            .sidebar-overlay.active {
+                pointer-events: auto;
+            }
+
+            /* Sidebar - slide in from left */
+            .app-body > .sidebar {
+                position: fixed;
+                top: 0;
+                left: -280px;
+                width: 280px;
+                height: 100vh;
+                z-index: 9999;
+                padding: 1.5rem;
+                padding-top: 2rem;
+                overflow-y: auto;
+                transition: left 0.3s ease;
+                box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .app-body > .sidebar.mobile-open {
+                left: 0;
+            }
+
+            /* Show close button in mobile sidebar */
+            .app-body > .sidebar .mobile-sidebar-close {
+                display: block !important;
+            }
+
+            /* Header adjustments */
+            .app-header {
+                padding: 0.5rem 0.75rem 0;
+            }
+
+            .app-logo {
+                height: 35px;
+            }
+
+            #header-tabs-container {
+                overflow-x: auto;
+                overflow-y: hidden;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                padding-bottom: 2px;
+            }
+
+            #header-tabs-container::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab-btn {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.7rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            /* Main content area */
+            .app-body {
+                flex-direction: column;
+            }
+
+            .main-content,
+            .view-content,
+            .topic-content {
+                padding: 1rem;
+            }
+
+            /* Question container */
+            .question-container {
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+                border-radius: 10px;
+            }
+
+            .question-container h3 {
+                font-size: 1rem;
+            }
+
+            .main-content p,
+            .question-container p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+
+            /* Answer box */
+            .answer-box {
+                padding: 1rem;
+                border-radius: 10px;
+            }
+
+            .answer-template {
+                font-size: 0.95rem;
+                line-height: 1.8;
+            }
+
+            .answer-input {
+                font-size: 0.95rem;
+                min-width: 60px;
+            }
+
+            /* Buttons */
+            .btn, .submit-btn, .next-btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                min-height: 44px;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .controls button {
+                width: 100%;
+            }
+
+            /* Worksheet control bar */
+            .worksheet-control-bar {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .worksheet-control-bar button {
+                width: 100%;
+            }
+
+            /* MCQ Options */
+            .mcq-option, .mcq-container label {
+                padding: 12px 15px;
+                font-size: 0.95rem;
+                min-height: 48px;
+            }
+
+            /* Tables - horizontal scroll */
+            .results-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+
+            /* Images */
+            .question-diagram {
+                max-width: 100%;
+            }
+
+            /* Modal - full screen on mobile */
+            .modal-overlay {
+                padding: 0;
+            }
+
+            .modal-box {
+                width: 100%;
+                max-width: 100%;
+                height: 100%;
+                max-height: 100%;
+                border-radius: 0;
+                padding: 1rem;
+                overflow-y: auto;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .modal-buttons button {
+                width: 100%;
+            }
+
+            /* Auth box */
+            .auth-box {
+                width: 95%;
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+
+            .auth-input {
+                padding: 14px 16px;
+                font-size: 1rem;
+            }
+
+            .auth-btn {
+                padding: 14px;
+                font-size: 1rem;
+            }
+
+            /* Sidebar buttons */
+            .sidebar button,
+            .sidebar-nav button {
+                padding: 12px 16px;
+                font-size: 0.95rem;
+            }
+
+            /* Practice mode stats */
+            #practice-stats {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            /* Inbox */
+            .message-card {
+                padding: 1rem;
+            }
+
+            .message-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .inbox-tab {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            /* Admin form */
+            .admin-form-section {
+                padding: 1rem;
+            }
+
+            .admin-form-section input,
+            .admin-form-section select,
+            .admin-form-section textarea {
+                font-size: 1rem;
+            }
+
+            /* Lesson cards */
+            .lesson-card {
+                padding: 1rem;
+            }
+
+            .lesson-video-container iframe {
+                height: 250px;
+            }
+
+            /* Login days display */
+            #login-days-display {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            /* Mode switcher */
+            .mode-switcher {
+                flex-direction: row;
+            }
+
+            .mode-switcher button {
+                flex: 1;
+                padding: 10px;
+            }
+
+            /* Saved worksheets */
+            .saved-worksheet-card .actions {
+                flex-direction: column;
+            }
+
+            .saved-worksheet-card .actions button {
+                width: 100%;
+            }
+
+            /* Explanation box */
+            .explanation-box {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            /* CER segments */
+            .cer-segment {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .segment-title {
+                font-size: 0.95rem;
+            }
+
+            /* OEQ Sidebar Content */
+            #oeq-sidebar-content h2,
+            #mcq-sidebar-content h2 {
+                font-size: 1.1rem;
+            }
+
+            /* Student entry in registration */
+            .student-entry > div {
+                flex-direction: column !important;
+            }
+
+            .student-entry .auth-input {
+                width: 100% !important;
+            }
+
+            /* Version indicator */
+            .version-indicator {
+                font-size: 0.6rem;
+                padding: 2px 6px;
+            }
+        }
+
+        /* =====================================================
+           SMALL MOBILE STYLES (max-width: 480px)
+           ===================================================== */
+        @media screen and (max-width: 480px) {
+            .tab-btn {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.65rem;
+            }
+
+            .app-logo {
+                height: 30px;
+            }
+
+            .question-container {
+                padding: 0.75rem;
+            }
+
+            .answer-box {
+                padding: 0.75rem;
+            }
+
+            .answer-template {
+                font-size: 0.9rem;
+            }
+
+            .answer-input {
+                font-size: 0.9rem;
+                min-width: 50px;
+            }
+
+            #practice-stats {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 0.5rem;
+            }
+
+            #practice-stats > div {
+                padding: 0.75rem;
+            }
+
+            #practice-stats > div > div:first-child {
+                font-size: 1.5rem;
+            }
+
+            .modal-box {
+                padding: 0.75rem;
+            }
+
+            .modal-box h3 {
+                font-size: 1.1rem;
+            }
+
+            .auth-box {
+                padding: 1rem;
+            }
+
+            .auth-logo {
+                width: 60px;
+                height: 60px;
+            }
+
+            .auth-title {
+                font-size: 1.3rem;
+            }
+
+            .legal-check label {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* =====================================================
+           LANDSCAPE ORIENTATION FIXES
+           ===================================================== */
+        @media screen and (max-height: 500px) and (orientation: landscape) {
+            .modal-box {
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+
+            .auth-box {
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* =====================================================
+           IPAD SPECIFIC STYLES
+           ===================================================== */
+        @media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main-content,
+            .view-content,
+            .topic-content {
+                padding: 1.5rem;
+            }
+
+            #practice-stats {
+                grid-template-columns: repeat(4, 1fr) !important;
+            }
+        }
+
+        @media screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+            /* iPad Pro landscape */
+            .sidebar {
+                width: 230px;
+            }
+        }
+
+        /* =====================================================
+           TOUCH DEVICE OPTIMIZATIONS
+           ===================================================== */
+        @media (hover: none) and (pointer: coarse) {
+            /* Larger touch targets */
+            .btn, button, .tab-btn, .sidebar-nav button {
+                min-height: 44px;
+            }
+
+            .mcq-option, .mcq-container label {
+                min-height: 48px;
+            }
+
+            /* Remove hover effects that don't work well on touch */
+            .tab-btn:hover,
+            .sidebar-nav button:hover,
+            .btn:hover {
+                transform: none;
+            }
+
+            /* Better tap feedback */
+            .btn:active, button:active {
+                transform: scale(0.98);
+                opacity: 0.9;
+            }
+
+            /* Prevent text selection on buttons */
+            button, .btn, .tab-btn {
+                -webkit-user-select: none;
+                user-select: none;
+                -webkit-touch-callout: none;
+            }
+
+            /* Improve scrolling */
+            .main-content, .view-content, .topic-content {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* =====================================================
+           SAFE AREA INSETS (for notched devices)
+           ===================================================== */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+                padding-bottom: max(0px, env(safe-area-inset-bottom));
+            }
+
+            .mobile-menu-toggle {
+                bottom: max(20px, calc(env(safe-area-inset-bottom) + 10px));
+                right: max(20px, calc(env(safe-area-inset-right) + 10px));
+            }
+
+            .app-body > .sidebar {
+                padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 1rem));
+            }
+        }
+
+        /* =====================================================
+           ADDITIONAL MOBILE FIXES
+           ===================================================== */
+        @media screen and (max-width: 768px) {
+            /* Fix for iOS input zoom */
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+
+            /* Ensure forms don't overflow */
+            .form-group input,
+            .form-group select,
+            .form-group textarea,
+            .auth-input {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Fix horizontal scroll issues */
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+            }
+
+            .app-container {
+                overflow-x: hidden;
+            }
+
+            /* Better table display on mobile */
+            table {
+                font-size: 0.85rem;
+            }
+
+            /* Improve question text readability */
+            .question-container p {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            /* Fix image overflow */
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* Admin controls layout */
+            .admin-controls {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .admin-controls button {
+                flex: 1 1 auto;
+                min-width: 100px;
+            }
+
+            /* OEQ segment inputs */
+            .segment-input, .cer-textarea {
+                font-size: 16px;
+                min-height: 80px;
+            }
+
+            /* Topic buttons in sidebar */
+            #oeq-sidebar-content .topic-link,
+            #mcq-sidebar-content .topic-link {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            /* Header tabs scrollable indicator */
+            #header-tabs-container::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 30px;
+                background: linear-gradient(to right, transparent, #f8f9fa);
+                pointer-events: none;
+            }
+
+            /* Question popup modal fix */
+            #question-popup-modal .modal-box {
+                max-height: calc(100vh - 20px);
+            }
+
+            /* Consult modal fix */
+            #consult-modal .modal-box,
+            #new-message-modal .modal-box,
+            #view-message-modal .modal-box {
+                max-height: calc(100vh - 20px);
+                overflow-y: auto;
+            }
+        }
+
+        /* =====================================================
+           IPAD PRO AND LARGE TABLET STYLES
+           ===================================================== */
+        @media screen and (min-width: 1024px) and (max-width: 1400px) {
+            .sidebar {
+                width: 240px;
+            }
+
+            .main-content,
+            .view-content,
+            .topic-content {
+                padding: 2rem;
+            }
+
+            .tab-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.78rem;
+            }
+        }
+
+        /* =====================================================
+           PREVENT PULL-TO-REFRESH ON MOBILE
+           ===================================================== */
+        body {
+            overscroll-behavior-y: contain;
+        }
+
+        /* =====================================================
+           FIX FOR 100VH ON MOBILE BROWSERS
+           ===================================================== */
+        @media screen and (max-width: 768px) {
+            .modal-overlay {
+                height: 100%;
+                height: -webkit-fill-available;
+            }
+
+            .auth-overlay {
+                min-height: 100%;
+                min-height: -webkit-fill-available;
+            }
+        }
+
+        /* =====================================================
+           PRINT STYLES - HIDE MOBILE ELEMENTS
+           ===================================================== */
+        @media print {
+            .mobile-menu-toggle,
+            .sidebar-overlay {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+        <span id="mobile-menu-icon">☰</span>
+    </button>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
 
     <!-- Version Indicator for debugging -->
     <div class="version-indicator" id="version-display"></div>
@@ -2282,6 +3040,7 @@
 
         <div class="app-body active" style="display: flex;">
             <aside class="sidebar">
+                <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" style="display: none; position: absolute; top: 10px; right: 10px; background: #f44336; color: white; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1.2rem; cursor: pointer; z-index: 10;">✕</button>
                 <div id="login-days-display">📅 Loading Streak...</div>
                 <button onclick="handleLogout()" class="logout-btn">Logout</button>
 
@@ -3226,6 +3985,17 @@
                 <button class="btn-cancel" onclick="hideViewMessageModal()">Close</button>
                 <button id="btn-reply-message" class="btn-save" style="background: #0288d1;" onclick="replyToMessage()">↩️ Reply</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Question Popup Modal -->
+    <div id="question-popup-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 800px; max-height: 85vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 1rem;">
+                <h3 style="margin: 0; color: #1976d2;">📋 Original Question</h3>
+                <button class="btn" style="background: #666; color: white; padding: 8px 16px;" onclick="hideQuestionPopup()">✕ Close</button>
+            </div>
+            <div id="question-popup-content" style="padding: 1rem 0;"></div>
         </div>
     </div>
 
@@ -4639,6 +5409,12 @@
                     const date = msg.createdAt ? new Date(msg.createdAt.toDate ? msg.createdAt.toDate() : msg.createdAt).toLocaleString() : 'Unknown';
                     const isUnread = !msg.read && window.currentInboxTab === 'received';
                     
+                    // Format sender display with level if available
+                    let senderDisplay = msg.senderName || 'Unknown';
+                    if (msg.senderLevel) {
+                        senderDisplay = `${msg.senderName} (${msg.senderLevel})`;
+                    }
+                    
                     const card = document.createElement('div');
                     card.className = `message-card ${isUnread ? 'unread' : ''}`;
                     card.onclick = () => viewMessage(msg.id);
@@ -4646,12 +5422,13 @@
                         <div class="message-header">
                             <span class="message-from">
                                 ${isUnread ? '<span class="unread-dot"></span>' : ''}
-                                ${window.currentInboxTab === 'received' ? (msg.senderName || 'Unknown') : `To: ${msg.recipientName || 'Mr Chung'}`}
+                                ${window.currentInboxTab === 'received' ? senderDisplay : `To: ${msg.recipientName || 'Mr Chung'}`}
                             </span>
                             <span class="message-date">${date}</span>
                         </div>
                         <div class="message-subject">${msg.subject || 'No Subject'}</div>
                         <div class="message-preview">${(msg.message || '').substring(0, 100)}${msg.message?.length > 100 ? '...' : ''}</div>
+                        ${msg.questionId ? '<span style="font-size: 0.75rem; background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 4px; margin-top: 5px; display: inline-block;">📋 Has Question</span>' : ''}
                     `;
                     container.appendChild(card);
                 });
@@ -4730,16 +5507,31 @@
                 const date = msg.createdAt ? new Date(msg.createdAt.toDate ? msg.createdAt.toDate() : msg.createdAt).toLocaleString() : 'Unknown';
                 const isReceived = msg.recipientId === user?.uid;
                 
+                // Format sender display with level
+                let senderDisplay = msg.senderName || 'Unknown';
+                if (msg.senderLevel) {
+                    senderDisplay = `${msg.senderName} (${msg.senderLevel})`;
+                }
+                
                 const content = document.getElementById('view-message-content');
                 content.innerHTML = `
                     <div class="view-message-header">
                         <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
-                            ${isReceived ? 'From' : 'To'}: <strong>${isReceived ? (msg.senderName || 'Unknown') : (msg.recipientName || 'Mr Chung')}</strong>
+                            ${isReceived ? 'From' : 'To'}: <strong>${isReceived ? senderDisplay : (msg.recipientName || 'Mr Chung')}</strong>
+                            ${isReceived && msg.senderLevel ? `<span style="background: #e8f5e9; color: #388e3c; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 8px;">${msg.senderLevel}</span>` : ''}
                         </div>
                         <div style="font-size: 0.85rem; color: #888;">${date}</div>
                         <h3 style="margin: 0.5rem 0; color: #0288d1;">${msg.subject || 'No Subject'}</h3>
                     </div>
-                    ${msg.questionContext ? `<div class="view-message-question"><strong>📋 Related Question:</strong><br>${msg.questionContext}</div>` : ''}
+                    ${msg.questionContext ? `
+                        <div class="view-message-question">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <strong>📋 Related Question:</strong>
+                                ${msg.questionId ? `<button class="btn" style="background: #1976d2; color: white; padding: 5px 12px; font-size: 0.8rem;" onclick="viewOriginalQuestion('${msg.questionId}')">👁️ View Full Question</button>` : ''}
+                            </div>
+                            <div style="color: #555;">${msg.questionContext}</div>
+                        </div>
+                    ` : ''}
                     <div class="view-message-body">${msg.message || ''}</div>
                 `;
                 
@@ -4752,6 +5544,33 @@
                 console.error("Error viewing message:", e);
                 alert("Error loading message.");
             }
+        };
+
+        // View original question from message
+        window.viewOriginalQuestion = function(questionId) {
+            const questionElement = document.getElementById(questionId);
+            
+            if (questionElement) {
+                // Clone the question for the popup
+                const clone = questionElement.cloneNode(true);
+                clone.id = 'popup-question-clone';
+                
+                // Remove controls from clone
+                clone.querySelectorAll('.worksheet-control-bar, .admin-controls').forEach(el => el.remove());
+                
+                // Show in a popup modal
+                const popupContent = document.getElementById('question-popup-content');
+                popupContent.innerHTML = '';
+                popupContent.appendChild(clone);
+                
+                document.getElementById('question-popup-modal').classList.add('visible');
+            } else {
+                alert("Question not found. It may have been deleted or moved.");
+            }
+        };
+
+        window.hideQuestionPopup = function() {
+            document.getElementById('question-popup-modal').classList.remove('visible');
         };
 
         window.hideViewMessageModal = function() {
@@ -4800,16 +5619,38 @@
                     const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                     const usersSnap = await getDocs(collection(window.db_fs, "users"));
                     
+                    const students = [];
                     usersSnap.forEach(doc => {
                         const userData = doc.data();
                         if (userData.email !== ADMIN_EMAIL) {
-                            const option = document.createElement('option');
-                            option.value = doc.id;
-                            option.dataset.email = userData.email;
-                            option.dataset.name = userData.studentName || userData.parentName || 'Student';
-                            option.textContent = `${userData.studentName || userData.parentName || 'Student'} (${userData.email})`;
-                            select.appendChild(option);
+                            const studentName = userData.studentName || userData.parentName || 'Student';
+                            const level = userData.level || (userData.students && userData.students[0]?.level) || '';
+                            students.push({
+                                id: doc.id,
+                                email: userData.email,
+                                name: studentName,
+                                level: level,
+                                displayName: level ? `${studentName} (${level})` : studentName
+                            });
                         }
+                    });
+                    
+                    // Sort by level then name
+                    students.sort((a, b) => {
+                        if (a.level && b.level) {
+                            if (a.level !== b.level) return a.level.localeCompare(b.level);
+                        }
+                        return a.name.localeCompare(b.name);
+                    });
+                    
+                    students.forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.id;
+                        option.dataset.email = student.email;
+                        option.dataset.name = student.name;
+                        option.dataset.level = student.level;
+                        option.textContent = student.displayName;
+                        select.appendChild(option);
                     });
                     
                     // Add "All Students" option for broadcast
@@ -5005,10 +5846,11 @@
                 
                 const { collection, addDoc, getDocs, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 
-                // Get sender info
+                // Get sender info including level
                 const senderDoc = await getDoc(doc(window.db_fs, "users", user.uid));
                 const senderData = senderDoc.exists() ? senderDoc.data() : {};
                 const senderName = senderData.studentName || senderData.parentName || user.email;
+                const senderLevel = senderData.level || (senderData.students && senderData.students[0]?.level) || '';
                 
                 // Find admin user ID by fetching all users and filtering
                 let adminId = 'admin_placeholder';
@@ -5019,11 +5861,12 @@
                     }
                 });
                 
-                // Create message
+                // Create message with student info
                 await addDoc(collection(window.db_fs, "messages"), {
                     senderId: user.uid,
                     senderEmail: user.email,
                     senderName: senderName,
+                    senderLevel: senderLevel,
                     recipientId: adminId,
                     recipientEmail: ADMIN_EMAIL,
                     recipientName: 'Mr Chung',
@@ -5082,6 +5925,11 @@
 
         window.switchTab = function (type, btn) {
             window.currentActiveTab = type;
+
+            // Close mobile sidebar if open
+            if (window.innerWidth <= 768) {
+                closeMobileSidebar();
+            }
 
             // Update button states
             const allBtns = document.querySelectorAll('.tab-btn, #btn-sidebar-admin, #btn-sidebar-worksheet, #btn-sidebar-saved-worksheets, #btn-sidebar-practice, #btn-sidebar-inbox, #btn-sidebar-lessons');
@@ -8028,6 +8876,100 @@
             if (navButtons[topic]) navButtons[topic].classList.add('active');
             if (topics[topic]) topics[topic].classList.remove('hidden');
         }
+
+        // =====================================================
+        // MOBILE SIDEBAR TOGGLE
+        // =====================================================
+        
+        window.toggleMobileSidebar = function() {
+            const sidebar = document.querySelector('.app-body > .sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            const icon = document.getElementById('mobile-menu-icon');
+            
+            if (sidebar && overlay) {
+                const isOpen = sidebar.classList.contains('mobile-open');
+                
+                if (isOpen) {
+                    closeMobileSidebar();
+                } else {
+                    sidebar.classList.add('mobile-open');
+                    overlay.classList.add('active');
+                    toggleBtn.classList.add('active');
+                    icon.textContent = '✕';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        };
+
+        window.closeMobileSidebar = function() {
+            const sidebar = document.querySelector('.app-body > .sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            const icon = document.getElementById('mobile-menu-icon');
+            
+            if (sidebar) {
+                sidebar.classList.remove('mobile-open');
+            }
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+            if (toggleBtn) {
+                toggleBtn.classList.remove('active');
+            }
+            if (icon) {
+                icon.textContent = '☰';
+            }
+            document.body.style.overflow = '';
+        };
+
+        // Close sidebar when clicking a sidebar button on mobile
+        window.handleSidebarButtonClick = function(callback) {
+            return function(e) {
+                // Close mobile sidebar if open
+                if (window.innerWidth <= 768) {
+                    closeMobileSidebar();
+                }
+                // Execute the original callback
+                if (callback) callback(e);
+            };
+        };
+
+        // Handle orientation change
+        window.addEventListener('orientationchange', function() {
+            // Close mobile sidebar on orientation change
+            closeMobileSidebar();
+            
+            // Delay to let the browser settle
+            setTimeout(() => {
+                // Scroll to top to reset view
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+
+        // Handle resize - close sidebar if switching from mobile to desktop
+        let lastWidth = window.innerWidth;
+        window.addEventListener('resize', function() {
+            const currentWidth = window.innerWidth;
+            
+            // If crossing the 768px threshold, close mobile sidebar
+            if (lastWidth <= 768 && currentWidth > 768) {
+                closeMobileSidebar();
+            }
+            
+            lastWidth = currentWidth;
+        });
+
+        // Prevent body scroll when sidebar is open (iOS fix)
+        document.addEventListener('touchmove', function(e) {
+            const sidebar = document.querySelector('.app-body > .sidebar');
+            if (sidebar && sidebar.classList.contains('mobile-open')) {
+                // Allow scrolling within the sidebar
+                if (!sidebar.contains(e.target)) {
+                    e.preventDefault();
+                }
+            }
+        }, { passive: false });
 
         // =====================================================
         // DOM CONTENT LOADED
