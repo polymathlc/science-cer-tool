@@ -1080,29 +1080,200 @@
             color: white;
         }
 
-        /* Mode Switcher */
-        .mode-switcher {
+        /* Sidebar Sections */
+        .sidebar-top-section {
+            padding-bottom: 15px;
+        }
+
+        .sidebar-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ddd, transparent);
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .sidebar-divider::before {
+            content: '• • •';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fdfdfd;
+            padding: 0 10px;
+            color: #bbb;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+        }
+
+        .sidebar-nav-section {
             display: flex;
-            gap: 5px;
-            margin-bottom: 1.5rem;
-            background: #eee;
-            padding: 4px;
-            border-radius: 30px;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
-        .mode-switcher .btn {
-            flex: 1;
-            font-size: 0.8rem;
-            padding: 8px;
-            border-radius: 25px;
-            background: transparent;
+        .sidebar-nav-btn {
+            width: 100%;
+            border-radius: 10px;
+            border: none;
+            padding: 12px 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            text-align: left;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-nav-btn:hover {
+            transform: translateX(3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-nav-btn.admin-btn {
+            background: #ffd1dc;
+            color: #d81b60;
+        }
+
+        .sidebar-nav-btn.worksheet-btn {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .sidebar-nav-btn.saved-btn {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .sidebar-nav-btn.lessons-btn {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        /* iOS-Style Toggle Switch */
+        .ios-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            border-radius: 16px;
+            margin-bottom: 5px;
+        }
+
+        .ios-toggle-label {
+            font-size: 0.9rem;
+            font-weight: 700;
             color: #666;
+            min-width: 35px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .mode-switcher .btn.active {
+        .ios-toggle-label.active {
+            color: #007AFF;
+            transform: scale(1.1);
+        }
+
+        .ios-toggle {
+            position: relative;
+            width: 60px;
+            height: 32px;
+            cursor: pointer;
+        }
+
+        .ios-toggle-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 8px rgba(52, 199, 89, 0.3);
+        }
+
+        .ios-toggle.mcq-active .ios-toggle-track {
+            background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 8px rgba(0, 122, 255, 0.3);
+        }
+
+        .ios-toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 28px;
+            height: 28px;
             background: white;
-            color: var(--primary-blue);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .ios-toggle.mcq-active .ios-toggle-thumb {
+            left: 30px;
+        }
+
+        .ios-toggle:hover .ios-toggle-thumb {
+            transform: scale(1.05);
+        }
+
+        .ios-toggle:active .ios-toggle-thumb {
+            width: 34px;
+        }
+
+        .ios-toggle.mcq-active:active .ios-toggle-thumb {
+            left: 24px;
+        }
+
+        /* Toggle animation glow */
+        .ios-toggle::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(52, 199, 89, 0.3), rgba(48, 209, 88, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .ios-toggle:hover::after {
+            opacity: 1;
+        }
+
+        .ios-toggle.mcq-active::after {
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.3), rgba(88, 86, 214, 0.1));
+        }
+
+        /* Logout Button Update */
+        .logout-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #e04848);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(238, 90, 90, 0.3);
         }
 
         /* Version indicator (for debugging) */
@@ -2703,14 +2874,39 @@
                 padding: 8px;
             }
 
-            /* Mode switcher */
-            .mode-switcher {
-                flex-direction: row;
+            /* iOS Toggle mobile */
+            .ios-toggle-container {
+                padding: 10px;
+                border-radius: 12px;
             }
 
-            .mode-switcher button {
-                flex: 1;
-                padding: 10px;
+            .ios-toggle-label {
+                font-size: 0.85rem;
+                min-width: 30px;
+            }
+
+            .ios-toggle {
+                width: 52px;
+                height: 28px;
+            }
+
+            .ios-toggle-thumb {
+                width: 24px;
+                height: 24px;
+            }
+
+            .ios-toggle.mcq-active .ios-toggle-thumb {
+                left: 26px;
+            }
+
+            /* Sidebar sections on mobile */
+            .sidebar-nav-btn {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+
+            .sidebar-divider {
+                margin: 12px 0;
             }
 
             /* Saved worksheets */
@@ -3217,36 +3413,52 @@
         <div class="app-body active" style="display: flex;">
             <aside class="sidebar">
                 <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" style="display: none; position: absolute; top: 10px; right: 10px; background: #f44336; color: white; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1.2rem; cursor: pointer; z-index: 10;">✕</button>
-                <div id="login-days-display">📅 Loading Streak...</div>
                 
-                <!-- Animated Practice Mode Button -->
-                <button id="btn-sidebar-practice" class="practice-btn-animated" onclick="switchTab('practice', this)">
-                    <span class="practice-btn-icon">🎯</span>
-                    <span class="practice-btn-text">Practice Mode</span>
-                    <span class="practice-btn-sparkle">✨</span>
-                </button>
+                <!-- TOP SECTION: Streak, Practice, Toggle -->
+                <div class="sidebar-top-section">
+                    <div id="login-days-display">📅 Loading Streak...</div>
+                    
+                    <!-- Animated Practice Mode Button -->
+                    <button id="btn-sidebar-practice" class="practice-btn-animated" onclick="switchTab('practice', this)">
+                        <span class="practice-btn-icon">🎯</span>
+                        <span class="practice-btn-text">Practice Mode</span>
+                        <span class="practice-btn-sparkle">✨</span>
+                    </button>
+                    
+                    <!-- iOS-style OEQ/MCQ Toggle -->
+                    <div class="ios-toggle-container">
+                        <span class="ios-toggle-label">OEQ</span>
+                        <div class="ios-toggle" id="mode-toggle" onclick="toggleMode()">
+                            <div class="ios-toggle-track">
+                                <div class="ios-toggle-thumb" id="toggle-thumb"></div>
+                            </div>
+                        </div>
+                        <span class="ios-toggle-label">MCQ</span>
+                    </div>
+                </div>
                 
-                <button onclick="handleLogout()" class="logout-btn">Logout</button>
+                <!-- DIVIDER -->
+                <div class="sidebar-divider"></div>
+                
+                <!-- BOTTOM SECTION: Navigation Buttons -->
+                <div class="sidebar-nav-section">
+                    <button id="btn-sidebar-admin" class="hidden sidebar-nav-btn admin-btn" onclick="switchTab('admin', this)">
+                        🛠️ Admin Mode
+                    </button>
 
-                <button id="btn-sidebar-admin" class="hidden" onclick="switchTab('admin', this)"
-                    style="width: 100%; border-radius: 10px; margin-bottom: 10px; background: #ffd1dc; color: #d81b60; border: none; padding: 10px; cursor: pointer; font-weight: 600;">🛠️
-                    Admin Mode</button>
+                    <button id="btn-sidebar-worksheet" class="sidebar-nav-btn worksheet-btn" onclick="switchTab('worksheet', this)">
+                        📝 My Worksheet <span id="worksheet-count" class="worksheet-badge">0</span>
+                    </button>
 
-                <button id="btn-sidebar-worksheet" onclick="switchTab('worksheet', this)"
-                    style="width: 100%; border-radius: 10px; margin-bottom: 10px; background: #e3f2fd; color: #1976d2; border: none; padding: 10px; cursor: pointer; font-weight: 600;">📝
-                    My Worksheet <span id="worksheet-count" class="worksheet-badge">0</span></button>
+                    <button id="btn-sidebar-saved-worksheets" class="sidebar-nav-btn saved-btn" onclick="switchTab('saved-worksheets', this)">
+                        📚 Saved Worksheets
+                    </button>
 
-                <button id="btn-sidebar-saved-worksheets" onclick="switchTab('saved-worksheets', this)"
-                    style="width: 100%; border-radius: 10px; margin-bottom: 10px; background: #e8f5e9; color: #388e3c; border: none; padding: 10px; cursor: pointer; font-weight: 600;">📚
-                    Saved Worksheets</button>
-
-                <button id="btn-sidebar-lessons" onclick="switchTab('lessons', this)"
-                    style="width: 100%; border-radius: 10px; margin-bottom: 20px; background: #fff3e0; color: #f57c00; border: none; padding: 10px; cursor: pointer; font-weight: 600;">🎓
-                    Lessons</button>
-
-                <div class="mode-switcher">
-                    <button onclick="switchMode('oeq')" id="mode-oeq" class="btn active">OEQ</button>
-                    <button onclick="switchMode('mcq')" id="mode-mcq" class="btn">MCQ</button>
+                    <button id="btn-sidebar-lessons" class="sidebar-nav-btn lessons-btn" onclick="switchTab('lessons', this)">
+                        🎓 Lessons
+                    </button>
+                    
+                    <button onclick="handleLogout()" class="logout-btn">🚪 Logout</button>
                 </div>
 
                 <div id="oeq-sidebar-content">
@@ -6663,15 +6875,37 @@
         // MODE SWITCHING (OEQ/MCQ)
         // =====================================================
 
+        window.currentMode = 'oeq';
+
+        // Toggle mode using iOS-style switch
+        window.toggleMode = function() {
+            const newMode = window.currentMode === 'oeq' ? 'mcq' : 'oeq';
+            switchMode(newMode);
+        };
+
         window.switchMode = function (mode) {
             window.currentMode = mode;
             const oeqSidebar = document.getElementById('oeq-sidebar-content');
             const mcqSidebar = document.getElementById('mcq-sidebar-content');
             const container = document.getElementById('header-tabs-container');
+            const toggle = document.getElementById('mode-toggle');
+            const oeqLabel = document.querySelector('.ios-toggle-label:first-of-type');
+            const mcqLabel = document.querySelector('.ios-toggle-label:last-of-type');
 
-            document.getElementById('mode-oeq').classList.remove('active');
-            document.getElementById('mode-mcq').classList.remove('active');
-            document.getElementById('mode-' + mode).classList.add('active');
+            // Update iOS toggle state
+            if (toggle) {
+                if (mode === 'mcq') {
+                    toggle.classList.add('mcq-active');
+                } else {
+                    toggle.classList.remove('mcq-active');
+                }
+            }
+
+            // Update labels
+            if (oeqLabel && mcqLabel) {
+                oeqLabel.classList.toggle('active', mode === 'oeq');
+                mcqLabel.classList.toggle('active', mode === 'mcq');
+            }
 
             if (mode === 'mcq') {
                 oeqSidebar.classList.add('hidden');
@@ -9635,6 +9869,10 @@
 
             // Initialize with heat topic
             switchTopic('heat');
+
+            // Initialize OEQ/MCQ toggle label
+            const oeqLabel = document.querySelector('.ios-toggle-label:first-of-type');
+            if (oeqLabel) oeqLabel.classList.add('active');
 
             // Update worksheet UI
             updateWorksheetUI();
