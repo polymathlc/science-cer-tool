@@ -839,11 +839,107 @@
             padding: 15px;
             border-radius: 14px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             font-weight: 600;
             font-size: 1.05rem;
             border: 1px solid rgba(0, 0, 0, 0.05);
             box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+        }
+
+        /* Animated Practice Mode Button */
+        .practice-btn-animated {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4), 0 0 30px rgba(118, 75, 162, 0.3);
+            animation: practiceGradient 3s ease infinite, practicePulse 2s ease-in-out infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .practice-btn-animated:hover {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5), 0 0 40px rgba(118, 75, 162, 0.4);
+        }
+
+        .practice-btn-animated:active {
+            transform: scale(0.98);
+        }
+
+        .practice-btn-animated::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: practiceShine 3s ease-in-out infinite;
+        }
+
+        .practice-btn-icon {
+            font-size: 1.3rem;
+            animation: practiceBounce 1s ease-in-out infinite;
+        }
+
+        .practice-btn-text {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .practice-btn-sparkle {
+            font-size: 1rem;
+            animation: practiceSparkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes practiceGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes practicePulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4), 0 0 30px rgba(118, 75, 162, 0.3); }
+            50% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.6), 0 0 45px rgba(118, 75, 162, 0.5); }
+        }
+
+        @keyframes practiceShine {
+            0% { left: -50%; opacity: 0; }
+            20% { opacity: 1; }
+            50% { left: 100%; opacity: 0; }
+            100% { left: 100%; opacity: 0; }
+        }
+
+        @keyframes practiceBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        @keyframes practiceSparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            25% { transform: scale(1.2) rotate(10deg); opacity: 0.8; }
+            50% { transform: scale(0.8) rotate(-10deg); opacity: 1; }
+            75% { transform: scale(1.1) rotate(5deg); opacity: 0.9; }
+        }
+
+        .practice-btn-animated.active {
+            background: linear-gradient(135deg, #4c5fd5 0%, #5d3d8a 50%, #d87de8 100%);
         }
 
         /* Admin Edit Buttons */
@@ -3122,6 +3218,14 @@
             <aside class="sidebar">
                 <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" style="display: none; position: absolute; top: 10px; right: 10px; background: #f44336; color: white; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1.2rem; cursor: pointer; z-index: 10;">✕</button>
                 <div id="login-days-display">📅 Loading Streak...</div>
+                
+                <!-- Animated Practice Mode Button -->
+                <button id="btn-sidebar-practice" class="practice-btn-animated" onclick="switchTab('practice', this)">
+                    <span class="practice-btn-icon">🎯</span>
+                    <span class="practice-btn-text">Practice Mode</span>
+                    <span class="practice-btn-sparkle">✨</span>
+                </button>
+                
                 <button onclick="handleLogout()" class="logout-btn">Logout</button>
 
                 <button id="btn-sidebar-admin" class="hidden" onclick="switchTab('admin', this)"
@@ -3135,10 +3239,6 @@
                 <button id="btn-sidebar-saved-worksheets" onclick="switchTab('saved-worksheets', this)"
                     style="width: 100%; border-radius: 10px; margin-bottom: 10px; background: #e8f5e9; color: #388e3c; border: none; padding: 10px; cursor: pointer; font-weight: 600;">📚
                     Saved Worksheets</button>
-
-                <button id="btn-sidebar-practice" onclick="switchTab('practice', this)"
-                    style="width: 100%; border-radius: 10px; margin-bottom: 10px; background: #f3e5f5; color: #7b1fa2; border: none; padding: 10px; cursor: pointer; font-weight: 600;">🎯
-                    Practice Mode</button>
 
                 <button id="btn-sidebar-lessons" onclick="switchTab('lessons', this)"
                     style="width: 100%; border-radius: 10px; margin-bottom: 20px; background: #fff3e0; color: #f57c00; border: none; padding: 10px; cursor: pointer; font-weight: 600;">🎓
@@ -3926,7 +4026,7 @@
                         </div>
 
                         <!-- Practice Stats -->
-                        <div id="practice-stats" class="hidden" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <div id="practice-stats" class="hidden" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
                             <div style="background: #e8f5e9; padding: 1rem; border-radius: 12px; text-align: center;">
                                 <div style="font-size: 2rem; font-weight: bold; color: #28a745;" id="stat-correct">0</div>
                                 <div style="color: #666; font-size: 0.9rem;">Correct</div>
@@ -3934,6 +4034,10 @@
                             <div style="background: #ffebee; padding: 1rem; border-radius: 12px; text-align: center;">
                                 <div style="font-size: 2rem; font-weight: bold; color: #dc3545;" id="stat-wrong">0</div>
                                 <div style="color: #666; font-size: 0.9rem;">Wrong</div>
+                            </div>
+                            <div style="background: #fff3e0; padding: 1rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #f57c00;" id="stat-review">0</div>
+                                <div style="color: #666; font-size: 0.9rem;">📅 Review</div>
                             </div>
                             <div style="background: #e3f2fd; padding: 1rem; border-radius: 12px; text-align: center;">
                                 <div style="font-size: 2rem; font-weight: bold; color: #1976d2;" id="stat-remaining">0</div>
@@ -3950,7 +4054,7 @@
                             <button id="btn-start-practice" class="btn" style="background: #7b1fa2; color: white; font-size: 1.2rem; padding: 15px 40px;" onclick="startPractice()" disabled>
                                 🚀 Start Practice
                             </button>
-                            <p style="color: #888; margin-top: 1rem; font-size: 0.9rem;">Questions will be served based on your level, starting with unanswered questions.</p>
+                            <p style="color: #888; margin-top: 1rem; font-size: 0.9rem;">Questions will be served based on your level. Review questions (from 7 days ago) come first!</p>
                         </div>
 
                         <!-- Current Question Container -->
@@ -5112,7 +5216,88 @@
             correct: 0,
             wrong: 0,
             streak: 0,
-            answeredQuestions: new Set()
+            answeredQuestions: new Set(),
+            wrongAnswersForReview: {} // {questionId: timestamp} - questions to review after 7 days
+        };
+
+        // Load wrong answers that are due for review
+        window.loadWrongAnswersForReview = async function() {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user) return;
+                
+                const studentIndex = window.practiceState.currentStudent?.index || 0;
+                const storageKey = `wrongAnswers_${user.uid}_${studentIndex}`;
+                const stored = localStorage.getItem(storageKey);
+                
+                if (stored) {
+                    window.practiceState.wrongAnswersForReview = JSON.parse(stored);
+                } else {
+                    window.practiceState.wrongAnswersForReview = {};
+                }
+            } catch (e) {
+                console.error("Error loading wrong answers:", e);
+                window.practiceState.wrongAnswersForReview = {};
+            }
+        };
+
+        // Save wrong answer for 7-day review
+        window.saveWrongAnswerForReview = function(questionId) {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user) return;
+                
+                const studentIndex = window.practiceState.currentStudent?.index || 0;
+                const storageKey = `wrongAnswers_${user.uid}_${studentIndex}`;
+                
+                // Store the timestamp when the question was answered wrong
+                window.practiceState.wrongAnswersForReview[questionId] = Date.now();
+                
+                localStorage.setItem(storageKey, JSON.stringify(window.practiceState.wrongAnswersForReview));
+            } catch (e) {
+                console.error("Error saving wrong answer:", e);
+            }
+        };
+
+        // Remove question from review queue (when answered correctly after review)
+        window.removeFromReviewQueue = function(questionId) {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user) return;
+                
+                const studentIndex = window.practiceState.currentStudent?.index || 0;
+                const storageKey = `wrongAnswers_${user.uid}_${studentIndex}`;
+                
+                delete window.practiceState.wrongAnswersForReview[questionId];
+                
+                localStorage.setItem(storageKey, JSON.stringify(window.practiceState.wrongAnswersForReview));
+            } catch (e) {
+                console.error("Error removing from review queue:", e);
+            }
+        };
+
+        // Check if a question is due for review (7 days after wrong answer)
+        window.isQuestionDueForReview = function(questionId) {
+            const wrongTimestamp = window.practiceState.wrongAnswersForReview[questionId];
+            if (!wrongTimestamp) return false;
+            
+            const now = Date.now();
+            const sevenDaysMs = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+            
+            return (now - wrongTimestamp) >= sevenDaysMs;
+        };
+
+        // Get days until review for a question
+        window.getDaysUntilReview = function(questionId) {
+            const wrongTimestamp = window.practiceState.wrongAnswersForReview[questionId];
+            if (!wrongTimestamp) return null;
+            
+            const now = Date.now();
+            const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+            const timeUntilReview = (wrongTimestamp + sevenDaysMs) - now;
+            
+            if (timeUntilReview <= 0) return 0;
+            return Math.ceil(timeUntilReview / (24 * 60 * 60 * 1000));
         };
 
         window.loadPracticeMode = async function() {
@@ -5225,8 +5410,9 @@
             window.practiceState.wrong = 0;
             window.practiceState.streak = 0;
             
-            // Load answered questions from storage
+            // Load answered questions and wrong answers for review
             await loadAnsweredQuestions();
+            await loadWrongAnswersForReview();
             
             // Collect questions from current level and one level down
             const levels = ['P3', 'P4', 'P5', 'P6'];
@@ -5238,6 +5424,7 @@
             
             // Gather MCQ questions from the DOM
             const allQuestions = [];
+            const reviewQuestions = []; // Questions due for 7-day review
             
             targetLevels.forEach(lvl => {
                 const topics = window.mcqCurriculum[lvl] || [];
@@ -5248,26 +5435,58 @@
                         container.querySelectorAll('.question-container').forEach(q => {
                             const qId = q.id;
                             const isAnswered = window.practiceState.answeredQuestions.has(qId);
-                            allQuestions.push({
+                            const isDueForReview = isQuestionDueForReview(qId);
+                            const daysUntilReview = getDaysUntilReview(qId);
+                            
+                            const questionData = {
                                 id: qId,
                                 level: lvl,
                                 topic: topic,
                                 element: q,
                                 answered: isAnswered,
+                                isReviewQuestion: isDueForReview,
+                                daysUntilReview: daysUntilReview,
                                 priority: lvl === level ? 0 : 1 // Current level first
-                            });
+                            };
+                            
+                            // If due for review, add to priority review queue
+                            if (isDueForReview) {
+                                reviewQuestions.push(questionData);
+                            } else {
+                                allQuestions.push(questionData);
+                            }
                         });
                     }
                 });
             });
             
-            // Sort: unanswered first, then by priority (current level first)
+            // Sort regular questions: unanswered first, then by priority (current level first)
             allQuestions.sort((a, b) => {
                 if (a.answered !== b.answered) return a.answered ? 1 : -1;
                 return a.priority - b.priority;
             });
             
-            window.practiceState.questions = allQuestions;
+            // Combine: Review questions first (highest priority), then regular questions
+            const finalQuestions = [...reviewQuestions, ...allQuestions];
+            
+            window.practiceState.questions = finalQuestions;
+            
+            // Show review notification if there are review questions
+            if (reviewQuestions.length > 0) {
+                const reviewNotification = document.createElement('div');
+                reviewNotification.id = 'review-notification';
+                reviewNotification.style.cssText = 'background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 15px; border-radius: 12px; margin-bottom: 1rem; text-align: center; animation: practicePulse 2s infinite;';
+                reviewNotification.innerHTML = `
+                    <div style="font-size: 1.5rem; margin-bottom: 5px;">🔄 Review Time!</div>
+                    <div>You have <strong>${reviewQuestions.length}</strong> question${reviewQuestions.length > 1 ? 's' : ''} ready for 7-day review</div>
+                    <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 5px;">Master these to remove them from review</div>
+                `;
+                
+                const practiceContainer = document.getElementById('practice-question-container');
+                const existingNotification = document.getElementById('review-notification');
+                if (existingNotification) existingNotification.remove();
+                practiceContainer.insertBefore(reviewNotification, practiceContainer.firstChild);
+            }
             
             // Update UI
             document.getElementById('practice-start-container').classList.add('hidden');
@@ -5315,6 +5534,22 @@
             }
             
             container.innerHTML = '';
+            
+            // Add review badge if this is a review question
+            if (question.isReviewQuestion) {
+                const reviewBadge = document.createElement('div');
+                reviewBadge.className = 'review-question-badge';
+                reviewBadge.style.cssText = 'background: linear-gradient(135deg, #ff6b6b, #ffa502); color: white; padding: 10px 15px; border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; font-weight: 600; animation: practicePulse 2s infinite;';
+                reviewBadge.innerHTML = `
+                    <span style="font-size: 1.5rem;">🔄</span>
+                    <div>
+                        <div>7-Day Review Question</div>
+                        <div style="font-size: 0.8rem; opacity: 0.9;">Answer correctly to master this topic!</div>
+                    </div>
+                `;
+                container.appendChild(reviewBadge);
+            }
+            
             container.appendChild(clone);
             
             // Update level and topic display
@@ -5372,13 +5607,33 @@
             const explanation = container.querySelector('.explanation-box');
             if (explanation) explanation.style.display = 'block';
             
-            // Update stats
+            // Update stats and handle spaced repetition
             if (isCorrect) {
                 state.correct++;
                 state.streak++;
+                
+                // If this was a review question answered correctly, remove from review queue
+                if (question.isReviewQuestion) {
+                    removeFromReviewQueue(question.id);
+                    
+                    // Show encouraging message for mastered review question
+                    const masteredMsg = document.createElement('div');
+                    masteredMsg.style.cssText = 'background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 12px; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 600; color: #155724;';
+                    masteredMsg.innerHTML = '🎉 Great job! You\'ve mastered this review question!';
+                    container.appendChild(masteredMsg);
+                }
             } else {
                 state.wrong++;
                 state.streak = 0;
+                
+                // Save wrong answer for 7-day review (spaced repetition)
+                saveWrongAnswerForReview(question.id);
+                
+                // Show spaced repetition reminder
+                const reviewMsg = document.createElement('div');
+                reviewMsg.style.cssText = 'background: linear-gradient(135deg, #fff3cd, #ffeeba); padding: 12px; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 600; color: #856404;';
+                reviewMsg.innerHTML = '📅 This question will return for review in <strong>7 days</strong> to help you master it!';
+                container.appendChild(reviewMsg);
             }
             
             // Mark as answered
@@ -5423,6 +5678,12 @@
             document.getElementById('stat-remaining').textContent = 
                 Math.max(0, state.questions.length - state.currentIndex - 1);
             document.getElementById('stat-streak').textContent = state.streak;
+            
+            // Count review questions remaining
+            const reviewRemaining = state.questions
+                .slice(state.currentIndex)
+                .filter(q => q.isReviewQuestion).length;
+            document.getElementById('stat-review').textContent = reviewRemaining;
         };
 
         window.loadAnsweredQuestions = async function() {
