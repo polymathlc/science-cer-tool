@@ -2941,6 +2941,145 @@
             box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
         }
 
+        /* Flag Question Button */
+        .flag-question-btn {
+            background: linear-gradient(135deg, #ff9800, #ffc107);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .flag-question-btn:hover {
+            background: linear-gradient(135deg, #f57c00, #ff9800);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        }
+
+        .flag-question-btn.flagged {
+            background: linear-gradient(135deg, #f44336, #e91e63);
+        }
+
+        .flag-question-btn.flagged:hover {
+            background: linear-gradient(135deg, #d32f2f, #c2185b);
+        }
+
+        /* Flag Modal */
+        .flag-modal-content {
+            max-width: 450px;
+        }
+
+        .flag-modal-content h3 {
+            color: #ff9800;
+            margin-bottom: 1rem;
+        }
+
+        .flag-modal-content textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+
+        .flag-modal-content textarea:focus {
+            border-color: #ff9800;
+            outline: none;
+        }
+
+        .flag-question-preview {
+            background: #fff3e0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #ff9800;
+            font-size: 0.9rem;
+        }
+
+        /* Flagged Questions View */
+        .flagged-question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid #ff9800;
+        }
+
+        .flagged-question-card.resolved {
+            border-left-color: #4CAF50;
+            opacity: 0.7;
+        }
+
+        .flagged-question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .flagged-question-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .flagged-question-meta {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .flagged-question-comment {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-style: italic;
+            color: #555;
+        }
+
+        .flagged-question-comment::before {
+            content: '"';
+            font-size: 1.5rem;
+            color: #ff9800;
+            margin-right: 5px;
+        }
+
+        .flagged-question-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .flagged-status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .flagged-status-badge.pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .flagged-status-badge.resolved {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
         /* View Message Modal Content */
         .view-message-header {
             border-bottom: 1px solid #e0e0e0;
@@ -3363,9 +3502,10 @@
                 font-size: 0.9rem;
             }
 
-            /* Consult and Print buttons on mobile */
+            /* Consult, Print, and Flag buttons on mobile */
             .consult-btn,
-            .print-question-btn {
+            .print-question-btn,
+            .flag-question-btn {
                 padding: 6px 10px;
                 font-size: 0.8rem;
             }
@@ -3931,6 +4071,10 @@
                     <button class="print-btn" onclick="printAll()">🖨️ Print All</button>
                 </div>
                 <div class="header-icons">
+                    <button class="header-icon-btn hidden" onclick="switchTab('flagged', this)" title="Flagged Questions" id="header-flagged-btn">
+                        🚩
+                        <span id="header-flagged-badge" class="header-icon-badge" style="display: none;">0</span>
+                    </button>
                     <button class="header-icon-btn" onclick="switchTab('inbox', this)" title="Inbox" id="header-inbox-btn">
                         📬
                         <span id="header-inbox-badge" class="header-icon-badge" style="display: none;">0</span>
@@ -5047,6 +5191,36 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Flagged Questions View (Admin Only) -->
+                <div id="view-flagged" class="view-content hidden" style="flex: 1;">
+                    <div style="max-width: 900px; margin: 0 auto; padding: 2rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <h2 style="margin: 0; color: #ff9800;">🚩 Flagged Questions</h2>
+                                <p style="margin: 0.5rem 0 0; color: #666;">Questions reported by users as having issues</p>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn" style="background: #ff9800; color: white;" onclick="loadFlaggedQuestions()">🔄 Refresh</button>
+                            </div>
+                        </div>
+
+                        <!-- Flagged Questions Tabs -->
+                        <div style="display: flex; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                            <button id="flagged-tab-pending" class="inbox-tab active" onclick="switchFlaggedTab('pending')" style="border-color: #ff9800;">⏳ Pending</button>
+                            <button id="flagged-tab-resolved" class="inbox-tab" onclick="switchFlaggedTab('resolved')" style="border-color: #4CAF50;">✅ Resolved</button>
+                            <button id="flagged-tab-all" class="inbox-tab" onclick="switchFlaggedTab('all')">📋 All</button>
+                        </div>
+
+                        <!-- Flagged Questions Container -->
+                        <div id="flagged-questions-container">
+                            <div class="inbox-empty" id="flagged-empty-msg">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+                                <p>No flagged questions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
@@ -5135,6 +5309,24 @@
                 <button class="btn-cancel" onclick="hideViewMessageModal()">Close</button>
                 <button id="btn-delete-message" class="btn" style="background: #dc3545; color: white;" onclick="deleteCurrentMessage()">🗑️ Delete</button>
                 <button id="btn-reply-message" class="btn-save" style="background: #0288d1;" onclick="replyToMessage()">↩️ Reply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flag Question Modal -->
+    <div id="flag-question-modal" class="modal-overlay">
+        <div class="modal-box flag-modal-content">
+            <h3>🚩 Flag Question</h3>
+            <div id="flag-question-preview" class="flag-question-preview">
+                <strong>Question:</strong> <span id="flag-question-title"></span>
+            </div>
+            <div class="form-group">
+                <label for="flag-comment-input">What's wrong with this question?</label>
+                <textarea id="flag-comment-input" placeholder="Describe the issue (e.g., incorrect answer, unclear wording, typo, etc.)..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="hideFlagModal()">Cancel</button>
+                <button class="btn-save" onclick="submitFlag()" style="background: #ff9800;">🚩 Submit Flag</button>
             </div>
         </div>
     </div>
@@ -5358,6 +5550,7 @@
             'inbox': '#e1f5fe',
             'lessons': '#fff3e0',
             'lesson-detail': '#fff3e0',
+            'flagged': '#fff3e0',
             // MCQ level colors
             'mcq-P3': '#FFB3BA',
             'mcq-P4': '#BAFFC9',
@@ -8461,10 +8654,23 @@
                         printSingleQuestion(container);
                     };
                     
+                    // Create flag button
+                    const flagBtn = document.createElement('button');
+                    flagBtn.className = 'flag-question-btn';
+                    flagBtn.type = 'button';
+                    flagBtn.innerHTML = '🚩 Flag';
+                    flagBtn.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        showFlagModal(container);
+                    };
+                    
                     if (addBtn) {
                         addBtn.insertAdjacentElement('afterend', consultBtn);
                         consultBtn.insertAdjacentElement('afterend', printBtn);
+                        printBtn.insertAdjacentElement('afterend', flagBtn);
                     } else {
+                        controls.insertBefore(flagBtn, controls.firstChild);
                         controls.insertBefore(printBtn, controls.firstChild);
                         controls.insertBefore(consultBtn, controls.firstChild);
                     }
@@ -8630,6 +8836,244 @@
         };
 
         // =====================================================
+        // FLAG QUESTION FUNCTIONALITY
+        // =====================================================
+
+        window.currentFlaggedQuestion = null;
+        window.flaggedQuestions = [];
+        window.currentFlaggedTab = 'pending';
+
+        // Show flag modal
+        window.showFlagModal = function(questionContainer) {
+            if (!questionContainer) return;
+            
+            window.currentFlaggedQuestion = questionContainer;
+            
+            // Get question title
+            const titleEl = questionContainer.querySelector('h3');
+            const title = titleEl ? titleEl.textContent.trim() : 'Question';
+            
+            document.getElementById('flag-question-title').textContent = title;
+            document.getElementById('flag-comment-input').value = '';
+            document.getElementById('flag-question-modal').classList.add('visible');
+        };
+
+        // Hide flag modal
+        window.hideFlagModal = function() {
+            document.getElementById('flag-question-modal').classList.remove('visible');
+            window.currentFlaggedQuestion = null;
+        };
+
+        // Submit flag (will be connected to Firebase in module)
+        window.submitFlag = async function() {
+            const comment = document.getElementById('flag-comment-input').value.trim();
+            
+            if (!comment) {
+                alert('Please describe what is wrong with the question.');
+                return;
+            }
+            
+            if (!window.currentFlaggedQuestion) {
+                alert('No question selected.');
+                return;
+            }
+            
+            const questionContainer = window.currentFlaggedQuestion;
+            const titleEl = questionContainer.querySelector('h3');
+            const questionTitle = titleEl ? titleEl.textContent.trim() : 'Unknown Question';
+            const questionId = questionContainer.id || `q-${Date.now()}`;
+            
+            // Get question type/category from URL or tab
+            const questionType = window.currentActiveTab || 'cer';
+            
+            // Call Firebase function if available
+            if (window.submitFlagToFirebase) {
+                await window.submitFlagToFirebase({
+                    questionId: questionId,
+                    questionTitle: questionTitle,
+                    questionType: questionType,
+                    comment: comment,
+                    questionHtml: questionContainer.innerHTML
+                });
+            } else {
+                console.log('Flag submitted:', { questionId, questionTitle, questionType, comment });
+                alert('Thank you for reporting this issue! An admin will review it soon.');
+            }
+            
+            hideFlagModal();
+        };
+
+        // Load flagged questions (admin only)
+        window.loadFlaggedQuestions = async function() {
+            if (!window.isAdminUser) return;
+            
+            const container = document.getElementById('flagged-questions-container');
+            container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #888;">Loading flagged questions...</div>';
+            
+            if (window.loadFlaggedQuestionsFromFirebase) {
+                await window.loadFlaggedQuestionsFromFirebase();
+            }
+            
+            renderFlaggedQuestions();
+        };
+
+        // Render flagged questions based on current tab
+        window.renderFlaggedQuestions = function() {
+            const container = document.getElementById('flagged-questions-container');
+            const emptyMsg = document.getElementById('flagged-empty-msg');
+            
+            let filtered = window.flaggedQuestions || [];
+            
+            if (window.currentFlaggedTab === 'pending') {
+                filtered = filtered.filter(q => q.status !== 'resolved');
+            } else if (window.currentFlaggedTab === 'resolved') {
+                filtered = filtered.filter(q => q.status === 'resolved');
+            }
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                if (emptyMsg) {
+                    emptyMsg.style.display = 'block';
+                    emptyMsg.innerHTML = `
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">${window.currentFlaggedTab === 'resolved' ? '✅' : '✨'}</div>
+                        <p>${window.currentFlaggedTab === 'pending' ? 'No pending flags' : window.currentFlaggedTab === 'resolved' ? 'No resolved flags' : 'No flagged questions'}</p>
+                    `;
+                }
+                return;
+            }
+            
+            if (emptyMsg) emptyMsg.style.display = 'none';
+            
+            container.innerHTML = filtered.map(flag => `
+                <div class="flagged-question-card ${flag.status === 'resolved' ? 'resolved' : ''}" data-flag-id="${flag.id}">
+                    <div class="flagged-question-header">
+                        <div>
+                            <div class="flagged-question-title">${flag.questionTitle || 'Unknown Question'}</div>
+                            <div class="flagged-question-meta">
+                                <span>Type: ${flag.questionType || 'N/A'}</span> • 
+                                <span>Flagged by: ${flag.userEmail || 'Anonymous'}</span> • 
+                                <span>${flag.createdAt ? new Date(flag.createdAt.seconds * 1000).toLocaleDateString() : 'Unknown date'}</span>
+                            </div>
+                        </div>
+                        <span class="flagged-status-badge ${flag.status === 'resolved' ? 'resolved' : 'pending'}">
+                            ${flag.status === 'resolved' ? '✅ Resolved' : '⏳ Pending'}
+                        </span>
+                    </div>
+                    <div class="flagged-question-comment">${flag.comment || 'No comment provided'}</div>
+                    <div class="flagged-question-actions">
+                        <button class="btn" style="background: #667eea; color: white;" onclick="viewFlaggedQuestion('${flag.id}')">👁️ View Question</button>
+                        <button class="btn" style="background: #4CAF50; color: white;" onclick="editFlaggedQuestion('${flag.questionId}')">✏️ Edit</button>
+                        ${flag.status !== 'resolved' ? 
+                            `<button class="btn" style="background: #ff9800; color: white;" onclick="resolveFlaggedQuestion('${flag.id}')">✅ Mark Resolved</button>` : 
+                            `<button class="btn" style="background: #9e9e9e; color: white;" onclick="reopenFlaggedQuestion('${flag.id}')">↩️ Reopen</button>`
+                        }
+                        <button class="btn" style="background: #dc3545; color: white;" onclick="deleteFlaggedQuestion('${flag.id}')">🗑️ Delete Flag</button>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        // Switch flagged questions tab
+        window.switchFlaggedTab = function(tab) {
+            window.currentFlaggedTab = tab;
+            
+            // Update tab buttons
+            document.querySelectorAll('[id^="flagged-tab-"]').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`flagged-tab-${tab}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            renderFlaggedQuestions();
+        };
+
+        // View flagged question (show modal with question content)
+        window.viewFlaggedQuestion = function(flagId) {
+            const flag = window.flaggedQuestions.find(f => f.id === flagId);
+            if (!flag || !flag.questionHtml) {
+                alert('Question content not available.');
+                return;
+            }
+            
+            const content = document.getElementById('question-popup-content');
+            content.innerHTML = flag.questionHtml;
+            document.getElementById('question-popup-modal').classList.add('visible');
+        };
+
+        // Edit flagged question (navigate to question)
+        window.editFlaggedQuestion = function(questionId) {
+            // Try to find and scroll to the question
+            const question = document.getElementById(questionId);
+            if (question) {
+                // Switch to the appropriate tab
+                const flag = window.flaggedQuestions.find(f => f.questionId === questionId);
+                if (flag && flag.questionType) {
+                    switchTab(flag.questionType, document.querySelector(`.tab-btn[data-type="${flag.questionType}"]`));
+                }
+                setTimeout(() => {
+                    question.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    question.style.boxShadow = '0 0 20px rgba(255, 152, 0, 0.5)';
+                    setTimeout(() => question.style.boxShadow = '', 3000);
+                }, 300);
+            } else {
+                alert('Could not locate question. It may have been deleted or is from a different level.');
+            }
+        };
+
+        // Resolve flagged question (will be connected to Firebase in module)
+        window.resolveFlaggedQuestion = async function(flagId) {
+            if (window.updateFlagStatusInFirebase) {
+                await window.updateFlagStatusInFirebase(flagId, 'resolved');
+            }
+            
+            // Update local data
+            const flag = window.flaggedQuestions.find(f => f.id === flagId);
+            if (flag) flag.status = 'resolved';
+            
+            renderFlaggedQuestions();
+            updateFlaggedCount();
+        };
+
+        // Reopen flagged question
+        window.reopenFlaggedQuestion = async function(flagId) {
+            if (window.updateFlagStatusInFirebase) {
+                await window.updateFlagStatusInFirebase(flagId, 'pending');
+            }
+            
+            const flag = window.flaggedQuestions.find(f => f.id === flagId);
+            if (flag) flag.status = 'pending';
+            
+            renderFlaggedQuestions();
+            updateFlaggedCount();
+        };
+
+        // Delete flagged question (will be connected to Firebase in module)
+        window.deleteFlaggedQuestion = async function(flagId) {
+            if (!confirm('Are you sure you want to delete this flag? This cannot be undone.')) return;
+            
+            if (window.deleteFlagFromFirebase) {
+                await window.deleteFlagFromFirebase(flagId);
+            }
+            
+            window.flaggedQuestions = window.flaggedQuestions.filter(f => f.id !== flagId);
+            renderFlaggedQuestions();
+            updateFlaggedCount();
+        };
+
+        // Update flagged count badge
+        window.updateFlaggedCount = function() {
+            const badge = document.getElementById('header-flagged-badge');
+            if (!badge) return;
+            
+            const pendingCount = (window.flaggedQuestions || []).filter(f => f.status !== 'resolved').length;
+            
+            if (pendingCount > 0) {
+                badge.textContent = pendingCount > 99 ? '99+' : pendingCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        };
+
+        // =====================================================
         // TAB & VIEW SWITCHING
         // =====================================================
 
@@ -8642,7 +9086,7 @@
             }
 
             // Update button states
-            const allBtns = document.querySelectorAll('.tab-btn, #btn-sidebar-admin, #btn-sidebar-worksheet, #btn-sidebar-saved-worksheets, #btn-sidebar-practice, #btn-sidebar-lessons, #btn-sidebar-progress, #header-inbox-btn');
+            const allBtns = document.querySelectorAll('.tab-btn, #btn-sidebar-admin, #btn-sidebar-worksheet, #btn-sidebar-saved-worksheets, #btn-sidebar-practice, #btn-sidebar-lessons, #btn-sidebar-progress, #header-inbox-btn, #header-flagged-btn');
             allBtns.forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
@@ -8665,7 +9109,7 @@
             // List of all OEQ tabs
             const oeqTabs = ['cer', 'definition', 'single-relationship', 'double-relationship', 'fairness', 'reliability', 'accuracy', 'constant-variable', 'explanation', 'control-setup'];
             // List of special tabs (admin, worksheet, etc)
-            const specialTabs = ['admin', 'worksheet', 'saved-worksheets', 'practice', 'inbox', 'lessons', 'lesson-detail', 'student-progress'];
+            const specialTabs = ['admin', 'worksheet', 'saved-worksheets', 'practice', 'inbox', 'lessons', 'lesson-detail', 'student-progress', 'flagged'];
             
             if (oeqSidebarContent && mcqSidebarContent) {
                 if (oeqTabs.includes(type)) {
@@ -8729,6 +9173,11 @@
             // Update version display when switching to admin tab
             if (type === 'admin') {
                 updateVersionDisplay();
+            }
+            
+            // Load flagged questions when switching to flagged tab
+            if (type === 'flagged') {
+                loadFlaggedQuestions();
             }
         };
         
@@ -11747,6 +12196,7 @@
                     <button class="btn-worksheet-add ${isInWorksheet ? 'added' : ''}" onclick="toggleWorksheetItem(this)">${isInWorksheet ? '✅ Added' : '➕ Worksheet'}</button>
                     <button class="consult-btn" onclick="showConsultModal(this)">💬 Ask Mr Chung</button>
                     <button class="print-question-btn" onclick="printSingleQuestion(this.closest('.question-container'))">🖨️ Print</button>
+                    <button class="flag-question-btn" onclick="showFlagModal(this.closest('.question-container'))">🚩 Flag</button>
                 `;
                 container.appendChild(bar);
             } else {
@@ -11766,6 +12216,14 @@
                     printBtn.onclick = function() { printSingleQuestion(this.closest('.question-container')); };
                     printBtn.innerHTML = '🖨️ Print';
                     bar.appendChild(printBtn);
+                }
+                // Add flag button if missing
+                if (bar && !bar.querySelector('.flag-question-btn')) {
+                    const flagBtn = document.createElement('button');
+                    flagBtn.className = 'flag-question-btn';
+                    flagBtn.onclick = function() { showFlagModal(this.closest('.question-container')); };
+                    flagBtn.innerHTML = '🚩 Flag';
+                    bar.appendChild(flagBtn);
                 }
             }
 
@@ -12012,7 +12470,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, collection, getDocs, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, increment, collection, getDocs, query, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAUSI3Uh28IeqASEp0JhH4QPaVt-O3meBo",
@@ -12251,6 +12709,78 @@
                     }
                 }
 
+                // =====================================================
+                // FLAGGED QUESTIONS FIREBASE FUNCTIONS
+                // =====================================================
+                
+                // Submit flag to Firebase
+                window.submitFlagToFirebase = async function(flagData) {
+                    try {
+                        const flagId = `flag-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                        await setDoc(doc(db, "flagged_questions", flagId), {
+                            ...flagData,
+                            id: flagId,
+                            userEmail: user.email,
+                            userId: user.uid,
+                            status: 'pending',
+                            createdAt: new Date(),
+                            updatedAt: new Date()
+                        });
+                        alert('Thank you for reporting this issue! An admin will review it soon.');
+                    } catch (e) {
+                        console.error("Error submitting flag:", e);
+                        alert("Error submitting flag. Please try again.");
+                    }
+                };
+
+                // Load flagged questions from Firebase (admin only)
+                window.loadFlaggedQuestionsFromFirebase = async function() {
+                    try {
+                        const flagsRef = collection(db, "flagged_questions");
+                        const snapshot = await getDocs(flagsRef);
+                        
+                        window.flaggedQuestions = [];
+                        snapshot.forEach(doc => {
+                            window.flaggedQuestions.push({ id: doc.id, ...doc.data() });
+                        });
+                        
+                        // Sort by createdAt descending
+                        window.flaggedQuestions.sort((a, b) => {
+                            const dateA = a.createdAt?.seconds || 0;
+                            const dateB = b.createdAt?.seconds || 0;
+                            return dateB - dateA;
+                        });
+                        
+                        window.updateFlaggedCount();
+                    } catch (e) {
+                        console.error("Error loading flagged questions:", e);
+                    }
+                };
+
+                // Update flag status in Firebase
+                window.updateFlagStatusInFirebase = async function(flagId, status) {
+                    try {
+                        await updateDoc(doc(db, "flagged_questions", flagId), {
+                            status: status,
+                            updatedAt: new Date(),
+                            resolvedBy: status === 'resolved' ? user.email : null
+                        });
+                    } catch (e) {
+                        console.error("Error updating flag status:", e);
+                        alert("Error updating flag. Please try again.");
+                    }
+                };
+
+                // Delete flag from Firebase
+                window.deleteFlagFromFirebase = async function(flagId) {
+                    try {
+                        await deleteDoc(doc(db, "flagged_questions", flagId));
+                    } catch (e) {
+                        console.error("Error deleting flag:", e);
+                        alert("Error deleting flag. Please try again.");
+                    }
+                };
+
                 // Check admin status
                 const emailParts = user.email.toLowerCase().split('@');
                 const handle = emailParts[1] === 'gmail.com' ? emailParts[0].replace(/\./g, '') : emailParts[0];
@@ -12262,10 +12792,19 @@
                     window.isAdminUser = true;
                     document.getElementById('btn-sidebar-admin').classList.remove('hidden');
                     document.getElementById('btn-sidebar-progress').classList.remove('hidden');
+                    document.getElementById('header-flagged-btn').classList.remove('hidden');
+                    
+                    // Load flagged questions count for admin
+                    if (window.loadFlaggedQuestionsFromFirebase) {
+                        window.loadFlaggedQuestionsFromFirebase().then(() => {
+                            window.updateFlaggedCount();
+                        });
+                    }
                 } else {
                     window.isAdminUser = false;
                     document.getElementById('btn-sidebar-admin').classList.add('hidden');
                     document.getElementById('btn-sidebar-progress').classList.add('hidden');
+                    document.getElementById('header-flagged-btn').classList.add('hidden');
                 }
 
                 window.loadCustomQuestions();
