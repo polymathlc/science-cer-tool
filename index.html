@@ -2736,6 +2736,27 @@
             box-shadow: 0 4px 12px rgba(2, 136, 209, 0.3);
         }
 
+        .print-question-btn {
+            background: linear-gradient(135deg, #5c6bc0, #7986cb);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .print-question-btn:hover {
+            background: linear-gradient(135deg, #3f51b5, #5c6bc0);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
+        }
+
         /* View Message Modal Content */
         .view-message-header {
             border-bottom: 1px solid #e0e0e0;
@@ -3140,6 +3161,13 @@
             .inbox-tab {
                 padding: 8px 16px;
                 font-size: 0.9rem;
+            }
+
+            /* Consult and Print buttons on mobile */
+            .consult-btn,
+            .print-question-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
             }
 
             /* Admin form */
@@ -8117,7 +8145,7 @@
         // Add Consult button to all question containers
         window.addConsultButtons = function() {
             document.querySelectorAll('.question-container').forEach(container => {
-                // Check if button already exists
+                // Check if buttons already exist
                 if (container.querySelector('.consult-btn')) return;
                 
                 // Find the controls div or create button placement
@@ -8126,6 +8154,7 @@
                     // Check if add-to-worksheet button exists
                     const addBtn = controls.querySelector('.add-to-worksheet-btn, button[onclick*="addToWorksheet"]');
                     
+                    // Create consult button
                     const consultBtn = document.createElement('button');
                     consultBtn.className = 'consult-btn';
                     consultBtn.type = 'button';
@@ -8136,13 +8165,150 @@
                         showConsultModal(this);
                     };
                     
+                    // Create print button
+                    const printBtn = document.createElement('button');
+                    printBtn.className = 'print-question-btn';
+                    printBtn.type = 'button';
+                    printBtn.innerHTML = '🖨️ Print';
+                    printBtn.onclick = function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        printSingleQuestion(container);
+                    };
+                    
                     if (addBtn) {
                         addBtn.insertAdjacentElement('afterend', consultBtn);
+                        consultBtn.insertAdjacentElement('afterend', printBtn);
                     } else {
+                        controls.insertBefore(printBtn, controls.firstChild);
                         controls.insertBefore(consultBtn, controls.firstChild);
                     }
                 }
             });
+        };
+
+        // Print a single question
+        window.printSingleQuestion = function(questionContainer) {
+            if (!questionContainer) return;
+            
+            // Get question title
+            const titleEl = questionContainer.querySelector('h3');
+            const title = titleEl ? titleEl.textContent.trim() : 'Question';
+            
+            // Clone the question content
+            const clone = questionContainer.cloneNode(true);
+            
+            // Remove buttons and controls from the clone
+            clone.querySelectorAll('.controls, .consult-btn, .print-question-btn, .add-to-worksheet-btn, .worksheet-added-btn, button').forEach(el => el.remove());
+            
+            // Remove any hidden elements
+            clone.querySelectorAll('.hidden, [style*="display: none"]').forEach(el => el.remove());
+            
+            // Create print window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${title}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+                    <style>
+                        * {
+                            box-sizing: border-box;
+                        }
+                        body {
+                            font-family: 'Poppins', 'Segoe UI', sans-serif;
+                            padding: 2rem;
+                            max-width: 800px;
+                            margin: 0 auto;
+                            color: #333;
+                            line-height: 1.6;
+                        }
+                        h3 {
+                            color: #1976d2;
+                            border-bottom: 2px solid #1976d2;
+                            padding-bottom: 10px;
+                            margin-top: 0;
+                        }
+                        .question-body {
+                            background: #f8f9fa;
+                            padding: 1.5rem;
+                            border-radius: 12px;
+                            border-left: 4px solid #1976d2;
+                        }
+                        .answer-box, .answer-template {
+                            background: white;
+                            padding: 1rem;
+                            border-radius: 8px;
+                            margin: 1rem 0;
+                        }
+                        input[type="text"], .blank-input {
+                            border: none;
+                            border-bottom: 2px solid #333;
+                            background: transparent;
+                            min-width: 100px;
+                            padding: 2px 5px;
+                        }
+                        .header-info {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 1.5rem;
+                            padding-bottom: 1rem;
+                            border-bottom: 1px dashed #ccc;
+                        }
+                        table {
+                            border-collapse: collapse;
+                            width: 100%;
+                            margin: 1rem 0;
+                        }
+                        td, th {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                        }
+                        img {
+                            max-width: 100%;
+                            height: auto;
+                        }
+                        .print-btn-container {
+                            text-align: center;
+                            margin-top: 2rem;
+                        }
+                        .print-btn-container button {
+                            padding: 12px 24px;
+                            background: #1976d2;
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 1rem;
+                            font-weight: 600;
+                        }
+                        .print-btn-container button:hover {
+                            background: #1565c0;
+                        }
+                        @media print {
+                            .print-btn-container {
+                                display: none;
+                            }
+                            body {
+                                padding: 0;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-info">
+                        <span>Name: _______________________</span>
+                        <span>Date: _______________</span>
+                    </div>
+                    ${clone.innerHTML}
+                    <div class="print-btn-container">
+                        <button onclick="window.print()">🖨️ Print Question</button>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         };
 
         // =====================================================
@@ -11229,6 +11395,7 @@
                 bar.innerHTML = `
                     <button class="btn-worksheet-add ${isInWorksheet ? 'added' : ''}" onclick="toggleWorksheetItem(this)">${isInWorksheet ? '✅ Added' : '➕ Worksheet'}</button>
                     <button class="consult-btn" onclick="showConsultModal(this)">💬 Ask Mr Chung</button>
+                    <button class="print-question-btn" onclick="printSingleQuestion(this.closest('.question-container'))">🖨️ Print</button>
                 `;
                 container.appendChild(bar);
             } else {
@@ -11240,6 +11407,14 @@
                     consultBtn.onclick = function() { showConsultModal(this); };
                     consultBtn.innerHTML = '💬 Ask Mr Chung';
                     bar.appendChild(consultBtn);
+                }
+                // Add print button if missing
+                if (bar && !bar.querySelector('.print-question-btn')) {
+                    const printBtn = document.createElement('button');
+                    printBtn.className = 'print-question-btn';
+                    printBtn.onclick = function() { printSingleQuestion(this.closest('.question-container')); };
+                    printBtn.innerHTML = '🖨️ Print';
+                    bar.appendChild(printBtn);
                 }
             }
 
