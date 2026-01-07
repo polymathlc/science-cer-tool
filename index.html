@@ -83,7 +83,9 @@
         }
 
         .sidebar-nav button {
-            display: block;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
             padding: 0.9rem 1.5rem;
             margin-bottom: 1rem;
@@ -108,6 +110,32 @@
         .sidebar-nav button:hover {
             background-color: var(--blue-light);
             border-color: var(--primary-blue);
+        }
+
+        /* Sidebar Topic Count Badge */
+        .sidebar-topic-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.08);
+            margin-left: auto;
+        }
+
+        .sidebar-nav button.active .sidebar-topic-badge {
+            background: rgba(0, 0, 0, 0.12);
+            color: rgba(0, 0, 0, 0.65);
+        }
+
+        .sidebar-nav button:hover .sidebar-topic-badge {
+            background: rgba(0, 123, 255, 0.15);
+            color: var(--primary-blue);
         }
 
         .main-content,
@@ -717,6 +745,32 @@
 
         .tab-btn[data-type="control-setup"] {
             background-color: #E0BBE4;
+        }
+
+        .tab-btn[data-type="definition"] {
+            background-color: #ADD8E6;
+        }
+
+        /* Tab Question Count Badge */
+        .tab-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            margin-left: 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.12);
+            vertical-align: middle;
+        }
+
+        .tab-btn.active .tab-count-badge {
+            background: rgba(0, 0, 0, 0.18);
+            color: rgba(0, 0, 0, 0.7);
         }
 
         .tab-btn[data-type="definition"] {
@@ -3051,6 +3105,23 @@
                 font-size: 0.95rem;
             }
 
+            /* Sidebar topic badges on mobile */
+            .sidebar-topic-badge {
+                min-width: 22px;
+                height: 22px;
+                font-size: 0.7rem;
+                padding: 0 6px;
+            }
+
+            /* Tab count badges on mobile */
+            .tab-count-badge {
+                min-width: 18px;
+                height: 18px;
+                font-size: 0.65rem;
+                padding: 0 5px;
+                margin-left: 4px;
+            }
+
             /* Practice mode stats */
             #practice-stats {
                 grid-template-columns: repeat(2, 1fr) !important;
@@ -4982,6 +5053,64 @@
         };
 
         // =====================================================
+        // QUESTION COUNT PER TAB TYPE
+        // =====================================================
+        
+        // Count questions in a specific tab type
+        window.countQuestionsForType = function(tabType) {
+            const viewContainer = document.getElementById(`view-${tabType}`);
+            if (!viewContainer) return 0;
+            
+            // Count all question-container elements within this view
+            const questions = viewContainer.querySelectorAll('.question-container');
+            return questions.length;
+        };
+
+        // Get all OEQ tab types with their question counts
+        window.getOeqTabsWithCounts = function() {
+            const tabTypes = [
+                { type: 'cer', name: 'CER' },
+                { type: 'definition', name: 'Definition' },
+                { type: 'single-relationship', name: 'Single Relationship' },
+                { type: 'double-relationship', name: 'Double Relationship' },
+                { type: 'fairness', name: 'Fairness' },
+                { type: 'reliability', name: 'Reliability' },
+                { type: 'accuracy', name: 'Accuracy' },
+                { type: 'constant-variable', name: 'Constant Variable' },
+                { type: 'explanation', name: 'Explanation' },
+                { type: 'control-setup', name: 'Control Set-up' }
+            ];
+            
+            return tabTypes.map(tab => ({
+                ...tab,
+                count: countQuestionsForType(tab.type)
+            }));
+        };
+
+        // Render OEQ header tabs with question count badges
+        window.renderOeqHeaderTabs = function(activeType = 'cer') {
+            const container = document.getElementById('header-tabs-container');
+            if (!container) return;
+            
+            const tabs = getOeqTabsWithCounts();
+            
+            container.innerHTML = tabs.map(tab => {
+                const activeClass = tab.type === activeType ? 'active' : '';
+                const countBadge = `<span class="tab-count-badge">${tab.count}</span>`;
+                return `<button class="tab-btn ${activeClass}" data-type="${tab.type}" onclick="switchTab('${tab.type}', this)">${tab.name}${countBadge}</button>`;
+            }).join('');
+        };
+
+        // Update tab counts (call after adding/removing questions)
+        window.updateTabCounts = function() {
+            // Only update if in OEQ mode
+            if (window.currentMode !== 'mcq') {
+                const activeTab = window.currentActiveTab || 'cer';
+                renderOeqHeaderTabs(activeTab);
+            }
+        };
+
+        // =====================================================
         // OEQ TOPICS BY TAB TYPE
         // =====================================================
         // Maps tab type to array of {name, id} objects
@@ -5040,13 +5169,27 @@
 
             nav.innerHTML = topics.map((topic, idx) => {
                 const activeClass = idx === 0 ? 'active' : '';
-                return `<button id="btn-${topic.id}" class="${activeClass}" onclick="selectOeqTopic('${tabType}', '${topic.id}', this)">${topic.name}</button>`;
+                // Count questions for this specific topic
+                const questionCount = countQuestionsForTopic(tabType, topic.id);
+                const countBadge = `<span class="sidebar-topic-badge">${questionCount}</span>`;
+                return `<button id="btn-${topic.id}" class="${activeClass}" onclick="selectOeqTopic('${tabType}', '${topic.id}', this)">${topic.name}${countBadge}</button>`;
             }).join('');
 
             // Select first topic by default
             if (topics.length > 0) {
                 selectOeqTopic(tabType, topics[0].id, nav.querySelector('button'));
             }
+        };
+
+        // Count questions for a specific topic within a tab type
+        window.countQuestionsForTopic = function(tabType, topicId) {
+            const viewContainer = document.getElementById(`view-${tabType}`);
+            if (!viewContainer) return 0;
+            
+            const topicContainer = viewContainer.querySelector(`#topic-${topicId}`);
+            if (!topicContainer) return 0;
+            
+            return topicContainer.querySelectorAll('.question-container').length;
         };
 
         // Select an OEQ topic and show its content
@@ -8168,7 +8311,7 @@
             } else {
                 oeqSidebar.classList.remove('hidden');
                 mcqSidebar.classList.add('hidden');
-                container.innerHTML = `<button class="tab-btn active" data-type="cer" onclick="switchTab('cer', this)">CER</button><button class="tab-btn" data-type="definition" onclick="switchTab('definition', this)">Definition</button><button class="tab-btn" data-type="single-relationship" onclick="switchTab('single-relationship', this)">Single Relationship</button><button class="tab-btn" data-type="double-relationship" onclick="switchTab('double-relationship', this)">Double Relationship</button><button class="tab-btn" data-type="fairness" onclick="switchTab('fairness', this)">Fairness</button><button class="tab-btn" data-type="reliability" onclick="switchTab('reliability', this)">Reliability</button><button class="tab-btn" data-type="accuracy" onclick="switchTab('accuracy', this)">Accuracy</button><button class="tab-btn" data-type="constant-variable" onclick="switchTab('constant-variable', this)">Constant Variable</button><button class="tab-btn" data-type="explanation" onclick="switchTab('explanation', this)">Explanation</button><button class="tab-btn" data-type="control-setup" onclick="switchTab('control-setup', this)">Control Set-up</button>`;
+                renderOeqHeaderTabs('cer');
                 switchTab('cer', document.querySelector('.tab-btn[data-type="cer"]'));
                 if (window.isAdminUser) document.getElementById('btn-sidebar-admin').classList.remove('hidden');
             }
@@ -8188,7 +8331,14 @@
                 const activeClass = i === 0 ? 'active' : '';
                 const color = pastelColors[i % pastelColors.length];
                 if (i === 0) window.currentMcqTopic = topicId;
-                return `<button class="tab-btn ${activeClass}" onclick="switchMcqTopicAndTab('${topicId}', this)" style="background-color: ${color};">${t}</button>`;
+                
+                // Count questions for this MCQ topic
+                const topicContainerId = `topic-mcq-${topicId}`;
+                const topicContainer = document.getElementById(topicContainerId);
+                const questionCount = topicContainer ? topicContainer.querySelectorAll('.question-container').length : 0;
+                const countBadge = `<span class="tab-count-badge">${questionCount}</span>`;
+                
+                return `<button class="tab-btn ${activeClass}" onclick="switchMcqTopicAndTab('${topicId}', this)" style="background-color: ${color};">${t}${countBadge}</button>`;
             }).join('');
 
             // Set initial header line color to first topic's color
@@ -10386,6 +10536,11 @@
                     await window.loadCustomQuestions();
                 }
                 
+                // Update tab counts after adding new question
+                if (window.updateTabCounts) {
+                    setTimeout(() => updateTabCounts(), 100);
+                }
+                
                 // Scroll to title and focus for next question entry
                 const titleInput = document.getElementById('admin-title');
                 if (titleInput) {
@@ -11313,6 +11468,9 @@
             const oeqLabel = document.querySelector('.ios-toggle-label:first-of-type');
             if (oeqLabel) oeqLabel.classList.add('active');
 
+            // Initialize header tabs with question counts
+            renderOeqHeaderTabs('cer');
+
             // Update worksheet UI
             updateWorksheetUI();
         });
@@ -11586,6 +11744,11 @@
                     window.updateWorksheetUI();
                     window.addConsultButtons();
                     window.updateUnreadCount();
+                    
+                    // Update tab counts after questions are loaded
+                    if (window.updateTabCounts) {
+                        window.updateTabCounts();
+                    }
                     
                     // Start checking for updates
                     window.startUpdateChecker();
