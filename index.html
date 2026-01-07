@@ -4773,6 +4773,60 @@
                             </div>
                         </div>
                         
+                        <!-- Question Ratings Dashboard (Admin Only) -->
+                        <div id="ratings-dashboard-section" style="background: linear-gradient(135deg, #f3e5f515 0%, #e1bee715 100%); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid #ce93d830;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;">
+                                <div>
+                                    <strong style="color: #7b1fa2;">📊 Question Ratings Dashboard</strong>
+                                    <div style="font-size: 0.8rem; color: #666; margin-top: 2px;">View and manage question difficulty ratings (Elo-based)</div>
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <button onclick="loadRatingsDashboard()" class="btn" style="background: #7b1fa2; color: white; font-size: 0.85rem; padding: 8px 16px;">
+                                        🔄 Refresh Ratings
+                                    </button>
+                                    <button onclick="toggleRatingsDashboard()" class="btn" style="background: #9c27b0; color: white; font-size: 0.85rem; padding: 8px 16px;" id="btn-toggle-ratings">
+                                        📈 Show Dashboard
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="ratings-dashboard-content" class="hidden">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+                                    <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #7b1fa2;" id="stat-total-questions">0</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Total Questions</div>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #4CAF50;" id="stat-rated-questions">0</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Rated Questions</div>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #ff9800;" id="stat-avg-rating">1200</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Avg Rating</div>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #2196F3;" id="stat-total-attempts">0</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Total Attempts</div>
+                                    </div>
+                                </div>
+                                <div style="max-height: 400px; overflow-y: auto; background: white; border-radius: 8px; border: 1px solid #e0e0e0;">
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                                        <thead style="position: sticky; top: 0; background: #f5f5f5;">
+                                            <tr>
+                                                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #e0e0e0;">Question</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Rating</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Attempts</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Correct %</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Confidence</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ratings-table-body">
+                                            <tr><td colspan="5" style="padding: 20px; text-align: center; color: #888;">Click "Refresh Ratings" to load data</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div id="editing-indicator" class="hidden" style="background: #fff3cd; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; color: #856404; display: flex; justify-content: space-between; align-items: center;">
                             <span>✏️ <strong>Editing:</strong> <span id="editing-question-name"></span></span>
                             <button onclick="cancelEditing()" style="background: #856404; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">Cancel Edit</button>
@@ -6760,6 +6814,268 @@
             wrongAnswersForReview: {} // {questionId: timestamp} - questions to review after 7 days
         };
 
+        // =====================================================
+        // ELO RATING SYSTEM FOR DELIBERATE PRACTICE
+        // =====================================================
+        // Based on Elo chess rating system adapted for education
+        // Questions and students both have ratings
+        // More attempts = more accurate ratings (confidence)
+        
+        // Rating constants
+        const RATING_CONFIG = {
+            DEFAULT_QUESTION_RATING: 1200,  // Starting difficulty for questions
+            DEFAULT_STUDENT_RATING: 1000,   // Starting rating for students
+            MIN_RATING: 400,                // Minimum possible rating
+            MAX_RATING: 2400,               // Maximum possible rating
+            K_FACTOR_BASE: 32,              // Base K-factor for rating changes
+            K_FACTOR_MIN: 8,                // Minimum K-factor (after many attempts)
+            GROWTH_ZONE_MIN: 0.35,          // Minimum expected success rate for growth zone
+            GROWTH_ZONE_MAX: 0.75,          // Maximum expected success rate for growth zone
+            CONFIDENCE_THRESHOLD: 20        // Number of attempts for full confidence
+        };
+
+        // Calculate expected probability of correct answer
+        // Uses standard Elo formula: E = 1 / (1 + 10^((Rq - Rs) / 400))
+        window.calculateExpectedSuccess = function(studentRating, questionRating) {
+            const exponent = (questionRating - studentRating) / 400;
+            return 1 / (1 + Math.pow(10, exponent));
+        };
+
+        // Calculate K-factor based on number of attempts (decreases with more data)
+        window.calculateKFactor = function(attempts) {
+            if (attempts <= 0) return RATING_CONFIG.K_FACTOR_BASE;
+            
+            // K-factor decreases as confidence increases
+            const confidence = Math.min(attempts / RATING_CONFIG.CONFIDENCE_THRESHOLD, 1);
+            return Math.max(
+                RATING_CONFIG.K_FACTOR_MIN,
+                RATING_CONFIG.K_FACTOR_BASE * (1 - confidence * 0.75)
+            );
+        };
+
+        // Update ratings after an answer
+        // Returns { newStudentRating, newQuestionRating, ratingChange }
+        window.calculateRatingUpdate = function(studentRating, questionRating, isCorrect, studentAttempts, questionAttempts) {
+            const expected = calculateExpectedSuccess(studentRating, questionRating);
+            const actual = isCorrect ? 1 : 0;
+            
+            // Calculate K-factors
+            const studentK = calculateKFactor(studentAttempts);
+            const questionK = calculateKFactor(questionAttempts);
+            
+            // Calculate rating changes
+            const studentChange = studentK * (actual - expected);
+            const questionChange = -questionK * (actual - expected) * 0.5; // Questions change more slowly
+            
+            // Apply changes with bounds
+            let newStudentRating = Math.round(studentRating + studentChange);
+            let newQuestionRating = Math.round(questionRating + questionChange);
+            
+            // Enforce bounds
+            newStudentRating = Math.max(RATING_CONFIG.MIN_RATING, Math.min(RATING_CONFIG.MAX_RATING, newStudentRating));
+            newQuestionRating = Math.max(RATING_CONFIG.MIN_RATING, Math.min(RATING_CONFIG.MAX_RATING, newQuestionRating));
+            
+            return {
+                newStudentRating,
+                newQuestionRating,
+                studentChange: Math.round(studentChange),
+                questionChange: Math.round(questionChange),
+                expected: Math.round(expected * 100)
+            };
+        };
+
+        // Check if a question is in the student's growth zone
+        window.isInGrowthZone = function(studentRating, questionRating) {
+            const expected = calculateExpectedSuccess(studentRating, questionRating);
+            return expected >= RATING_CONFIG.GROWTH_ZONE_MIN && expected <= RATING_CONFIG.GROWTH_ZONE_MAX;
+        };
+
+        // Get difficulty label based on expected success rate
+        window.getDifficultyLabel = function(studentRating, questionRating) {
+            const expected = calculateExpectedSuccess(studentRating, questionRating);
+            
+            if (expected >= 0.85) return { label: 'Easy', color: '#4CAF50', icon: '🟢' };
+            if (expected >= 0.70) return { label: 'Moderate', color: '#8BC34A', icon: '🟡' };
+            if (expected >= 0.50) return { label: 'Challenging', color: '#FF9800', icon: '🟠' };
+            if (expected >= 0.35) return { label: 'Hard', color: '#f44336', icon: '🔴' };
+            return { label: 'Very Hard', color: '#9C27B0', icon: '⚫' };
+        };
+
+        // Get rating tier name
+        window.getRatingTier = function(rating) {
+            if (rating >= 2000) return { tier: 'Master', color: '#9C27B0' };
+            if (rating >= 1600) return { tier: 'Expert', color: '#673AB7' };
+            if (rating >= 1400) return { tier: 'Advanced', color: '#3F51B5' };
+            if (rating >= 1200) return { tier: 'Intermediate', color: '#2196F3' };
+            if (rating >= 1000) return { tier: 'Developing', color: '#4CAF50' };
+            if (rating >= 800) return { tier: 'Beginner', color: '#FF9800' };
+            return { tier: 'Novice', color: '#f44336' };
+        };
+
+        // Question ratings cache (loaded from Firebase)
+        window.questionRatings = {};
+
+        // Load question ratings from Firebase
+        window.loadQuestionRatings = async function() {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user || !window.db_fs) return;
+                
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const ratingsRef = collection(window.db_fs, "question_ratings");
+                const snapshot = await getDocs(ratingsRef);
+                
+                window.questionRatings = {};
+                snapshot.forEach(doc => {
+                    window.questionRatings[doc.id] = doc.data();
+                });
+                
+                console.log(`Loaded ${Object.keys(window.questionRatings).length} question ratings`);
+            } catch (e) {
+                console.error("Error loading question ratings:", e);
+            }
+        };
+
+        // Get rating for a specific question
+        window.getQuestionRating = function(questionId) {
+            if (window.questionRatings[questionId]) {
+                return window.questionRatings[questionId];
+            }
+            return {
+                rating: RATING_CONFIG.DEFAULT_QUESTION_RATING,
+                attempts: 0,
+                correctCount: 0,
+                lastUpdated: null
+            };
+        };
+
+        // Update question rating in Firebase
+        window.updateQuestionRating = async function(questionId, newRating, isCorrect) {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user || !window.db_fs) return;
+                
+                const { doc, setDoc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                
+                // Get current data
+                const currentData = getQuestionRating(questionId);
+                
+                const updatedData = {
+                    rating: newRating,
+                    attempts: (currentData.attempts || 0) + 1,
+                    correctCount: (currentData.correctCount || 0) + (isCorrect ? 1 : 0),
+                    lastUpdated: new Date()
+                };
+                
+                await setDoc(doc(window.db_fs, "question_ratings", questionId), updatedData);
+                
+                // Update local cache
+                window.questionRatings[questionId] = updatedData;
+            } catch (e) {
+                console.error("Error updating question rating:", e);
+            }
+        };
+
+        // Get student rating from Firebase
+        window.getStudentRating = async function(studentIndex) {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user || !window.db_fs) return RATING_CONFIG.DEFAULT_STUDENT_RATING;
+                
+                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const userDoc = await getDoc(doc(window.db_fs, "users", user.uid));
+                
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    const students = data.students || [];
+                    
+                    if (students[studentIndex] && students[studentIndex].rating) {
+                        return {
+                            rating: students[studentIndex].rating,
+                            attempts: students[studentIndex].totalAttempts || 0
+                        };
+                    }
+                }
+                
+                return {
+                    rating: RATING_CONFIG.DEFAULT_STUDENT_RATING,
+                    attempts: 0
+                };
+            } catch (e) {
+                console.error("Error getting student rating:", e);
+                return {
+                    rating: RATING_CONFIG.DEFAULT_STUDENT_RATING,
+                    attempts: 0
+                };
+            }
+        };
+
+        // Update student rating in Firebase
+        window.updateStudentRating = async function(studentIndex, newRating, isCorrect) {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user || !window.db_fs) return;
+                
+                const { doc, getDoc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const userDoc = await getDoc(doc(window.db_fs, "users", user.uid));
+                
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    const students = data.students || [];
+                    
+                    if (students[studentIndex]) {
+                        students[studentIndex].rating = newRating;
+                        students[studentIndex].totalAttempts = (students[studentIndex].totalAttempts || 0) + 1;
+                        students[studentIndex].correctCount = (students[studentIndex].correctCount || 0) + (isCorrect ? 1 : 0);
+                        students[studentIndex].lastPractice = new Date();
+                        
+                        await updateDoc(doc(window.db_fs, "users", user.uid), { students });
+                        
+                        // Update local state
+                        if (window.practiceState.currentStudent) {
+                            window.practiceState.currentStudent.rating = newRating;
+                            window.practiceState.currentStudent.attempts = students[studentIndex].totalAttempts;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Error updating student rating:", e);
+            }
+        };
+
+        // Sort questions by priority for deliberate practice
+        window.sortQuestionsByPriority = function(questions, studentRating) {
+            return questions.sort((a, b) => {
+                // Priority 1: Review questions (spaced repetition)
+                if (a.isReviewQuestion !== b.isReviewQuestion) {
+                    return a.isReviewQuestion ? -1 : 1;
+                }
+                
+                // Priority 2: New questions (never attempted)
+                if (a.answered !== b.answered) {
+                    return a.answered ? 1 : -1;
+                }
+                
+                // Priority 3: Growth zone questions
+                const aInGrowthZone = isInGrowthZone(studentRating, a.questionRating || RATING_CONFIG.DEFAULT_QUESTION_RATING);
+                const bInGrowthZone = isInGrowthZone(studentRating, b.questionRating || RATING_CONFIG.DEFAULT_QUESTION_RATING);
+                
+                if (aInGrowthZone !== bInGrowthZone) {
+                    return aInGrowthZone ? -1 : 1;
+                }
+                
+                // Priority 4: Questions closest to optimal challenge (55% expected success)
+                const optimalExpected = 0.55;
+                const aExpected = calculateExpectedSuccess(studentRating, a.questionRating || RATING_CONFIG.DEFAULT_QUESTION_RATING);
+                const bExpected = calculateExpectedSuccess(studentRating, b.questionRating || RATING_CONFIG.DEFAULT_QUESTION_RATING);
+                
+                const aDiff = Math.abs(aExpected - optimalExpected);
+                const bDiff = Math.abs(bExpected - optimalExpected);
+                
+                return aDiff - bDiff;
+            });
+        };
+
         // Load wrong answers that are due for review
         window.loadWrongAnswersForReview = async function() {
             try {
@@ -6942,6 +7258,7 @@
             
             const student = window.practiceState.currentStudent;
             const level = student.level;
+            const studentIndex = student.index;
             
             // Reset state
             window.practiceState.questions = [];
@@ -6950,9 +7267,23 @@
             window.practiceState.wrong = 0;
             window.practiceState.streak = 0;
             
-            // Load answered questions and wrong answers for review
+            // Load answered questions, wrong answers for review, and ratings
             await loadAnsweredQuestions();
             await loadWrongAnswersForReview();
+            await loadQuestionRatings();
+            
+            // Get student's current rating
+            const studentRatingData = await getStudentRating(studentIndex);
+            student.rating = studentRatingData.rating;
+            student.startRating = studentRatingData.rating; // Store for session summary
+            student.attempts = studentRatingData.attempts;
+            window.practiceState.currentStudent = student;
+            
+            // Update student info display with rating
+            const ratingTier = getRatingTier(student.rating);
+            document.getElementById('practice-student-info').innerHTML = 
+                `Student: ${student.name} | Level: ${level} | 
+                <span style="color: ${ratingTier.color}; font-weight: 600;">Rating: ${student.rating} (${ratingTier.tier})</span>`;
             
             // Collect questions from current level and one level down
             const levels = ['P3', 'P4', 'P5', 'P6'];
@@ -6962,7 +7293,7 @@
                 targetLevels.push(levels[currentLevelIndex - 1]);
             }
             
-            // Gather MCQ questions from the DOM
+            // Gather MCQ questions from the DOM with ratings
             const allQuestions = [];
             const reviewQuestions = []; // Questions due for 7-day review
             
@@ -6978,6 +7309,16 @@
                             const isDueForReview = isQuestionDueForReview(qId);
                             const daysUntilReview = getDaysUntilReview(qId);
                             
+                            // Get question rating
+                            const qRatingData = getQuestionRating(qId);
+                            const questionRating = qRatingData.rating;
+                            const questionAttempts = qRatingData.attempts;
+                            
+                            // Calculate expected success and difficulty
+                            const expectedSuccess = calculateExpectedSuccess(student.rating, questionRating);
+                            const inGrowthZone = isInGrowthZone(student.rating, questionRating);
+                            const difficulty = getDifficultyLabel(student.rating, questionRating);
+                            
                             const questionData = {
                                 id: qId,
                                 level: lvl,
@@ -6986,6 +7327,11 @@
                                 answered: isAnswered,
                                 isReviewQuestion: isDueForReview,
                                 daysUntilReview: daysUntilReview,
+                                questionRating: questionRating,
+                                questionAttempts: questionAttempts,
+                                expectedSuccess: expectedSuccess,
+                                inGrowthZone: inGrowthZone,
+                                difficulty: difficulty,
                                 priority: lvl === level ? 0 : 1 // Current level first
                             };
                             
@@ -7000,16 +7346,24 @@
                 });
             });
             
-            // Sort regular questions: unanswered first, then by priority (current level first)
-            allQuestions.sort((a, b) => {
-                if (a.answered !== b.answered) return a.answered ? 1 : -1;
-                return a.priority - b.priority;
-            });
+            // Sort questions using rating-based priority (deliberate practice)
+            const sortedQuestions = sortQuestionsByPriority(allQuestions, student.rating);
             
-            // Combine: Review questions first (highest priority), then regular questions
-            const finalQuestions = [...reviewQuestions, ...allQuestions];
+            // Combine: Review questions first (highest priority), then sorted questions
+            const finalQuestions = [...reviewQuestions, ...sortedQuestions];
             
             window.practiceState.questions = finalQuestions;
+            
+            // Count growth zone questions
+            const growthZoneCount = allQuestions.filter(q => q.inGrowthZone && !q.answered).length;
+            const newQuestionsCount = allQuestions.filter(q => !q.answered).length;
+            
+            // Show practice summary with ratings info
+            const practiceContainer = document.getElementById('practice-question-container');
+            const existingNotification = document.getElementById('review-notification');
+            if (existingNotification) existingNotification.remove();
+            const existingSummary = document.getElementById('practice-summary-notification');
+            if (existingSummary) existingSummary.remove();
             
             // Show review notification if there are review questions
             if (reviewQuestions.length > 0) {
@@ -7021,12 +7375,26 @@
                     <div>You have <strong>${reviewQuestions.length}</strong> question${reviewQuestions.length > 1 ? 's' : ''} ready for 7-day review</div>
                     <div style="font-size: 0.85rem; opacity: 0.9; margin-top: 5px;">Master these to remove them from review</div>
                 `;
-                
-                const practiceContainer = document.getElementById('practice-question-container');
-                const existingNotification = document.getElementById('review-notification');
-                if (existingNotification) existingNotification.remove();
                 practiceContainer.insertBefore(reviewNotification, practiceContainer.firstChild);
             }
+            
+            // Show practice summary with growth zone info
+            const summaryNotification = document.createElement('div');
+            summaryNotification.id = 'practice-summary-notification';
+            summaryNotification.style.cssText = 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 15px; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid #4CAF50;';
+            summaryNotification.innerHTML = `
+                <div style="font-weight: 600; color: #2e7d32; margin-bottom: 8px;">🎯 Deliberate Practice Session</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.9rem; color: #555;">
+                    <span>📊 Your Rating: <strong style="color: ${ratingTier.color};">${student.rating}</strong></span>
+                    <span>🆕 New Questions: <strong>${newQuestionsCount}</strong></span>
+                    <span>🎯 Growth Zone: <strong style="color: #ff9800;">${growthZoneCount}</strong></span>
+                    <span>📚 Total Available: <strong>${finalQuestions.length}</strong></span>
+                </div>
+                <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">
+                    Questions are prioritized: New → Growth Zone (35-75% success rate) → Mastered
+                </div>
+            `;
+            practiceContainer.insertBefore(summaryNotification, practiceContainer.firstChild);
             
             // Update UI
             document.getElementById('practice-start-container').classList.add('hidden');
@@ -7048,6 +7416,7 @@
             
             const question = state.questions[state.currentIndex];
             const container = document.getElementById('practice-question-content');
+            const student = state.currentStudent;
             
             // Clone the question
             const clone = question.element.cloneNode(true);
@@ -7075,6 +7444,61 @@
             
             container.innerHTML = '';
             
+            // Add difficulty badge (visible to all users)
+            const difficulty = question.difficulty || getDifficultyLabel(student.rating, question.questionRating || 1200);
+            const expectedSuccess = question.expectedSuccess || calculateExpectedSuccess(student.rating, question.questionRating || 1200);
+            const inGrowthZone = question.inGrowthZone || isInGrowthZone(student.rating, question.questionRating || 1200);
+            
+            const difficultyBadge = document.createElement('div');
+            difficultyBadge.className = 'question-difficulty-badge';
+            difficultyBadge.style.cssText = `
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center; 
+                padding: 10px 15px; 
+                border-radius: 10px; 
+                margin-bottom: 1rem; 
+                background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+                border-left: 4px solid ${difficulty.color};
+            `;
+            
+            let badgeContent = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.3rem;">${difficulty.icon}</span>
+                    <div>
+                        <div style="font-weight: 600; color: ${difficulty.color};">${difficulty.label}</div>
+                        <div style="font-size: 0.75rem; color: #888;">Success chance: ~${Math.round(expectedSuccess * 100)}%</div>
+                    </div>
+                </div>
+            `;
+            
+            // Show growth zone indicator
+            if (inGrowthZone) {
+                badgeContent += `
+                    <div style="background: linear-gradient(135deg, #ff9800, #ffc107); color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">
+                        🎯 Growth Zone
+                    </div>
+                `;
+            }
+            
+            // Admin-only: Show actual ratings
+            if (window.isAdminUser) {
+                const qRating = question.questionRating || 1200;
+                const qAttempts = question.questionAttempts || 0;
+                const confidence = Math.min(qAttempts / 20, 1) * 100;
+                
+                badgeContent += `
+                    <div style="background: #f3e5f5; padding: 8px 12px; border-radius: 8px; font-size: 0.75rem; border: 1px solid #ce93d8;">
+                        <div style="color: #7b1fa2; font-weight: 600;">🔒 Admin View</div>
+                        <div style="color: #666;">Q-Rating: <strong>${qRating}</strong></div>
+                        <div style="color: #666;">Attempts: ${qAttempts} (${Math.round(confidence)}% confidence)</div>
+                    </div>
+                `;
+            }
+            
+            difficultyBadge.innerHTML = badgeContent;
+            container.appendChild(difficultyBadge);
+            
             // Add review badge if this is a review question
             if (question.isReviewQuestion) {
                 const reviewBadge = document.createElement('div');
@@ -7099,10 +7523,11 @@
             updatePracticeStats();
         };
 
-        window.checkPracticeAnswer = function() {
+        window.checkPracticeAnswer = async function() {
             const state = window.practiceState;
             const question = state.questions[state.currentIndex];
             const container = document.getElementById('practice-question-content');
+            const student = state.currentStudent;
             
             const selected = container.querySelector('input[type="radio"]:checked');
             if (!selected) {
@@ -7146,6 +7571,97 @@
             // Show explanation
             const explanation = container.querySelector('.explanation-box');
             if (explanation) explanation.style.display = 'block';
+            
+            // =====================================================
+            // ELO RATING UPDATE
+            // =====================================================
+            const studentRating = student.rating || 1000;
+            const studentAttempts = student.attempts || 0;
+            const questionRating = question.questionRating || 1200;
+            const questionAttempts = question.questionAttempts || 0;
+            
+            // Calculate rating changes
+            const ratingUpdate = calculateRatingUpdate(
+                studentRating, 
+                questionRating, 
+                isCorrect, 
+                studentAttempts, 
+                questionAttempts
+            );
+            
+            // Update ratings in Firebase (async, don't wait)
+            updateStudentRating(student.index, ratingUpdate.newStudentRating, isCorrect);
+            updateQuestionRating(question.id, ratingUpdate.newQuestionRating, isCorrect);
+            
+            // Update local state
+            student.rating = ratingUpdate.newStudentRating;
+            student.attempts = studentAttempts + 1;
+            question.questionRating = ratingUpdate.newQuestionRating;
+            question.questionAttempts = questionAttempts + 1;
+            
+            // Create rating feedback message
+            const ratingFeedback = document.createElement('div');
+            ratingFeedback.className = 'rating-feedback';
+            
+            if (isCorrect) {
+                const ratingTier = getRatingTier(ratingUpdate.newStudentRating);
+                ratingFeedback.style.cssText = 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 12px 15px; border-radius: 10px; margin-top: 1rem; border-left: 4px solid #4CAF50;';
+                ratingFeedback.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <div style="font-weight: 600; color: #2e7d32;">📈 Rating Updated!</div>
+                            <div style="font-size: 0.85rem; color: #555;">
+                                Your rating: ${studentRating} → <strong style="color: ${ratingTier.color};">${ratingUpdate.newStudentRating}</strong>
+                                <span style="color: #4CAF50;">(+${ratingUpdate.studentChange})</span>
+                            </div>
+                        </div>
+                        <div style="background: ${ratingTier.color}; color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                            ${ratingTier.tier}
+                        </div>
+                    </div>
+                `;
+            } else {
+                const ratingTier = getRatingTier(ratingUpdate.newStudentRating);
+                const ratingChange = ratingUpdate.studentChange;
+                ratingFeedback.style.cssText = 'background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 12px 15px; border-radius: 10px; margin-top: 1rem; border-left: 4px solid #ff9800;';
+                ratingFeedback.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <div style="font-weight: 600; color: #e65100;">📊 Keep Practicing!</div>
+                            <div style="font-size: 0.85rem; color: #555;">
+                                Your rating: ${studentRating} → <strong style="color: ${ratingTier.color};">${ratingUpdate.newStudentRating}</strong>
+                                ${ratingChange < 0 ? `<span style="color: #f44336;">(${ratingChange})</span>` : ''}
+                            </div>
+                            <div style="font-size: 0.8rem; color: #888; margin-top: 3px;">
+                                This was a ${getDifficultyLabel(studentRating, questionRating).label.toLowerCase()} question for you
+                            </div>
+                        </div>
+                        <div style="background: ${ratingTier.color}; color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                            ${ratingTier.tier}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Admin-only: Show question rating change
+            if (window.isAdminUser) {
+                const qChangeSpan = document.createElement('div');
+                qChangeSpan.style.cssText = 'margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ccc; font-size: 0.8rem; color: #7b1fa2;';
+                qChangeSpan.innerHTML = `
+                    🔒 <strong>Admin:</strong> Q-Rating: ${questionRating} → ${ratingUpdate.newQuestionRating} 
+                    (${ratingUpdate.questionChange >= 0 ? '+' : ''}${ratingUpdate.questionChange}) | 
+                    Expected: ${ratingUpdate.expected}% | Attempts: ${questionAttempts + 1}
+                `;
+                ratingFeedback.appendChild(qChangeSpan);
+            }
+            
+            container.appendChild(ratingFeedback);
+            
+            // Update student info display
+            const ratingTier = getRatingTier(ratingUpdate.newStudentRating);
+            document.getElementById('practice-student-info').innerHTML = 
+                `Student: ${student.name} | Level: ${student.level} | 
+                <span style="color: ${ratingTier.color}; font-weight: 600;">Rating: ${ratingUpdate.newStudentRating} (${ratingTier.tier})</span>`;
             
             // Update stats and handle spaced repetition
             if (isCorrect) {
@@ -7193,6 +7709,7 @@
 
         window.endPractice = function() {
             const state = window.practiceState;
+            const student = state.currentStudent;
             
             document.getElementById('practice-question-container').classList.add('hidden');
             document.getElementById('practice-complete').classList.remove('hidden');
@@ -7200,8 +7717,63 @@
             const total = state.correct + state.wrong;
             const percentage = total > 0 ? Math.round((state.correct / total) * 100) : 0;
             
-            document.getElementById('practice-summary').textContent = 
-                `You got ${state.correct} out of ${total} correct (${percentage}%)!`;
+            // Calculate rating change during session
+            const startRating = student.startRating || 1000;
+            const endRating = student.rating || 1000;
+            const ratingChange = endRating - startRating;
+            const ratingTier = getRatingTier(endRating);
+            
+            // Build summary with rating info
+            let summaryHtml = `
+                <div style="text-align: center;">
+                    <div style="font-size: 1.2rem; margin-bottom: 1rem;">
+                        You got <strong>${state.correct}</strong> out of <strong>${total}</strong> correct (<strong>${percentage}%</strong>)!
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f5f5f5, #e8e8e8); padding: 15px; border-radius: 12px; margin-top: 1rem;">
+                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">📊 Rating Summary</div>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+                            <div>
+                                <div style="color: #888; font-size: 0.85rem;">Current Rating</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: ${ratingTier.color};">${endRating}</div>
+                                <div style="font-size: 0.8rem; color: ${ratingTier.color};">${ratingTier.tier}</div>
+                            </div>
+                            <div style="font-size: 2rem; color: ${ratingChange >= 0 ? '#4CAF50' : '#f44336'};">
+                                ${ratingChange >= 0 ? '↑' : '↓'}
+                            </div>
+                            <div>
+                                <div style="color: #888; font-size: 0.85rem;">Session Change</div>
+                                <div style="font-size: 1.3rem; font-weight: 600; color: ${ratingChange >= 0 ? '#4CAF50' : '#f44336'};">
+                                    ${ratingChange >= 0 ? '+' : ''}${ratingChange}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            `;
+            
+            // Add performance feedback
+            if (percentage >= 80) {
+                summaryHtml += `
+                    <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 12px; border-radius: 8px; margin-top: 1rem; color: #155724;">
+                        🌟 Excellent work! You're mastering this material!
+                    </div>
+                `;
+            } else if (percentage >= 60) {
+                summaryHtml += `
+                    <div style="background: linear-gradient(135deg, #cce5ff, #b8daff); padding: 12px; border-radius: 8px; margin-top: 1rem; color: #004085;">
+                        👍 Good progress! Keep practicing to improve further.
+                    </div>
+                `;
+            } else {
+                summaryHtml += `
+                    <div style="background: linear-gradient(135deg, #fff3cd, #ffeeba); padding: 12px; border-radius: 8px; margin-top: 1rem; color: #856404;">
+                        💪 Don't give up! Review the explanations and try again.
+                    </div>
+                `;
+            }
+            
+            summaryHtml += '</div>';
+            
+            document.getElementById('practice-summary').innerHTML = summaryHtml;
         };
 
         window.restartPractice = function() {
@@ -7264,6 +7836,109 @@
         window.trackAnswerForPractice = function(questionId, isCorrect) {
             // This can be expanded to track performance over time
             console.log(`Question ${questionId}: ${isCorrect ? 'Correct' : 'Wrong'}`);
+        };
+
+        // =====================================================
+        // ADMIN RATINGS DASHBOARD
+        // =====================================================
+        
+        window.toggleRatingsDashboard = function() {
+            const content = document.getElementById('ratings-dashboard-content');
+            const btn = document.getElementById('btn-toggle-ratings');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                btn.textContent = '📉 Hide Dashboard';
+                loadRatingsDashboard();
+            } else {
+                content.classList.add('hidden');
+                btn.textContent = '📈 Show Dashboard';
+            }
+        };
+
+        window.loadRatingsDashboard = async function() {
+            if (!window.isAdminUser) return;
+            
+            const tableBody = document.getElementById('ratings-table-body');
+            tableBody.innerHTML = '<tr><td colspan="5" style="padding: 20px; text-align: center; color: #888;">Loading...</td></tr>';
+            
+            try {
+                // Load question ratings
+                await loadQuestionRatings();
+                
+                // Get all questions from DOM
+                const allQuestions = [];
+                document.querySelectorAll('.question-container').forEach(q => {
+                    const id = q.id;
+                    const titleEl = q.querySelector('h3');
+                    const title = titleEl ? titleEl.textContent.trim() : id;
+                    
+                    const ratingData = getQuestionRating(id);
+                    allQuestions.push({
+                        id,
+                        title: title.substring(0, 50) + (title.length > 50 ? '...' : ''),
+                        rating: ratingData.rating,
+                        attempts: ratingData.attempts,
+                        correctCount: ratingData.correctCount || 0
+                    });
+                });
+                
+                // Calculate stats
+                const ratedQuestions = allQuestions.filter(q => q.attempts > 0);
+                const totalAttempts = ratedQuestions.reduce((sum, q) => sum + q.attempts, 0);
+                const avgRating = ratedQuestions.length > 0 
+                    ? Math.round(ratedQuestions.reduce((sum, q) => sum + q.rating, 0) / ratedQuestions.length)
+                    : 1200;
+                
+                // Update stats
+                document.getElementById('stat-total-questions').textContent = allQuestions.length;
+                document.getElementById('stat-rated-questions').textContent = ratedQuestions.length;
+                document.getElementById('stat-avg-rating').textContent = avgRating;
+                document.getElementById('stat-total-attempts').textContent = totalAttempts;
+                
+                // Sort by rating descending (hardest first)
+                allQuestions.sort((a, b) => b.rating - a.rating);
+                
+                // Render table
+                if (allQuestions.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="padding: 20px; text-align: center; color: #888;">No questions found</td></tr>';
+                    return;
+                }
+                
+                tableBody.innerHTML = allQuestions.map(q => {
+                    const correctPercent = q.attempts > 0 
+                        ? Math.round((q.correctCount / q.attempts) * 100) 
+                        : '-';
+                    const confidence = Math.min(q.attempts / 20, 1) * 100;
+                    const ratingColor = q.rating >= 1600 ? '#9C27B0' 
+                        : q.rating >= 1400 ? '#673AB7'
+                        : q.rating >= 1200 ? '#2196F3'
+                        : q.rating >= 1000 ? '#4CAF50'
+                        : '#FF9800';
+                    
+                    return `
+                        <tr>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${q.title}</td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
+                                <strong style="color: ${ratingColor};">${q.rating}</strong>
+                            </td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">${q.attempts}</td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
+                                ${correctPercent !== '-' ? `<span style="color: ${correctPercent >= 70 ? '#4CAF50' : correctPercent >= 50 ? '#ff9800' : '#f44336'};">${correctPercent}%</span>` : '-'}
+                            </td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
+                                <div style="background: #e0e0e0; border-radius: 10px; height: 8px; width: 60px; display: inline-block; overflow: hidden;">
+                                    <div style="background: ${confidence >= 80 ? '#4CAF50' : confidence >= 50 ? '#ff9800' : '#f44336'}; height: 100%; width: ${confidence}%;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+            } catch (e) {
+                console.error("Error loading ratings dashboard:", e);
+                tableBody.innerHTML = '<tr><td colspan="5" style="padding: 20px; text-align: center; color: #dc3545;">Error loading data</td></tr>';
+            }
         };
 
         // =====================================================
