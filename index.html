@@ -1440,6 +1440,134 @@
             left: 24px;
         }
 
+        /* Exam Mode Toggle (Colour/Monochrome) */
+        .exam-mode-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        .exam-mode-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #888;
+            min-width: 50px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .exam-mode-label:first-of-type {
+            text-align: right;
+        }
+
+        .exam-mode-label:last-of-type {
+            text-align: left;
+        }
+
+        .exam-mode-toggle-container .exam-mode-label:first-of-type {
+            color: #4CAF50;
+            font-weight: 700;
+        }
+
+        .exam-mode-toggle-container.exam-active .exam-mode-label:first-of-type {
+            color: #888;
+            font-weight: 600;
+        }
+
+        .exam-mode-toggle-container.exam-active .exam-mode-label:last-of-type {
+            color: #616161;
+            font-weight: 700;
+        }
+
+        .exam-mode-toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            cursor: pointer;
+        }
+
+        .exam-mode-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+            border-radius: 13px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .exam-mode-toggle-container.exam-active .exam-mode-track {
+            background: linear-gradient(135deg, #616161 0%, #9E9E9E 100%);
+        }
+
+        .exam-mode-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .exam-mode-toggle-container.exam-active .exam-mode-thumb {
+            left: 26px;
+        }
+
+        /* Exam Mode (Monochrome) Styles for Questions */
+        body.exam-mode .question-container,
+        body.exam-mode .question-body,
+        body.exam-mode .answer-template,
+        body.exam-mode .answer-box {
+            filter: grayscale(100%);
+            -webkit-filter: grayscale(100%);
+        }
+
+        body.exam-mode .question-container img,
+        body.exam-mode .question-body img,
+        body.exam-mode .answer-template img,
+        body.exam-mode .answer-box img {
+            filter: grayscale(100%) contrast(1.1);
+            -webkit-filter: grayscale(100%) contrast(1.1);
+        }
+
+        body.exam-mode .question-container {
+            background: #fff !important;
+            border-color: #333 !important;
+        }
+
+        body.exam-mode .question-container h3 {
+            color: #000 !important;
+        }
+
+        body.exam-mode .cer-segment {
+            background: #f5f5f5 !important;
+            border-color: #999 !important;
+        }
+
+        body.exam-mode .answer-input {
+            border-bottom-color: #333 !important;
+        }
+
+        /* Keep buttons and controls coloured for usability */
+        body.exam-mode .controls,
+        body.exam-mode .worksheet-control-bar,
+        body.exam-mode .admin-controls,
+        body.exam-mode button,
+        body.exam-mode .btn {
+            filter: none !important;
+            -webkit-filter: none !important;
+        }
+
         /* Toggle animation glow */
         .ios-toggle::after {
             content: '';
@@ -3221,6 +3349,31 @@
                 left: 26px;
             }
 
+            /* Exam Mode Toggle mobile */
+            .exam-mode-toggle-container {
+                padding: 8px;
+                gap: 6px;
+            }
+
+            .exam-mode-label {
+                font-size: 0.7rem;
+                min-width: 40px;
+            }
+
+            .exam-mode-toggle {
+                width: 44px;
+                height: 22px;
+            }
+
+            .exam-mode-thumb {
+                width: 18px;
+                height: 18px;
+            }
+
+            .exam-mode-toggle-container.exam-active .exam-mode-thumb {
+                left: 24px;
+            }
+
             /* Sidebar sections on mobile */
             .sidebar-nav-btn {
                 padding: 10px 12px;
@@ -3743,8 +3896,9 @@
                 </div>
                 <div id="admin-lesson-fields" class="hidden">
                     <div class="form-group">
-                        <label for="lesson-video-input">📹 Video Link (YouTube) *</label>
-                        <input type="text" id="lesson-video-input" placeholder="https://youtube.com/watch?v=...">
+                        <label for="lesson-video-input">📹 Video Link (Dropbox)</label>
+                        <input type="text" id="lesson-video-input" placeholder="https://www.dropbox.com/...">
+                        <small style="color: #888; font-size: 0.8rem;">Optional: Dropbox video link for this lesson</small>
                     </div>
                     <div class="form-group" style="background: #fff3e0; padding: 10px; border-radius: 8px; border-left: 4px solid #f57c00;">
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
@@ -3784,6 +3938,17 @@
                             </div>
                         </div>
                         <span class="ios-toggle-label">MCQ</span>
+                    </div>
+                    
+                    <!-- Exam Mode Toggle (Monochrome) -->
+                    <div class="exam-mode-toggle-container" title="Exam Mode: Shows questions in black & white like actual exams">
+                        <span class="exam-mode-label">🎨 Colour</span>
+                        <div class="exam-mode-toggle" id="exam-mode-toggle" onclick="toggleExamMode()">
+                            <div class="exam-mode-track">
+                                <div class="exam-mode-thumb"></div>
+                            </div>
+                        </div>
+                        <span class="exam-mode-label">📄 Exam</span>
                     </div>
                 </div>
                 
@@ -8195,6 +8360,9 @@
             const titleEl = questionContainer.querySelector('h3');
             const title = titleEl ? titleEl.textContent.trim() : 'Question';
             
+            // Check if exam mode is enabled
+            const isExamMode = window.examModeEnabled || false;
+            
             // Clone the question content
             const clone = questionContainer.cloneNode(true);
             
@@ -8203,6 +8371,26 @@
             
             // Remove any hidden elements
             clone.querySelectorAll('.hidden, [style*="display: none"]').forEach(el => el.remove());
+            
+            // Exam mode styles
+            const examModeStyles = isExamMode ? `
+                body, .question-body, .answer-template, .answer-box {
+                    filter: grayscale(100%);
+                    -webkit-filter: grayscale(100%);
+                }
+                img {
+                    filter: grayscale(100%) contrast(1.1);
+                    -webkit-filter: grayscale(100%) contrast(1.1);
+                }
+                h3 {
+                    color: #000 !important;
+                    border-bottom-color: #333 !important;
+                }
+                .question-body {
+                    background: #f5f5f5 !important;
+                    border-left-color: #333 !important;
+                }
+            ` : '';
             
             // Create print window
             const printWindow = window.open('', '_blank');
@@ -8269,6 +8457,14 @@
                             max-width: 100%;
                             height: auto;
                         }
+                        .exam-mode-indicator {
+                            background: #f5f5f5;
+                            padding: 5px 10px;
+                            border-radius: 4px;
+                            font-size: 0.8rem;
+                            color: #666;
+                            display: ${isExamMode ? 'inline-block' : 'none'};
+                        }
                         .print-btn-container {
                             text-align: center;
                             margin-top: 2rem;
@@ -8286,6 +8482,7 @@
                         .print-btn-container button:hover {
                             background: #1565c0;
                         }
+                        ${examModeStyles}
                         @media print {
                             .print-btn-container {
                                 display: none;
@@ -8300,6 +8497,7 @@
                     <div class="header-info">
                         <span>Name: _______________________</span>
                         <span>Date: _______________</span>
+                        <span class="exam-mode-indicator">📄 Exam Mode</span>
                     </div>
                     ${clone.innerHTML}
                     <div class="print-btn-container">
@@ -8438,11 +8636,39 @@
         // =====================================================
 
         window.currentMode = 'oeq';
+        window.examModeEnabled = false;
 
         // Toggle mode using iOS-style switch
         window.toggleMode = function() {
             const newMode = window.currentMode === 'oeq' ? 'mcq' : 'oeq';
             switchMode(newMode);
+        };
+
+        // Toggle Exam Mode (Colour/Monochrome)
+        window.toggleExamMode = function() {
+            window.examModeEnabled = !window.examModeEnabled;
+            const toggleContainer = document.querySelector('.exam-mode-toggle-container');
+            
+            if (window.examModeEnabled) {
+                document.body.classList.add('exam-mode');
+                if (toggleContainer) toggleContainer.classList.add('exam-active');
+                localStorage.setItem('examMode', 'true');
+            } else {
+                document.body.classList.remove('exam-mode');
+                if (toggleContainer) toggleContainer.classList.remove('exam-active');
+                localStorage.setItem('examMode', 'false');
+            }
+        };
+
+        // Initialize exam mode from localStorage
+        window.initExamMode = function() {
+            const savedExamMode = localStorage.getItem('examMode');
+            if (savedExamMode === 'true') {
+                window.examModeEnabled = true;
+                document.body.classList.add('exam-mode');
+                const toggleContainer = document.querySelector('.exam-mode-toggle-container');
+                if (toggleContainer) toggleContainer.classList.add('exam-active');
+            }
         };
 
         window.switchMode = function (mode) {
@@ -11642,6 +11868,9 @@
             // Initialize OEQ/MCQ toggle label
             const oeqLabel = document.querySelector('.ios-toggle-label:first-of-type');
             if (oeqLabel) oeqLabel.classList.add('active');
+
+            // Initialize Exam Mode (Colour/Monochrome)
+            initExamMode();
 
             // Initialize header tabs with question counts
             renderOeqHeaderTabs('cer');
