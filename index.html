@@ -3093,6 +3093,35 @@
             color: #4a148c;
         }
 
+        /* Activity Dashboard Table */
+        #activity-table-body tr:hover {
+            background-color: #e3f2fd !important;
+        }
+
+        #activity-table-body tr:hover td {
+            color: #1565c0;
+        }
+
+        /* Welcome Back Modal Animation */
+        #welcome-back-modal .modal-box {
+            animation: welcomeBounce 0.5s ease-out;
+        }
+
+        @keyframes welcomeBounce {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #new-questions-info {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+            50% { box-shadow: 0 0 20px 5px rgba(76, 175, 80, 0.2); }
+        }
+
         /* View Message Modal Content */
         .view-message-header {
             border-bottom: 1px solid #e0e0e0;
@@ -4842,6 +4871,61 @@
                             </div>
                         </div>
                         
+                        <!-- User Activity Dashboard (Admin Only) -->
+                        <div id="activity-dashboard-section" style="background: linear-gradient(135deg, #e3f2fd15 0%, #bbdefb15 100%); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid #2196f330;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;">
+                                <div>
+                                    <strong style="color: #1976d2;">👥 User Activity Dashboard</strong>
+                                    <div style="font-size: 0.8rem; color: #666; margin-top: 2px;">Track user logins and account activities</div>
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <button onclick="loadActivityDashboard()" class="btn" style="background: #1976d2; color: white; font-size: 0.85rem; padding: 8px 16px;">
+                                        🔄 Refresh
+                                    </button>
+                                    <button onclick="toggleActivityDashboard()" class="btn" style="background: #2196f3; color: white; font-size: 0.85rem; padding: 8px 16px;" id="btn-toggle-activity">
+                                        📊 Show Dashboard
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="activity-dashboard-content" class="hidden">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1rem;">
+                                    <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #1976d2;" id="stat-total-users">0</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Total Users</div>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #4CAF50;" id="stat-active-today">0</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Active Today</div>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #ff9800;" id="stat-active-week">0</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Active This Week</div>
+                                    </div>
+                                    <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
+                                        <div style="font-size: 1.5rem; font-weight: 700; color: #9c27b0;" id="stat-total-practice-sessions">0</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Practice Sessions</div>
+                                    </div>
+                                </div>
+                                <div style="max-height: 350px; overflow-y: auto; background: white; border-radius: 8px; border: 1px solid #e0e0e0;">
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                                        <thead style="position: sticky; top: 0; background: #f5f5f5;">
+                                            <tr>
+                                                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #e0e0e0;">User</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Students</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Last Login</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Total Logins</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Questions Attempted</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Avg Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="activity-table-body">
+                                            <tr><td colspan="6" style="padding: 20px; text-align: center; color: #888;">Click "Refresh" to load data</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div id="editing-indicator" class="hidden" style="background: #fff3cd; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; color: #856404; display: flex; justify-content: space-between; align-items: center;">
                             <span>✏️ <strong>Editing:</strong> <span id="editing-question-name"></span></span>
                             <button onclick="cancelEditing()" style="background: #856404; color: white; border: none; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">Cancel Edit</button>
@@ -5449,6 +5533,47 @@
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="hideAccountSettings()">Close</button>
                 <button class="btn-save" onclick="saveAccountSettings()">💾 Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Back / New Questions Modal -->
+    <div id="welcome-back-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 450px; text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+            <h3 style="color: #667eea; margin-bottom: 0.5rem;" id="welcome-back-title">Welcome Back!</h3>
+            <p style="color: #666; margin-bottom: 1.5rem;" id="welcome-back-subtitle">Good to see you again</p>
+            
+            <!-- New Questions Info -->
+            <div id="new-questions-info" style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                <div style="font-size: 2.5rem; font-weight: 700; color: #2e7d32;" id="new-questions-count">0</div>
+                <div style="font-size: 1rem; color: #2e7d32; font-weight: 600;">New Questions Added!</div>
+                <div style="font-size: 0.85rem; color: #666; margin-top: 5px;" id="new-questions-since">Since your last visit</div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div id="welcome-quick-stats" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem;">
+                <div style="background: #f5f5f5; padding: 10px; border-radius: 8px;">
+                    <div style="font-size: 1.3rem; font-weight: 700; color: #667eea;" id="welcome-stat-streak">0</div>
+                    <div style="font-size: 0.75rem; color: #888;">Day Streak</div>
+                </div>
+                <div style="background: #f5f5f5; padding: 10px; border-radius: 8px;">
+                    <div style="font-size: 1.3rem; font-weight: 700; color: #4CAF50;" id="welcome-stat-rating">1000</div>
+                    <div style="font-size: 0.75rem; color: #888;">Your Rating</div>
+                </div>
+                <div style="background: #f5f5f5; padding: 10px; border-radius: 8px;">
+                    <div style="font-size: 1.3rem; font-weight: 700; color: #ff9800;" id="welcome-stat-review">0</div>
+                    <div style="font-size: 0.75rem; color: #888;">Due for Review</div>
+                </div>
+            </div>
+            
+            <div class="modal-buttons" style="flex-direction: column; gap: 10px;">
+                <button class="btn-save" onclick="practiceNewQuestions()" style="width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); padding: 12px;" id="btn-practice-new">
+                    🚀 Practice New Questions
+                </button>
+                <button class="btn-cancel" onclick="hideWelcomeModal()" style="width: 100%;">
+                    Maybe Later
+                </button>
             </div>
         </div>
     </div>
@@ -7364,8 +7489,35 @@
             // Sort questions using rating-based priority (deliberate practice)
             const sortedQuestions = sortQuestionsByPriority(allQuestions, student.rating);
             
-            // Combine: Review questions first (highest priority), then sorted questions
-            const finalQuestions = [...reviewQuestions, ...sortedQuestions];
+            // Filter for new questions only if coming from welcome modal
+            let finalQuestions;
+            let practiceMode = 'normal';
+            
+            if (window.practiceNewQuestionsOnly && window.newQuestionIds && window.newQuestionIds.length > 0) {
+                // Filter to only include new questions
+                const newQuestionIdsSet = new Set(window.newQuestionIds.map(id => 'q-' + id));
+                const newQuestionsFiltered = sortedQuestions.filter(q => {
+                    // Check both the question ID and if it's a custom question ID
+                    return newQuestionIdsSet.has(q.id) || 
+                           newQuestionIdsSet.has(q.id.replace('q-custom-', 'custom-')) ||
+                           window.newQuestionIds.includes(q.id.replace('q-', ''));
+                });
+                
+                if (newQuestionsFiltered.length > 0) {
+                    finalQuestions = newQuestionsFiltered;
+                    practiceMode = 'new';
+                } else {
+                    // No new questions found in DOM, use all questions
+                    finalQuestions = [...reviewQuestions, ...sortedQuestions];
+                }
+                
+                // Reset the flag
+                window.practiceNewQuestionsOnly = false;
+                window.newQuestionIds = [];
+            } else {
+                // Combine: Review questions first (highest priority), then sorted questions
+                finalQuestions = [...reviewQuestions, ...sortedQuestions];
+            }
             
             window.practiceState.questions = finalQuestions;
             
@@ -7396,19 +7548,35 @@
             // Show practice summary with growth zone info
             const summaryNotification = document.createElement('div');
             summaryNotification.id = 'practice-summary-notification';
-            summaryNotification.style.cssText = 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 15px; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid #4CAF50;';
-            summaryNotification.innerHTML = `
-                <div style="font-weight: 600; color: #2e7d32; margin-bottom: 8px;">🎯 Deliberate Practice Session</div>
-                <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.9rem; color: #555;">
-                    <span>📊 Your Rating: <strong style="color: ${ratingTier.color};">${student.rating}</strong></span>
-                    <span>🆕 New Questions: <strong>${newQuestionsCount}</strong></span>
-                    <span>🎯 Growth Zone: <strong style="color: #ff9800;">${growthZoneCount}</strong></span>
-                    <span>📚 Total Available: <strong>${finalQuestions.length}</strong></span>
-                </div>
-                <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">
-                    Questions are prioritized: New → Growth Zone (35-75% success rate) → Mastered
-                </div>
-            `;
+            
+            if (practiceMode === 'new') {
+                // Special banner for practicing new questions
+                summaryNotification.style.cssText = 'background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 15px; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid #2196f3;';
+                summaryNotification.innerHTML = `
+                    <div style="font-weight: 600; color: #1565c0; margin-bottom: 8px;">🆕 Practicing New Questions!</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.9rem; color: #555;">
+                        <span>📊 Your Rating: <strong style="color: ${ratingTier.color};">${student.rating}</strong></span>
+                        <span>🆕 New Questions: <strong style="color: #1565c0;">${finalQuestions.length}</strong></span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">
+                        These questions were added since your last visit. Let's practice them!
+                    </div>
+                `;
+            } else {
+                summaryNotification.style.cssText = 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 15px; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid #4CAF50;';
+                summaryNotification.innerHTML = `
+                    <div style="font-weight: 600; color: #2e7d32; margin-bottom: 8px;">🎯 Deliberate Practice Session</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.9rem; color: #555;">
+                        <span>📊 Your Rating: <strong style="color: ${ratingTier.color};">${student.rating}</strong></span>
+                        <span>🆕 New Questions: <strong>${newQuestionsCount}</strong></span>
+                        <span>🎯 Growth Zone: <strong style="color: #ff9800;">${growthZoneCount}</strong></span>
+                        <span>📚 Total Available: <strong>${finalQuestions.length}</strong></span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #666; margin-top: 8px;">
+                        Questions are prioritized: New → Growth Zone (35-75% success rate) → Mastered
+                    </div>
+                `;
+            }
             practiceContainer.insertBefore(summaryNotification, practiceContainer.firstChild);
             
             // Update UI
@@ -8057,6 +8225,364 @@
             
             // Show the popup
             document.getElementById('question-popup-modal').classList.add('visible');
+        };
+
+        // =====================================================
+        // USER ACTIVITY DASHBOARD (ADMIN)
+        // =====================================================
+        
+        window.toggleActivityDashboard = function() {
+            const content = document.getElementById('activity-dashboard-content');
+            const btn = document.getElementById('btn-toggle-activity');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                btn.textContent = '📉 Hide Dashboard';
+                loadActivityDashboard();
+            } else {
+                content.classList.add('hidden');
+                btn.textContent = '📊 Show Dashboard';
+            }
+        };
+
+        window.loadActivityDashboard = async function() {
+            if (!window.isAdminUser) return;
+            
+            const tableBody = document.getElementById('activity-table-body');
+            tableBody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #888;">Loading...</td></tr>';
+            
+            try {
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                
+                // Load all users
+                const usersRef = collection(window.db_fs, "users");
+                const snapshot = await getDocs(usersRef);
+                
+                const users = [];
+                const now = new Date();
+                const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const weekStart = new Date(todayStart);
+                weekStart.setDate(weekStart.getDate() - 7);
+                
+                let activeToday = 0;
+                let activeWeek = 0;
+                let totalPracticeSessions = 0;
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const lastLogin = data.lastLogin?.toDate ? data.lastLogin.toDate() : null;
+                    const students = data.students || [];
+                    
+                    // Calculate average rating across all students
+                    let avgRating = 1000;
+                    let totalAttempts = 0;
+                    if (students.length > 0) {
+                        const ratings = students.filter(s => s.rating).map(s => s.rating);
+                        avgRating = ratings.length > 0 ? Math.round(ratings.reduce((a, b) => a + b, 0) / ratings.length) : 1000;
+                        totalAttempts = students.reduce((sum, s) => sum + (s.totalAttempts || 0), 0);
+                        totalPracticeSessions += students.reduce((sum, s) => sum + (s.practiceSessions || 0), 0);
+                    }
+                    
+                    // Check activity
+                    if (lastLogin) {
+                        if (lastLogin >= todayStart) activeToday++;
+                        if (lastLogin >= weekStart) activeWeek++;
+                    }
+                    
+                    users.push({
+                        id: doc.id,
+                        email: data.email || doc.id,
+                        students: students,
+                        studentCount: students.length,
+                        lastLogin: lastLogin,
+                        loginCount: data.loginCount || 0,
+                        totalAttempts: totalAttempts,
+                        avgRating: avgRating
+                    });
+                });
+                
+                // Update stats
+                document.getElementById('stat-total-users').textContent = users.length;
+                document.getElementById('stat-active-today').textContent = activeToday;
+                document.getElementById('stat-active-week').textContent = activeWeek;
+                document.getElementById('stat-total-practice-sessions').textContent = totalPracticeSessions;
+                
+                // Sort by last login (most recent first)
+                users.sort((a, b) => {
+                    if (!a.lastLogin) return 1;
+                    if (!b.lastLogin) return -1;
+                    return b.lastLogin - a.lastLogin;
+                });
+                
+                // Render table
+                if (users.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #888;">No users found</td></tr>';
+                    return;
+                }
+                
+                tableBody.innerHTML = users.map(u => {
+                    const lastLoginStr = u.lastLogin 
+                        ? formatRelativeTime(u.lastLogin)
+                        : 'Never';
+                    const isRecent = u.lastLogin && u.lastLogin >= todayStart;
+                    const studentNames = u.students.map(s => s.name || 'Unknown').join(', ');
+                    const ratingTier = getRatingTier(u.avgRating);
+                    
+                    return `
+                        <tr>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee;">
+                                <div style="font-weight: 500;">${u.email}</div>
+                                <div style="font-size: 0.75rem; color: #888;" title="${studentNames}">${studentNames.length > 25 ? studentNames.substring(0, 23) + '...' : studentNames || '-'}</div>
+                            </td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
+                                <span style="background: #e3f2fd; color: #1976d2; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">${u.studentCount}</span>
+                            </td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
+                                <span style="color: ${isRecent ? '#4CAF50' : '#888'}; font-weight: ${isRecent ? '600' : '400'};">${lastLoginStr}</span>
+                            </td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">${u.loginCount}</td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">${u.totalAttempts}</td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
+                                <span style="color: ${ratingTier.color}; font-weight: 600;">${u.avgRating}</span>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+            } catch (e) {
+                console.error("Error loading activity dashboard:", e);
+                tableBody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #dc3545;">Error loading data</td></tr>';
+            }
+        };
+
+        // Format relative time (e.g., "2 hours ago", "Yesterday")
+        window.formatRelativeTime = function(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            if (days === 1) return 'Yesterday';
+            if (days < 7) return `${days}d ago`;
+            return date.toLocaleDateString();
+        };
+
+        // =====================================================
+        // WELCOME BACK & NEW QUESTIONS NOTIFICATION
+        // =====================================================
+        
+        window.newQuestionsForPractice = [];
+        
+        window.showWelcomeModal = function(newQuestionsCount, lastLoginDate, userStats) {
+            const modal = document.getElementById('welcome-back-modal');
+            
+            // Update title based on time of day
+            const hour = new Date().getHours();
+            let greeting = 'Welcome Back!';
+            if (hour < 12) greeting = 'Good Morning! ☀️';
+            else if (hour < 17) greeting = 'Good Afternoon! 🌤️';
+            else greeting = 'Good Evening! 🌙';
+            
+            document.getElementById('welcome-back-title').textContent = greeting;
+            
+            // Update new questions count
+            document.getElementById('new-questions-count').textContent = newQuestionsCount;
+            
+            // Update subtitle
+            if (lastLoginDate) {
+                const daysAgo = Math.floor((new Date() - lastLoginDate) / 86400000);
+                if (daysAgo === 0) {
+                    document.getElementById('new-questions-since').textContent = 'Since earlier today';
+                } else if (daysAgo === 1) {
+                    document.getElementById('new-questions-since').textContent = 'Since yesterday';
+                } else {
+                    document.getElementById('new-questions-since').textContent = `Since ${daysAgo} days ago`;
+                }
+            }
+            
+            // Update quick stats
+            if (userStats) {
+                document.getElementById('welcome-stat-streak').textContent = userStats.streak || 0;
+                document.getElementById('welcome-stat-rating').textContent = userStats.rating || 1000;
+                document.getElementById('welcome-stat-review').textContent = userStats.reviewCount || 0;
+            }
+            
+            // Update button text
+            const practiceBtn = document.getElementById('btn-practice-new');
+            if (newQuestionsCount > 0) {
+                practiceBtn.innerHTML = `🚀 Practice ${newQuestionsCount} New Questions`;
+                document.getElementById('new-questions-info').style.display = 'block';
+            } else {
+                practiceBtn.innerHTML = '🚀 Start Practice';
+                document.getElementById('new-questions-info').innerHTML = `
+                    <div style="font-size: 1.5rem; margin-bottom: 5px;">📚</div>
+                    <div style="font-size: 1rem; color: #2e7d32; font-weight: 600;">You're all caught up!</div>
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">No new questions since your last visit</div>
+                `;
+            }
+            
+            modal.classList.add('visible');
+        };
+
+        window.hideWelcomeModal = function() {
+            document.getElementById('welcome-back-modal').classList.remove('visible');
+        };
+
+        window.practiceNewQuestions = function() {
+            hideWelcomeModal();
+            
+            // Switch to practice mode
+            switchMode('mcq');
+            switchTab('practice', document.getElementById('btn-sidebar-practice'));
+            
+            // If there are new questions, start practice automatically after a short delay
+            if (window.newQuestionsForPractice && window.newQuestionsForPractice.length > 0) {
+                setTimeout(() => {
+                    // Store new questions IDs for filtering in practice
+                    window.practiceNewQuestionsOnly = true;
+                    window.newQuestionIds = window.newQuestionsForPractice.map(q => q.id);
+                }, 500);
+            }
+        };
+
+        // Check for new questions since last login
+        window.checkNewQuestionsSinceLastLogin = async function(lastLogin) {
+            if (!lastLogin) return 0;
+            
+            try {
+                const { collection, getDocs, query, where, orderBy } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                
+                // Query questions added after last login
+                const questionsRef = collection(window.db_fs, "custom_questions");
+                const snapshot = await getDocs(questionsRef);
+                
+                let newCount = 0;
+                window.newQuestionsForPractice = [];
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    // Handle both Firestore Timestamp and ISO string formats
+                    let createdAt = null;
+                    if (data.createdAt) {
+                        if (data.createdAt.toDate) {
+                            createdAt = data.createdAt.toDate();
+                        } else if (typeof data.createdAt === 'string') {
+                            createdAt = new Date(data.createdAt);
+                        } else if (data.createdAt instanceof Date) {
+                            createdAt = data.createdAt;
+                        }
+                    }
+                    
+                    if (createdAt && createdAt > lastLogin) {
+                        newCount++;
+                        window.newQuestionsForPractice.push({
+                            id: doc.id,
+                            ...data
+                        });
+                    }
+                });
+                
+                return newCount;
+            } catch (e) {
+                console.error("Error checking new questions:", e);
+                return 0;
+            }
+        };
+
+        // Track login and show welcome modal
+        window.trackLoginAndShowWelcome = async function(user) {
+            try {
+                const { doc, getDoc, updateDoc, setDoc, increment } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                
+                const userRef = doc(window.db_fs, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+                
+                let lastLogin = null;
+                let loginStreak = 0;
+                let userRating = 1000;
+                let reviewCount = 0;
+                
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    lastLogin = data.lastLogin?.toDate ? data.lastLogin.toDate() : null;
+                    loginStreak = data.loginStreak || 0;
+                    
+                    // Get first student's rating as user rating
+                    const students = data.students || [];
+                    if (students.length > 0 && students[0].rating) {
+                        userRating = students[0].rating;
+                    }
+                    
+                    // Calculate login streak
+                    const now = new Date();
+                    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const yesterdayStart = new Date(todayStart);
+                    yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+                    
+                    if (lastLogin) {
+                        if (lastLogin >= todayStart) {
+                            // Already logged in today, maintain streak
+                        } else if (lastLogin >= yesterdayStart) {
+                            // Logged in yesterday, increment streak
+                            loginStreak++;
+                        } else {
+                            // More than a day gap, reset streak
+                            loginStreak = 1;
+                        }
+                    } else {
+                        loginStreak = 1;
+                    }
+                    
+                    // Update login info
+                    await updateDoc(userRef, {
+                        lastLogin: new Date(),
+                        loginCount: increment(1),
+                        loginStreak: loginStreak
+                    });
+                } else {
+                    // New user, create document
+                    await setDoc(userRef, {
+                        email: user.email,
+                        lastLogin: new Date(),
+                        loginCount: 1,
+                        loginStreak: 1,
+                        createdAt: new Date()
+                    }, { merge: true });
+                    loginStreak = 1;
+                }
+                
+                // Count questions due for review
+                const studentIndex = 0;
+                const reviewKey = `wrongAnswers_${user.uid}_${studentIndex}`;
+                const storedReviews = localStorage.getItem(reviewKey);
+                if (storedReviews) {
+                    const reviews = JSON.parse(storedReviews);
+                    const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+                    const now = Date.now();
+                    reviewCount = Object.values(reviews).filter(ts => (now - ts) >= sevenDaysMs).length;
+                }
+                
+                // Check for new questions
+                const newQuestionsCount = await checkNewQuestionsSinceLastLogin(lastLogin);
+                
+                // Show welcome modal (only if there are new questions or it's a returning user)
+                if (lastLogin && (newQuestionsCount > 0 || reviewCount > 0)) {
+                    setTimeout(() => {
+                        showWelcomeModal(newQuestionsCount, lastLogin, {
+                            streak: loginStreak,
+                            rating: userRating,
+                            reviewCount: reviewCount
+                        });
+                    }, 1500); // Delay to let page load
+                }
+                
+            } catch (e) {
+                console.error("Error tracking login:", e);
+            }
         };
 
         // =====================================================
@@ -13616,6 +14142,11 @@
                     
                     // Start checking for updates
                     window.startUpdateChecker();
+                    
+                    // Track login and show welcome modal with new questions notification
+                    if (!window.isAdminUser) {
+                        window.trackLoginAndShowWelcome(user);
+                    }
                 }, 200);
             } else {
                 overlay.style.display = 'flex';
