@@ -8379,29 +8379,43 @@
         
         window.showWelcomeModal = function(newQuestionsCount, lastLoginDate, userStats) {
             const modal = document.getElementById('welcome-back-modal');
+            const isNewUser = userStats?.isNewUser || false;
             
-            // Update title based on time of day
+            // Update title based on new user or time of day
             const hour = new Date().getHours();
             let greeting = 'Welcome Back!';
-            if (hour < 12) greeting = 'Good Morning! ☀️';
-            else if (hour < 17) greeting = 'Good Afternoon! 🌤️';
-            else greeting = 'Good Evening! 🌙';
+            let subtitle = 'Good to see you again';
+            
+            if (isNewUser) {
+                greeting = 'Welcome! 🎉';
+                subtitle = 'Let\'s start learning!';
+            } else {
+                if (hour < 12) greeting = 'Good Morning! ☀️';
+                else if (hour < 17) greeting = 'Good Afternoon! 🌤️';
+                else greeting = 'Good Evening! 🌙';
+            }
             
             document.getElementById('welcome-back-title').textContent = greeting;
+            document.getElementById('welcome-back-subtitle').textContent = subtitle;
             
             // Update new questions count
             document.getElementById('new-questions-count').textContent = newQuestionsCount;
             
-            // Update subtitle
-            if (lastLoginDate) {
+            // Update subtitle in info box
+            const infoSubtitle = document.getElementById('new-questions-since');
+            if (isNewUser) {
+                infoSubtitle.textContent = 'Questions available to practice';
+            } else if (lastLoginDate) {
                 const daysAgo = Math.floor((new Date() - lastLoginDate) / 86400000);
                 if (daysAgo === 0) {
-                    document.getElementById('new-questions-since').textContent = 'Since earlier today';
+                    infoSubtitle.textContent = 'Since earlier today';
                 } else if (daysAgo === 1) {
-                    document.getElementById('new-questions-since').textContent = 'Since yesterday';
+                    infoSubtitle.textContent = 'Since yesterday';
                 } else {
-                    document.getElementById('new-questions-since').textContent = `Since ${daysAgo} days ago`;
+                    infoSubtitle.textContent = `Since ${daysAgo} days ago`;
                 }
+            } else {
+                infoSubtitle.textContent = 'New questions for you';
             }
             
             // Update quick stats
@@ -8411,18 +8425,37 @@
                 document.getElementById('welcome-stat-review').textContent = userStats.reviewCount || 0;
             }
             
-            // Update button text
+            // Update button text and info display
             const practiceBtn = document.getElementById('btn-practice-new');
-            if (newQuestionsCount > 0) {
-                practiceBtn.innerHTML = `🚀 Practice ${newQuestionsCount} New Questions`;
-                document.getElementById('new-questions-info').style.display = 'block';
-            } else {
-                practiceBtn.innerHTML = '🚀 Start Practice';
-                document.getElementById('new-questions-info').innerHTML = `
-                    <div style="font-size: 1.5rem; margin-bottom: 5px;">📚</div>
-                    <div style="font-size: 1rem; color: #2e7d32; font-weight: 600;">You're all caught up!</div>
-                    <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">No new questions since your last visit</div>
+            const infoBox = document.getElementById('new-questions-info');
+            
+            if (isNewUser) {
+                // New user - show welcome message with total questions
+                infoBox.style.background = 'linear-gradient(135deg, #e3f2fd, #bbdefb)';
+                infoBox.innerHTML = `
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #1565c0;">${newQuestionsCount}</div>
+                    <div style="font-size: 1rem; color: #1565c0; font-weight: 600;">Questions Ready to Practice!</div>
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">Start your learning journey now</div>
                 `;
+                practiceBtn.innerHTML = '🚀 Start Learning';
+            } else if (newQuestionsCount > 0) {
+                // Returning user with new questions
+                infoBox.style.background = 'linear-gradient(135deg, #e8f5e9, #c8e6c9)';
+                infoBox.innerHTML = `
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #2e7d32;">${newQuestionsCount}</div>
+                    <div style="font-size: 1rem; color: #2e7d32; font-weight: 600;">New Questions Added!</div>
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 5px;" id="new-questions-since">Since your last visit</div>
+                `;
+                practiceBtn.innerHTML = `🚀 Practice ${newQuestionsCount} New Questions`;
+            } else {
+                // Returning user with no new questions (but has reviews)
+                infoBox.style.background = 'linear-gradient(135deg, #fff3e0, #ffe0b2)';
+                infoBox.innerHTML = `
+                    <div style="font-size: 1.5rem; margin-bottom: 5px;">📅</div>
+                    <div style="font-size: 1rem; color: #e65100; font-weight: 600;">Questions Due for Review!</div>
+                    <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">Practice to reinforce your learning</div>
+                `;
+                practiceBtn.innerHTML = '🚀 Start Practice';
             }
             
             modal.classList.add('visible');
@@ -8505,6 +8538,8 @@
                 let loginStreak = 0;
                 let userRating = 1000;
                 let reviewCount = 0;
+                let isNewUser = false;
+                let alreadyLoggedInToday = false;
                 
                 if (userDoc.exists()) {
                     const data = userDoc.data();
@@ -8525,7 +8560,8 @@
                     
                     if (lastLogin) {
                         if (lastLogin >= todayStart) {
-                            // Already logged in today, maintain streak
+                            // Already logged in today, maintain streak, don't show modal
+                            alreadyLoggedInToday = true;
                         } else if (lastLogin >= yesterdayStart) {
                             // Logged in yesterday, increment streak
                             loginStreak++;
@@ -8545,6 +8581,7 @@
                     });
                 } else {
                     // New user, create document
+                    isNewUser = true;
                     await setDoc(userRef, {
                         email: user.email,
                         lastLogin: new Date(),
@@ -8566,22 +8603,51 @@
                     reviewCount = Object.values(reviews).filter(ts => (now - ts) >= sevenDaysMs).length;
                 }
                 
-                // Check for new questions
-                const newQuestionsCount = await checkNewQuestionsSinceLastLogin(lastLogin);
+                // Check for new questions (for returning users) or total questions (for new users)
+                let newQuestionsCount = 0;
+                let totalQuestionsCount = 0;
                 
-                // Show welcome modal (only if there are new questions or it's a returning user)
-                if (lastLogin && (newQuestionsCount > 0 || reviewCount > 0)) {
+                if (isNewUser || !lastLogin) {
+                    // For new users, count total available questions
+                    totalQuestionsCount = await countTotalQuestions();
+                    newQuestionsCount = totalQuestionsCount; // Show all as "new" for new users
+                } else {
+                    // For returning users, check questions added since last login
+                    newQuestionsCount = await checkNewQuestionsSinceLastLogin(lastLogin);
+                }
+                
+                // Show welcome modal
+                // - Always show for new users
+                // - Show for returning users who haven't logged in today and have new questions or reviews
+                if (isNewUser || (!alreadyLoggedInToday && (newQuestionsCount > 0 || reviewCount > 0))) {
                     setTimeout(() => {
                         showWelcomeModal(newQuestionsCount, lastLogin, {
                             streak: loginStreak,
                             rating: userRating,
-                            reviewCount: reviewCount
+                            reviewCount: reviewCount,
+                            isNewUser: isNewUser,
+                            totalQuestions: totalQuestionsCount
                         });
                     }, 1500); // Delay to let page load
                 }
                 
             } catch (e) {
                 console.error("Error tracking login:", e);
+            }
+        };
+
+        // Count total available questions
+        window.countTotalQuestions = async function() {
+            try {
+                const { collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                
+                const questionsRef = collection(window.db_fs, "custom_questions");
+                const snapshot = await getDocs(questionsRef);
+                
+                return snapshot.size;
+            } catch (e) {
+                console.error("Error counting questions:", e);
+                return 0;
             }
         };
 
@@ -10414,6 +10480,16 @@
             mainContentArea.querySelectorAll('.view-content').forEach(el => {
                 el.classList.add('hidden');
             });
+            
+            // List of special tabs (admin, worksheet, etc) - these need topic containers hidden
+            const specialTabs = ['admin', 'worksheet', 'saved-worksheets', 'practice', 'inbox', 'lessons', 'lesson-detail', 'student-progress', 'flagged'];
+            
+            // Hide all topic containers for special tabs (practice mode should be a full-page view)
+            if (specialTabs.includes(type)) {
+                mainContentArea.querySelectorAll('.topic-content').forEach(el => {
+                    el.classList.add('hidden');
+                });
+            }
 
             // Show target view
             const target = document.getElementById(`view-${type}`);
@@ -10427,8 +10503,6 @@
             
             // List of all OEQ tabs
             const oeqTabs = ['cer', 'definition', 'single-relationship', 'double-relationship', 'fairness', 'reliability', 'accuracy', 'constant-variable', 'explanation', 'control-setup'];
-            // List of special tabs (admin, worksheet, etc)
-            const specialTabs = ['admin', 'worksheet', 'saved-worksheets', 'practice', 'inbox', 'lessons', 'lesson-detail', 'student-progress', 'flagged'];
             
             if (oeqSidebarContent && mcqSidebarContent) {
                 if (oeqTabs.includes(type)) {
