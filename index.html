@@ -4051,12 +4051,15 @@
             <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
                 alt="Polymath Logo" class="auth-logo">
             <h2 id="auth-title" class="auth-title">Welcome Back!</h2>
-            <p class="auth-subtitle">Sign in to continue your learning journey</p>
+            <p class="auth-subtitle" id="auth-subtitle">Sign in to continue your learning journey</p>
 
             <div class="error-msg" id="auth-error"></div>
 
             <input type="email" id="auth-email" class="auth-input" placeholder="Email Address">
             <input type="password" id="auth-pass" class="auth-input" placeholder="Password">
+            
+            <!-- Password Confirmation (Registration only) -->
+            <input type="password" id="auth-pass-confirm" class="auth-input" placeholder="Confirm Password" style="display: none;">
 
             <div id="forgot-password-link" style="text-align: right; margin-bottom: 20px; margin-top: -10px;">
                 <span class="toggle-link" onclick="handleForgotPassword()" style="font-size: 0.85rem;">Forgot
@@ -4065,6 +4068,11 @@
 
             <!-- Registration Fields (Hidden by default) -->
             <div id="reg-fields" style="display: none;">
+                <div style="background: #e3f2fd; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #1976d2;">
+                    <div style="font-weight: 600; color: #1565c0; margin-bottom: 5px;">👨‍👩‍👧 Parent & Student Information</div>
+                    <div style="font-size: 0.85rem; color: #666;">Please provide details for each student</div>
+                </div>
+                
                 <input type="text" id="parent-name" class="auth-input" placeholder="Parent's Name">
                 
                 <div id="students-container">
@@ -4101,6 +4109,60 @@
             </button>
 
             <span class="toggle-link" onclick="toggleAuthMode()">New here? Create an Account</span>
+        </div>
+    </div>
+    
+    <!-- First-time Google User Student Setup Modal -->
+    <div id="google-setup-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 500px;">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
+                <h3 style="color: #1976d2; margin: 0;">Welcome to Polymath!</h3>
+                <p style="color: #666; margin-top: 0.5rem;">Let's set up your account</p>
+            </div>
+            
+            <div class="error-msg" id="google-setup-error"></div>
+            
+            <div style="background: #e3f2fd; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #1976d2;">
+                <div style="font-weight: 600; color: #1565c0; margin-bottom: 5px;">👨‍👩‍👧 Student Information Required</div>
+                <div style="font-size: 0.85rem; color: #666;">Please tell us about the student(s) using this account</div>
+            </div>
+            
+            <div class="form-group">
+                <label style="font-weight: 600; color: #333;">Parent's Name *</label>
+                <input type="text" id="google-parent-name" class="auth-input" placeholder="Enter parent's name" style="margin-top: 5px;">
+            </div>
+            
+            <div id="google-students-container">
+                <label style="font-weight: 600; color: #333; display: block; margin-bottom: 10px;">Student(s) *</label>
+                <div class="google-student-entry" data-student-index="0">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" class="auth-input google-student-name" placeholder="Student's Name" style="flex: 1; margin-bottom: 0;">
+                        <select class="auth-input google-student-level" style="width: 100px; margin-bottom: 0;">
+                            <option value="">Level</option>
+                            <option value="P3">P3</option>
+                            <option value="P4">P4</option>
+                            <option value="P5">P5</option>
+                            <option value="P6">P6</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" onclick="addGoogleStudentEntry()" style="width: 100%; padding: 10px; margin-bottom: 15px; background: #e3f2fd; border: 2px dashed #1976d2; border-radius: 8px; color: #1976d2; font-weight: 600; cursor: pointer;">
+                ➕ Add Another Student
+            </button>
+            
+            <div class="legal-check" style="margin-bottom: 1rem;">
+                <input type="checkbox" id="google-legal-agree">
+                <label for="google-legal-agree" style="font-size: 0.85rem; line-height: 1.4;">
+                    By registering, I confirm that I am a parent/guardian and agree to be liable for the tuition fees. I acknowledge that Polymath Learning Centre reserves the right to change any aspect of this system at any time.
+                </label>
+            </div>
+            
+            <button onclick="completeGoogleSetup()" class="btn-save" style="width: 100%; padding: 12px; font-size: 1rem;">
+                ✅ Complete Setup
+            </button>
         </div>
     </div>
 
@@ -14017,26 +14079,57 @@
 
         window.toggleAuthMode = () => {
             isSignUpMode = !isSignUpMode;
+            document.querySelector('.toggle-link').innerText = isSignUpMode ? "Already have an account? Login" : "New here? Create an Account";
             document.getElementById('reg-fields').style.display = isSignUpMode ? "block" : "none";
             document.getElementById('legal-box').style.display = isSignUpMode ? "block" : "none";
             document.getElementById('btn-google').style.display = isSignUpMode ? "none" : "flex";
-            document.getElementById('auth-title').innerText = isSignUpMode ? "Register Student Account" : "Welcome Back!";
-            document.getElementById('btn-login').innerText = isSignUpMode ? "Confirm Registration" : "Login";
+            document.getElementById('auth-title').innerText = isSignUpMode ? "Create New Account" : "Welcome Back!";
+            document.getElementById('auth-subtitle').innerText = isSignUpMode ? "Register to start your learning journey" : "Sign in to continue your learning journey";
+            document.getElementById('btn-login').innerText = isSignUpMode ? "Create Account" : "Login";
+            document.getElementById('forgot-password-link').style.display = isSignUpMode ? "none" : "block";
+            
+            // Show/hide password confirmation
+            document.getElementById('auth-pass-confirm').style.display = isSignUpMode ? "block" : "none";
+            document.getElementById('auth-pass').placeholder = isSignUpMode ? "Create Password" : "Password";
+            
+            // Clear error
+            document.getElementById('auth-error').innerText = "";
         };
 
         window.handleLogin = async () => {
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
             const errorMsg = document.getElementById('auth-error');
+            errorMsg.style.color = "#dc3545";
+            
             if (!email || !pass) { errorMsg.innerText = "Fields cannot be empty."; return; }
 
             try {
                 if (isSignUpMode) {
+                    // Validate password confirmation
+                    const passConfirm = document.getElementById('auth-pass-confirm').value;
+                    if (pass !== passConfirm) {
+                        errorMsg.innerText = "Passwords do not match.";
+                        return;
+                    }
+                    if (pass.length < 6) {
+                        errorMsg.innerText = "Password must be at least 6 characters.";
+                        return;
+                    }
+                    
                     const pName = document.getElementById('parent-name').value;
                     const students = getStudentsData();
                     
-                    if (!pName || students.length === 0 || !document.getElementById('legal-agree').checked) {
-                        errorMsg.innerText = "Please fill parent name, at least one student with level, and agree to terms."; 
+                    if (!pName) {
+                        errorMsg.innerText = "Please enter parent's name."; 
+                        return;
+                    }
+                    if (students.length === 0) {
+                        errorMsg.innerText = "Please add at least one student with name and level."; 
+                        return;
+                    }
+                    if (!document.getElementById('legal-agree').checked) {
+                        errorMsg.innerText = "Please agree to the terms and conditions."; 
                         return;
                     }
                     
@@ -14049,14 +14142,25 @@
                         level: students[0].level, // Backwards compatibility
                         loginDays: 1, 
                         lastLoginDate: new Date().toDateString(), 
-                        agreedToTerms: true
+                        agreedToTerms: true,
+                        createdAt: new Date()
                     });
                 } else {
                     await signInWithEmailAndPassword(auth, email, pass);
                 }
             } catch (e) {
                 console.error("Auth Error:", e);
-                errorMsg.innerText = "Invalid email or password";
+                if (e.code === 'auth/email-already-in-use') {
+                    errorMsg.innerText = "This email is already registered. Please login instead.";
+                } else if (e.code === 'auth/weak-password') {
+                    errorMsg.innerText = "Password must be at least 6 characters.";
+                } else if (e.code === 'auth/invalid-email') {
+                    errorMsg.innerText = "Please enter a valid email address.";
+                } else if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password') {
+                    errorMsg.innerText = "Invalid email or password.";
+                } else {
+                    errorMsg.innerText = "Error: " + e.message;
+                }
             }
         };
 
@@ -14083,9 +14187,111 @@
         window.handleGoogleLogin = async () => {
             try {
                 const result = await signInWithPopup(auth, googleProvider);
-                await trackLoginDays(result.user);
+                // Check if first-time Google user
+                const userRef = doc(db_fs, "users", result.user.uid);
+                const userSnap = await getDoc(userRef);
+                
+                if (!userSnap.exists() || !userSnap.data().students || userSnap.data().students.length === 0) {
+                    // First-time Google user - show setup modal
+                    window.pendingGoogleUser = result.user;
+                    document.getElementById('auth-overlay').style.display = 'none';
+                    document.getElementById('google-setup-modal').classList.add('visible');
+                } else {
+                    await trackLoginDays(result.user);
+                }
             } catch (e) {
                 document.getElementById('auth-error').innerText = "Google Error: " + e.message;
+            }
+        };
+
+        // Add student entry for Google setup
+        window.addGoogleStudentEntry = function() {
+            const container = document.getElementById('google-students-container');
+            const entries = container.querySelectorAll('.google-student-entry');
+            const newIndex = entries.length;
+            
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'google-student-entry';
+            entryDiv.dataset.studentIndex = newIndex;
+            entryDiv.innerHTML = `
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <input type="text" class="auth-input google-student-name" placeholder="Student's Name" style="flex: 1; margin-bottom: 0;">
+                    <select class="auth-input google-student-level" style="width: 100px; margin-bottom: 0;">
+                        <option value="">Level</option>
+                        <option value="P3">P3</option>
+                        <option value="P4">P4</option>
+                        <option value="P5">P5</option>
+                        <option value="P6">P6</option>
+                    </select>
+                    <button type="button" onclick="this.parentElement.parentElement.remove()" style="background: #ffebee; border: none; border-radius: 8px; width: 40px; color: #f44336; font-size: 1.2rem; cursor: pointer;">×</button>
+                </div>
+            `;
+            container.appendChild(entryDiv);
+        };
+
+        // Get students data from Google setup modal
+        window.getGoogleStudentsData = function() {
+            const students = [];
+            document.querySelectorAll('.google-student-entry').forEach(entry => {
+                const name = entry.querySelector('.google-student-name').value.trim();
+                const level = entry.querySelector('.google-student-level').value;
+                if (name && level) {
+                    students.push({ name, level });
+                }
+            });
+            return students;
+        };
+
+        // Complete Google setup
+        window.completeGoogleSetup = async function() {
+            const errorMsg = document.getElementById('google-setup-error');
+            errorMsg.style.color = "#dc3545";
+            
+            const parentName = document.getElementById('google-parent-name').value.trim();
+            const students = getGoogleStudentsData();
+            
+            if (!parentName) {
+                errorMsg.innerText = "Please enter parent's name.";
+                return;
+            }
+            if (students.length === 0) {
+                errorMsg.innerText = "Please add at least one student with name and level.";
+                return;
+            }
+            if (!document.getElementById('google-legal-agree').checked) {
+                errorMsg.innerText = "Please agree to the terms and conditions.";
+                return;
+            }
+            
+            try {
+                const user = window.pendingGoogleUser;
+                if (!user) {
+                    errorMsg.innerText = "Session expired. Please try again.";
+                    return;
+                }
+                
+                await setDoc(doc(db_fs, "users", user.uid), {
+                    email: user.email,
+                    parentName: parentName,
+                    students: students,
+                    studentName: students[0].name, // Backwards compatibility
+                    level: students[0].level, // Backwards compatibility
+                    loginDays: 1,
+                    lastLoginDate: new Date().toDateString(),
+                    agreedToTerms: true,
+                    createdAt: new Date(),
+                    authProvider: 'google'
+                });
+                
+                // Hide modal and continue
+                document.getElementById('google-setup-modal').classList.remove('visible');
+                window.pendingGoogleUser = null;
+                
+                // Reload page to complete login
+                window.location.reload();
+            } catch (e) {
+                console.error("Setup Error:", e);
+                errorMsg.innerText = "Error saving details: " + e.message;
             }
         };
 
@@ -14095,13 +14301,35 @@
             const userSnap = await getDoc(userRef);
             if (userSnap.exists()) {
                 const data = userSnap.data();
+                
+                // Check if Google user without student setup
+                if ((!data.students || data.students.length === 0) && !window.isAdminUser) {
+                    // Show setup modal
+                    window.pendingGoogleUser = user;
+                    document.getElementById('google-setup-modal').classList.add('visible');
+                    return;
+                }
+                
                 if (data.lastLoginDate !== today) {
                     await updateDoc(userRef, { loginDays: increment(1), lastLoginDate: today });
                 }
                 const display = document.getElementById('login-days-display');
                 if (display) display.innerText = `📅 Day ${data.loginDays || 1} streak!`;
             } else {
-                await setDoc(userRef, { email: user.email, studentName: user.displayName || "Student", loginDays: 1, lastLoginDate: today });
+                // New user via Google - minimal record, setup modal will be shown
+                await setDoc(userRef, { 
+                    email: user.email, 
+                    studentName: user.displayName || "Student", 
+                    loginDays: 1, 
+                    lastLoginDate: today,
+                    createdAt: new Date()
+                });
+                
+                // Show setup modal for first-time Google users
+                if (!window.isAdminUser) {
+                    window.pendingGoogleUser = user;
+                    document.getElementById('google-setup-modal').classList.add('visible');
+                }
             }
         }
 
