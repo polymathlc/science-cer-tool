@@ -4903,7 +4903,7 @@
                                     </div>
                                     <div style="background: white; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #e0e0e0;">
                                         <div style="font-size: 1.5rem; font-weight: 700; color: #9c27b0;" id="stat-total-practice-sessions">0</div>
-                                        <div style="font-size: 0.8rem; color: #888;">Practice Sessions</div>
+                                        <div style="font-size: 0.8rem; color: #888;">Total Questions Done</div>
                                     </div>
                                 </div>
                                 <div style="max-height: 350px; overflow-y: auto; background: white; border-radius: 8px; border: 1px solid #e0e0e0;">
@@ -4912,9 +4912,9 @@
                                             <tr>
                                                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #e0e0e0;">User</th>
                                                 <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Students</th>
-                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Last Login</th>
-                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Total Logins</th>
-                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Questions Attempted</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Last Active</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Questions Done</th>
+                                                <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Correct %</th>
                                                 <th style="padding: 10px; text-align: center; border-bottom: 2px solid #e0e0e0;">Avg Rating</th>
                                             </tr>
                                         </thead>
@@ -8058,6 +8058,76 @@
         window.trackAnswerForPractice = function(questionId, isCorrect) {
             // This can be expanded to track performance over time
             console.log(`Question ${questionId}: ${isCorrect ? 'Correct' : 'Wrong'}`);
+            
+            // Track this attempt in Firebase for admin dashboard
+            trackQuestionAttempt(questionId, isCorrect);
+        };
+
+        // Track all question attempts (both practice mode and regular mode) for admin dashboard
+        window.trackQuestionAttempt = async function(questionId, isCorrect) {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user || !window.db_fs) return;
+                
+                const { doc, getDoc, updateDoc, setDoc, increment } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                
+                const userRef = doc(window.db_fs, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+                
+                const now = new Date();
+                const today = now.toISOString().split('T')[0]; // YYYY-MM-DD
+                
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    
+                    // Update activity tracking
+                    const activityStats = data.activityStats || {};
+                    activityStats.totalQuestionsAttempted = (activityStats.totalQuestionsAttempted || 0) + 1;
+                    activityStats.totalCorrect = (activityStats.totalCorrect || 0) + (isCorrect ? 1 : 0);
+                    activityStats.lastActivity = now;
+                    
+                    // Track daily activity
+                    const dailyActivity = activityStats.dailyActivity || {};
+                    if (!dailyActivity[today]) {
+                        dailyActivity[today] = { attempts: 0, correct: 0 };
+                    }
+                    dailyActivity[today].attempts++;
+                    if (isCorrect) dailyActivity[today].correct++;
+                    activityStats.dailyActivity = dailyActivity;
+                    
+                    // Keep only last 30 days of daily activity
+                    const thirtyDaysAgo = new Date(now);
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0];
+                    Object.keys(dailyActivity).forEach(date => {
+                        if (date < thirtyDaysAgoStr) delete dailyActivity[date];
+                    });
+                    
+                    await updateDoc(userRef, { 
+                        activityStats: activityStats,
+                        lastActivity: now
+                    });
+                    
+                    console.log("Activity tracked - Total attempts:", activityStats.totalQuestionsAttempted);
+                } else {
+                    // Create new user document with activity
+                    await setDoc(userRef, {
+                        email: user.email,
+                        activityStats: {
+                            totalQuestionsAttempted: 1,
+                            totalCorrect: isCorrect ? 1 : 0,
+                            lastActivity: now,
+                            dailyActivity: {
+                                [today]: { attempts: 1, correct: isCorrect ? 1 : 0 }
+                            }
+                        },
+                        lastActivity: now,
+                        createdAt: now
+                    }, { merge: true });
+                }
+            } catch (e) {
+                console.error("Error tracking question attempt:", e);
+            }
         };
 
         // =====================================================
@@ -8302,31 +8372,48 @@
                 const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                 const weekStart = new Date(todayStart);
                 weekStart.setDate(weekStart.getDate() - 7);
+                const today = now.toISOString().split('T')[0];
                 
                 let activeToday = 0;
                 let activeWeek = 0;
-                let totalPracticeSessions = 0;
+                let totalQuestionsAttempted = 0;
+                let totalQuestionsToday = 0;
                 
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const lastLogin = data.lastLogin?.toDate ? data.lastLogin.toDate() : null;
+                    const lastActivity = data.lastActivity?.toDate ? data.lastActivity.toDate() : 
+                                         (data.lastActivity ? new Date(data.lastActivity) : null);
                     const students = data.students || [];
+                    const activityStats = data.activityStats || {};
                     
                     // Calculate average rating across all students
                     let avgRating = 1000;
-                    let totalAttempts = 0;
+                    let studentAttempts = 0;
                     if (students.length > 0) {
                         const ratings = students.filter(s => s.rating).map(s => s.rating);
                         avgRating = ratings.length > 0 ? Math.round(ratings.reduce((a, b) => a + b, 0) / ratings.length) : 1000;
-                        totalAttempts = students.reduce((sum, s) => sum + (s.totalAttempts || 0), 0);
-                        totalPracticeSessions += students.reduce((sum, s) => sum + (s.practiceSessions || 0), 0);
+                        studentAttempts = students.reduce((sum, s) => sum + (s.totalAttempts || 0), 0);
                     }
                     
-                    // Check activity
-                    if (lastLogin) {
-                        if (lastLogin >= todayStart) activeToday++;
-                        if (lastLogin >= weekStart) activeWeek++;
+                    // Get total attempts from activityStats (includes all question types)
+                    const totalAttempts = activityStats.totalQuestionsAttempted || studentAttempts || 0;
+                    const totalCorrect = activityStats.totalCorrect || 0;
+                    const correctRate = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
+                    
+                    // Get today's attempts
+                    const dailyActivity = activityStats.dailyActivity || {};
+                    const todayAttempts = dailyActivity[today]?.attempts || 0;
+                    
+                    // Check activity (use lastActivity if available, fallback to lastLogin)
+                    const lastActiveTime = lastActivity || lastLogin;
+                    if (lastActiveTime) {
+                        if (lastActiveTime >= todayStart) activeToday++;
+                        if (lastActiveTime >= weekStart) activeWeek++;
                     }
+                    
+                    totalQuestionsAttempted += totalAttempts;
+                    totalQuestionsToday += todayAttempts;
                     
                     users.push({
                         id: doc.id,
@@ -8334,8 +8421,11 @@
                         students: students,
                         studentCount: students.length,
                         lastLogin: lastLogin,
+                        lastActivity: lastActiveTime,
                         loginCount: data.loginCount || 0,
                         totalAttempts: totalAttempts,
+                        todayAttempts: todayAttempts,
+                        correctRate: correctRate,
                         avgRating: avgRating
                     });
                 });
@@ -8344,13 +8434,13 @@
                 document.getElementById('stat-total-users').textContent = users.length;
                 document.getElementById('stat-active-today').textContent = activeToday;
                 document.getElementById('stat-active-week').textContent = activeWeek;
-                document.getElementById('stat-total-practice-sessions').textContent = totalPracticeSessions;
+                document.getElementById('stat-total-practice-sessions').textContent = totalQuestionsAttempted;
                 
-                // Sort by last login (most recent first)
+                // Sort by last activity (most recent first)
                 users.sort((a, b) => {
-                    if (!a.lastLogin) return 1;
-                    if (!b.lastLogin) return -1;
-                    return b.lastLogin - a.lastLogin;
+                    if (!a.lastActivity) return 1;
+                    if (!b.lastActivity) return -1;
+                    return b.lastActivity - a.lastActivity;
                 });
                 
                 // Render table
@@ -8360,12 +8450,13 @@
                 }
                 
                 tableBody.innerHTML = users.map(u => {
-                    const lastLoginStr = u.lastLogin 
-                        ? formatRelativeTime(u.lastLogin)
+                    const lastActivityStr = u.lastActivity 
+                        ? formatRelativeTime(u.lastActivity)
                         : 'Never';
-                    const isRecent = u.lastLogin && u.lastLogin >= todayStart;
+                    const isRecent = u.lastActivity && u.lastActivity >= todayStart;
                     const studentNames = u.students.map(s => s.name || 'Unknown').join(', ');
                     const ratingTier = getRatingTier(u.avgRating);
+                    const correctRateColor = u.correctRate >= 70 ? '#4CAF50' : u.correctRate >= 50 ? '#ff9800' : '#f44336';
                     
                     return `
                         <tr>
@@ -8377,10 +8468,15 @@
                                 <span style="background: #e3f2fd; color: #1976d2; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">${u.studentCount}</span>
                             </td>
                             <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
-                                <span style="color: ${isRecent ? '#4CAF50' : '#888'}; font-weight: ${isRecent ? '600' : '400'};">${lastLoginStr}</span>
+                                <span style="color: ${isRecent ? '#4CAF50' : '#888'}; font-weight: ${isRecent ? '600' : '400'};">${lastActivityStr}</span>
                             </td>
-                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">${u.loginCount}</td>
-                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">${u.totalAttempts}</td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
+                                <div style="font-weight: 600;">${u.totalAttempts}</div>
+                                ${u.todayAttempts > 0 ? `<div style="font-size: 0.7rem; color: #4CAF50;">+${u.todayAttempts} today</div>` : ''}
+                            </td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
+                                <span style="color: ${correctRateColor}; font-weight: 600;">${u.correctRate}%</span>
+                            </td>
                             <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: center;">
                                 <span style="color: ${ratingTier.color}; font-weight: 600;">${u.avgRating}</span>
                             </td>
@@ -13593,6 +13689,12 @@
                 const videoContainer = form.querySelector('.video-container');
                 if (videoContainer) {
                     videoContainer.style.display = 'block';
+                }
+                
+                // Track OEQ answer for admin dashboard
+                const questionId = questionContainer.id;
+                if (questionId && window.trackQuestionAttempt) {
+                    window.trackQuestionAttempt(questionId, allCorrect);
                 }
             });
         }
