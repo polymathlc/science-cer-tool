@@ -9121,44 +9121,44 @@
                         Select All
                     </button>
                 </div>
-                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    <table style="width: 100%; border-collapse: collapse;">
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
                         <thead>
                             <tr style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
-                                <th style="padding: 1rem; text-align: center; font-weight: 600; width: 50px;">
-                                    <input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll(this.checked)" style="cursor: pointer; width: 18px; height: 18px;">
+                                <th style="padding: 0.75rem 0.5rem; text-align: center; font-weight: 600; width: 40px; font-size: 0.85rem;">
+                                    <input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll(this.checked)" style="cursor: pointer; width: 16px; height: 16px;">
                                 </th>
-                                <th style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                <th style="padding: 0.75rem 0.5rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s; font-size: 0.85rem; min-width: 200px;" 
                                     onclick="sortByColumn('title')"
                                     onmouseover="this.style.background='rgba(255,255,255,0.1)'"
                                     onmouseout="this.style.background='transparent'">
                                     Title ${getSortIndicator('title')}
                                 </th>
-                                <th style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                <th style="padding: 0.75rem 0.5rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s; font-size: 0.85rem; min-width: 150px;" 
                                     onclick="sortByColumn('topic')"
                                     onmouseover="this.style.background='rgba(255,255,255,0.1)'"
                                     onmouseout="this.style.background='transparent'">
                                     Topic ${getSortIndicator('topic')}
                                 </th>
-                                <th style="padding: 1rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                <th style="padding: 0.75rem 0.5rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s; font-size: 0.85rem; width: 80px;" 
                                     onclick="sortByColumn('level')"
                                     onmouseover="this.style.background='rgba(255,255,255,0.1)'"
                                     onmouseout="this.style.background='transparent'">
                                     Level ${getSortIndicator('level')}
                                 </th>
-                                <th style="padding: 1rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                <th style="padding: 0.75rem 0.5rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s; font-size: 0.85rem; width: 90px;" 
                                     onclick="sortByColumn('rating')"
                                     onmouseover="this.style.background='rgba(255,255,255,0.1)'"
                                     onmouseout="this.style.background='transparent'">
                                     Rating ${getSortIndicator('rating')}
                                 </th>
-                                <th style="padding: 1rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                <th style="padding: 0.75rem 0.5rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s; font-size: 0.85rem; width: 80px;" 
                                     onclick="sortByColumn('category')"
                                     onmouseover="this.style.background='rgba(255,255,255,0.1)'"
                                     onmouseout="this.style.background='transparent'">
                                     Type ${getSortIndicator('category')}
                                 </th>
-                                <th style="padding: 1rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                <th style="padding: 0.75rem 0.5rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s; font-size: 0.85rem; width: 120px;" 
                                     onclick="sortByColumn('date')"
                                     onmouseover="this.style.background='rgba(255,255,255,0.1)'"
                                     onmouseout="this.style.background='transparent'">
@@ -9189,35 +9189,35 @@
                     <tr style="border-bottom: 1px solid #eee; transition: background 0.2s;" 
                         onmouseover="this.style.background='#f5f5f5'"
                         onmouseout="this.style.background='white'">
-                        <td style="padding: 1rem; text-align: center;" onclick="event.stopPropagation();">
-                            <input type="checkbox" class="question-checkbox" data-question-id="${question.id}" onchange="updateSelectedCount()" style="cursor: pointer; width: 18px; height: 18px;">
+                        <td style="padding: 0.75rem 0.5rem; text-align: center;" onclick="event.stopPropagation();">
+                            <input type="checkbox" class="question-checkbox" data-question-id="${question.id}" onchange="updateSelectedCount()" style="cursor: pointer; width: 16px; height: 16px;">
                         </td>
-                        <td style="padding: 1rem; color: #333; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
-                            <div style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;">
+                        <td style="padding: 0.75rem 0.5rem; color: #333; cursor: pointer; font-size: 0.85rem;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
+                            <div style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
                                 ${question.title}${sourceBadge}
                             </div>
                         </td>
-                        <td style="padding: 1rem; color: #666; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
-                            <span style="background: #f5f5f5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
+                        <td style="padding: 0.75rem 0.5rem; color: #666; cursor: pointer; font-size: 0.85rem;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
+                            <span style="background: #f5f5f5; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; white-space: nowrap;">
                                 📚 ${question.topic}
                             </span>
                         </td>
-                        <td style="padding: 1rem; text-align: center; color: #1976d2; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
-                            <span style="background: #e3f2fd; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
+                        <td style="padding: 0.75rem 0.5rem; text-align: center; color: #1976d2; cursor: pointer; font-size: 0.85rem;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
+                            <span style="background: #e3f2fd; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; white-space: nowrap;">
                                 🎓 ${question.level}
                             </span>
                         </td>
-                        <td style="padding: 1rem; text-align: center; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
-                            <span style="background: ${ratingColor}15; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; color: ${ratingColor}; font-weight: 600; white-space: nowrap;">
+                        <td style="padding: 0.75rem 0.5rem; text-align: center; cursor: pointer; font-size: 0.85rem;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
+                            <span style="background: ${ratingColor}15; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; color: ${ratingColor}; font-weight: 600; white-space: nowrap;">
                                 ⭐ ${question.rating}
                             </span>
                         </td>
-                        <td style="padding: 1rem; text-align: center; color: #7b1fa2; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
-                            <span style="background: #f3e5f5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
+                        <td style="padding: 0.75rem 0.5rem; text-align: center; color: #7b1fa2; cursor: pointer; font-size: 0.85rem;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
+                            <span style="background: #f3e5f5; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; white-space: nowrap;">
                                 ${categoryIcon}
                             </span>
                         </td>
-                        <td style="padding: 1rem; text-align: center; color: #999; font-size: 0.9rem; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
+                        <td style="padding: 0.75rem 0.5rem; text-align: center; color: #999; font-size: 0.75rem; cursor: pointer; white-space: nowrap;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             ${question.fromFirestore ? `📅 ${date}` : '📄 Built-in'}
                         </td>
                     </tr>
