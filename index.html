@@ -9110,10 +9110,24 @@
             };
 
             let html = `
+                <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <button class="btn" style="background: #4CAF50; color: white; padding: 0.75rem 1.5rem; font-weight: 600;" onclick="addSelectedQuestionsToWorksheet()">
+                            ➕ Add Selected to Worksheet
+                        </button>
+                        <span id="selected-count" style="color: #666; font-size: 0.9rem;">0 selected</span>
+                    </div>
+                    <button class="btn" style="background: #2196F3; color: white; padding: 0.5rem 1rem; font-size: 0.9rem;" onclick="selectAllQuestions()">
+                        Select All
+                    </button>
+                </div>
                 <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     <table style="width: 100%; border-collapse: collapse;">
                         <thead>
                             <tr style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+                                <th style="padding: 1rem; text-align: center; font-weight: 600; width: 50px;">
+                                    <input type="checkbox" id="select-all-checkbox" onchange="toggleSelectAll(this.checked)" style="cursor: pointer; width: 18px; height: 18px;">
+                                </th>
                                 <th style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
                                     onclick="sortByColumn('title')"
                                     onmouseover="this.style.background='rgba(255,255,255,0.1)'"
@@ -9156,42 +9170,54 @@
             `;
 
             window.filteredQuestionsList.forEach((question, index) => {
-                const date = question.createdAt ? new Date(question.createdAt).toLocaleDateString() : 'N/A';
+                let date = 'N/A';
+                if (question.createdAt) {
+                    try {
+                        const dateObj = new Date(question.createdAt);
+                        if (!isNaN(dateObj.getTime())) {
+                            date = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                        }
+                    } catch (e) {
+                        date = 'N/A';
+                    }
+                }
                 const ratingColor = question.rating >= 1500 ? '#4CAF50' : question.rating >= 1200 ? '#FF9800' : '#9E9E9E';
                 const categoryIcon = question.category === 'mcq' ? '📝 MCQ' : '✍️ OEQ';
                 const sourceBadge = question.fromFirestore ? '<span style="font-size: 0.7rem; background: #e3f2fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; margin-left: 6px;">Custom</span>' : '';
 
                 html += `
-                    <tr style="border-bottom: 1px solid #eee; transition: background 0.2s; cursor: pointer;" 
-                        onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})"
+                    <tr style="border-bottom: 1px solid #eee; transition: background 0.2s;" 
                         onmouseover="this.style.background='#f5f5f5'"
                         onmouseout="this.style.background='white'">
-                        <td style="padding: 1rem; color: #333;">
+                        <td style="padding: 1rem; text-align: center;" onclick="event.stopPropagation();">
+                            <input type="checkbox" class="question-checkbox" data-question-id="${question.id}" onchange="updateSelectedCount()" style="cursor: pointer; width: 18px; height: 18px;">
+                        </td>
+                        <td style="padding: 1rem; color: #333; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             <div style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;">
                                 ${question.title}${sourceBadge}
                             </div>
                         </td>
-                        <td style="padding: 1rem; color: #666;">
+                        <td style="padding: 1rem; color: #666; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             <span style="background: #f5f5f5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
                                 📚 ${question.topic}
                             </span>
                         </td>
-                        <td style="padding: 1rem; text-align: center; color: #1976d2;">
+                        <td style="padding: 1rem; text-align: center; color: #1976d2; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             <span style="background: #e3f2fd; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
                                 🎓 ${question.level}
                             </span>
                         </td>
-                        <td style="padding: 1rem; text-align: center;">
+                        <td style="padding: 1rem; text-align: center; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             <span style="background: ${ratingColor}15; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; color: ${ratingColor}; font-weight: 600; white-space: nowrap;">
                                 ⭐ ${question.rating}
                             </span>
                         </td>
-                        <td style="padding: 1rem; text-align: center; color: #7b1fa2;">
+                        <td style="padding: 1rem; text-align: center; color: #7b1fa2; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             <span style="background: #f3e5f5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
                                 ${categoryIcon}
                             </span>
                         </td>
-                        <td style="padding: 1rem; text-align: center; color: #999; font-size: 0.9rem;">
+                        <td style="padding: 1rem; text-align: center; color: #999; font-size: 0.9rem; cursor: pointer;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             ${question.fromFirestore ? `📅 ${date}` : '📄 Built-in'}
                         </td>
                     </tr>
@@ -9204,7 +9230,143 @@
                 </div>
             `;
             container.innerHTML = html;
+            updateSelectedCount();
         }
+
+        // Toggle select all
+        window.toggleSelectAll = function(checked) {
+            const checkboxes = document.querySelectorAll('.question-checkbox');
+            checkboxes.forEach(cb => cb.checked = checked);
+            updateSelectedCount();
+        };
+
+        // Select all questions
+        window.selectAllQuestions = function() {
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = true;
+                toggleSelectAll(true);
+            }
+        };
+
+        // Update selected count
+        window.updateSelectedCount = function() {
+            const selectedCount = document.querySelectorAll('.question-checkbox:checked').length;
+            const countElement = document.getElementById('selected-count');
+            if (countElement) {
+                countElement.textContent = `${selectedCount} selected`;
+            }
+            // Update select all checkbox state
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            const allCheckboxes = document.querySelectorAll('.question-checkbox');
+            if (selectAllCheckbox && allCheckboxes.length > 0) {
+                selectAllCheckbox.checked = selectedCount === allCheckboxes.length;
+            }
+        };
+
+        // Add selected questions to worksheet
+        window.addSelectedQuestionsToWorksheet = async function() {
+            const selectedCheckboxes = document.querySelectorAll('.question-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('Please select at least one question to add to the worksheet.');
+                return;
+            }
+
+            const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.dataset.questionId);
+            let addedCount = 0;
+            let skippedCount = 0;
+
+            for (const questionId of selectedIds) {
+                // Check if already in worksheet
+                if (window.worksheetItems.some(item => item.id === questionId)) {
+                    skippedCount++;
+                    continue;
+                }
+
+                // Find question in the list
+                const question = window.allQuestionsList.find(q => q.id === questionId);
+                if (!question) continue;
+
+                try {
+                    // Try to get question from DOM first
+                    const questionContainer = document.getElementById(questionId);
+                    
+                    if (questionContainer) {
+                        // Question exists in DOM, clone it
+                        const clone = questionContainer.cloneNode(true);
+                        
+                        // Remove UI elements from the clone
+                        clone.querySelectorAll('.admin-controls, .worksheet-control-bar, .controls, .feedback-icon').forEach(el => el.remove());
+                        
+                        // Reset any input states in the clone
+                        clone.querySelectorAll('.answer-input').forEach(input => {
+                            input.disabled = false;
+                            input.value = '';
+                            input.style.borderBottomColor = '';
+                        });
+                        
+                        // Get the cleaned HTML
+                        const cleanedHtml = clone.innerHTML;
+                        
+                        window.worksheetItems.push({
+                            id: questionId,
+                            title: question.title,
+                            html: cleanedHtml,
+                            addedAt: new Date().toISOString()
+                        });
+                    } else {
+                        // Question not in DOM, use stored HTML
+                        // Clean the HTML if needed
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = question.html;
+                        
+                        // Remove unwanted elements
+                        tempDiv.querySelectorAll('.admin-controls, .worksheet-control-bar, .controls, .feedback-icon').forEach(el => el.remove());
+                        
+                        // Reset inputs
+                        tempDiv.querySelectorAll('.answer-input').forEach(input => {
+                            input.disabled = false;
+                            input.value = '';
+                            input.style.borderBottomColor = '';
+                        });
+                        
+                        const processedHtml = tempDiv.innerHTML;
+                        
+                        window.worksheetItems.push({
+                            id: questionId,
+                            title: question.title,
+                            html: processedHtml,
+                            addedAt: new Date().toISOString()
+                        });
+                    }
+                    
+                    addedCount++;
+                } catch (e) {
+                    console.error(`Error adding question ${questionId}:`, e);
+                }
+            }
+
+            // Save and update UI
+            if (window.saveWorksheetToStorage) {
+                window.saveWorksheetToStorage();
+            }
+            if (window.updateWorksheetUI) {
+                window.updateWorksheetUI();
+            }
+
+            // Uncheck all checkboxes
+            selectedCheckboxes.forEach(cb => cb.checked = false);
+            const selectAllCheckbox = document.getElementById('select-all-checkbox');
+            if (selectAllCheckbox) selectAllCheckbox.checked = false;
+            updateSelectedCount();
+
+            // Show success message
+            let message = `✅ Successfully added ${addedCount} question${addedCount !== 1 ? 's' : ''} to your worksheet!`;
+            if (skippedCount > 0) {
+                message += `\n\n${skippedCount} question${skippedCount !== 1 ? 's were' : ' was'} already in your worksheet and ${skippedCount !== 1 ? 'were' : 'was'} skipped.`;
+            }
+            alert(message);
+        };
 
         // Sort by column header click
         window.sortByColumn = function(field) {
