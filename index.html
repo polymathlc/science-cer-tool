@@ -220,6 +220,21 @@
             transform: translateX(4px) scale(0.98);
         }
 
+        /* Tutorial Help Button */
+        .tutorial-help-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tutorial-help-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4) !important;
+            background: #0056b3 !important;
+        }
+
+        .tutorial-help-btn:active {
+            transform: scale(0.95);
+        }
+
         .question-container {
             margin-bottom: 3rem;
             position: relative;
@@ -4350,6 +4365,9 @@
                     <button class="header-icon-btn" onclick="showAccountSettings()" title="Account Settings" id="header-settings-btn">
                         ⚙️
                     </button>
+                    <button class="tutorial-help-btn" onclick="startTutorial()" title="Help & Tutorial" id="header-tutorial-btn" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-blue); color: white; border: none; font-size: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3); transition: all 0.3s;">
+                        ?
+                    </button>
                 </div>
             </div>
             
@@ -4400,9 +4418,6 @@
                     <div class="nav-dropdown" id="learn-dropdown" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 180px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
                         <button class="nav-dropdown-item" onclick="switchTab('lessons', this)" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>🎓</span> Lessons
-                        </button>
-                        <button class="nav-dropdown-item" onclick="startTutorial()" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
-                            <span>🎓</span> Tutorial
                         </button>
                     </div>
                 </div>
@@ -4539,9 +4554,7 @@
                         📚 Question Library
                     </button>
                     
-                    <button id="btn-sidebar-tutorial" class="sidebar-nav-btn" style="background: linear-gradient(135deg, #00bcd4, #0097a7); color: white;" onclick="startTutorial()">
-                        🎓 Tutorial
-                    </button>
+                    <!-- Tutorial button moved to header -->
                     
                     <button onclick="handleLogout()" class="logout-btn">🚪 Logout</button>
                 </div>
@@ -17393,38 +17406,147 @@
         // Initialize tutorial
         window.tutorialState.steps = tutorialSteps;
 
-        // Start tutorial
+        // Get context-aware tutorial steps based on current page
+        function getContextualTutorialSteps() {
+            const currentTab = window.currentActiveTab || '';
+            const currentMode = window.currentMode || 'oeq';
+            
+            // Map tabs to relevant tutorial steps
+            const contextualSteps = {
+                'worksheet': [
+                    {
+                        title: "My Worksheet 📝",
+                        content: "Your worksheet is where you collect questions to practice. You can: print your worksheet, save it for later, or remove questions. The badge shows how many questions you have. Use the 'Add to Worksheet' button on any question to add it here.",
+                        highlight: "#view-worksheet",
+                        action: null
+                    },
+                    {
+                        title: "Adding Questions ➕",
+                        content: "To add questions to your worksheet: 1) Find a question you want to practice, 2) Click the '➕ Add to Worksheet' button on the question, 3) The question will be saved to your worksheet. You can add multiple questions and practice them all together.",
+                        highlight: ".btn-worksheet-add",
+                        action: null
+                    }
+                ],
+                'my-progress': [
+                    {
+                        title: "My Progress 📈",
+                        content: "Track your learning progress! This page shows: your overall success rate, topic mastery percentages, questions that need more practice, and your rating. This helps you identify areas to focus on.",
+                        highlight: "#view-my-progress",
+                        action: null
+                    },
+                    {
+                        title: "Understanding Your Progress",
+                        content: "The progress page displays: mastery percentages for each topic (green = mastered, yellow = in progress, red = needs work), your overall success rate, questions you've attempted, and your current rating. Use this to focus your study efforts!",
+                        highlight: null,
+                        action: null
+                    }
+                ],
+                'leaderboard': [
+                    {
+                        title: "Leaderboard 🏆",
+                        content: "See how you rank among other students! The leaderboard shows: student rankings by rating, improvement scores, total attempts, and top performers. Admins can click on student names to view their detailed progress.",
+                        highlight: "#view-leaderboard",
+                        action: null
+                    }
+                ],
+                'question-list': [
+                    {
+                        title: "Question Library 📚",
+                        content: "Browse all available questions in the Question Library! Features include: sortable columns (click headers to sort), filters by topic and level, search functionality, checkboxes to select multiple questions, and 'Add to Worksheet' button for bulk adding.",
+                        highlight: "#view-question-list",
+                        action: null
+                    },
+                    {
+                        title: "Using Filters & Search 🔍",
+                        content: "Find questions quickly! You can: filter by topic using the dropdown, filter by level (P3-P6), search by typing keywords in the search box, and sort by clicking column headers. This makes it easy to find exactly what you need!",
+                        highlight: null,
+                        action: null
+                    }
+                ],
+                'lessons': [
+                    {
+                        title: "Lessons 🎓",
+                        content: "Learn from video lessons! Each lesson includes: a video explanation, related practice questions, and progress tracking. Complete lessons to improve your understanding.",
+                        highlight: "#view-lessons",
+                        action: null
+                    }
+                ],
+                'practice': [
+                    {
+                        title: "Practice Mode 🎯",
+                        content: "Practice mode lets you work through questions at your own pace. You can switch between OEQ and MCQ modes, select topics, and track your progress as you practice.",
+                        highlight: "#view-practice",
+                        action: null
+                    }
+                ]
+            };
+            
+            // Check if we're on an OEQ topic page
+            const oeqTabs = ['cer', 'definition', 'single-relationship', 'double-relationship', 'fairness', 'reliability', 'accuracy', 'constant-variable', 'explanation', 'control-setup'];
+            if (oeqTabs.includes(currentTab)) {
+                return [
+                    {
+                        title: `Answering ${currentTab.charAt(0).toUpperCase() + currentTab.slice(1)} Questions ✍️`,
+                        content: "For Open-Ended Questions (OEQ): 1) Read the question and instructions carefully, 2) Type your answer in the text input fields provided, 3) Click 'Submit' to check your answer. You'll see feedback showing which parts are correct.",
+                        highlight: ".answer-template",
+                        action: null
+                    },
+                    {
+                        title: "Adding to Worksheet ➕",
+                        content: "You can add this question to your worksheet for later practice by clicking the '➕ Add to Worksheet' button. This saves the question so you can practice it again anytime.",
+                        highlight: ".btn-worksheet-add",
+                        action: null
+                    }
+                ];
+            }
+            
+            // Check if we're in MCQ mode
+            if (currentMode === 'mcq') {
+                return [
+                    {
+                        title: "Answering MCQ Questions 📝",
+                        content: "For Multiple Choice Questions (MCQ): 1) Read the question carefully, 2) Click on one of the answer options (A, B, C, or D), 3) Click 'Check Answer' to see if you're correct. The correct answer will be highlighted in green, and incorrect answers in red.",
+                        highlight: ".mcq-container",
+                        action: null
+                    }
+                ];
+            }
+            
+            // Return contextual steps if available, otherwise return general steps
+            return contextualSteps[currentTab] || tutorialSteps;
+        }
+
+        // Start tutorial - context-aware
         window.startTutorial = function() {
+            const contextualSteps = getContextualTutorialSteps();
+            window.tutorialState.steps = contextualSteps;
             window.tutorialState.currentStep = 0;
             showTutorialStep(0);
         };
 
         // Show tutorial step
         function showTutorialStep(stepIndex) {
-            if (stepIndex < 0 || stepIndex >= tutorialSteps.length) return;
+            const tutorialStepsList = window.tutorialState.steps || tutorialSteps;
+            if (stepIndex < 0 || stepIndex >= tutorialStepsList.length) return;
 
-            const step = tutorialSteps[stepIndex];
+            const step = tutorialStepsList[stepIndex];
             window.tutorialState.currentStep = stepIndex;
 
             // Remove existing tutorial overlay
             const existing = document.getElementById('tutorial-overlay');
             if (existing) existing.remove();
 
-            // Create tutorial overlay
+            // Create tutorial container (no backdrop, positioned top right)
             const overlay = document.createElement('div');
             overlay.id = 'tutorial-overlay';
             overlay.style.cssText = `
                 position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
+                top: 80px;
+                right: 20px;
                 z-index: 100000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
+                max-width: 400px;
+                width: calc(100% - 40px);
+                pointer-events: none;
             `;
 
             // Create tutorial box
@@ -17432,34 +17554,38 @@
             tutorialBox.style.cssText = `
                 background: white;
                 border-radius: 16px;
-                padding: 2rem;
-                max-width: 600px;
+                padding: 1.5rem;
                 width: 100%;
                 box-shadow: 0 10px 40px rgba(0,0,0,0.3);
                 position: relative;
+                pointer-events: all;
+                border: 2px solid var(--primary-blue);
             `;
-
             tutorialBox.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2 style="margin: 0; color: #667eea; font-size: 1.5rem;">${step.title}</h2>
-                    <button onclick="closeTutorial()" style="background: #f5f5f5; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 1.2rem; color: #666;">✕</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="margin: 0; color: var(--primary-blue); font-size: 1.2rem; font-weight: 600;">${step.title}</h2>
+                    <button onclick="closeTutorial()" style="background: #f5f5f5; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: 1rem; color: #666; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#f5f5f5'">✕</button>
                 </div>
-                <div style="font-size: 1rem; line-height: 1.6; color: #333; margin-bottom: 2rem; min-height: 100px;">
+                <div style="font-size: 0.9rem; line-height: 1.6; color: #333; margin-bottom: 1.5rem; max-height: 200px; overflow-y: auto;">
                     ${step.content}
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 0.9rem; color: #666;">
-                        Step ${stepIndex + 1} of ${tutorialSteps.length}
+                    <div style="font-size: 0.8rem; color: #666;">
+                        Step ${stepIndex + 1} of ${tutorialStepsList.length}
                     </div>
-                    <div style="display: flex; gap: 1rem;">
+                    <div style="display: flex; gap: 0.5rem;">
                         <button onclick="previousTutorialStep()" 
-                                style="padding: 0.75rem 1.5rem; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333; ${stepIndex === 0 ? 'opacity: 0.5; cursor: not-allowed;' : ''}"
-                                ${stepIndex === 0 ? 'disabled' : ''}>
-                            ← Previous
+                                style="padding: 0.5rem 1rem; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333; font-size: 0.85rem; transition: all 0.2s; ${stepIndex === 0 ? 'opacity: 0.5; cursor: not-allowed;' : ''}"
+                                ${stepIndex === 0 ? 'disabled' : ''}
+                                onmouseover="if(!this.disabled) this.style.background='#e0e0e0'"
+                                onmouseout="if(!this.disabled) this.style.background='#f5f5f5'">
+                            ←
                         </button>
                         <button onclick="nextTutorialStep()" 
-                                style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: white;">
-                            ${stepIndex === tutorialSteps.length - 1 ? 'Finish' : 'Next →'}
+                                style="padding: 0.5rem 1rem; background: var(--primary-blue); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: white; font-size: 0.85rem; transition: all 0.2s;"
+                                onmouseover="this.style.background='#0056b3'"
+                                onmouseout="this.style.background='var(--primary-blue)'">
+                            ${stepIndex === tutorialStepsList.length - 1 ? 'Done' : '→'}
                         </button>
                     </div>
                 </div>
@@ -17504,8 +17630,9 @@
 
         // Navigate to next step
         window.nextTutorialStep = function() {
+            const tutorialStepsList = window.tutorialState.steps || tutorialSteps;
             const nextStep = window.tutorialState.currentStep + 1;
-            if (nextStep < tutorialSteps.length) {
+            if (nextStep < tutorialStepsList.length) {
                 showTutorialStep(nextStep);
             } else {
                 closeTutorial();
