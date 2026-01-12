@@ -3214,10 +3214,12 @@
             z-index: 9998;
             opacity: 0;
             transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         .sidebar-overlay.active {
             opacity: 1;
+            pointer-events: auto;
         }
 
         /* =====================================================
@@ -3325,21 +3327,31 @@
                 left: -280px;
                 width: 280px;
                 height: 100vh;
-                z-index: 9999;
+                z-index: 10000;
                 padding: 1.5rem;
                 padding-top: 2rem;
                 overflow-y: auto;
                 transition: left 0.3s ease;
                 box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+                pointer-events: auto;
+                background: white;
             }
 
             .app-body > .sidebar.mobile-open {
                 left: 0;
+                pointer-events: auto;
+            }
+
+            /* Ensure all interactive elements in sidebar are clickable */
+            .app-body > .sidebar.mobile-open * {
+                pointer-events: auto;
             }
 
             /* Show close button in mobile sidebar */
             .app-body > .sidebar .mobile-sidebar-close {
                 display: block !important;
+                z-index: 10001;
+                pointer-events: auto;
             }
 
             /* Header adjustments */
@@ -4065,7 +4077,7 @@
     </button>
 
     <!-- Sidebar Overlay for Mobile -->
-    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()" style="display: none;"></div>
 
     <!-- Version Indicator for debugging -->
     <div class="version-indicator" id="version-display"></div>
@@ -15179,6 +15191,13 @@
                     toggleBtn.classList.add('active');
                     icon.textContent = '✕';
                     document.body.style.overflow = 'hidden';
+                    
+                    // Ensure sidebar is clickable
+                    sidebar.style.pointerEvents = 'auto';
+                    sidebar.style.zIndex = '10000';
+                    
+                    // Prevent overlay from blocking sidebar clicks
+                    overlay.style.zIndex = '9998';
                 }
             }
         };
@@ -15203,6 +15222,27 @@
             }
             document.body.style.overflow = '';
         };
+        
+        // Prevent sidebar clicks from closing the sidebar (only overlay should close it)
+        // Also ensure sidebar buttons are clickable
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.app-body > .sidebar');
+            if (sidebar) {
+                // Stop clicks on sidebar from bubbling to overlay
+                sidebar.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                }, true); // Use capture phase
+                
+                // Ensure all buttons in sidebar are clickable
+                const buttons = sidebar.querySelectorAll('button, a, .sidebar-nav-btn');
+                buttons.forEach(btn => {
+                    btn.style.pointerEvents = 'auto';
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                    });
+                });
+            }
+        });
 
         // Close sidebar when clicking a sidebar button on mobile
         window.handleSidebarButtonClick = function(callback) {
