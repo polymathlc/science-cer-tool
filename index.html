@@ -9078,8 +9078,8 @@
                     });
                 }
 
-                // Render questions
-                renderQuestionList();
+                // Apply initial sort and render
+                performSort();
 
             } catch (e) {
                 console.error("Error loading question list:", e);
@@ -9087,7 +9087,10 @@
             }
         };
 
-        // Render the question list
+        // Current sort state
+        window.currentQuestionSort = { field: 'rating', order: 'desc' };
+
+        // Render the question list as a table
         function renderQuestionList() {
             const container = document.getElementById('question-list-container');
             if (!container) return;
@@ -9097,56 +9100,166 @@
                 return;
             }
 
-            let html = `<div style="display: flex; flex-direction: column; gap: 1rem;">`;
+            const sortField = window.currentQuestionSort.field;
+            const sortOrder = window.currentQuestionSort.order;
+
+            // Helper to get sort indicator
+            const getSortIndicator = (field) => {
+                if (sortField !== field) return '↕️';
+                return sortOrder === 'asc' ? '↑' : '↓';
+            };
+
+            let html = `
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+                                <th style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                    onclick="sortByColumn('title')"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    Title ${getSortIndicator('title')}
+                                </th>
+                                <th style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                    onclick="sortByColumn('topic')"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    Topic ${getSortIndicator('topic')}
+                                </th>
+                                <th style="padding: 1rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                    onclick="sortByColumn('level')"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    Level ${getSortIndicator('level')}
+                                </th>
+                                <th style="padding: 1rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                    onclick="sortByColumn('rating')"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    Rating ${getSortIndicator('rating')}
+                                </th>
+                                <th style="padding: 1rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                    onclick="sortByColumn('category')"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    Type ${getSortIndicator('category')}
+                                </th>
+                                <th style="padding: 1rem; text-align: center; font-weight: 600; cursor: pointer; user-select: none; transition: background 0.2s;" 
+                                    onclick="sortByColumn('date')"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    Date Added ${getSortIndicator('date')}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
 
             window.filteredQuestionsList.forEach((question, index) => {
                 const date = question.createdAt ? new Date(question.createdAt).toLocaleDateString() : 'N/A';
                 const ratingColor = question.rating >= 1500 ? '#4CAF50' : question.rating >= 1200 ? '#FF9800' : '#9E9E9E';
-                const categoryIcon = question.category === 'mcq' ? '📝' : '✍️';
-                const sourceBadge = question.fromFirestore ? '<span style="font-size: 0.7rem; background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 4px; margin-left: 8px;">Custom</span>' : '';
+                const categoryIcon = question.category === 'mcq' ? '📝 MCQ' : '✍️ OEQ';
+                const sourceBadge = question.fromFirestore ? '<span style="font-size: 0.7rem; background: #e3f2fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; margin-left: 6px;">Custom</span>' : '';
 
                 html += `
-                    <div class="question-list-card" style="background: white; border-radius: 8px; padding: 1rem 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;" 
-                         onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})"
-                         onmouseover="this.style.transform='translateX(4px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)'"
-                         onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
-                        <div style="flex: 1; min-width: 0;">
-                            <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${categoryIcon} ${question.title}${sourceBadge}</h3>
-                            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
-                                <span style="background: #f5f5f5; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; color: #666; white-space: nowrap;">
-                                    📚 ${question.topic}
-                                </span>
-                                <span style="background: #e3f2fd; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; color: #1976d2; white-space: nowrap;">
-                                    🎓 ${question.level}
-                                </span>
-                                <span style="background: ${ratingColor}15; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; color: ${ratingColor}; font-weight: 600; white-space: nowrap;">
-                                    ⭐ ${question.rating}
-                                </span>
+                    <tr style="border-bottom: 1px solid #eee; transition: background 0.2s; cursor: pointer;" 
+                        onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})"
+                        onmouseover="this.style.background='#f5f5f5'"
+                        onmouseout="this.style.background='white'">
+                        <td style="padding: 1rem; color: #333;">
+                            <div style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;">
+                                ${question.title}${sourceBadge}
                             </div>
-                        </div>
-                        <div style="font-size: 0.75rem; color: #999; white-space: nowrap; text-align: right;">
+                        </td>
+                        <td style="padding: 1rem; color: #666;">
+                            <span style="background: #f5f5f5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
+                                📚 ${question.topic}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem; text-align: center; color: #1976d2;">
+                            <span style="background: #e3f2fd; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
+                                🎓 ${question.level}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem; text-align: center;">
+                            <span style="background: ${ratingColor}15; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; color: ${ratingColor}; font-weight: 600; white-space: nowrap;">
+                                ⭐ ${question.rating}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem; text-align: center; color: #7b1fa2;">
+                            <span style="background: #f3e5f5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; white-space: nowrap;">
+                                ${categoryIcon}
+                            </span>
+                        </td>
+                        <td style="padding: 1rem; text-align: center; color: #999; font-size: 0.9rem;">
                             ${question.fromFirestore ? `📅 ${date}` : '📄 Built-in'}
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
                 `;
             });
 
-            html += `</div>`;
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
             container.innerHTML = html;
         }
 
-        // Sort question list
-        window.sortQuestionList = function() {
-            const sortSelect = document.getElementById('question-list-sort');
-            if (!sortSelect || !window.filteredQuestionsList) return;
+        // Sort by column header click
+        window.sortByColumn = function(field) {
+            if (!window.filteredQuestionsList) return;
 
-            const sortValue = sortSelect.value;
-            const [sortBy, order] = sortValue.split('-');
+            // Toggle order if clicking the same column, otherwise default to desc
+            if (window.currentQuestionSort.field === field) {
+                window.currentQuestionSort.order = window.currentQuestionSort.order === 'asc' ? 'desc' : 'asc';
+            } else {
+                window.currentQuestionSort.field = field;
+                window.currentQuestionSort.order = 'desc';
+            }
+
+            // Update dropdown to match
+            const sortSelect = document.getElementById('question-list-sort');
+            if (sortSelect) {
+                const order = window.currentQuestionSort.order;
+                let value = '';
+                switch (field) {
+                    case 'rating':
+                        value = `rating-${order}`;
+                        break;
+                    case 'topic':
+                        value = `topic-${order === 'desc' ? 'desc' : 'asc'}`;
+                        break;
+                    case 'date':
+                        value = `date-${order}`;
+                        break;
+                    case 'level':
+                        value = `level-${order === 'desc' ? 'desc' : 'asc'}`;
+                        break;
+                    case 'title':
+                        value = `topic-${order === 'desc' ? 'desc' : 'asc'}`; // Use topic sort for title
+                        break;
+                    case 'category':
+                        value = `topic-${order === 'desc' ? 'desc' : 'asc'}`; // Use topic sort for category
+                        break;
+                }
+                if (value) sortSelect.value = value;
+            }
+
+            performSort();
+        };
+
+        // Perform the actual sorting
+        function performSort() {
+            if (!window.filteredQuestionsList) return;
+
+            const sortField = window.currentQuestionSort.field;
+            const sortOrder = window.currentQuestionSort.order;
 
             window.filteredQuestionsList.sort((a, b) => {
                 let aVal, bVal;
 
-                switch (sortBy) {
+                switch (sortField) {
                     case 'rating':
                         aVal = a.rating;
                         bVal = b.rating;
@@ -9154,6 +9267,10 @@
                     case 'topic':
                         aVal = a.topic.toLowerCase();
                         bVal = b.topic.toLowerCase();
+                        break;
+                    case 'title':
+                        aVal = a.title.toLowerCase();
+                        bVal = b.title.toLowerCase();
                         break;
                     case 'date':
                         aVal = new Date(a.createdAt || 0).getTime();
@@ -9164,11 +9281,15 @@
                         aVal = levelOrder[a.level] || 5;
                         bVal = levelOrder[b.level] || 5;
                         break;
+                    case 'category':
+                        aVal = a.category.toLowerCase();
+                        bVal = b.category.toLowerCase();
+                        break;
                     default:
                         return 0;
                 }
 
-                if (order === 'desc') {
+                if (sortOrder === 'desc') {
                     return bVal > aVal ? 1 : bVal < aVal ? -1 : 0;
                 } else {
                     return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
@@ -9176,6 +9297,27 @@
             });
 
             renderQuestionList();
+        }
+
+        // Sort question list (from dropdown)
+        window.sortQuestionList = function() {
+            const sortSelect = document.getElementById('question-list-sort');
+            if (!sortSelect || !window.filteredQuestionsList) return;
+
+            const sortValue = sortSelect.value;
+            const [sortBy, order] = sortValue.split('-');
+
+            // Map dropdown values to table column fields
+            let field = sortBy;
+            if (sortBy === 'rating') field = 'rating';
+            else if (sortBy === 'topic') field = 'topic';
+            else if (sortBy === 'date') field = 'date';
+            else if (sortBy === 'level') field = 'level';
+
+            window.currentQuestionSort.field = field;
+            window.currentQuestionSort.order = order;
+
+            performSort();
         };
 
         // Filter question list
@@ -9197,12 +9339,7 @@
             });
 
             // Apply current sort
-            const sortSelect = document.getElementById('question-list-sort');
-            if (sortSelect && sortSelect.value) {
-                sortQuestionList();
-            } else {
-                renderQuestionList();
-            }
+            performSort();
         };
 
         // Show question popup
