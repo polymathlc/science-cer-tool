@@ -31727,6 +31727,258 @@
             font-family: monospace;
             font-size: 0.95rem;
         }
+
+        /* Batch 86: Science Meme Generator */
+        .meme-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2230px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f57c00, #ffb74d);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245, 124, 0, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .meme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(245, 124, 0, 0.5);
+        }
+
+        .meme-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .meme-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .meme-display {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 15px;
+        }
+
+        .meme-emoji {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        .meme-text {
+            font-size: 1.1rem;
+            color: #e65100;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .meme-fact {
+            background: #fff8e1;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #ff6f00;
+            margin-top: 15px;
+        }
+
+        /* Formula Solver */
+        .formula-solver-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2710px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7b1fa2, #ba68c8);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(123, 31, 162, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .formula-solver-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(123, 31, 162, 0.5);
+        }
+
+        .formula-solver-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .formula-solver-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .formula-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1bee7;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .formula-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .formula-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .formula-input-row label {
+            min-width: 100px;
+            font-weight: 600;
+            color: #7b1fa2;
+        }
+
+        .formula-input-row input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e1bee7;
+            border-radius: 8px;
+        }
+
+        .formula-result {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #7b1fa2;
+        }
+
+        /* Revision Checklist */
+        .revision-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2290px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00695c, #4db6ac);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 105, 92, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .revision-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 105, 92, 0.5);
+        }
+
+        .revision-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .revision-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .revision-topic {
+            background: #e0f2f1;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .revision-topic:hover {
+            background: #b2dfdb;
+        }
+
+        .revision-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .revision-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .revision-progress {
+            background: #e0f2f1;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .revision-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00695c, #26a69a);
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 
@@ -77953,6 +78205,258 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('📅 Word of the Day, Lab Report Builder, and Quick Reference loaded!');
+
+        // ========== BATCH 86: Science Meme, Formula Solver, Revision Checklist ==========
+
+        // Science Meme Button
+        const memeBtn = document.createElement('button');
+        memeBtn.className = 'meme-btn';
+        memeBtn.innerHTML = '😂';
+        memeBtn.title = 'Science Meme';
+        memeBtn.onclick = () => openMemeModal();
+        document.body.appendChild(memeBtn);
+
+        // Science Meme Modal
+        const memeModal = document.createElement('div');
+        memeModal.className = 'meme-modal';
+        memeModal.id = 'memeModal';
+        memeModal.innerHTML = `
+            <div class="meme-content">
+                <h3 style="color: #f57c00; margin-bottom: 15px;">😂 Science Meme Break</h3>
+                <div class="meme-display">
+                    <div class="meme-emoji" id="memeEmoji">🔬</div>
+                    <div class="meme-text" id="memeText">Loading...</div>
+                </div>
+                <div class="meme-fact" id="memeFact"></div>
+                <button onclick="nextMeme()" style="margin-top: 15px; padding: 12px 25px; background: #f57c00; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold;">Next Meme 🔄</button>
+                <button onclick="closeMemeModal()" style="margin-top: 10px; padding: 10px 20px; background: #9e9e9e; color: white; border: none; border-radius: 20px; cursor: pointer; display: block; margin-left: auto; margin-right: auto;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(memeModal);
+
+        const scienceMemes = [
+            { emoji: '⚛️', text: 'Never trust an atom... they make up everything!', fact: 'Fun fact: There are about 7 octillion atoms in a human body!' },
+            { emoji: '🧬', text: 'I told a DNA joke... but you probably won\'t get it, it\'s in your genes!', fact: 'Fun fact: Human DNA is 99.9% identical between all people!' },
+            { emoji: '🌡️', text: 'I\'m reading a book about anti-gravity... I can\'t put it down!', fact: 'Fun fact: Gravity on Mars is about 38% of Earth\'s gravity!' },
+            { emoji: '⚡', text: 'Why did the electron break up with the proton? There was no chemistry!', fact: 'Fun fact: Electrons move at about 2,200 km/s in orbit around atoms!' },
+            { emoji: '🔬', text: 'Biology is the only science where multiplication and division mean the same thing!', fact: 'Fun fact: Cell division (mitosis) creates two identical daughter cells!' },
+            { emoji: '🧪', text: 'What do chemists call a benzene ring with iron atoms? A ferrous wheel!', fact: 'Fun fact: Benzene was discovered in 1825 by Michael Faraday!' },
+            { emoji: '🌊', text: 'Why can\'t you trust an ocean? Because it\'s full of salty water!', fact: 'Fun fact: Ocean water is about 3.5% salt by weight!' },
+            { emoji: '☀️', text: 'The Sun is jealous of photons... they always get all the attention!', fact: 'Fun fact: Light from the Sun takes 8 minutes to reach Earth!' },
+            { emoji: '🧲', text: 'I have a joke about magnets... but I\'m not sure if it will attract interest!', fact: 'Fun fact: The Earth\'s magnetic field extends 65,000 km into space!' },
+            { emoji: '🌍', text: 'Why did the geologist break up? They took each other for granite!', fact: 'Fun fact: Granite makes up about 70% of Earth\'s continental crust!' },
+            { emoji: '🦠', text: 'Why did the bacteria fail the math test? It kept dividing!', fact: 'Fun fact: Some bacteria can divide every 20 minutes!' },
+            { emoji: '💨', text: 'Why do scientists like nitrogen? Because it\'s so unreactive, it keeps to itself!', fact: 'Fun fact: Nitrogen makes up 78% of Earth\'s atmosphere!' }
+        ];
+
+        let currentMemeIndex = 0;
+
+        function openMemeModal() {
+            document.getElementById('memeModal').style.display = 'flex';
+            showMeme();
+        }
+
+        function closeMemeModal() {
+            document.getElementById('memeModal').style.display = 'none';
+        }
+
+        function showMeme() {
+            const meme = scienceMemes[currentMemeIndex];
+            document.getElementById('memeEmoji').textContent = meme.emoji;
+            document.getElementById('memeText').textContent = meme.text;
+            document.getElementById('memeFact').textContent = meme.fact;
+        }
+
+        function nextMeme() {
+            currentMemeIndex = (currentMemeIndex + 1) % scienceMemes.length;
+            showMeme();
+            addXP(2);
+        }
+
+        // Formula Solver Button
+        const formulaSolverBtn = document.createElement('button');
+        formulaSolverBtn.className = 'formula-solver-btn';
+        formulaSolverBtn.innerHTML = '🔢';
+        formulaSolverBtn.title = 'Formula Solver';
+        formulaSolverBtn.onclick = () => openFormulaSolverModal();
+        document.body.appendChild(formulaSolverBtn);
+
+        // Formula Solver Modal
+        const formulaSolverModal = document.createElement('div');
+        formulaSolverModal.className = 'formula-solver-modal';
+        formulaSolverModal.id = 'formulaSolverModal';
+        formulaSolverModal.innerHTML = `
+            <div class="formula-solver-content">
+                <h3 style="color: #7b1fa2; margin-bottom: 15px;">🔢 Formula Solver</h3>
+                <select class="formula-select" id="formulaSelect" onchange="setupFormulaInputs()">
+                    <option value="">Select a formula...</option>
+                    <option value="speed">Speed (v = d/t)</option>
+                    <option value="force">Force (F = ma)</option>
+                    <option value="work">Work (W = Fd)</option>
+                    <option value="power">Power (P = W/t)</option>
+                    <option value="ke">Kinetic Energy (KE = ½mv²)</option>
+                    <option value="pe">Potential Energy (PE = mgh)</option>
+                    <option value="ohm">Ohm's Law (V = IR)</option>
+                    <option value="density">Density (ρ = m/V)</option>
+                </select>
+                <div class="formula-inputs" id="formulaInputs"></div>
+                <div class="formula-result" id="formulaResult">Select a formula to begin</div>
+                <button onclick="closeFormulaSolverModal()" style="margin-top: 15px; padding: 10px 25px; background: #7b1fa2; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(formulaSolverModal);
+
+        const formulaConfigs = {
+            speed: { inputs: ['Distance (m)', 'Time (s)'], calc: (d, t) => `Speed = ${(d/t).toFixed(2)} m/s`, unit: 'm/s' },
+            force: { inputs: ['Mass (kg)', 'Acceleration (m/s²)'], calc: (m, a) => `Force = ${(m*a).toFixed(2)} N`, unit: 'N' },
+            work: { inputs: ['Force (N)', 'Distance (m)'], calc: (f, d) => `Work = ${(f*d).toFixed(2)} J`, unit: 'J' },
+            power: { inputs: ['Work (J)', 'Time (s)'], calc: (w, t) => `Power = ${(w/t).toFixed(2)} W`, unit: 'W' },
+            ke: { inputs: ['Mass (kg)', 'Velocity (m/s)'], calc: (m, v) => `KE = ${(0.5*m*v*v).toFixed(2)} J`, unit: 'J' },
+            pe: { inputs: ['Mass (kg)', 'Height (m)'], calc: (m, h) => `PE = ${(m*9.8*h).toFixed(2)} J`, unit: 'J' },
+            ohm: { inputs: ['Current (A)', 'Resistance (Ω)'], calc: (i, r) => `Voltage = ${(i*r).toFixed(2)} V`, unit: 'V' },
+            density: { inputs: ['Mass (kg)', 'Volume (m³)'], calc: (m, v) => `Density = ${(m/v).toFixed(2)} kg/m³`, unit: 'kg/m³' }
+        };
+
+        function openFormulaSolverModal() {
+            document.getElementById('formulaSolverModal').style.display = 'flex';
+        }
+
+        function closeFormulaSolverModal() {
+            document.getElementById('formulaSolverModal').style.display = 'none';
+        }
+
+        function setupFormulaInputs() {
+            const formula = document.getElementById('formulaSelect').value;
+            const container = document.getElementById('formulaInputs');
+
+            if (!formula) {
+                container.innerHTML = '';
+                document.getElementById('formulaResult').textContent = 'Select a formula to begin';
+                return;
+            }
+
+            const config = formulaConfigs[formula];
+            container.innerHTML = config.inputs.map((label, i) => `
+                <div class="formula-input-row">
+                    <label>${label}</label>
+                    <input type="number" id="formulaInput${i}" oninput="calculateFormula()" placeholder="Enter value">
+                </div>
+            `).join('');
+            document.getElementById('formulaResult').textContent = 'Enter values to calculate';
+        }
+
+        function calculateFormula() {
+            const formula = document.getElementById('formulaSelect').value;
+            if (!formula) return;
+
+            const config = formulaConfigs[formula];
+            const values = config.inputs.map((_, i) => parseFloat(document.getElementById(`formulaInput${i}`).value));
+
+            if (values.some(v => isNaN(v))) {
+                document.getElementById('formulaResult').textContent = 'Enter all values';
+                return;
+            }
+
+            const result = config.calc(...values);
+            document.getElementById('formulaResult').textContent = result;
+            addXP(5);
+        }
+
+        // Revision Checklist Button
+        const revisionBtn = document.createElement('button');
+        revisionBtn.className = 'revision-btn';
+        revisionBtn.innerHTML = '✅';
+        revisionBtn.title = 'Revision Checklist';
+        revisionBtn.onclick = () => openRevisionModal();
+        document.body.appendChild(revisionBtn);
+
+        // Revision Checklist Modal
+        const revisionModal = document.createElement('div');
+        revisionModal.className = 'revision-modal';
+        revisionModal.id = 'revisionModal';
+        revisionModal.innerHTML = `
+            <div class="revision-content">
+                <h3 style="color: #00695c; margin-bottom: 15px;">✅ Revision Checklist</h3>
+                <div id="revisionTopics"></div>
+                <div class="revision-progress">
+                    <div class="revision-progress-fill" id="revisionProgressFill" style="width: 0%"></div>
+                </div>
+                <p id="revisionProgressText" style="text-align: center; margin-top: 10px; color: #00695c; font-weight: bold;">0% Complete</p>
+                <button onclick="closeRevisionModal()" style="margin-top: 15px; padding: 10px 25px; background: #00695c; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(revisionModal);
+
+        const revisionTopics = {
+            'Physics - Forces': ['Newton\'s First Law', 'Newton\'s Second Law', 'Newton\'s Third Law', 'Friction', 'Gravity'],
+            'Physics - Energy': ['Kinetic Energy', 'Potential Energy', 'Conservation of Energy', 'Work Done', 'Power'],
+            'Chemistry - Atoms': ['Atomic Structure', 'Electron Configuration', 'Periodic Table', 'Isotopes', 'Ions'],
+            'Chemistry - Reactions': ['Balancing Equations', 'Reaction Types', 'Rates of Reaction', 'Catalysts', 'Reversible Reactions'],
+            'Biology - Cells': ['Cell Structure', 'Cell Membrane', 'Mitosis', 'Meiosis', 'Stem Cells'],
+            'Biology - Systems': ['Digestive System', 'Circulatory System', 'Respiratory System', 'Nervous System', 'Immune System']
+        };
+
+        function getRevisionState() {
+            return JSON.parse(localStorage.getItem('revisionChecklist') || '{}');
+        }
+
+        function saveRevisionState(state) {
+            localStorage.setItem('revisionChecklist', JSON.stringify(state));
+        }
+
+        function openRevisionModal() {
+            document.getElementById('revisionModal').style.display = 'flex';
+            renderRevisionTopics();
+        }
+
+        function closeRevisionModal() {
+            document.getElementById('revisionModal').style.display = 'none';
+        }
+
+        function renderRevisionTopics() {
+            const state = getRevisionState();
+            const container = document.getElementById('revisionTopics');
+
+            container.innerHTML = Object.entries(revisionTopics).map(([topic, items]) => `
+                <div class="revision-topic">
+                    <strong>${topic}</strong>
+                    <div style="margin-top: 10px;">
+                        ${items.map(item => {
+                            const key = `${topic}-${item}`;
+                            const checked = state[key] ? 'checked' : '';
+                            return `
+                                <div class="revision-item">
+                                    <input type="checkbox" id="rev-${key}" ${checked} onchange="toggleRevisionItem('${key}')">
+                                    <label for="rev-${key}">${item}</label>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            updateRevisionProgress();
+        }
+
+        function toggleRevisionItem(key) {
+            const state = getRevisionState();
+            state[key] = !state[key];
+            saveRevisionState(state);
+            if (state[key]) addXP(5);
+            updateRevisionProgress();
+        }
+
+        function updateRevisionProgress() {
+            const state = getRevisionState();
+            const totalItems = Object.values(revisionTopics).flat().length;
+            const checkedItems = Object.values(state).filter(v => v).length;
+            const percentage = Math.round((checkedItems / totalItems) * 100);
+
+            document.getElementById('revisionProgressFill').style.width = `${percentage}%`;
+            document.getElementById('revisionProgressText').textContent = `${percentage}% Complete (${checkedItems}/${totalItems})`;
+        }
+
+        console.log('😂 Science Meme, Formula Solver, and Revision Checklist loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
