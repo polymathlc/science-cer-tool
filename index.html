@@ -6940,6 +6940,98 @@
             from { transform: translateX(-50%) translateY(100px); opacity: 0; }
             to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
+
+        /* Encouragement Banner */
+        .encouragement-banner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 25px 40px;
+            border-radius: 20px;
+            text-align: center;
+            z-index: 10017;
+            box-shadow: 0 15px 50px rgba(76, 175, 80, 0.4);
+            animation: encouragePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes encouragePop {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Mini-Game Container */
+        .mini-game-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10018;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            animation: modalPop 0.4s ease;
+        }
+
+        .emoji-slots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .emoji-slot {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            animation: slotSpin 0.3s ease;
+        }
+
+        @keyframes slotSpin {
+            0% { transform: translateY(-20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Goal Completion Celebration */
+        .goal-complete-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #FFD700, #FF8C00);
+            color: white;
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            z-index: 10019;
+            box-shadow: 0 25px 80px rgba(255, 215, 0, 0.4);
+            animation: goalPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes goalPop {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-10deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0); }
+        }
+
+        .goal-trophy {
+            font-size: 5rem;
+            animation: trophyBounce 1s ease infinite;
+        }
+
+        @keyframes trophyBounce {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg) scale(1.1); }
+        }
     </style>
 </head>
 
@@ -27621,6 +27713,637 @@
         };
 
         console.log('🎁 Comeback Notifications, Practice Reminders, Seasonal Events, and Progress Summary loaded!');
+    </script>
+
+    <!-- BATCH 13: Encouragement, Mini-Games, and Goal Rewards -->
+    <script>
+        // =====================================================
+        // ENCOURAGEMENT MESSAGES BETWEEN QUESTIONS
+        // =====================================================
+        window.encouragementMessages = {
+            correct: [
+                { icon: '🌟', text: 'Brilliant! You\'re a science superstar!' },
+                { icon: '🎯', text: 'Perfect aim! Keep hitting those targets!' },
+                { icon: '🚀', text: 'You\'re rocketing through these questions!' },
+                { icon: '🧠', text: 'Your brain is on fire today!' },
+                { icon: '💪', text: 'Unstoppable! Nothing can slow you down!' },
+                { icon: '🏆', text: 'Champion material right here!' },
+                { icon: '⚡', text: 'Lightning fast and accurate!' },
+                { icon: '🔥', text: 'You\'re blazing through science!' },
+                { icon: '✨', text: 'Magical thinking! Keep it up!' },
+                { icon: '🎉', text: 'Celebration time! Another one right!' }
+            ],
+            incorrect: [
+                { icon: '💡', text: 'Great learning opportunity! Keep going!' },
+                { icon: '🌱', text: 'Every mistake helps you grow!' },
+                { icon: '💪', text: 'You\'ve got this! Try the next one!' },
+                { icon: '🎯', text: 'Getting closer! Don\'t give up!' },
+                { icon: '🔬', text: 'Scientists learn from experiments!' },
+                { icon: '📚', text: 'Knowledge is building! Keep at it!' },
+                { icon: '🌈', text: 'Brighter understanding ahead!' },
+                { icon: '⭐', text: 'Stars are made under pressure!' }
+            ],
+            streak: [
+                { icon: '🔥', text: '{streak} in a row! You\'re on FIRE!' },
+                { icon: '⚡', text: 'Streak of {streak}! Electrifying!' },
+                { icon: '🚀', text: '{streak} consecutive wins! To infinity!' },
+                { icon: '💎', text: 'Diamond streak: {streak}! Unbreakable!' },
+                { icon: '🌟', text: 'Shooting star! {streak} correct!' }
+            ]
+        };
+
+        window.questionCounter = parseInt(localStorage.getItem('science_question_counter') || '0');
+        window.correctStreak = parseInt(localStorage.getItem('science_correct_streak') || '0');
+
+        window.showEncouragement = function(isCorrect, streak = 0) {
+            // Don't show every time - show periodically to avoid spam
+            window.questionCounter++;
+            localStorage.setItem('science_question_counter', window.questionCounter);
+
+            // Show encouragement every 3-5 questions or on streaks
+            const showThisTime = (window.questionCounter % 4 === 0) || (streak > 0 && streak % 3 === 0);
+
+            if (!showThisTime && streak < 3) return;
+
+            // Remove existing banners
+            document.querySelectorAll('.encouragement-banner').forEach(el => el.remove());
+
+            let message;
+            if (streak >= 3) {
+                // Show streak message
+                const streakMsgs = window.encouragementMessages.streak;
+                message = {...streakMsgs[Math.floor(Math.random() * streakMsgs.length)]};
+                message.text = message.text.replace('{streak}', streak);
+            } else if (isCorrect) {
+                const correctMsgs = window.encouragementMessages.correct;
+                message = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
+            } else {
+                const incorrectMsgs = window.encouragementMessages.incorrect;
+                message = incorrectMsgs[Math.floor(Math.random() * incorrectMsgs.length)];
+            }
+
+            const banner = document.createElement('div');
+            banner.className = 'encouragement-banner';
+            banner.innerHTML = `
+                <span class="encouragement-icon">${message.icon}</span>
+                <span class="encouragement-text">${message.text}</span>
+            `;
+
+            document.body.appendChild(banner);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                banner.classList.add('show');
+            });
+
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                banner.classList.remove('show');
+                setTimeout(() => banner.remove(), 400);
+            }, 3000);
+        };
+
+        // Track correct answers for encouragement
+        window.trackAnswerForEncouragement = function(isCorrect) {
+            if (isCorrect) {
+                window.correctStreak++;
+                localStorage.setItem('science_correct_streak', window.correctStreak);
+                showEncouragement(true, window.correctStreak);
+            } else {
+                window.correctStreak = 0;
+                localStorage.setItem('science_correct_streak', '0');
+                showEncouragement(false, 0);
+            }
+        };
+
+        // =====================================================
+        // MINI-GAME BREAK AFTER STREAKS
+        // =====================================================
+        window.miniGameState = {
+            lastPlayedAt: parseInt(localStorage.getItem('science_minigame_last') || '0'),
+            questionsUntilGame: parseInt(localStorage.getItem('science_questions_until_game') || '15')
+        };
+
+        window.checkForMiniGameBreak = function() {
+            window.miniGameState.questionsUntilGame--;
+            localStorage.setItem('science_questions_until_game', window.miniGameState.questionsUntilGame);
+
+            // Offer mini-game every 15 questions
+            if (window.miniGameState.questionsUntilGame <= 0) {
+                window.miniGameState.questionsUntilGame = 15;
+                localStorage.setItem('science_questions_until_game', '15');
+
+                // Don't show if played recently (within 5 minutes)
+                const now = Date.now();
+                if (now - window.miniGameState.lastPlayedAt > 5 * 60 * 1000) {
+                    setTimeout(() => showMiniGameOffer(), 1000);
+                }
+            }
+        };
+
+        window.showMiniGameOffer = function() {
+            // Remove existing
+            document.querySelectorAll('.mini-game-modal, .mini-game-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'mini-game-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10010; backdrop-filter: blur(3px);';
+
+            const modal = document.createElement('div');
+            modal.className = 'mini-game-modal';
+            modal.innerHTML = `
+                <h2 style="margin: 0 0 10px 0; color: #333;">🎮 Break Time!</h2>
+                <p style="color: #666; margin: 0 0 20px 0;">Great job! Take a quick game break to refresh your mind.</p>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="startEmojiSlots()"
+                            style="padding: 15px 25px; border-radius: 15px; border: none; background: linear-gradient(135deg, #FF6B6B, #FF8E53); color: white; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                        🎰 Emoji Slots
+                    </button>
+                    <button onclick="startMemoryMatch()"
+                            style="padding: 15px 25px; border-radius: 15px; border: none; background: linear-gradient(135deg, #4ECDC4, #44A08D); color: white; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                        🧩 Memory Match
+                    </button>
+                    <button onclick="closeMiniGame()"
+                            style="padding: 15px 25px; border-radius: 15px; border: none; background: #e0e0e0; color: #666; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                        Skip for now
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+
+            backdrop.onclick = closeMiniGame;
+        };
+
+        window.closeMiniGame = function() {
+            document.querySelectorAll('.mini-game-modal, .mini-game-backdrop').forEach(el => el.remove());
+        };
+
+        // Emoji Slots Mini-Game
+        window.startEmojiSlots = function() {
+            window.miniGameState.lastPlayedAt = Date.now();
+            localStorage.setItem('science_minigame_last', window.miniGameState.lastPlayedAt);
+
+            const emojis = ['🔬', '🧪', '🌍', '🚀', '⚡', '🧬', '🔭', '💎', '🌟', '🎯'];
+
+            document.querySelector('.mini-game-modal').innerHTML = `
+                <h2 style="margin: 0 0 15px 0; color: #333;">🎰 Emoji Slots</h2>
+                <p style="color: #666; margin: 0 0 20px 0;">Match 3 for bonus XP!</p>
+                <div class="emoji-slots">
+                    <div class="emoji-slot" id="slot1">❓</div>
+                    <div class="emoji-slot" id="slot2">❓</div>
+                    <div class="emoji-slot" id="slot3">❓</div>
+                </div>
+                <div id="slots-result" style="margin: 15px 0; font-size: 1.1rem; min-height: 30px;"></div>
+                <button id="spin-btn" onclick="spinSlots()"
+                        style="padding: 15px 40px; border-radius: 25px; border: none; background: linear-gradient(135deg, #FF6B6B, #FF8E53); color: white; font-weight: 700; cursor: pointer; font-size: 1.1rem;">
+                    🎰 SPIN!
+                </button>
+                <button onclick="closeMiniGame()"
+                        style="display: block; margin: 15px auto 0; padding: 10px 25px; border-radius: 20px; border: none; background: #e0e0e0; color: #666; cursor: pointer;">
+                    Done Playing
+                </button>
+            `;
+        };
+
+        window.spinSlots = function() {
+            const emojis = ['🔬', '🧪', '🌍', '🚀', '⚡', '🧬', '🔭', '💎', '🌟', '🎯'];
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.disabled = true;
+            spinBtn.textContent = 'Spinning...';
+
+            const slots = [
+                document.getElementById('slot1'),
+                document.getElementById('slot2'),
+                document.getElementById('slot3')
+            ];
+
+            // Animate slots
+            let spins = 0;
+            const maxSpins = 20;
+            const results = [];
+
+            const spinInterval = setInterval(() => {
+                slots.forEach((slot, i) => {
+                    if (spins < maxSpins - (2 - i) * 3) {
+                        slot.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                        slot.style.transform = 'scale(1.1)';
+                        setTimeout(() => slot.style.transform = 'scale(1)', 50);
+                    } else if (!results[i]) {
+                        results[i] = emojis[Math.floor(Math.random() * emojis.length)];
+                        slot.textContent = results[i];
+                        slot.style.transform = 'scale(1.2)';
+                        setTimeout(() => slot.style.transform = 'scale(1)', 150);
+                    }
+                });
+
+                spins++;
+
+                if (spins >= maxSpins) {
+                    clearInterval(spinInterval);
+                    checkSlotsResult(results);
+                    spinBtn.disabled = false;
+                    spinBtn.textContent = '🎰 SPIN AGAIN!';
+                }
+            }, 100);
+        };
+
+        window.checkSlotsResult = function(results) {
+            const resultDiv = document.getElementById('slots-result');
+
+            if (results[0] === results[1] && results[1] === results[2]) {
+                // Jackpot! All 3 match
+                resultDiv.innerHTML = '🎉 <strong>JACKPOT!</strong> +50 XP Bonus!';
+                resultDiv.style.color = '#FF6B6B';
+                if (window.addXP) window.addXP(50, 'Mini-game jackpot');
+                triggerMiniCelebration();
+            } else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
+                // 2 match
+                resultDiv.innerHTML = '✨ <strong>Nice!</strong> 2 matched! +15 XP';
+                resultDiv.style.color = '#4CAF50';
+                if (window.addXP) window.addXP(15, 'Mini-game pair');
+            } else {
+                resultDiv.innerHTML = '😊 No match, try again!';
+                resultDiv.style.color = '#666';
+            }
+        };
+
+        // Memory Match Mini-Game
+        window.memoryCards = [];
+        window.memoryFlipped = [];
+        window.memoryMatched = 0;
+        window.memoryMoves = 0;
+
+        window.startMemoryMatch = function() {
+            window.miniGameState.lastPlayedAt = Date.now();
+            localStorage.setItem('science_minigame_last', window.miniGameState.lastPlayedAt);
+
+            const scienceEmojis = ['🔬', '🧪', '🌍', '🚀', '⚡', '🧬'];
+            window.memoryCards = [...scienceEmojis, ...scienceEmojis].sort(() => Math.random() - 0.5);
+            window.memoryFlipped = [];
+            window.memoryMatched = 0;
+            window.memoryMoves = 0;
+
+            let cardsHTML = window.memoryCards.map((emoji, i) => `
+                <div class="memory-card" data-index="${i}" onclick="flipMemoryCard(${i})"
+                     style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea, #764ba2);
+                            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+                            cursor: pointer; font-size: 1.5rem; color: transparent; user-select: none;
+                            transition: all 0.3s ease;">
+                    ${emoji}
+                </div>
+            `).join('');
+
+            document.querySelector('.mini-game-modal').innerHTML = `
+                <h2 style="margin: 0 0 10px 0; color: #333;">🧩 Memory Match</h2>
+                <p style="color: #666; margin: 0 0 15px 0;">Find all pairs! Moves: <span id="memory-moves">0</span></p>
+                <div style="display: grid; grid-template-columns: repeat(4, 50px); gap: 8px; justify-content: center;">
+                    ${cardsHTML}
+                </div>
+                <div id="memory-result" style="margin: 15px 0; font-size: 1rem; min-height: 25px;"></div>
+                <button onclick="closeMiniGame()"
+                        style="padding: 10px 25px; border-radius: 20px; border: none; background: #e0e0e0; color: #666; cursor: pointer;">
+                    Done Playing
+                </button>
+            `;
+        };
+
+        window.flipMemoryCard = function(index) {
+            if (window.memoryFlipped.length >= 2) return;
+            if (window.memoryFlipped.includes(index)) return;
+
+            const card = document.querySelector(`.memory-card[data-index="${index}"]`);
+            if (card.classList.contains('matched')) return;
+
+            card.style.color = 'white';
+            card.style.background = '#4CAF50';
+            window.memoryFlipped.push(index);
+
+            if (window.memoryFlipped.length === 2) {
+                window.memoryMoves++;
+                document.getElementById('memory-moves').textContent = window.memoryMoves;
+
+                const [first, second] = window.memoryFlipped;
+
+                if (window.memoryCards[first] === window.memoryCards[second]) {
+                    // Match found
+                    document.querySelectorAll(`.memory-card[data-index="${first}"], .memory-card[data-index="${second}"]`)
+                        .forEach(c => c.classList.add('matched'));
+                    window.memoryMatched += 2;
+                    window.memoryFlipped = [];
+
+                    if (window.memoryMatched === window.memoryCards.length) {
+                        // Game complete
+                        const bonus = Math.max(50 - window.memoryMoves * 2, 20);
+                        document.getElementById('memory-result').innerHTML =
+                            `🎉 <strong>Complete!</strong> +${bonus} XP (${window.memoryMoves} moves)`;
+                        if (window.addXP) window.addXP(bonus, 'Memory game complete');
+                        triggerMiniCelebration();
+                    }
+                } else {
+                    // No match - flip back
+                    setTimeout(() => {
+                        document.querySelectorAll(`.memory-card[data-index="${first}"], .memory-card[data-index="${second}"]`)
+                            .forEach(c => {
+                                c.style.color = 'transparent';
+                                c.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                            });
+                        window.memoryFlipped = [];
+                    }, 800);
+                }
+            }
+        };
+
+        window.triggerMiniCelebration = function() {
+            // Quick confetti burst for mini-games
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                        position: fixed;
+                        top: 40%;
+                        left: ${45 + Math.random() * 10}%;
+                        width: 10px;
+                        height: 10px;
+                        background: hsl(${Math.random() * 360}, 80%, 60%);
+                        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                        pointer-events: none;
+                        z-index: 10020;
+                        animation: confettiBurst 1.5s ease-out forwards;
+                    `;
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 1500);
+                }, i * 30);
+            }
+        };
+
+        // =====================================================
+        // DAILY GOAL COMPLETION REWARDS
+        // =====================================================
+        window.dailyGoals = {
+            questions: parseInt(localStorage.getItem('science_daily_goal_questions') || '10'),
+            current: parseInt(localStorage.getItem('science_daily_questions_today') || '0'),
+            lastDate: localStorage.getItem('science_daily_goal_date') || '',
+            completed: localStorage.getItem('science_daily_goal_completed') === 'true'
+        };
+
+        window.initDailyGoals = function() {
+            const today = new Date().toDateString();
+
+            // Reset if new day
+            if (window.dailyGoals.lastDate !== today) {
+                window.dailyGoals.current = 0;
+                window.dailyGoals.completed = false;
+                window.dailyGoals.lastDate = today;
+                localStorage.setItem('science_daily_questions_today', '0');
+                localStorage.setItem('science_daily_goal_date', today);
+                localStorage.setItem('science_daily_goal_completed', 'false');
+            }
+
+            // Create goal tracker UI
+            createGoalTrackerUI();
+        };
+
+        window.createGoalTrackerUI = function() {
+            // Remove existing
+            document.querySelectorAll('.daily-goal-tracker').forEach(el => el.remove());
+
+            const tracker = document.createElement('div');
+            tracker.className = 'daily-goal-tracker';
+            tracker.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                left: 20px;
+                background: white;
+                border-radius: 15px;
+                padding: 12px 18px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                z-index: 999;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            `;
+
+            const progress = Math.min((window.dailyGoals.current / window.dailyGoals.questions) * 100, 100);
+            const isComplete = window.dailyGoals.current >= window.dailyGoals.questions;
+
+            tracker.innerHTML = `
+                <div style="font-size: 1.5rem;">${isComplete ? '🏆' : '🎯'}</div>
+                <div>
+                    <div style="font-size: 0.75rem; color: #666; margin-bottom: 3px;">Daily Goal</div>
+                    <div style="width: 80px; height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden;">
+                        <div style="width: ${progress}%; height: 100%; background: ${isComplete ? '#4CAF50' : 'linear-gradient(90deg, #FF6B6B, #FF8E53)'}; transition: width 0.5s ease;"></div>
+                    </div>
+                    <div style="font-size: 0.7rem; color: #888; margin-top: 2px;">${window.dailyGoals.current}/${window.dailyGoals.questions}</div>
+                </div>
+            `;
+
+            tracker.onclick = showGoalSettings;
+            document.body.appendChild(tracker);
+        };
+
+        window.showGoalSettings = function() {
+            // Remove existing modals
+            document.querySelectorAll('.goal-settings-modal, .goal-settings-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'goal-settings-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000;';
+
+            const modal = document.createElement('div');
+            modal.className = 'goal-settings-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                border-radius: 20px;
+                padding: 25px;
+                max-width: 350px;
+                width: 90%;
+                z-index: 10001;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            `;
+
+            modal.innerHTML = `
+                <h3 style="margin: 0 0 20px 0; text-align: center;">🎯 Daily Goal Settings</h3>
+                <p style="color: #666; text-align: center; margin-bottom: 20px;">How many questions do you want to answer each day?</p>
+                <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                    ${[5, 10, 15, 20, 30].map(n => `
+                        <button onclick="setDailyGoal(${n})"
+                                style="padding: 12px 20px; border-radius: 10px; border: 2px solid ${window.dailyGoals.questions === n ? '#4CAF50' : '#e0e0e0'};
+                                       background: ${window.dailyGoals.questions === n ? '#E8F5E9' : 'white'};
+                                       font-weight: 600; cursor: pointer; font-size: 1rem;">
+                            ${n}
+                        </button>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; padding: 15px; background: #f5f5f5; border-radius: 12px; margin-bottom: 15px;">
+                    <div style="font-size: 0.9rem; color: #666;">Today's Progress</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #333;">${window.dailyGoals.current} / ${window.dailyGoals.questions}</div>
+                </div>
+                <button onclick="document.querySelectorAll('.goal-settings-modal, .goal-settings-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                    Done
+                </button>
+            `;
+
+            backdrop.onclick = () => {
+                backdrop.remove();
+                modal.remove();
+            };
+
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.setDailyGoal = function(count) {
+            window.dailyGoals.questions = count;
+            localStorage.setItem('science_daily_goal_questions', count);
+
+            // Refresh UI
+            createGoalTrackerUI();
+            showGoalSettings();
+        };
+
+        window.incrementDailyGoal = function() {
+            window.dailyGoals.current++;
+            localStorage.setItem('science_daily_questions_today', window.dailyGoals.current);
+
+            // Update tracker UI
+            createGoalTrackerUI();
+
+            // Check for completion
+            if (window.dailyGoals.current === window.dailyGoals.questions && !window.dailyGoals.completed) {
+                window.dailyGoals.completed = true;
+                localStorage.setItem('science_daily_goal_completed', 'true');
+                setTimeout(showGoalCompleteCelebration, 500);
+            }
+        };
+
+        window.showGoalCompleteCelebration = function() {
+            // Remove existing
+            document.querySelectorAll('.goal-complete-modal, .goal-complete-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'goal-complete-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10010; backdrop-filter: blur(5px);';
+
+            const modal = document.createElement('div');
+            modal.className = 'goal-complete-modal';
+
+            const bonusXP = 100;
+
+            modal.innerHTML = `
+                <div class="goal-trophy">🏆</div>
+                <h2 style="margin: 10px 0; font-size: 1.8rem; background: linear-gradient(135deg, #FFD700, #FF8C00); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    DAILY GOAL COMPLETE!
+                </h2>
+                <p style="color: #666; margin: 10px 0 20px 0;">You answered ${window.dailyGoals.questions} questions today!</p>
+                <div style="background: linear-gradient(135deg, #FFD700, #FFA500); padding: 15px 30px; border-radius: 15px; margin-bottom: 20px;">
+                    <div style="color: white; font-weight: 700; font-size: 1.5rem;">+${bonusXP} XP BONUS!</div>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="closeGoalCelebration(); setDailyGoal(${window.dailyGoals.questions + 5});"
+                            style="padding: 12px 25px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                        🎯 Increase Goal
+                    </button>
+                    <button onclick="closeGoalCelebration();"
+                            style="padding: 12px 25px; border-radius: 25px; border: none; background: #e0e0e0; color: #666; font-weight: 600; cursor: pointer;">
+                        Keep Going!
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+
+            // Award bonus XP
+            if (window.addXP) window.addXP(bonusXP, 'Daily goal complete');
+
+            // Epic celebration
+            triggerGoalCelebration();
+
+            backdrop.onclick = closeGoalCelebration;
+        };
+
+        window.closeGoalCelebration = function() {
+            document.querySelectorAll('.goal-complete-modal, .goal-complete-backdrop').forEach(el => el.remove());
+        };
+
+        window.triggerGoalCelebration = function() {
+            // Big confetti burst
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    const startX = Math.random() * 100;
+                    confetti.style.cssText = `
+                        position: fixed;
+                        top: -20px;
+                        left: ${startX}%;
+                        width: ${8 + Math.random() * 8}px;
+                        height: ${8 + Math.random() * 8}px;
+                        background: hsl(${Math.random() * 360}, 90%, 60%);
+                        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                        pointer-events: none;
+                        z-index: 10020;
+                        animation: confettiDrop 3s ease-out forwards;
+                    `;
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        };
+
+        // =====================================================
+        // INTEGRATE WITH ANSWER SUBMISSION
+        // =====================================================
+        // Hook into existing answer handling
+        const originalHandleAnswer = window.handleAnswerResult;
+        if (originalHandleAnswer) {
+            window.handleAnswerResult = function(isCorrect, ...args) {
+                // Track for encouragement
+                trackAnswerForEncouragement(isCorrect);
+
+                // Increment daily goal
+                incrementDailyGoal();
+
+                // Check for mini-game break
+                checkForMiniGameBreak();
+
+                // Call original
+                return originalHandleAnswer.call(this, isCorrect, ...args);
+            };
+        }
+
+        // Alternative hook using mutation observer or event delegation
+        document.addEventListener('click', function(e) {
+            // Check if clicking a submit/answer button
+            if (e.target.matches('.submit-answer, .answer-option, [data-answer]')) {
+                // Increment daily goal counter on any answer attempt
+                setTimeout(() => {
+                    if (document.querySelector('.answer-result, .feedback-message, .correct-feedback, .incorrect-feedback')) {
+                        incrementDailyGoal();
+                    }
+                }, 100);
+            }
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initDailyGoals();
+        });
+
+        // Also init if DOM already loaded
+        if (document.readyState !== 'loading') {
+            initDailyGoals();
+        }
+
+        console.log('🎮 Encouragement Messages, Mini-Games, and Daily Goals loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
