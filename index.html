@@ -33068,6 +33068,249 @@
             font-size: 0.85rem;
             color: #666;
         }
+
+        /* Batch 91: Science Tip of the Day */
+        .tip-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 3010px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6f00, #ffb74d);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 111, 0, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .tip-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 111, 0, 0.5);
+        }
+
+        .tip-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tip-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .tip-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .tip-text {
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .tip-category {
+            display: inline-block;
+            background: #ff6f00;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        /* Memory Game */
+        .memory-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2830px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c4dff, #b388ff);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(124, 77, 255, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .memory-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(124, 77, 255, 0.5);
+        }
+
+        .memory-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .memory-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .memory-card {
+            height: 60px;
+            background: linear-gradient(135deg, #ede7f6, #d1c4e9);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: transparent;
+            transition: all 0.3s ease;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .memory-card.flipped {
+            background: linear-gradient(135deg, #7c4dff, #b388ff);
+            color: white;
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(135deg, #4caf50, #81c784);
+            color: white;
+        }
+
+        /* Quick Quiz Generator */
+        .quick-quiz-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2890px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bcd4, #4dd0e1);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .quick-quiz-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.5);
+        }
+
+        .quick-quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quick-quiz-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .quiz-progress-bar {
+            height: 8px;
+            background: #e0f7fa;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00bcd4, #4dd0e1);
+            transition: width 0.3s ease;
+        }
+
+        .quiz-question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00838f;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 12px 15px;
+            background: #e0f7fa;
+            border: 2px solid #4dd0e1;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            background: #b2ebf2;
+        }
+
+        .quiz-option.correct {
+            background: #c8e6c9;
+            border-color: #4caf50;
+        }
+
+        .quiz-option.wrong {
+            background: #ffcdd2;
+            border-color: #f44336;
+        }
     </style>
 </head>
 
@@ -80672,6 +80915,285 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('📊 Quiz History, Science Challenge, and Learning Path loaded!');
+
+        // ========== BATCH 91: Science Tip, Memory Game, Quick Quiz ==========
+
+        // Science Tip Button
+        const tipBtn = document.createElement('button');
+        tipBtn.className = 'tip-btn';
+        tipBtn.innerHTML = '💡';
+        tipBtn.title = 'Science Tip';
+        tipBtn.onclick = () => openTipModal();
+        document.body.appendChild(tipBtn);
+
+        // Science Tip Modal
+        const tipModal = document.createElement('div');
+        tipModal.className = 'tip-modal';
+        tipModal.id = 'tipModal';
+        tipModal.innerHTML = `
+            <div class="tip-content">
+                <h3 style="color: #ff6f00; margin-bottom: 10px;">💡 Study Tip of the Day</h3>
+                <div class="tip-icon" id="tipIcon">📚</div>
+                <div class="tip-text" id="tipText">Loading...</div>
+                <span class="tip-category" id="tipCategory">General</span>
+                <button onclick="nextTip()" style="margin-top: 20px; padding: 12px 25px; background: #ff6f00; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold;">Next Tip</button>
+                <button onclick="closeTipModal()" style="margin-top: 10px; padding: 10px 20px; background: #9e9e9e; color: white; border: none; border-radius: 20px; cursor: pointer; display: block; margin-left: auto; margin-right: auto;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(tipModal);
+
+        const scienceTips = [
+            { icon: '🧠', text: 'Use active recall: Test yourself instead of just re-reading. Try to remember information before checking your notes.', cat: 'Memory' },
+            { icon: '📝', text: 'Create your own diagrams and flowcharts. Drawing concepts helps your brain process and remember them better.', cat: 'Visual Learning' },
+            { icon: '⏰', text: 'Study in 25-minute focused blocks with 5-minute breaks (Pomodoro Technique). Your brain needs rest to consolidate learning.', cat: 'Time Management' },
+            { icon: '🔗', text: 'Connect new concepts to things you already know. Making associations helps information stick in long-term memory.', cat: 'Memory' },
+            { icon: '🗣️', text: 'Teach the concept to someone else (or pretend to). If you can explain it simply, you truly understand it.', cat: 'Understanding' },
+            { icon: '📊', text: 'Use mnemonics for lists. For example: "My Very Eager Mother Just Served Us Nachos" for planets.', cat: 'Memory' },
+            { icon: '😴', text: 'Get enough sleep! Your brain consolidates memories during sleep. Pulling all-nighters hurts learning.', cat: 'Health' },
+            { icon: '❓', text: 'Ask "why" and "how" questions. Understanding the reasons behind facts makes them easier to remember.', cat: 'Understanding' },
+            { icon: '🔄', text: 'Space out your studying over multiple days. Cramming doesn\'t work for long-term retention.', cat: 'Time Management' },
+            { icon: '✍️', text: 'Write summaries in your own words after each topic. This forces your brain to process the information.', cat: 'Note-Taking' },
+            { icon: '🎯', text: 'Focus on understanding concepts, not just memorizing facts. Science builds on foundations.', cat: 'Understanding' },
+            { icon: '📱', text: 'Put away your phone while studying. Even having it visible reduces focus and learning.', cat: 'Focus' }
+        ];
+
+        let currentTipIndex = 0;
+
+        function openTipModal() {
+            document.getElementById('tipModal').style.display = 'flex';
+            showTip();
+        }
+
+        function closeTipModal() {
+            document.getElementById('tipModal').style.display = 'none';
+        }
+
+        function showTip() {
+            const tip = scienceTips[currentTipIndex];
+            document.getElementById('tipIcon').textContent = tip.icon;
+            document.getElementById('tipText').textContent = tip.text;
+            document.getElementById('tipCategory').textContent = tip.cat;
+        }
+
+        function nextTip() {
+            currentTipIndex = (currentTipIndex + 1) % scienceTips.length;
+            showTip();
+            addXP(2);
+        }
+
+        // Memory Game Button
+        const memoryBtn = document.createElement('button');
+        memoryBtn.className = 'memory-btn';
+        memoryBtn.innerHTML = '🧩';
+        memoryBtn.title = 'Memory Game';
+        memoryBtn.onclick = () => openMemoryModal();
+        document.body.appendChild(memoryBtn);
+
+        // Memory Game Modal
+        const memoryModal = document.createElement('div');
+        memoryModal.className = 'memory-modal';
+        memoryModal.id = 'memoryModal';
+        memoryModal.innerHTML = `
+            <div class="memory-content">
+                <h3 style="color: #7c4dff; margin-bottom: 10px;">🧩 Memory Match</h3>
+                <p style="color: #666; margin-bottom: 15px;">Match science terms with their definitions!</p>
+                <div class="memory-grid" id="memoryGrid"></div>
+                <p id="memoryStatus" style="font-weight: bold; color: #7c4dff;">Matches: 0/4</p>
+                <button onclick="resetMemoryGame()" style="margin-top: 10px; padding: 10px 20px; background: #7c4dff; color: white; border: none; border-radius: 20px; cursor: pointer;">New Game</button>
+                <button onclick="closeMemoryModal()" style="margin-top: 10px; padding: 10px 20px; background: #9e9e9e; color: white; border: none; border-radius: 20px; cursor: pointer;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(memoryModal);
+
+        const memoryPairs = [
+            { term: 'Mitochondria', def: 'Cell powerhouse' },
+            { term: 'Photosynthesis', def: 'Makes glucose' },
+            { term: 'Gravity', def: 'Attracts mass' },
+            { term: 'Atom', def: 'Smallest unit' },
+            { term: 'DNA', def: 'Genetic code' },
+            { term: 'Force', def: 'Push or pull' },
+            { term: 'Electron', def: 'Negative charge' },
+            { term: 'Osmosis', def: 'Water movement' }
+        ];
+
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+
+        function openMemoryModal() {
+            document.getElementById('memoryModal').style.display = 'flex';
+            resetMemoryGame();
+        }
+
+        function closeMemoryModal() {
+            document.getElementById('memoryModal').style.display = 'none';
+        }
+
+        function resetMemoryGame() {
+            // Select 4 random pairs
+            const selected = [...memoryPairs].sort(() => Math.random() - 0.5).slice(0, 4);
+            memoryCards = [];
+
+            selected.forEach((pair, i) => {
+                memoryCards.push({ id: i, text: pair.term, pairId: i });
+                memoryCards.push({ id: i + 4, text: pair.def, pairId: i });
+            });
+
+            memoryCards = memoryCards.sort(() => Math.random() - 0.5);
+            flippedCards = [];
+            matchedPairs = 0;
+            renderMemoryGrid();
+            document.getElementById('memoryStatus').textContent = 'Matches: 0/4';
+        }
+
+        function renderMemoryGrid() {
+            document.getElementById('memoryGrid').innerHTML = memoryCards.map((card, i) => {
+                const isFlipped = flippedCards.includes(i);
+                const isMatched = card.matched;
+                return `<div class="memory-card ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched' : ''}" onclick="flipMemoryCard(${i})">${card.text}</div>`;
+            }).join('');
+        }
+
+        function flipMemoryCard(index) {
+            if (flippedCards.length >= 2 || flippedCards.includes(index) || memoryCards[index].matched) return;
+
+            flippedCards.push(index);
+            renderMemoryGrid();
+
+            if (flippedCards.length === 2) {
+                const [first, second] = flippedCards;
+                if (memoryCards[first].pairId === memoryCards[second].pairId) {
+                    memoryCards[first].matched = true;
+                    memoryCards[second].matched = true;
+                    matchedPairs++;
+                    document.getElementById('memoryStatus').textContent = `Matches: ${matchedPairs}/4`;
+                    flippedCards = [];
+                    renderMemoryGrid();
+
+                    if (matchedPairs === 4) {
+                        addXP(20);
+                        document.getElementById('memoryStatus').textContent = '🎉 Complete! +20 XP';
+                    }
+                } else {
+                    setTimeout(() => {
+                        flippedCards = [];
+                        renderMemoryGrid();
+                    }, 1000);
+                }
+            }
+        }
+
+        // Quick Quiz Button
+        const quickQuizBtn = document.createElement('button');
+        quickQuizBtn.className = 'quick-quiz-btn';
+        quickQuizBtn.innerHTML = '❓';
+        quickQuizBtn.title = 'Quick Quiz';
+        quickQuizBtn.onclick = () => openQuickQuizModal();
+        document.body.appendChild(quickQuizBtn);
+
+        // Quick Quiz Modal
+        const quickQuizModal = document.createElement('div');
+        quickQuizModal.className = 'quick-quiz-modal';
+        quickQuizModal.id = 'quickQuizModal';
+        quickQuizModal.innerHTML = `
+            <div class="quick-quiz-content">
+                <h3 style="color: #00bcd4; margin-bottom: 15px;">❓ Quick Quiz</h3>
+                <div class="quiz-progress-bar">
+                    <div class="quiz-progress-fill" id="quizProgressFill" style="width: 0%"></div>
+                </div>
+                <p id="quizQuestionNum" style="text-align: center; color: #666; margin-bottom: 10px;">Question 1/5</p>
+                <div class="quiz-question-text" id="quizQuestionText">Loading...</div>
+                <div class="quiz-options" id="quizOptions"></div>
+                <div id="quizResult" style="text-align: center; margin-top: 15px; display: none;"></div>
+                <button onclick="closeQuickQuizModal()" style="margin-top: 15px; padding: 10px 25px; background: #00bcd4; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(quickQuizModal);
+
+        const quickQuizQuestions = [
+            { q: 'What is the chemical formula for water?', opts: ['CO2', 'H2O', 'NaCl', 'O2'], correct: 1 },
+            { q: 'What planet is closest to the Sun?', opts: ['Venus', 'Mars', 'Mercury', 'Earth'], correct: 2 },
+            { q: 'What is the powerhouse of the cell?', opts: ['Nucleus', 'Mitochondria', 'Ribosome', 'Golgi'], correct: 1 },
+            { q: 'What type of charge does an electron have?', opts: ['Positive', 'Negative', 'Neutral', 'Variable'], correct: 1 },
+            { q: 'What gas do plants release during photosynthesis?', opts: ['CO2', 'Nitrogen', 'Oxygen', 'Hydrogen'], correct: 2 },
+            { q: 'What is the SI unit of force?', opts: ['Joule', 'Watt', 'Newton', 'Pascal'], correct: 2 },
+            { q: 'How many bones are in an adult human body?', opts: ['186', '206', '226', '256'], correct: 1 },
+            { q: 'What is the largest organ in the human body?', opts: ['Heart', 'Liver', 'Skin', 'Brain'], correct: 2 },
+            { q: 'What is the chemical symbol for gold?', opts: ['Go', 'Gd', 'Au', 'Ag'], correct: 2 },
+            { q: 'What force keeps planets in orbit?', opts: ['Friction', 'Gravity', 'Magnetism', 'Inertia'], correct: 1 }
+        ];
+
+        let quizQuestions = [];
+        let quizCurrentQ = 0;
+        let quizScore = 0;
+
+        function openQuickQuizModal() {
+            document.getElementById('quickQuizModal').style.display = 'flex';
+            startQuickQuiz();
+        }
+
+        function closeQuickQuizModal() {
+            document.getElementById('quickQuizModal').style.display = 'none';
+        }
+
+        function startQuickQuiz() {
+            quizQuestions = [...quickQuizQuestions].sort(() => Math.random() - 0.5).slice(0, 5);
+            quizCurrentQ = 0;
+            quizScore = 0;
+            document.getElementById('quizResult').style.display = 'none';
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            if (quizCurrentQ >= quizQuestions.length) {
+                endQuickQuiz();
+                return;
+            }
+
+            const q = quizQuestions[quizCurrentQ];
+            document.getElementById('quizQuestionNum').textContent = `Question ${quizCurrentQ + 1}/5`;
+            document.getElementById('quizProgressFill').style.width = `${(quizCurrentQ / 5) * 100}%`;
+            document.getElementById('quizQuestionText').textContent = q.q;
+            document.getElementById('quizOptions').innerHTML = q.opts.map((opt, i) =>
+                `<div class="quiz-option" onclick="answerQuickQuiz(${i})">${opt}</div>`
+            ).join('');
+        }
+
+        function answerQuickQuiz(index) {
+            const q = quizQuestions[quizCurrentQ];
+            const options = document.querySelectorAll('.quiz-option');
+
+            options.forEach((opt, i) => {
+                opt.onclick = null;
+                if (i === q.correct) opt.classList.add('correct');
+                else if (i === index) opt.classList.add('wrong');
+            });
+
+            if (index === q.correct) quizScore++;
+
+            setTimeout(() => {
+                quizCurrentQ++;
+                showQuizQuestion();
+            }, 1000);
+        }
+
+        function endQuickQuiz() {
+            document.getElementById('quizQuestionText').textContent = 'Quiz Complete!';
+            document.getElementById('quizOptions').innerHTML = '';
+            document.getElementById('quizProgressFill').style.width = '100%';
+            document.getElementById('quizResult').style.display = 'block';
+            document.getElementById('quizResult').innerHTML = `
+                <h2 style="color: #00bcd4;">${quizScore}/5 Correct!</h2>
+                <p>+${quizScore * 10} XP earned</p>
+                <button onclick="startQuickQuiz()" style="margin-top: 10px; padding: 10px 20px; background: #00bcd4; color: white; border: none; border-radius: 20px; cursor: pointer;">Try Again</button>
+            `;
+            addXP(quizScore * 10);
+            if (typeof saveQuizResult === 'function') {
+                saveQuizResult(quizScore, 5, 'Quick Quiz');
+            }
+        }
+
+        console.log('💡 Science Tip, Memory Game, and Quick Quiz loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
