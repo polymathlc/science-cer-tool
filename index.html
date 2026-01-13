@@ -26449,6 +26449,237 @@
             border-radius: 5px 5px 0 0;
             transition: height 0.5s ease;
         }
+
+        /* Batch 68: Matching Game */
+        .matching-game-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 870px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec407a 0%, #d81b60 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(236, 64, 122, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .matching-game-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .matching-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .matching-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .matching-columns {
+            display: flex;
+            gap: 20px;
+        }
+
+        .matching-column {
+            flex: 1;
+        }
+
+        .matching-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .matching-term {
+            background: #fce4ec;
+            border: 2px solid #ec407a;
+        }
+
+        .matching-term.selected {
+            background: #ec407a;
+            color: white;
+        }
+
+        .matching-def {
+            background: #e8f5e9;
+            border: 2px solid #66bb6a;
+        }
+
+        .matching-def.selected {
+            background: #66bb6a;
+            color: white;
+        }
+
+        .matching-item.matched {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        /* Random Question Generator */
+        .random-question-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1390px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #26a69a 0%, #00897b 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(38, 166, 154, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .random-question-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .random-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .random-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .random-question-box {
+            background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .random-question-text {
+            font-size: 1.2rem;
+            color: #00695c;
+            margin-bottom: 20px;
+        }
+
+        .random-answer-reveal {
+            background: #fff8e1;
+            border: 2px solid #26a69a;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        /* Study Tips */
+        .study-tips-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 910px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(92, 107, 192, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .study-tips-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .tips-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tips-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .tip-number {
+            background: #5c6bc0;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .tip-title {
+            font-weight: bold;
+            color: #3f51b5;
+            margin-bottom: 8px;
+            display: inline;
+        }
+
+        .tip-description {
+            color: #333;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 
@@ -68226,6 +68457,336 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('💡 Hint System, Revision Notes, and Score History loaded!');
+    </script>
+
+    <!-- Batch 68: Matching Game Button -->
+    <button class="matching-game-btn" onclick="openMatchingGame()" title="Matching Game">
+        🔗
+    </button>
+
+    <!-- Matching Game Modal -->
+    <div class="matching-modal" id="matchingModal">
+        <div class="matching-modal-content">
+            <div class="matching-modal-header">
+                <h3>🔗 Matching Game</h3>
+                <button class="matching-close-btn" onclick="closeMatchingGame()">✕</button>
+            </div>
+            <div class="matching-modal-body">
+                <div class="matching-stats">
+                    <span id="matchingScore">Matches: 0/6</span>
+                    <span id="matchingTimer">Time: 0s</span>
+                </div>
+                <div class="matching-columns" id="matchingColumns"></div>
+                <div class="matching-actions">
+                    <button class="matching-action-btn" onclick="startMatchingGame()">🔄 New Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Random Question Generator Button -->
+    <button class="random-question-btn" onclick="openRandomQuestion()" title="Random Question">
+        🎲
+    </button>
+
+    <!-- Random Question Modal -->
+    <div class="random-modal" id="randomQuestionModal">
+        <div class="random-modal-content">
+            <div class="random-modal-header">
+                <h3>🎲 Random Question</h3>
+                <button class="random-close-btn" onclick="closeRandomQuestion()">✕</button>
+            </div>
+            <div class="random-modal-body">
+                <div class="random-question-box" id="randomQuestionBox">
+                    <div class="random-category" id="randomCategory">Physics</div>
+                    <div class="random-question" id="randomQuestionText">Click generate to get a random question!</div>
+                    <div class="random-options" id="randomOptions"></div>
+                    <div class="random-feedback" id="randomFeedback"></div>
+                </div>
+                <div class="random-actions">
+                    <button class="random-action-btn generate" onclick="generateRandomQuestion()">🎲 Generate</button>
+                    <button class="random-action-btn stats" onclick="showRandomStats()">📊 Stats</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Tips Button -->
+    <button class="study-tips-btn" onclick="openStudyTips()" title="Study Tips">
+        💡
+    </button>
+
+    <!-- Study Tips Modal -->
+    <div class="tips-modal" id="studyTipsModal">
+        <div class="tips-modal-content">
+            <div class="tips-modal-header">
+                <h3>💡 Study Tips</h3>
+                <button class="tips-close-btn" onclick="closeStudyTips()">✕</button>
+            </div>
+            <div class="tips-modal-body">
+                <div class="tips-categories">
+                    <button class="tips-cat-btn active" onclick="showTipCategory('memory')">🧠 Memory</button>
+                    <button class="tips-cat-btn" onclick="showTipCategory('focus')">🎯 Focus</button>
+                    <button class="tips-cat-btn" onclick="showTipCategory('exam')">📝 Exam</button>
+                </div>
+                <div class="tips-container" id="tipsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Batch 68: Matching Game, Random Question Generator, Study Tips
+
+        // Matching Game Data
+        const matchingPairs = [
+            { term: 'Photosynthesis', definition: 'Plants make food using sunlight' },
+            { term: 'Gravity', definition: 'Force that attracts objects to Earth' },
+            { term: 'Atom', definition: 'Smallest unit of matter' },
+            { term: 'Evaporation', definition: 'Liquid becomes gas' },
+            { term: 'Friction', definition: 'Force that resists motion' },
+            { term: 'Ecosystem', definition: 'Community of living organisms' },
+            { term: 'Magnetism', definition: 'Force from magnetic fields' },
+            { term: 'Condensation', definition: 'Gas becomes liquid' },
+            { term: 'Reflection', definition: 'Light bounces off surface' },
+            { term: 'Respiration', definition: 'Cells release energy from food' },
+            { term: 'Density', definition: 'Mass per unit volume' },
+            { term: 'Velocity', definition: 'Speed in a direction' }
+        ];
+
+        let matchingState = {
+            selected: null,
+            matches: 0,
+            timer: 0,
+            interval: null,
+            pairs: []
+        };
+
+        function openMatchingGame() {
+            document.getElementById('matchingModal').classList.add('active');
+            startMatchingGame();
+        }
+
+        function closeMatchingGame() {
+            document.getElementById('matchingModal').classList.remove('active');
+            if (matchingState.interval) clearInterval(matchingState.interval);
+        }
+
+        function startMatchingGame() {
+            matchingState.matches = 0;
+            matchingState.timer = 0;
+            matchingState.selected = null;
+            if (matchingState.interval) clearInterval(matchingState.interval);
+
+            // Select 6 random pairs
+            const shuffled = [...matchingPairs].sort(() => Math.random() - 0.5);
+            matchingState.pairs = shuffled.slice(0, 6);
+
+            // Create shuffled terms and definitions
+            const terms = matchingState.pairs.map((p, i) => ({ text: p.term, idx: i, type: 'term' }));
+            const defs = matchingState.pairs.map((p, i) => ({ text: p.definition, idx: i, type: 'def' }));
+            terms.sort(() => Math.random() - 0.5);
+            defs.sort(() => Math.random() - 0.5);
+
+            const container = document.getElementById('matchingColumns');
+            container.innerHTML = `
+                <div class="matching-column">
+                    <h4>Terms</h4>
+                    ${terms.map(t => `
+                        <div class="matching-item term" data-idx="${t.idx}" onclick="selectMatchingItem(this, 'term', ${t.idx})">
+                            ${t.text}
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="matching-column">
+                    <h4>Definitions</h4>
+                    ${defs.map(d => `
+                        <div class="matching-item def" data-idx="${d.idx}" onclick="selectMatchingItem(this, 'def', ${d.idx})">
+                            ${d.text}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById('matchingScore').textContent = 'Matches: 0/6';
+
+            matchingState.interval = setInterval(() => {
+                matchingState.timer++;
+                document.getElementById('matchingTimer').textContent = `Time: ${matchingState.timer}s`;
+            }, 1000);
+        }
+
+        function selectMatchingItem(el, type, idx) {
+            if (el.classList.contains('matched')) return;
+
+            if (!matchingState.selected) {
+                document.querySelectorAll('.matching-item').forEach(i => i.classList.remove('selected'));
+                el.classList.add('selected');
+                matchingState.selected = { el, type, idx };
+            } else {
+                if (matchingState.selected.type === type) {
+                    document.querySelectorAll('.matching-item').forEach(i => i.classList.remove('selected'));
+                    el.classList.add('selected');
+                    matchingState.selected = { el, type, idx };
+                } else {
+                    // Check match
+                    if (matchingState.selected.idx === idx) {
+                        matchingState.selected.el.classList.add('matched');
+                        matchingState.selected.el.classList.remove('selected');
+                        el.classList.add('matched');
+                        matchingState.matches++;
+                        document.getElementById('matchingScore').textContent = `Matches: ${matchingState.matches}/6`;
+
+                        if (matchingState.matches === 6) {
+                            clearInterval(matchingState.interval);
+                            const xp = Math.max(10, 60 - matchingState.timer);
+                            addXP(xp);
+                            setTimeout(() => {
+                                alert(`🎉 Perfect! Completed in ${matchingState.timer}s! +${xp} XP`);
+                            }, 300);
+                        }
+                    } else {
+                        matchingState.selected.el.classList.add('wrong');
+                        el.classList.add('wrong');
+                        setTimeout(() => {
+                            matchingState.selected.el.classList.remove('wrong', 'selected');
+                            el.classList.remove('wrong');
+                        }, 500);
+                    }
+                    matchingState.selected = null;
+                }
+            }
+        }
+
+        // Random Question Generator
+        const randomQuestions = [
+            { category: 'Physics', q: 'What is the unit of force?', options: ['Newton', 'Joule', 'Watt', 'Pascal'], answer: 0 },
+            { category: 'Physics', q: 'Light travels fastest in which medium?', options: ['Water', 'Glass', 'Vacuum', 'Air'], answer: 2 },
+            { category: 'Physics', q: 'What type of energy does a moving car have?', options: ['Potential', 'Kinetic', 'Thermal', 'Chemical'], answer: 1 },
+            { category: 'Chemistry', q: 'What is the chemical symbol for Gold?', options: ['Go', 'Gd', 'Au', 'Ag'], answer: 2 },
+            { category: 'Chemistry', q: 'How many elements are in H2O?', options: ['1', '2', '3', '4'], answer: 1 },
+            { category: 'Chemistry', q: 'What gas do plants release during photosynthesis?', options: ['CO2', 'N2', 'O2', 'H2'], answer: 2 },
+            { category: 'Biology', q: 'What is the powerhouse of the cell?', options: ['Nucleus', 'Ribosome', 'Mitochondria', 'Golgi'], answer: 2 },
+            { category: 'Biology', q: 'How many chambers does the human heart have?', options: ['2', '3', '4', '5'], answer: 2 },
+            { category: 'Biology', q: 'What carries oxygen in blood?', options: ['Plasma', 'White cells', 'Red cells', 'Platelets'], answer: 2 },
+            { category: 'Earth Science', q: 'What layer of Earth do we live on?', options: ['Core', 'Mantle', 'Crust', 'Asthenosphere'], answer: 2 },
+            { category: 'Earth Science', q: 'What causes tides?', options: ['Wind', 'Moon gravity', 'Earth rotation', 'Sun heat'], answer: 1 },
+            { category: 'Earth Science', q: 'What is magma called when it reaches surface?', options: ['Rock', 'Lava', 'Ite', 'Stone'], answer: 1 }
+        ];
+
+        let randomQStats = JSON.parse(localStorage.getItem('randomQStats') || '{"correct":0,"total":0}');
+        let currentRandomQ = null;
+
+        function openRandomQuestion() {
+            document.getElementById('randomQuestionModal').classList.add('active');
+            document.getElementById('randomFeedback').innerHTML = '';
+            document.getElementById('randomOptions').innerHTML = '<p style="color:#888;text-align:center;">Click Generate to start!</p>';
+        }
+
+        function closeRandomQuestion() {
+            document.getElementById('randomQuestionModal').classList.remove('active');
+        }
+
+        function generateRandomQuestion() {
+            currentRandomQ = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
+            document.getElementById('randomCategory').textContent = currentRandomQ.category;
+            document.getElementById('randomQuestionText').textContent = currentRandomQ.q;
+            document.getElementById('randomFeedback').innerHTML = '';
+
+            document.getElementById('randomOptions').innerHTML = currentRandomQ.options.map((opt, i) => `
+                <button class="random-option-btn" onclick="answerRandomQ(${i})">${opt}</button>
+            `).join('');
+        }
+
+        function answerRandomQ(idx) {
+            if (!currentRandomQ) return;
+
+            randomQStats.total++;
+            const feedback = document.getElementById('randomFeedback');
+            const btns = document.querySelectorAll('.random-option-btn');
+
+            btns.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === currentRandomQ.answer) btn.style.background = '#4caf50';
+                if (i === idx && idx !== currentRandomQ.answer) btn.style.background = '#f44336';
+            });
+
+            if (idx === currentRandomQ.answer) {
+                randomQStats.correct++;
+                feedback.innerHTML = '<span style="color:#4caf50;">✓ Correct! +10 XP</span>';
+                addXP(10);
+            } else {
+                feedback.innerHTML = `<span style="color:#f44336;">✗ Wrong! Answer: ${currentRandomQ.options[currentRandomQ.answer]}</span>`;
+            }
+
+            localStorage.setItem('randomQStats', JSON.stringify(randomQStats));
+            currentRandomQ = null;
+        }
+
+        function showRandomStats() {
+            const pct = randomQStats.total > 0 ? Math.round((randomQStats.correct / randomQStats.total) * 100) : 0;
+            document.getElementById('randomQuestionText').textContent = `📊 Your Stats`;
+            document.getElementById('randomCategory').textContent = 'Statistics';
+            document.getElementById('randomOptions').innerHTML = `
+                <div style="text-align:center;padding:15px;">
+                    <p><strong>Total Questions:</strong> ${randomQStats.total}</p>
+                    <p><strong>Correct:</strong> ${randomQStats.correct}</p>
+                    <p><strong>Accuracy:</strong> ${pct}%</p>
+                    <div style="background:#eee;height:20px;border-radius:10px;margin-top:10px;">
+                        <div style="background:linear-gradient(90deg,#4caf50,#8bc34a);height:100%;width:${pct}%;border-radius:10px;transition:width 0.5s;"></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('randomFeedback').innerHTML = '';
+        }
+
+        // Study Tips
+        const studyTips = {
+            memory: [
+                { icon: '🔄', title: 'Spaced Repetition', tip: 'Review material at increasing intervals: 1 day, 3 days, 1 week, 2 weeks.' },
+                { icon: '🎨', title: 'Visual Mnemonics', tip: 'Create mental images or drawings to remember concepts.' },
+                { icon: '📝', title: 'Teach Others', tip: 'Explaining concepts to someone else strengthens your memory.' },
+                { icon: '🔗', title: 'Connect Ideas', tip: 'Link new information to things you already know well.' }
+            ],
+            focus: [
+                { icon: '🍅', title: 'Pomodoro Technique', tip: 'Study for 25 mins, break for 5 mins. Repeat 4 times, then longer break.' },
+                { icon: '📵', title: 'Remove Distractions', tip: 'Put phone away and close unnecessary browser tabs while studying.' },
+                { icon: '🎯', title: 'Set Clear Goals', tip: 'Define exactly what you want to accomplish in each study session.' },
+                { icon: '💤', title: 'Get Enough Sleep', tip: '8 hours of sleep helps consolidate memories and improve focus.' }
+            ],
+            exam: [
+                { icon: '📋', title: 'Practice Past Papers', tip: 'Solve previous exam questions under timed conditions.' },
+                { icon: '✅', title: 'Understand Mark Schemes', tip: 'Learn what examiners look for in answers.' },
+                { icon: '⏰', title: 'Time Management', tip: 'Allocate time per question based on marks available.' },
+                { icon: '📖', title: 'Read Questions Carefully', tip: 'Underline key words and ensure you answer what is asked.' }
+            ]
+        };
+
+        function openStudyTips() {
+            document.getElementById('studyTipsModal').classList.add('active');
+            showTipCategory('memory');
+        }
+
+        function closeStudyTips() {
+            document.getElementById('studyTipsModal').classList.remove('active');
+        }
+
+        function showTipCategory(category) {
+            document.querySelectorAll('.tips-cat-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const tips = studyTips[category];
+            document.getElementById('tipsContainer').innerHTML = tips.map(t => `
+                <div class="tip-card">
+                    <div class="tip-icon">${t.icon}</div>
+                    <div class="tip-content">
+                        <h4>${t.title}</h4>
+                        <p>${t.tip}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        console.log('🔗 Matching Game, Random Question Generator, and Study Tips loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
