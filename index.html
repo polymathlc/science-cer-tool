@@ -19935,6 +19935,486 @@
         .floating-reference-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ========== Batch 50: Crossword, Mistake Review, Sound Toggle ========== */
+
+        /* Crossword Puzzle Styles */
+        .crossword-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .crossword-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 700px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .crossword-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .crossword-header h2 {
+            color: #ff9800;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .crossword-grid {
+            display: grid;
+            gap: 2px;
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .crossword-cell {
+            width: 35px;
+            height: 35px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            background: #2a2a2a;
+            color: #fff;
+            outline: none;
+        }
+
+        .crossword-cell:focus {
+            background: #ff9800;
+            color: #000;
+        }
+
+        .crossword-cell.blocked {
+            background: #111;
+            pointer-events: none;
+        }
+
+        .crossword-cell.correct {
+            background: #4caf50;
+            color: white;
+        }
+
+        .crossword-cell.number {
+            position: relative;
+        }
+
+        .crossword-cell::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
+        }
+
+        .crossword-clues {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .clues-section h3 {
+            color: #ff9800;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 152, 0, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .clue-item {
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .clue-item:hover {
+            background: rgba(255, 152, 0, 0.2);
+        }
+
+        .clue-item.solved {
+            background: rgba(76, 175, 80, 0.3);
+            text-decoration: line-through;
+        }
+
+        .crossword-check-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* Mistake Review Styles */
+        .mistake-review-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mistake-review-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 600px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .mistake-review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .mistake-review-header h2 {
+            color: #f44336;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mistake-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mistake-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .mistake-stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f44336;
+        }
+
+        .mistake-stat-label {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .mistake-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .mistake-item {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .mistake-question {
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+
+        .mistake-answers {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+        }
+
+        .mistake-your-answer {
+            color: #ef5350;
+        }
+
+        .mistake-correct-answer {
+            color: #66bb6a;
+        }
+
+        .mistake-practice-btn {
+            background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .no-mistakes {
+            text-align: center;
+            padding: 40px;
+            color: #66bb6a;
+        }
+
+        .no-mistakes-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        /* Sound Toggle Styles */
+        .sound-toggle-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sound-toggle-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 400px;
+            width: 95%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+        }
+
+        .sound-toggle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sound-toggle-header h2 {
+            color: #9c27b0;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sound-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sound-option-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sound-option-icon {
+            font-size: 1.5rem;
+        }
+
+        .sound-option-label {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .sound-option-desc {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .sound-toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .sound-toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .sound-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #444;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .sound-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .sound-toggle-switch input:checked + .sound-slider {
+            background: #9c27b0;
+        }
+
+        .sound-toggle-switch input:checked + .sound-slider:before {
+            transform: translateX(24px);
+        }
+
+        .volume-control {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .volume-label {
+            color: #fff;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .volume-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #444;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #9c27b0;
+            cursor: pointer;
+        }
+
+        .sound-test-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* Floating Buttons for Batch 50 */
+        .floating-crossword-btn {
+            position: fixed;
+            bottom: 4720px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 152, 0, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-crossword-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-mistakes-btn {
+            position: fixed;
+            bottom: 4780px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(244, 67, 54, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-mistakes-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-sound-btn {
+            position: fixed;
+            bottom: 4840px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(156, 39, 176, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-sound-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -55095,6 +55575,483 @@ Science Made Fun!
         }
 
         console.log('🎯 Matching Game, Progress Report, and Reference Cards loaded!');
+    </script>
+
+    <!-- ========== Batch 50: Crossword Puzzle, Mistake Review, Sound Settings ========== -->
+
+    <!-- Crossword Puzzle Floating Button -->
+    <button class="floating-crossword-btn" onclick="openCrossword()" title="Science Crossword">✏️</button>
+
+    <!-- Mistake Review Floating Button -->
+    <button class="floating-mistakes-btn" onclick="openMistakeReview()" title="Review Mistakes">❌</button>
+
+    <!-- Sound Settings Floating Button -->
+    <button class="floating-sound-btn" onclick="openSoundSettings()" title="Sound Settings">🔊</button>
+
+    <!-- Crossword Puzzle Modal -->
+    <div class="crossword-modal" id="crossword-modal">
+        <div class="crossword-content">
+            <div class="crossword-header">
+                <h2>✏️ Science Crossword</h2>
+                <button onclick="closeCrossword()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="crossword-grid" id="crossword-grid"></div>
+            <div class="crossword-clues" id="crossword-clues"></div>
+            <button class="crossword-check-btn" onclick="checkCrossword()">Check Answers</button>
+        </div>
+    </div>
+
+    <!-- Mistake Review Modal -->
+    <div class="mistake-review-modal" id="mistake-review-modal">
+        <div class="mistake-review-content">
+            <div class="mistake-review-header">
+                <h2>❌ Review Your Mistakes</h2>
+                <button onclick="closeMistakeReview()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="mistake-stats" id="mistake-stats"></div>
+            <div class="mistake-list" id="mistake-list"></div>
+        </div>
+    </div>
+
+    <!-- Sound Settings Modal -->
+    <div class="sound-toggle-modal" id="sound-toggle-modal">
+        <div class="sound-toggle-content">
+            <div class="sound-toggle-header">
+                <h2>🔊 Sound Settings</h2>
+                <button onclick="closeSoundSettings()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+
+            <div class="sound-option">
+                <div class="sound-option-info">
+                    <span class="sound-option-icon">✅</span>
+                    <div>
+                        <div class="sound-option-label">Correct Answer</div>
+                        <div class="sound-option-desc">Play sound on correct answers</div>
+                    </div>
+                </div>
+                <label class="sound-toggle-switch">
+                    <input type="checkbox" id="sound-correct" checked onchange="saveSoundSettings()">
+                    <span class="sound-slider"></span>
+                </label>
+            </div>
+
+            <div class="sound-option">
+                <div class="sound-option-info">
+                    <span class="sound-option-icon">❎</span>
+                    <div>
+                        <div class="sound-option-label">Wrong Answer</div>
+                        <div class="sound-option-desc">Play sound on wrong answers</div>
+                    </div>
+                </div>
+                <label class="sound-toggle-switch">
+                    <input type="checkbox" id="sound-wrong" checked onchange="saveSoundSettings()">
+                    <span class="sound-slider"></span>
+                </label>
+            </div>
+
+            <div class="sound-option">
+                <div class="sound-option-info">
+                    <span class="sound-option-icon">🎉</span>
+                    <div>
+                        <div class="sound-option-label">XP & Level Up</div>
+                        <div class="sound-option-desc">Play sound when gaining XP</div>
+                    </div>
+                </div>
+                <label class="sound-toggle-switch">
+                    <input type="checkbox" id="sound-xp" checked onchange="saveSoundSettings()">
+                    <span class="sound-slider"></span>
+                </label>
+            </div>
+
+            <div class="sound-option">
+                <div class="sound-option-info">
+                    <span class="sound-option-icon">🔔</span>
+                    <div>
+                        <div class="sound-option-label">Notifications</div>
+                        <div class="sound-option-desc">Sound for alerts and reminders</div>
+                    </div>
+                </div>
+                <label class="sound-toggle-switch">
+                    <input type="checkbox" id="sound-notify" checked onchange="saveSoundSettings()">
+                    <span class="sound-slider"></span>
+                </label>
+            </div>
+
+            <div class="volume-control">
+                <div class="volume-label">
+                    <span>🔈 Master Volume</span>
+                    <span id="volume-percent">70%</span>
+                </div>
+                <input type="range" class="volume-slider" id="master-volume" min="0" max="100" value="70" oninput="updateVolume()">
+            </div>
+
+            <button class="sound-test-btn" onclick="testSound()">🔊 Test Sound</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== Crossword Puzzle System ==========
+        const crosswordPuzzle = {
+            grid: [
+                ['S', 'O', 'L', 'I', 'D', '#', 'M'],
+                ['#', '#', 'I', '#', '#', '#', 'A'],
+                ['G', 'A', 'S', '#', 'H', 'E', 'T'],
+                ['#', '#', 'U', '#', 'E', '#', 'T'],
+                ['L', 'I', 'Q', 'U', 'A', 'T', 'E'],
+                ['#', '#', 'I', '#', 'T', '#', 'R'],
+                ['P', 'L', 'A', 'N', 'T', 'S', '#']
+            ],
+            across: [
+                { num: 1, clue: 'State of matter with fixed shape (5)', row: 0, col: 0, answer: 'SOLID' },
+                { num: 3, clue: 'State of matter that can be compressed (3)', row: 2, col: 0, answer: 'GAS' },
+                { num: 5, clue: 'State of matter that flows (7)', row: 4, col: 0, answer: 'LIQUATE' },
+                { num: 7, clue: 'Living things that make their own food (6)', row: 6, col: 0, answer: 'PLANTS' }
+            ],
+            down: [
+                { num: 1, clue: 'Form of energy from the sun (5)', row: 0, col: 2, answer: 'LIGHT' },
+                { num: 2, clue: 'Substance made of atoms (6)', row: 0, col: 6, answer: 'MATTER' },
+                { num: 4, clue: 'Energy that makes things warm (4)', row: 2, col: 4, answer: 'HEAT' }
+            ]
+        };
+
+        let crosswordAnswers = {};
+
+        function openCrossword() {
+            document.getElementById('crossword-modal').style.display = 'flex';
+            initCrossword();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeCrossword() {
+            document.getElementById('crossword-modal').style.display = 'none';
+        }
+
+        function initCrossword() {
+            const grid = document.getElementById('crossword-grid');
+            const cluesDiv = document.getElementById('crossword-clues');
+            const puzzle = crosswordPuzzle;
+
+            grid.style.gridTemplateColumns = `repeat(${puzzle.grid[0].length}, 35px)`;
+
+            let gridHTML = '';
+            for (let row = 0; row < puzzle.grid.length; row++) {
+                for (let col = 0; col < puzzle.grid[row].length; col++) {
+                    const cell = puzzle.grid[row][col];
+                    if (cell === '#') {
+                        gridHTML += '<input class="crossword-cell blocked" disabled>';
+                    } else {
+                        const cellId = `cell-${row}-${col}`;
+                        const saved = crosswordAnswers[cellId] || '';
+                        gridHTML += `<input class="crossword-cell" id="${cellId}" maxlength="1" value="${saved}" onkeyup="handleCrosswordInput(event, ${row}, ${col})">`;
+                    }
+                }
+            }
+            grid.innerHTML = gridHTML;
+
+            cluesDiv.innerHTML = `
+                <div class="clues-section">
+                    <h3>Across →</h3>
+                    ${puzzle.across.map(c => `<div class="clue-item" data-num="${c.num}" data-dir="across">${c.num}. ${c.clue}</div>`).join('')}
+                </div>
+                <div class="clues-section">
+                    <h3>Down ↓</h3>
+                    ${puzzle.down.map(c => `<div class="clue-item" data-num="${c.num}" data-dir="down">${c.num}. ${c.clue}</div>`).join('')}
+                </div>
+            `;
+        }
+
+        function handleCrosswordInput(e, row, col) {
+            const cellId = `cell-${row}-${col}`;
+            crosswordAnswers[cellId] = e.target.value.toUpperCase();
+
+            // Auto-move to next cell on valid input
+            if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+                const nextCol = col + 1;
+                if (nextCol < crosswordPuzzle.grid[0].length) {
+                    const nextCell = document.getElementById(`cell-${row}-${nextCol}`);
+                    if (nextCell && !nextCell.disabled) nextCell.focus();
+                }
+            }
+        }
+
+        function checkCrossword() {
+            const puzzle = crosswordPuzzle;
+            let correct = 0;
+            let total = 0;
+
+            for (let row = 0; row < puzzle.grid.length; row++) {
+                for (let col = 0; col < puzzle.grid[row].length; col++) {
+                    const expected = puzzle.grid[row][col];
+                    if (expected !== '#') {
+                        total++;
+                        const cellId = `cell-${row}-${col}`;
+                        const cell = document.getElementById(cellId);
+                        const answer = cell.value.toUpperCase();
+
+                        if (answer === expected) {
+                            cell.classList.add('correct');
+                            correct++;
+                        } else {
+                            cell.classList.remove('correct');
+                        }
+                    }
+                }
+            }
+
+            if (correct === total) {
+                const xpEarned = 100;
+                if (typeof addXP === 'function') addXP(xpEarned);
+                alert(`🎉 Perfect! You solved the crossword!\n+${xpEarned} XP earned!`);
+                if (typeof playSound === 'function' && getSoundSetting('xp')) playSound('levelup');
+            } else {
+                alert(`You got ${correct}/${total} letters correct. Keep trying!`);
+                if (typeof playSound === 'function' && getSoundSetting('wrong')) playSound('error');
+            }
+        }
+
+        // ========== Mistake Review System ==========
+        let mistakeHistory = JSON.parse(localStorage.getItem('mistakeHistory') || '[]');
+
+        function openMistakeReview() {
+            document.getElementById('mistake-review-modal').style.display = 'flex';
+            renderMistakeReview();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeMistakeReview() {
+            document.getElementById('mistake-review-modal').style.display = 'none';
+        }
+
+        function recordMistake(question, yourAnswer, correctAnswer, topic) {
+            const mistake = {
+                id: Date.now(),
+                question: question,
+                yourAnswer: yourAnswer,
+                correctAnswer: correctAnswer,
+                topic: topic || 'General',
+                timestamp: new Date().toISOString(),
+                practiced: false
+            };
+
+            mistakeHistory.push(mistake);
+            // Keep only last 50 mistakes
+            if (mistakeHistory.length > 50) {
+                mistakeHistory = mistakeHistory.slice(-50);
+            }
+            localStorage.setItem('mistakeHistory', JSON.stringify(mistakeHistory));
+        }
+
+        function renderMistakeReview() {
+            const statsDiv = document.getElementById('mistake-stats');
+            const listDiv = document.getElementById('mistake-list');
+
+            const totalMistakes = mistakeHistory.length;
+            const practicedCount = mistakeHistory.filter(m => m.practiced).length;
+            const topicCounts = {};
+            mistakeHistory.forEach(m => {
+                topicCounts[m.topic] = (topicCounts[m.topic] || 0) + 1;
+            });
+            const topTopic = Object.entries(topicCounts).sort((a, b) => b[1] - a[1])[0];
+
+            statsDiv.innerHTML = `
+                <div class="mistake-stat">
+                    <div class="mistake-stat-value">${totalMistakes}</div>
+                    <div class="mistake-stat-label">Total Mistakes</div>
+                </div>
+                <div class="mistake-stat">
+                    <div class="mistake-stat-value">${practicedCount}</div>
+                    <div class="mistake-stat-label">Practiced</div>
+                </div>
+                <div class="mistake-stat">
+                    <div class="mistake-stat-value">${topTopic ? topTopic[0].substring(0, 8) : 'N/A'}</div>
+                    <div class="mistake-stat-label">Focus Area</div>
+                </div>
+            `;
+
+            if (totalMistakes === 0) {
+                listDiv.innerHTML = `
+                    <div class="no-mistakes">
+                        <div class="no-mistakes-icon">🌟</div>
+                        <h3>No mistakes yet!</h3>
+                        <p>Keep practicing and any wrong answers will appear here for review.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listDiv.innerHTML = mistakeHistory.slice().reverse().map(mistake => `
+                <div class="mistake-item" id="mistake-${mistake.id}">
+                    <div class="mistake-question">${mistake.question}</div>
+                    <div class="mistake-answers">
+                        <span class="mistake-your-answer">Your answer: ${mistake.yourAnswer}</span>
+                        <span class="mistake-correct-answer">Correct: ${mistake.correctAnswer}</span>
+                    </div>
+                    <button class="mistake-practice-btn" onclick="markAsPracticed(${mistake.id})">
+                        ${mistake.practiced ? '✅ Practiced' : '📝 Mark as Practiced'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function markAsPracticed(id) {
+            const mistake = mistakeHistory.find(m => m.id === id);
+            if (mistake) {
+                mistake.practiced = true;
+                localStorage.setItem('mistakeHistory', JSON.stringify(mistakeHistory));
+                renderMistakeReview();
+                if (typeof playSound === 'function' && getSoundSetting('correct')) playSound('success');
+            }
+        }
+
+        function clearMistakeHistory() {
+            if (confirm('Are you sure you want to clear all mistake history?')) {
+                mistakeHistory = [];
+                localStorage.setItem('mistakeHistory', JSON.stringify(mistakeHistory));
+                renderMistakeReview();
+            }
+        }
+
+        // ========== Sound Settings System ==========
+        let soundSettings = JSON.parse(localStorage.getItem('soundSettings') || '{}');
+        if (Object.keys(soundSettings).length === 0) {
+            soundSettings = {
+                correct: true,
+                wrong: true,
+                xp: true,
+                notify: true,
+                volume: 70
+            };
+            localStorage.setItem('soundSettings', JSON.stringify(soundSettings));
+        }
+
+        function openSoundSettings() {
+            document.getElementById('sound-toggle-modal').style.display = 'flex';
+            loadSoundSettings();
+        }
+
+        function closeSoundSettings() {
+            document.getElementById('sound-toggle-modal').style.display = 'none';
+        }
+
+        function loadSoundSettings() {
+            document.getElementById('sound-correct').checked = soundSettings.correct !== false;
+            document.getElementById('sound-wrong').checked = soundSettings.wrong !== false;
+            document.getElementById('sound-xp').checked = soundSettings.xp !== false;
+            document.getElementById('sound-notify').checked = soundSettings.notify !== false;
+            document.getElementById('master-volume').value = soundSettings.volume || 70;
+            document.getElementById('volume-percent').textContent = `${soundSettings.volume || 70}%`;
+        }
+
+        function saveSoundSettings() {
+            soundSettings = {
+                correct: document.getElementById('sound-correct').checked,
+                wrong: document.getElementById('sound-wrong').checked,
+                xp: document.getElementById('sound-xp').checked,
+                notify: document.getElementById('sound-notify').checked,
+                volume: parseInt(document.getElementById('master-volume').value)
+            };
+            localStorage.setItem('soundSettings', JSON.stringify(soundSettings));
+        }
+
+        function updateVolume() {
+            const volume = document.getElementById('master-volume').value;
+            document.getElementById('volume-percent').textContent = `${volume}%`;
+            saveSoundSettings();
+        }
+
+        function getSoundSetting(type) {
+            return soundSettings[type] !== false;
+        }
+
+        function getVolume() {
+            return (soundSettings.volume || 70) / 100;
+        }
+
+        function testSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+            gainNode.gain.setValueAtTime(getVolume() * 0.3, audioContext.currentTime);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+            oscillator.stop(audioContext.currentTime + 0.4);
+        }
+
+        // Enhanced playSound function that respects settings
+        const originalPlaySound = typeof playSound === 'function' ? playSound : null;
+        window.playSound = function(type) {
+            const volume = getVolume();
+            if (volume === 0) return;
+
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            switch(type) {
+                case 'success':
+                case 'correct':
+                    if (!getSoundSetting('correct')) return;
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(volume * 0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+
+                case 'error':
+                case 'wrong':
+                    if (!getSoundSetting('wrong')) return;
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(volume * 0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                    break;
+
+                case 'levelup':
+                case 'xp':
+                    if (!getSoundSetting('xp')) return;
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(392, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.2);
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.3);
+                    gainNode.gain.setValueAtTime(volume * 0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                    break;
+
+                case 'pop':
+                case 'notify':
+                    if (!getSoundSetting('notify')) return;
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(volume * 0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                    break;
+            }
+        };
+
+        console.log('✏️ Crossword Puzzle, Mistake Review, and Sound Settings loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
