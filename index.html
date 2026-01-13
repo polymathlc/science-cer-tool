@@ -22522,6 +22522,575 @@
         .floating-news-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ===== BATCH 57: Learning Pathways, Word Scramble, Study Goals ===== */
+
+        /* Learning Pathways Button */
+        .learning-pathways-btn {
+            position: fixed;
+            bottom: 490px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #7b1fa2, #9c27b0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(156, 39, 176, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .learning-pathways-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Word Scramble Button */
+        .word-scramble-btn {
+            position: fixed;
+            bottom: 550px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00796b, #009688);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 150, 136, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .word-scramble-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Study Goals Button */
+        .study-goals-btn {
+            position: fixed;
+            bottom: 610px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #c62828, #e53935);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(229, 57, 53, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .study-goals-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Learning Pathways Modal */
+        .learning-pathways-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .learning-pathways-modal.active {
+            display: flex;
+        }
+
+        .learning-pathways-content {
+            background: white;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .learning-pathways-header {
+            background: linear-gradient(135deg, #7b1fa2, #9c27b0);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .learning-pathways-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .close-learning-pathways {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .pathways-body {
+            padding: 20px;
+        }
+
+        .pathway-card {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pathway-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(156, 39, 176, 0.2);
+        }
+
+        .pathway-card.completed {
+            background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+        }
+
+        .pathway-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .pathway-icon {
+            font-size: 2rem;
+        }
+
+        .pathway-info h4 {
+            margin: 0 0 5px 0;
+            color: #7b1fa2;
+        }
+
+        .pathway-progress-bar {
+            background: rgba(0, 0, 0, 0.1);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .pathway-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7b1fa2, #9c27b0);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .pathway-steps {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+
+        .pathway-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .step-status {
+            font-size: 1.2rem;
+        }
+
+        .step-name {
+            flex: 1;
+        }
+
+        /* Word Scramble Modal */
+        .word-scramble-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .word-scramble-modal.active {
+            display: flex;
+        }
+
+        .word-scramble-content {
+            background: white;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .word-scramble-header {
+            background: linear-gradient(135deg, #00796b, #009688);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .word-scramble-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .close-word-scramble {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .scramble-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .scramble-score {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #e0f2f1;
+            border-radius: 10px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00796b;
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .scrambled-word {
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 10px;
+            color: #009688;
+            padding: 30px;
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .scramble-hint {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .scramble-input-container {
+            margin-bottom: 20px;
+        }
+
+        .scramble-input {
+            width: 80%;
+            padding: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            border: 3px solid #009688;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .scramble-input:focus {
+            border-color: #00796b;
+            box-shadow: 0 0 10px rgba(0, 150, 136, 0.3);
+        }
+
+        .scramble-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00796b, #009688);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .scramble-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .scramble-feedback {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .scramble-feedback.correct {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .scramble-feedback.incorrect {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        /* Study Goals Modal */
+        .study-goals-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .study-goals-modal.active {
+            display: flex;
+        }
+
+        .study-goals-content {
+            background: white;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .study-goals-header {
+            background: linear-gradient(135deg, #c62828, #e53935);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .study-goals-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .close-study-goals {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .goals-body {
+            padding: 20px;
+        }
+
+        .goal-setter {
+            background: #ffebee;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .goal-setter h4 {
+            margin: 0 0 15px 0;
+            color: #c62828;
+        }
+
+        .goal-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .goal-input-row select,
+        .goal-input-row input {
+            padding: 10px;
+            border: 2px solid #ffcdd2;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .add-goal-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #c62828, #e53935);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-goal-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .goals-list {
+            margin-top: 20px;
+        }
+
+        .goal-card {
+            background: white;
+            border: 2px solid #ffcdd2;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .goal-card.completed {
+            background: #c8e6c9;
+            border-color: #a5d6a7;
+        }
+
+        .goal-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .goal-type-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .goal-type-badge.daily {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .goal-type-badge.weekly {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .goal-progress-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #c62828;
+        }
+
+        .goal-description {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .goal-progress-container {
+            background: #ffcdd2;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .goal-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #c62828, #e53935);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .goal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .goal-action-btn {
+            padding: 5px 15px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .goal-action-btn.increment {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .goal-action-btn.delete {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        .goals-summary {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-stat {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        .summary-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #c62828;
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -60446,6 +61015,562 @@ This report was generated from the Science CER Practice App.
         scheduleReminder();
 
         console.log('🎯 Timed Challenge, Learning Reminders, and Science News loaded!');
+    </script>
+
+    <!-- Batch 57: Learning Pathways, Word Scramble, Study Goals -->
+    <div id="learning-pathways-btn" class="learning-pathways-btn" onclick="openLearningPathways()" title="Learning Pathways">
+        🛤️
+    </div>
+
+    <div id="word-scramble-btn" class="word-scramble-btn" onclick="openWordScramble()" title="Word Scramble">
+        🔀
+    </div>
+
+    <div id="study-goals-btn" class="study-goals-btn" onclick="openStudyGoals()" title="Study Goals">
+        🎯
+    </div>
+
+    <!-- Learning Pathways Modal -->
+    <div id="learning-pathways-modal" class="learning-pathways-modal">
+        <div class="learning-pathways-content">
+            <div class="learning-pathways-header">
+                <h2>🛤️ Learning Pathways</h2>
+                <button class="close-learning-pathways" onclick="closeLearningPathways()">×</button>
+            </div>
+            <div class="pathways-body">
+                <p style="color: #666; margin-bottom: 20px;">Follow guided paths to master each topic step by step!</p>
+                <div id="pathways-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Word Scramble Modal -->
+    <div id="word-scramble-modal" class="word-scramble-modal">
+        <div class="word-scramble-content">
+            <div class="word-scramble-header">
+                <h2>🔀 Word Scramble</h2>
+                <button class="close-word-scramble" onclick="closeWordScramble()">×</button>
+            </div>
+            <div class="scramble-body">
+                <div class="scramble-score">
+                    <div class="score-item">
+                        <div class="score-value" id="scramble-correct">0</div>
+                        <div class="score-label">Correct</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value" id="scramble-streak">0</div>
+                        <div class="score-label">Streak</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value" id="scramble-best">0</div>
+                        <div class="score-label">Best</div>
+                    </div>
+                </div>
+                <div class="scrambled-word" id="scrambled-display">LOADING</div>
+                <div class="scramble-hint" id="scramble-hint">Hint will appear here</div>
+                <div class="scramble-input-container">
+                    <input type="text" class="scramble-input" id="scramble-answer" placeholder="Type your answer" autocomplete="off">
+                </div>
+                <div>
+                    <button class="scramble-btn" onclick="checkScrambleAnswer()">✓ Check</button>
+                    <button class="scramble-btn" onclick="skipScrambleWord()">⏭️ Skip</button>
+                    <button class="scramble-btn" onclick="showScrambleHint()">💡 Hint (-5 XP)</button>
+                </div>
+                <div class="scramble-feedback" id="scramble-feedback" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Goals Modal -->
+    <div id="study-goals-modal" class="study-goals-modal">
+        <div class="study-goals-content">
+            <div class="study-goals-header">
+                <h2>🎯 Study Goals</h2>
+                <button class="close-study-goals" onclick="closeStudyGoals()">×</button>
+            </div>
+            <div class="goals-body">
+                <div class="goal-setter">
+                    <h4>➕ Set a New Goal</h4>
+                    <div class="goal-input-row">
+                        <select id="goal-type">
+                            <option value="daily">Daily Goal</option>
+                            <option value="weekly">Weekly Goal</option>
+                        </select>
+                        <select id="goal-category">
+                            <option value="questions">Answer Questions</option>
+                            <option value="xp">Earn XP</option>
+                            <option value="streak">Maintain Streak</option>
+                            <option value="topics">Study Topics</option>
+                        </select>
+                    </div>
+                    <div class="goal-input-row">
+                        <input type="number" id="goal-target" placeholder="Target (e.g. 10)" min="1">
+                        <button class="add-goal-btn" onclick="addStudyGoal()">Add Goal</button>
+                    </div>
+                </div>
+                <div class="goals-summary" id="goals-summary">
+                    <div class="summary-stat">
+                        <div class="summary-value" id="goals-completed">0</div>
+                        <div class="summary-label">Goals Completed</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-value" id="goals-active">0</div>
+                        <div class="summary-label">Active Goals</div>
+                    </div>
+                </div>
+                <div class="goals-list" id="goals-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== BATCH 57: Learning Pathways, Word Scramble, Study Goals =====
+
+        // Learning Pathways Data
+        const learningPathways = [
+            {
+                id: 'matter-basics',
+                name: 'Matter Fundamentals',
+                icon: '🧊',
+                description: 'Learn about states of matter and their properties',
+                steps: [
+                    { name: 'What is Matter?', completed: false },
+                    { name: 'Three States of Matter', completed: false },
+                    { name: 'Properties of Solids', completed: false },
+                    { name: 'Properties of Liquids', completed: false },
+                    { name: 'Properties of Gases', completed: false },
+                    { name: 'Matter Quiz', completed: false }
+                ]
+            },
+            {
+                id: 'heat-energy',
+                name: 'Heat & Temperature',
+                icon: '🔥',
+                description: 'Understand heat transfer and temperature',
+                steps: [
+                    { name: 'What is Heat?', completed: false },
+                    { name: 'Heat vs Temperature', completed: false },
+                    { name: 'Conduction', completed: false },
+                    { name: 'Convection', completed: false },
+                    { name: 'Radiation', completed: false },
+                    { name: 'Heat Quiz', completed: false }
+                ]
+            },
+            {
+                id: 'light-path',
+                name: 'Light & Shadows',
+                icon: '💡',
+                description: 'Explore how light behaves and creates shadows',
+                steps: [
+                    { name: 'Sources of Light', completed: false },
+                    { name: 'How Light Travels', completed: false },
+                    { name: 'Reflection', completed: false },
+                    { name: 'Shadows Formation', completed: false },
+                    { name: 'Transparent & Opaque', completed: false },
+                    { name: 'Light Quiz', completed: false }
+                ]
+            },
+            {
+                id: 'plants-life',
+                name: 'Plant Life Cycle',
+                icon: '🌱',
+                description: 'Discover how plants grow and reproduce',
+                steps: [
+                    { name: 'Parts of a Plant', completed: false },
+                    { name: 'What Plants Need', completed: false },
+                    { name: 'Photosynthesis Basics', completed: false },
+                    { name: 'Seeds & Germination', completed: false },
+                    { name: 'Plant Reproduction', completed: false },
+                    { name: 'Plants Quiz', completed: false }
+                ]
+            },
+            {
+                id: 'forces-motion',
+                name: 'Forces & Motion',
+                icon: '🚀',
+                description: 'Learn about forces that make things move',
+                steps: [
+                    { name: 'What is a Force?', completed: false },
+                    { name: 'Push and Pull', completed: false },
+                    { name: 'Gravity', completed: false },
+                    { name: 'Friction', completed: false },
+                    { name: 'Balanced Forces', completed: false },
+                    { name: 'Forces Quiz', completed: false }
+                ]
+            }
+        ];
+
+        // Word Scramble Data
+        const scrambleWords = [
+            { word: 'SOLID', hint: 'A state of matter with fixed shape' },
+            { word: 'LIQUID', hint: 'A state of matter that flows' },
+            { word: 'GAS', hint: 'A state of matter that fills containers' },
+            { word: 'HEAT', hint: 'Energy that makes things warm' },
+            { word: 'LIGHT', hint: 'Energy that helps us see' },
+            { word: 'PLANT', hint: 'A living thing that makes food from sunlight' },
+            { word: 'WATER', hint: 'H2O - essential for life' },
+            { word: 'ENERGY', hint: 'The ability to do work' },
+            { word: 'FORCE', hint: 'A push or pull' },
+            { word: 'GRAVITY', hint: 'Force that pulls things down' },
+            { word: 'FRICTION', hint: 'Force that slows things down' },
+            { word: 'SHADOW', hint: 'Dark area blocked from light' },
+            { word: 'MATTER', hint: 'Anything that has mass and takes up space' },
+            { word: 'ATOM', hint: 'Tiny particle that makes up matter' },
+            { word: 'MELTING', hint: 'Solid changing to liquid' },
+            { word: 'BOILING', hint: 'Liquid changing to gas quickly' },
+            { word: 'FREEZING', hint: 'Liquid changing to solid' },
+            { word: 'SEED', hint: 'Where a new plant begins' },
+            { word: 'ROOT', hint: 'Part of plant that absorbs water' },
+            { word: 'LEAF', hint: 'Part of plant that makes food' }
+        ];
+
+        let scrambleState = {
+            currentWord: null,
+            correct: 0,
+            streak: 0,
+            best: 0,
+            hintShown: false
+        };
+
+        // Learning Pathways Functions
+        function openLearningPathways() {
+            document.getElementById('learning-pathways-modal').classList.add('active');
+            renderPathways();
+        }
+
+        function closeLearningPathways() {
+            document.getElementById('learning-pathways-modal').classList.remove('active');
+        }
+
+        function renderPathways() {
+            const savedProgress = JSON.parse(localStorage.getItem('pathwayProgress') || '{}');
+            const container = document.getElementById('pathways-list');
+
+            container.innerHTML = learningPathways.map(pathway => {
+                const progress = savedProgress[pathway.id] || { completedSteps: [] };
+                const completedCount = progress.completedSteps.length;
+                const totalSteps = pathway.steps.length;
+                const percent = Math.round((completedCount / totalSteps) * 100);
+                const isCompleted = completedCount === totalSteps;
+
+                return `
+                    <div class="pathway-card ${isCompleted ? 'completed' : ''}" onclick="togglePathway('${pathway.id}')">
+                        <div class="pathway-header">
+                            <div class="pathway-icon">${pathway.icon}</div>
+                            <div class="pathway-info">
+                                <h4>${pathway.name} ${isCompleted ? '✅' : ''}</h4>
+                                <p style="margin: 0; color: #666; font-size: 0.9rem;">${pathway.description}</p>
+                            </div>
+                        </div>
+                        <div class="pathway-progress-bar">
+                            <div class="pathway-progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <small style="color: #666;">${completedCount}/${totalSteps} steps completed (${percent}%)</small>
+                        <div class="pathway-steps" id="steps-${pathway.id}" style="display: none;">
+                            ${pathway.steps.map((step, i) => {
+                                const stepCompleted = progress.completedSteps.includes(i);
+                                return `<div class="pathway-step">
+                                    <span class="step-status">${stepCompleted ? '✅' : '⬜'}</span>
+                                    <span class="step-name">${step.name}</span>
+                                    <button onclick="event.stopPropagation(); toggleStep('${pathway.id}', ${i})"
+                                            style="padding: 5px 10px; border: none; border-radius: 10px;
+                                                   background: ${stepCompleted ? '#ffcdd2' : '#c8e6c9'}; cursor: pointer;">
+                                        ${stepCompleted ? 'Undo' : 'Complete'}
+                                    </button>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function togglePathway(pathwayId) {
+            const stepsEl = document.getElementById('steps-' + pathwayId);
+            stepsEl.style.display = stepsEl.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleStep(pathwayId, stepIndex) {
+            const savedProgress = JSON.parse(localStorage.getItem('pathwayProgress') || '{}');
+            if (!savedProgress[pathwayId]) {
+                savedProgress[pathwayId] = { completedSteps: [] };
+            }
+
+            const steps = savedProgress[pathwayId].completedSteps;
+            const idx = steps.indexOf(stepIndex);
+
+            if (idx === -1) {
+                steps.push(stepIndex);
+                // Award XP for completing a step
+                let xp = parseInt(localStorage.getItem('scienceXP') || '0');
+                xp += 15;
+                localStorage.setItem('scienceXP', xp);
+            } else {
+                steps.splice(idx, 1);
+            }
+
+            localStorage.setItem('pathwayProgress', JSON.stringify(savedProgress));
+            renderPathways();
+        }
+
+        // Word Scramble Functions
+        function openWordScramble() {
+            document.getElementById('word-scramble-modal').classList.add('active');
+            loadScrambleStats();
+            newScrambleWord();
+        }
+
+        function closeWordScramble() {
+            document.getElementById('word-scramble-modal').classList.remove('active');
+        }
+
+        function loadScrambleStats() {
+            const stats = JSON.parse(localStorage.getItem('scrambleStats') || '{}');
+            scrambleState.correct = stats.correct || 0;
+            scrambleState.best = stats.best || 0;
+            scrambleState.streak = 0;
+
+            document.getElementById('scramble-correct').textContent = scrambleState.correct;
+            document.getElementById('scramble-best').textContent = scrambleState.best;
+            document.getElementById('scramble-streak').textContent = scrambleState.streak;
+        }
+
+        function scrambleWord(word) {
+            const arr = word.split('');
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            // Make sure it's actually scrambled
+            if (arr.join('') === word && word.length > 1) {
+                return scrambleWord(word);
+            }
+            return arr.join('');
+        }
+
+        function newScrambleWord() {
+            const randomWord = scrambleWords[Math.floor(Math.random() * scrambleWords.length)];
+            scrambleState.currentWord = randomWord;
+            scrambleState.hintShown = false;
+
+            document.getElementById('scrambled-display').textContent = scrambleWord(randomWord.word);
+            document.getElementById('scramble-hint').textContent = 'Click "Hint" for help (-5 XP)';
+            document.getElementById('scramble-answer').value = '';
+            document.getElementById('scramble-feedback').style.display = 'none';
+            document.getElementById('scramble-answer').focus();
+        }
+
+        function checkScrambleAnswer() {
+            const answer = document.getElementById('scramble-answer').value.toUpperCase().trim();
+            const feedback = document.getElementById('scramble-feedback');
+
+            if (answer === scrambleState.currentWord.word) {
+                feedback.textContent = '✅ Correct! +10 XP';
+                feedback.className = 'scramble-feedback correct';
+                scrambleState.correct++;
+                scrambleState.streak++;
+
+                if (scrambleState.streak > scrambleState.best) {
+                    scrambleState.best = scrambleState.streak;
+                }
+
+                // Award XP
+                let xp = parseInt(localStorage.getItem('scienceXP') || '0');
+                xp += 10;
+                localStorage.setItem('scienceXP', xp);
+
+                // Save stats
+                localStorage.setItem('scrambleStats', JSON.stringify({
+                    correct: scrambleState.correct,
+                    best: scrambleState.best
+                }));
+
+                document.getElementById('scramble-correct').textContent = scrambleState.correct;
+                document.getElementById('scramble-streak').textContent = scrambleState.streak;
+                document.getElementById('scramble-best').textContent = scrambleState.best;
+
+                setTimeout(newScrambleWord, 1500);
+            } else {
+                feedback.textContent = '❌ Try again!';
+                feedback.className = 'scramble-feedback incorrect';
+                scrambleState.streak = 0;
+                document.getElementById('scramble-streak').textContent = 0;
+            }
+
+            feedback.style.display = 'block';
+        }
+
+        function skipScrambleWord() {
+            const feedback = document.getElementById('scramble-feedback');
+            feedback.textContent = 'The answer was: ' + scrambleState.currentWord.word;
+            feedback.className = 'scramble-feedback incorrect';
+            feedback.style.display = 'block';
+            scrambleState.streak = 0;
+            document.getElementById('scramble-streak').textContent = 0;
+
+            setTimeout(newScrambleWord, 2000);
+        }
+
+        function showScrambleHint() {
+            if (!scrambleState.hintShown) {
+                let xp = parseInt(localStorage.getItem('scienceXP') || '0');
+                if (xp >= 5) {
+                    xp -= 5;
+                    localStorage.setItem('scienceXP', xp);
+                    scrambleState.hintShown = true;
+                }
+            }
+            document.getElementById('scramble-hint').textContent = '💡 ' + scrambleState.currentWord.hint;
+        }
+
+        // Enter key for scramble input
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrambleInput = document.getElementById('scramble-answer');
+            if (scrambleInput) {
+                scrambleInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkScrambleAnswer();
+                    }
+                });
+            }
+        });
+
+        // Study Goals Functions
+        function openStudyGoals() {
+            document.getElementById('study-goals-modal').classList.add('active');
+            renderGoals();
+            updateGoalsSummary();
+        }
+
+        function closeStudyGoals() {
+            document.getElementById('study-goals-modal').classList.remove('active');
+        }
+
+        function addStudyGoal() {
+            const type = document.getElementById('goal-type').value;
+            const category = document.getElementById('goal-category').value;
+            const target = parseInt(document.getElementById('goal-target').value);
+
+            if (!target || target < 1) {
+                alert('Please enter a valid target number');
+                return;
+            }
+
+            const goals = JSON.parse(localStorage.getItem('studyGoals') || '[]');
+
+            const categoryNames = {
+                questions: 'Answer Questions',
+                xp: 'Earn XP',
+                streak: 'Maintain Streak Days',
+                topics: 'Study Topics'
+            };
+
+            const newGoal = {
+                id: Date.now(),
+                type: type,
+                category: category,
+                categoryName: categoryNames[category],
+                target: target,
+                current: 0,
+                createdAt: Date.now(),
+                completed: false
+            };
+
+            goals.push(newGoal);
+            localStorage.setItem('studyGoals', JSON.stringify(goals));
+
+            document.getElementById('goal-target').value = '';
+            renderGoals();
+            updateGoalsSummary();
+        }
+
+        function renderGoals() {
+            const goals = JSON.parse(localStorage.getItem('studyGoals') || '[]');
+            const container = document.getElementById('goals-list');
+
+            // Clean up old daily goals
+            const now = new Date();
+            const today = now.toDateString();
+
+            const activeGoals = goals.filter(goal => {
+                if (goal.type === 'daily') {
+                    return new Date(goal.createdAt).toDateString() === today;
+                }
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                return new Date(goal.createdAt) > weekAgo;
+            });
+
+            localStorage.setItem('studyGoals', JSON.stringify(activeGoals));
+
+            if (activeGoals.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">No active goals. Set a goal above to get started!</p>';
+                return;
+            }
+
+            container.innerHTML = activeGoals.map(goal => {
+                const percent = Math.min(100, Math.round((goal.current / goal.target) * 100));
+                const isCompleted = goal.current >= goal.target;
+
+                return `
+                    <div class="goal-card ${isCompleted ? 'completed' : ''}">
+                        <div class="goal-card-header">
+                            <span class="goal-type-badge ${goal.type}">${goal.type === 'daily' ? '📅 Daily' : '📆 Weekly'}</span>
+                            <span class="goal-progress-text">${goal.current}/${goal.target}</span>
+                        </div>
+                        <div class="goal-description">${goal.categoryName}</div>
+                        <div class="goal-progress-container">
+                            <div class="goal-progress-bar" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="goal-actions">
+                            ${!isCompleted ? `<button class="goal-action-btn increment" onclick="incrementGoal(${goal.id})">+1 Progress</button>` : '<span style="color: #2e7d32; font-weight: bold;">✅ Completed!</span>'}
+                            <button class="goal-action-btn delete" onclick="deleteGoal(${goal.id})">🗑️ Remove</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function incrementGoal(goalId) {
+            const goals = JSON.parse(localStorage.getItem('studyGoals') || '[]');
+            const goal = goals.find(g => g.id === goalId);
+
+            if (goal && goal.current < goal.target) {
+                goal.current++;
+
+                if (goal.current >= goal.target && !goal.completed) {
+                    goal.completed = true;
+                    // Award XP for completing a goal
+                    let xp = parseInt(localStorage.getItem('scienceXP') || '0');
+                    xp += goal.type === 'daily' ? 25 : 100;
+                    localStorage.setItem('scienceXP', xp);
+                    alert('🎉 Goal completed! +' + (goal.type === 'daily' ? 25 : 100) + ' XP');
+                }
+
+                localStorage.setItem('studyGoals', JSON.stringify(goals));
+                renderGoals();
+                updateGoalsSummary();
+            }
+        }
+
+        function deleteGoal(goalId) {
+            let goals = JSON.parse(localStorage.getItem('studyGoals') || '[]');
+            goals = goals.filter(g => g.id !== goalId);
+            localStorage.setItem('studyGoals', JSON.stringify(goals));
+            renderGoals();
+            updateGoalsSummary();
+        }
+
+        function updateGoalsSummary() {
+            const goals = JSON.parse(localStorage.getItem('studyGoals') || '[]');
+            const completedCount = goals.filter(g => g.completed).length;
+            const activeCount = goals.filter(g => !g.completed).length;
+
+            document.getElementById('goals-completed').textContent = completedCount;
+            document.getElementById('goals-active').textContent = activeCount;
+        }
+
+        console.log('🎯 Learning Pathways, Word Scramble, and Study Goals loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
