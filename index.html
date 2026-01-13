@@ -13050,6 +13050,394 @@
         .floating-review-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ========== BATCH 32: Science Experiments, Learning Pathways, Quick Start Tutorial ========== */
+
+        /* Science Experiments */
+        .experiments-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .experiments-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 25px;
+            width: 95%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            color: white;
+        }
+
+        .experiment-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .experiment-card:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+        .experiment-icon {
+            font-size: 3rem;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+        }
+
+        .experiment-info {
+            flex: 1;
+        }
+
+        .experiment-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .experiment-desc {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .experiment-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .experiment-badge.easy {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4CAF50;
+        }
+
+        .experiment-badge.medium {
+            background: rgba(255, 193, 7, 0.3);
+            color: #FFC107;
+        }
+
+        .experiment-simulation {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .experiment-animation {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            animation: experimentPulse 2s ease infinite;
+        }
+
+        @keyframes experimentPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .experiment-steps {
+            text-align: left;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .experiment-step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+
+        .experiment-step-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Learning Pathways */
+        .pathways-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .pathways-content {
+            background: white;
+            border-radius: 25px;
+            width: 95%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .pathway-card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .pathway-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .pathway-card.physics { border-left-color: #667eea; }
+        .pathway-card.chemistry { border-left-color: #11998e; }
+        .pathway-card.biology { border-left-color: #ee0979; }
+        .pathway-card.earth { border-left-color: #f5af19; }
+
+        .pathway-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .pathway-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pathway-progress-badge {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .pathway-lessons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .pathway-lesson {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pathway-lesson.completed {
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            color: white;
+        }
+
+        .pathway-lesson.current {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            animation: lessonPulse 2s ease infinite;
+        }
+
+        @keyframes lessonPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+        }
+
+        .pathway-lesson.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Quick Start Tutorial */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100002;
+        }
+
+        .tutorial-content {
+            background: white;
+            border-radius: 30px;
+            width: 95%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .tutorial-step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .tutorial-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-dot.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .tutorial-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: tutorialBounce 2s ease infinite;
+        }
+
+        @keyframes tutorialBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .tutorial-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .tutorial-text {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .tutorial-nav {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .tutorial-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-btn-skip {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .tutorial-btn-next {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .tutorial-btn-next:hover {
+            transform: scale(1.05);
+        }
+
+        /* Floating buttons for Batch 32 */
+        .floating-experiments-btn {
+            position: fixed;
+            bottom: 2080px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(156, 39, 176, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-experiments-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-pathways-btn {
+            position: fixed;
+            bottom: 2140px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bcd4 0%, #009688 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 188, 212, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-pathways-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -41995,6 +42383,417 @@ Science Made Fun!
         showDailyFact();
 
         console.log('💡 Science Facts, Study Goals, and Wrong Answer Review loaded!');
+    </script>
+
+    <!-- ========== BATCH 32: Science Experiments, Learning Pathways, Quick Start Tutorial ========== -->
+
+    <!-- Science Experiments Modal -->
+    <div class="experiments-modal" id="experiments-modal">
+        <div class="experiments-content">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h2 style="margin: 0;">🔬 Virtual Science Experiments</h2>
+                <p style="color: #aaa; margin-top: 5px;">Learn by doing! Try these interactive experiments</p>
+            </div>
+            <div id="experiments-list">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div id="experiment-simulation" class="experiment-simulation">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="closeExperiments()" style="padding: 12px 40px; border: none; background: rgba(255,255,255,0.2); border-radius: 25px; color: white; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Pathways Modal -->
+    <div class="pathways-modal" id="pathways-modal">
+        <div class="pathways-content">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h2 style="margin: 0;">🛤️ Learning Pathways</h2>
+                <p style="color: #666; margin-top: 5px;">Follow guided learning tracks to master science!</p>
+            </div>
+            <div id="pathways-list">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div style="text-align: center; margin-top: 25px;">
+                <button onclick="closePathways()" style="padding: 12px 40px; border: none; background: linear-gradient(135deg, #00bcd4 0%, #009688 100%); border-radius: 25px; color: white; font-weight: bold; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Start Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorial-overlay">
+        <div class="tutorial-content">
+            <div class="tutorial-step-indicator" id="tutorial-dots">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div class="tutorial-icon" id="tutorial-icon">👋</div>
+            <h2 class="tutorial-title" id="tutorial-title">Welcome to Science CER!</h2>
+            <p class="tutorial-text" id="tutorial-text">Let's take a quick tour to help you get started with your learning journey.</p>
+            <div class="tutorial-nav">
+                <button class="tutorial-btn tutorial-btn-skip" onclick="skipTutorial()">Skip</button>
+                <button class="tutorial-btn tutorial-btn-next" onclick="nextTutorialStep()">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Buttons for Batch 32 -->
+    <button class="floating-experiments-btn" onclick="openExperiments()" title="Science Experiments">🔬</button>
+    <button class="floating-pathways-btn" onclick="openPathways()" title="Learning Pathways">🛤️</button>
+
+    <script>
+        // ========== BATCH 32: Science Experiments, Learning Pathways, Quick Start Tutorial ==========
+
+        // Science Experiments
+        const virtualExperiments = [
+            {
+                id: 'e1',
+                title: 'Volcano Eruption',
+                icon: '🌋',
+                desc: 'Create a chemical reaction that simulates a volcanic eruption!',
+                difficulty: 'easy',
+                topic: 'Chemistry',
+                steps: [
+                    'Gather baking soda and vinegar',
+                    'Place baking soda in a container',
+                    'Slowly pour vinegar over it',
+                    'Watch the fizzy eruption!'
+                ],
+                science: 'When baking soda (base) meets vinegar (acid), they react to produce carbon dioxide gas, creating the bubbling effect!'
+            },
+            {
+                id: 'e2',
+                title: 'Density Tower',
+                icon: '🧪',
+                desc: 'Stack different liquids to learn about density!',
+                difficulty: 'easy',
+                topic: 'Physics',
+                steps: [
+                    'Pour honey into a tall glass',
+                    'Slowly add dish soap on top',
+                    'Carefully pour water next',
+                    'Finally, add vegetable oil'
+                ],
+                science: 'Liquids with different densities don\'t mix! Denser liquids sink to the bottom while lighter ones float on top.'
+            },
+            {
+                id: 'e3',
+                title: 'Plant Breathing',
+                icon: '🌱',
+                desc: 'See how plants release oxygen through photosynthesis!',
+                difficulty: 'medium',
+                topic: 'Biology',
+                steps: [
+                    'Place a water plant in a glass of water',
+                    'Put it under bright light',
+                    'Wait and observe small bubbles',
+                    'Those bubbles are oxygen!'
+                ],
+                science: 'Plants use sunlight, water, and CO2 to make food through photosynthesis. Oxygen is released as a byproduct!'
+            },
+            {
+                id: 'e4',
+                title: 'Static Electricity',
+                icon: '⚡',
+                desc: 'Make objects move without touching them using static!',
+                difficulty: 'easy',
+                topic: 'Physics',
+                steps: [
+                    'Rub a balloon on your hair',
+                    'Hold it near small paper pieces',
+                    'Watch the paper jump to the balloon!',
+                    'Try it with a stream of water too'
+                ],
+                science: 'Rubbing creates an imbalance of electrical charges. Opposite charges attract, pulling the paper toward the balloon!'
+            },
+            {
+                id: 'e5',
+                title: 'Crystal Growing',
+                icon: '💎',
+                desc: 'Grow your own crystals from a supersaturated solution!',
+                difficulty: 'medium',
+                topic: 'Chemistry',
+                steps: [
+                    'Dissolve lots of sugar in hot water',
+                    'Hang a string in the solution',
+                    'Leave it undisturbed for a week',
+                    'Crystals will form on the string!'
+                ],
+                science: 'As water evaporates, sugar molecules bond together in repeating patterns to form crystals!'
+            },
+            {
+                id: 'e6',
+                title: 'Egg in Bottle',
+                icon: '🥚',
+                desc: 'Push an egg into a bottle using air pressure!',
+                difficulty: 'medium',
+                topic: 'Physics',
+                steps: [
+                    'Peel a hard-boiled egg',
+                    'Light a paper and drop it in a bottle',
+                    'Quickly place the egg on top',
+                    'Watch the egg get sucked in!'
+                ],
+                science: 'The fire uses up oxygen, reducing air pressure inside. Higher outside pressure pushes the egg in!'
+            }
+        ];
+
+        let currentExperiment = null;
+
+        function openExperiments() {
+            renderExperimentsList();
+            document.getElementById('experiments-modal').style.display = 'flex';
+        }
+
+        function closeExperiments() {
+            document.getElementById('experiments-modal').style.display = 'none';
+            document.getElementById('experiments-list').style.display = 'block';
+            document.getElementById('experiment-simulation').style.display = 'none';
+        }
+
+        function renderExperimentsList() {
+            document.getElementById('experiments-list').innerHTML = virtualExperiments.map(exp => `
+                <div class="experiment-card" onclick="startExperiment('${exp.id}')">
+                    <div class="experiment-icon">${exp.icon}</div>
+                    <div class="experiment-info">
+                        <div class="experiment-title">${exp.title}</div>
+                        <div class="experiment-desc">${exp.desc}</div>
+                        <span class="experiment-badge ${exp.difficulty}">${exp.difficulty}</span>
+                        <span class="experiment-badge" style="background: rgba(102, 126, 234, 0.3); color: #667eea; margin-left: 5px;">${exp.topic}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function startExperiment(experimentId) {
+            const exp = virtualExperiments.find(e => e.id === experimentId);
+            if (!exp) return;
+
+            currentExperiment = exp;
+            document.getElementById('experiments-list').style.display = 'none';
+
+            const simulation = document.getElementById('experiment-simulation');
+            simulation.style.display = 'block';
+            simulation.innerHTML = `
+                <div class="experiment-animation" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    ${exp.icon}
+                </div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 10px;">${exp.title}</h3>
+                <p style="color: #aaa; margin-bottom: 25px;">${exp.topic} Experiment</p>
+
+                <div class="experiment-steps">
+                    <h4 style="margin-bottom: 15px; color: #667eea;">Steps:</h4>
+                    ${exp.steps.map((step, i) => `
+                        <div class="experiment-step">
+                            <div class="experiment-step-num">${i + 1}</div>
+                            <span>${step}</span>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="background: rgba(76, 175, 80, 0.2); border-radius: 15px; padding: 20px; margin-bottom: 20px;">
+                    <h4 style="color: #4CAF50; margin-bottom: 10px;">🔬 The Science:</h4>
+                    <p style="color: #ccc;">${exp.science}</p>
+                </div>
+
+                <button onclick="completeExperiment()" style="padding: 12px 40px; border: none; background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%); border-radius: 25px; color: white; font-weight: bold; cursor: pointer;">✓ I Did This Experiment!</button>
+                <br><br>
+                <button onclick="backToExperiments()" style="padding: 10px 25px; border: none; background: rgba(255,255,255,0.1); border-radius: 20px; color: white; cursor: pointer;">← Back to List</button>
+            `;
+        }
+
+        function completeExperiment() {
+            const currentXP = parseInt(localStorage.getItem('scienceXP')) || 0;
+            localStorage.setItem('scienceXP', currentXP + 25);
+
+            let completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+            if (!completedExperiments.includes(currentExperiment.id)) {
+                completedExperiments.push(currentExperiment.id);
+                localStorage.setItem('completedExperiments', JSON.stringify(completedExperiments));
+            }
+
+            alert('🎉 Experiment completed! +25 XP earned!');
+            backToExperiments();
+        }
+
+        function backToExperiments() {
+            document.getElementById('experiments-list').style.display = 'block';
+            document.getElementById('experiment-simulation').style.display = 'none';
+        }
+
+        // Learning Pathways
+        const learningPathways = [
+            {
+                id: 'physics-path',
+                title: 'Physics Fundamentals',
+                icon: '⚛️',
+                category: 'physics',
+                lessons: ['Forces', 'Energy', 'Motion', 'Gravity', 'Electricity', 'Waves', 'Heat', 'Light']
+            },
+            {
+                id: 'chemistry-path',
+                title: 'Chemistry Basics',
+                icon: '🧪',
+                category: 'chemistry',
+                lessons: ['Atoms', 'Elements', 'Compounds', 'Reactions', 'Acids & Bases', 'States of Matter', 'Solutions', 'Periodic Table']
+            },
+            {
+                id: 'biology-path',
+                title: 'Life Science Journey',
+                icon: '🧬',
+                category: 'biology',
+                lessons: ['Cells', 'Plants', 'Animals', 'Human Body', 'Ecosystems', 'Genetics', 'Evolution', 'Microorganisms']
+            },
+            {
+                id: 'earth-path',
+                title: 'Earth & Space',
+                icon: '🌍',
+                category: 'earth',
+                lessons: ['Rocks', 'Volcanoes', 'Weather', 'Water Cycle', 'Atmosphere', 'Solar System', 'Stars', 'Earth\'s Layers']
+            }
+        ];
+
+        let pathwayProgress = JSON.parse(localStorage.getItem('pathwayProgress')) || {};
+
+        function openPathways() {
+            renderPathways();
+            document.getElementById('pathways-modal').style.display = 'flex';
+        }
+
+        function closePathways() {
+            document.getElementById('pathways-modal').style.display = 'none';
+        }
+
+        function renderPathways() {
+            document.getElementById('pathways-list').innerHTML = learningPathways.map(pathway => {
+                const progress = pathwayProgress[pathway.id] || 0;
+                const percentage = Math.round((progress / pathway.lessons.length) * 100);
+
+                return `
+                    <div class="pathway-card ${pathway.category}">
+                        <div class="pathway-header">
+                            <div class="pathway-title">
+                                <span style="font-size: 1.5rem;">${pathway.icon}</span>
+                                <span>${pathway.title}</span>
+                            </div>
+                            <span class="pathway-progress-badge" style="background: ${percentage === 100 ? 'linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)' : '#e0e0e0'}; color: ${percentage === 100 ? 'white' : '#666'};">
+                                ${percentage}% Complete
+                            </span>
+                        </div>
+                        <p style="color: #666; margin-bottom: 10px;">${pathway.lessons.length} lessons • ${pathway.category}</p>
+                        <div class="pathway-lessons">
+                            ${pathway.lessons.map((lesson, i) => {
+                                const isCompleted = i < progress;
+                                const isCurrent = i === progress;
+                                const isLocked = i > progress;
+                                return `
+                                    <div class="pathway-lesson ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}"
+                                         onclick="${!isLocked ? `startLesson('${pathway.id}', ${i})` : ''}"
+                                         title="${lesson}">
+                                        ${isCompleted ? '✓' : i + 1}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function startLesson(pathwayId, lessonIndex) {
+            const pathway = learningPathways.find(p => p.id === pathwayId);
+            if (!pathway) return;
+
+            const lesson = pathway.lessons[lessonIndex];
+            const confirmed = confirm(`Start lesson: "${lesson}"?\n\nThis will open a practice quiz for this topic.`);
+
+            if (confirmed) {
+                // Complete the lesson
+                pathwayProgress[pathwayId] = Math.max(pathwayProgress[pathwayId] || 0, lessonIndex + 1);
+                localStorage.setItem('pathwayProgress', JSON.stringify(pathwayProgress));
+
+                // Award XP
+                const currentXP = parseInt(localStorage.getItem('scienceXP')) || 0;
+                localStorage.setItem('scienceXP', currentXP + 15);
+
+                alert(`🎓 Lesson "${lesson}" completed! +15 XP earned!`);
+                renderPathways();
+            }
+        }
+
+        // Quick Start Tutorial
+        const tutorialSteps = [
+            { icon: '👋', title: 'Welcome to Science CER!', text: 'Let\'s take a quick tour to help you get started with your learning journey.' },
+            { icon: '📝', title: 'Answer Questions', text: 'Practice science questions to earn XP and level up! The more you answer, the smarter you get.' },
+            { icon: '🎮', title: 'Take Quizzes', text: 'Test your knowledge with fun quizzes! Choose your topic and challenge yourself.' },
+            { icon: '🔥', title: 'Build Streaks', text: 'Answer questions correctly in a row to build streaks and earn bonus XP!' },
+            { icon: '🏆', title: 'Earn Achievements', text: 'Complete goals and unlock badges. There are tons of rewards waiting for you!' },
+            { icon: '🚀', title: 'You\'re Ready!', text: 'Start exploring and have fun learning science! Click the floating buttons on the right for more features.' }
+        ];
+
+        let currentTutorialStep = 0;
+
+        function showTutorial() {
+            const hasSeenTutorial = localStorage.getItem('hasSeenTutorial');
+            if (!hasSeenTutorial) {
+                currentTutorialStep = 0;
+                renderTutorialStep();
+                document.getElementById('tutorial-overlay').style.display = 'flex';
+            }
+        }
+
+        function renderTutorialStep() {
+            const step = tutorialSteps[currentTutorialStep];
+
+            document.getElementById('tutorial-icon').textContent = step.icon;
+            document.getElementById('tutorial-title').textContent = step.title;
+            document.getElementById('tutorial-text').textContent = step.text;
+
+            document.getElementById('tutorial-dots').innerHTML = tutorialSteps.map((_, i) =>
+                `<div class="tutorial-dot ${i === currentTutorialStep ? 'active' : ''}"></div>`
+            ).join('');
+
+            // Change button text on last step
+            const nextBtn = document.querySelector('.tutorial-btn-next');
+            if (currentTutorialStep === tutorialSteps.length - 1) {
+                nextBtn.textContent = 'Get Started! 🚀';
+            } else {
+                nextBtn.textContent = 'Next →';
+            }
+        }
+
+        function nextTutorialStep() {
+            currentTutorialStep++;
+            if (currentTutorialStep >= tutorialSteps.length) {
+                completeTutorial();
+            } else {
+                renderTutorialStep();
+            }
+        }
+
+        function skipTutorial() {
+            completeTutorial();
+        }
+
+        function completeTutorial() {
+            localStorage.setItem('hasSeenTutorial', 'true');
+            document.getElementById('tutorial-overlay').style.display = 'none';
+
+            // Award XP for completing tutorial
+            const currentXP = parseInt(localStorage.getItem('scienceXP')) || 0;
+            localStorage.setItem('scienceXP', currentXP + 50);
+        }
+
+        function resetTutorial() {
+            localStorage.removeItem('hasSeenTutorial');
+            showTutorial();
+        }
+
+        // Initialize Batch 32
+        setTimeout(showTutorial, 2000);
+
+        console.log('🔬 Science Experiments, Learning Pathways, and Tutorial loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
