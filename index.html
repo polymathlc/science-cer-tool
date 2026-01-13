@@ -15930,6 +15930,294 @@
             padding: 40px;
             color: #999;
         }
+
+        /* ========== BATCH 40: Leaderboard, Confetti, Study Reminders ========== */
+
+        /* Leaderboard */
+        .leaderboard-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .leaderboard-container {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .leaderboard-header {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .leaderboard-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .leaderboard-body {
+            padding: 20px;
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .leaderboard-item.current-user {
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            color: white;
+        }
+
+        .leaderboard-rank {
+            font-size: 1.5rem;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .leaderboard-rank.gold { color: #ffd700; }
+        .leaderboard-rank.silver { color: #c0c0c0; }
+        .leaderboard-rank.bronze { color: #cd7f32; }
+
+        .leaderboard-avatar {
+            font-size: 2rem;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .leaderboard-stats {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .leaderboard-xp {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99999;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* Study Reminders */
+        .reminders-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reminders-container {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .reminders-header {
+            background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reminders-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .reminders-body {
+            padding: 25px;
+        }
+
+        .reminder-option {
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reminder-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .reminder-icon {
+            font-size: 1.5rem;
+        }
+
+        .reminder-text {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .reminder-toggle {
+            width: 50px;
+            height: 26px;
+            background: #ddd;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-toggle.active {
+            background: #9c27b0;
+        }
+
+        .reminder-toggle::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .reminder-toggle.active::after {
+            left: 26px;
+        }
+
+        .reminder-time-select {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0e6ff;
+            border-radius: 12px;
+        }
+
+        .reminder-time-select label {
+            display: block;
+            color: #673ab7;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .reminder-time-select input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #9c27b0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* Floating buttons */
+        .floating-leaderboard-btn {
+            position: fixed;
+            bottom: 3160px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+            color: #333;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-leaderboard-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-reminders-btn {
+            position: fixed;
+            bottom: 3220px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(156, 39, 176, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-reminders-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -47644,6 +47932,259 @@ Science Made Fun!
         }
 
         console.log('😂 Science Jokes, Mind Map, and Favorite Topics loaded!');
+    </script>
+
+    <!-- ========== BATCH 40: Leaderboard, Confetti, Study Reminders ========== -->
+
+    <!-- Leaderboard Modal -->
+    <div class="leaderboard-modal" id="leaderboard-modal">
+        <div class="leaderboard-container">
+            <div class="leaderboard-header">
+                <h2>🏆 Leaderboard</h2>
+            </div>
+            <div class="leaderboard-body" id="leaderboard-body">
+            </div>
+            <div style="padding: 15px; text-align: center;">
+                <button onclick="closeLeaderboard()" style="background: white; color: #333; border: none; padding: 12px 30px; border-radius: 25px; font-weight: bold; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <!-- Reminders Modal -->
+    <div class="reminders-modal" id="reminders-modal">
+        <div class="reminders-container">
+            <div class="reminders-header">
+                <h2>⏰ Study Reminders</h2>
+                <button onclick="closeReminders()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <div class="reminders-body">
+                <div class="reminder-option">
+                    <div class="reminder-info">
+                        <span class="reminder-icon">📱</span>
+                        <span class="reminder-text">Daily Study Reminder</span>
+                    </div>
+                    <div class="reminder-toggle" id="daily-reminder-toggle" onclick="toggleReminder('daily')"></div>
+                </div>
+                <div class="reminder-option">
+                    <div class="reminder-info">
+                        <span class="reminder-icon">🎯</span>
+                        <span class="reminder-text">Goal Progress Alerts</span>
+                    </div>
+                    <div class="reminder-toggle" id="goal-reminder-toggle" onclick="toggleReminder('goal')"></div>
+                </div>
+                <div class="reminder-option">
+                    <div class="reminder-info">
+                        <span class="reminder-icon">🔥</span>
+                        <span class="reminder-text">Streak Protection Alert</span>
+                    </div>
+                    <div class="reminder-toggle" id="streak-reminder-toggle" onclick="toggleReminder('streak')"></div>
+                </div>
+                <div class="reminder-time-select">
+                    <label>Preferred Study Time</label>
+                    <input type="time" id="reminder-time" value="16:00" onchange="saveReminderTime()">
+                </div>
+                <p style="color: #666; font-size: 0.85rem; margin-top: 15px; text-align: center;">
+                    Note: Browser notifications require permission. Click "Allow" when prompted.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Buttons -->
+    <button class="floating-leaderboard-btn" onclick="openLeaderboard()" title="Leaderboard">🏆</button>
+    <button class="floating-reminders-btn" onclick="openReminders()" title="Study Reminders">⏰</button>
+
+    <script>
+        // ========== BATCH 40: Leaderboard, Confetti, Study Reminders ==========
+
+        // Leaderboard System (simulated other users)
+        const simulatedUsers = [
+            { name: 'ScienceWiz', avatar: '🧑‍🔬', level: 25, xp: 4500 },
+            { name: 'AtomicKid', avatar: '⚛️', level: 22, xp: 3900 },
+            { name: 'BioExplorer', avatar: '🦠', level: 20, xp: 3500 },
+            { name: 'PhysicsPro', avatar: '🔭', level: 18, xp: 3100 },
+            { name: 'ChemChamp', avatar: '⚗️', level: 16, xp: 2700 },
+            { name: 'EarthLover', avatar: '🌍', level: 14, xp: 2300 },
+            { name: 'StarGazer', avatar: '⭐', level: 12, xp: 1900 },
+            { name: 'NatureNinja', avatar: '🌿', level: 10, xp: 1500 },
+            { name: 'LabRat', avatar: '🐭', level: 8, xp: 1100 },
+            { name: 'CuriousKid', avatar: '🤔', level: 5, xp: 500 }
+        ];
+
+        function openLeaderboard() {
+            document.getElementById('leaderboard-modal').style.display = 'flex';
+            renderLeaderboard();
+        }
+
+        function closeLeaderboard() {
+            document.getElementById('leaderboard-modal').style.display = 'none';
+        }
+
+        function renderLeaderboard() {
+            const container = document.getElementById('leaderboard-body');
+            const userXP = parseInt(localStorage.getItem('scienceXP')) || 0;
+            const userLevel = parseInt(localStorage.getItem('scienceLevel')) || 1;
+            const userName = localStorage.getItem('userName') || 'You';
+
+            // Add current user to leaderboard
+            const allUsers = [...simulatedUsers, { name: userName, avatar: '👤', level: userLevel, xp: userXP, isCurrentUser: true }];
+
+            // Sort by XP
+            allUsers.sort((a, b) => b.xp - a.xp);
+
+            container.innerHTML = allUsers.map((user, index) => {
+                let rankClass = '';
+                let rankDisplay = index + 1;
+                if (index === 0) { rankClass = 'gold'; rankDisplay = '🥇'; }
+                else if (index === 1) { rankClass = 'silver'; rankDisplay = '🥈'; }
+                else if (index === 2) { rankClass = 'bronze'; rankDisplay = '🥉'; }
+
+                return `
+                    <div class="leaderboard-item ${user.isCurrentUser ? 'current-user' : ''}">
+                        <span class="leaderboard-rank ${rankClass}">${rankDisplay}</span>
+                        <span class="leaderboard-avatar">${user.avatar}</span>
+                        <div class="leaderboard-info">
+                            <div class="leaderboard-name">${user.name} ${user.isCurrentUser ? '(You)' : ''}</div>
+                            <div class="leaderboard-stats">Level ${user.level}</div>
+                        </div>
+                        <span class="leaderboard-xp">${user.xp.toLocaleString()} XP</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Confetti System
+        const confettiColors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#1dd1a1', '#ffeaa7', '#fd79a8'];
+
+        function launchConfetti() {
+            const container = document.getElementById('confetti-container');
+            const count = 100;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+
+                    // Random shapes
+                    const shapes = ['circle', 'square', 'triangle'];
+                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    if (shape === 'circle') {
+                        confetti.style.borderRadius = '50%';
+                    } else if (shape === 'triangle') {
+                        confetti.style.width = '0';
+                        confetti.style.height = '0';
+                        confetti.style.borderLeft = '5px solid transparent';
+                        confetti.style.borderRight = '5px solid transparent';
+                        confetti.style.borderBottom = '10px solid ' + confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                        confetti.style.backgroundColor = 'transparent';
+                    }
+
+                    container.appendChild(confetti);
+
+                    // Remove after animation
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+        }
+
+        // Auto-launch confetti on special achievements
+        function celebrateAchievement(type) {
+            launchConfetti();
+            if (typeof playSound === 'function') playSound('levelup');
+        }
+
+        // Study Reminders System
+        function getReminderSettings() {
+            return JSON.parse(localStorage.getItem('reminderSettings')) || {
+                daily: false,
+                goal: false,
+                streak: false,
+                time: '16:00'
+            };
+        }
+
+        function saveReminderSettings(settings) {
+            localStorage.setItem('reminderSettings', JSON.stringify(settings));
+        }
+
+        function openReminders() {
+            document.getElementById('reminders-modal').style.display = 'flex';
+            loadReminderSettings();
+        }
+
+        function closeReminders() {
+            document.getElementById('reminders-modal').style.display = 'none';
+        }
+
+        function loadReminderSettings() {
+            const settings = getReminderSettings();
+
+            document.getElementById('daily-reminder-toggle').classList.toggle('active', settings.daily);
+            document.getElementById('goal-reminder-toggle').classList.toggle('active', settings.goal);
+            document.getElementById('streak-reminder-toggle').classList.toggle('active', settings.streak);
+            document.getElementById('reminder-time').value = settings.time;
+        }
+
+        function toggleReminder(type) {
+            const settings = getReminderSettings();
+            settings[type] = !settings[type];
+            saveReminderSettings(settings);
+
+            const toggle = document.getElementById(`${type}-reminder-toggle`);
+            toggle.classList.toggle('active', settings[type]);
+
+            // Request notification permission if any reminder is enabled
+            if (settings[type] && 'Notification' in window) {
+                Notification.requestPermission();
+            }
+        }
+
+        function saveReminderTime() {
+            const settings = getReminderSettings();
+            settings.time = document.getElementById('reminder-time').value;
+            saveReminderSettings(settings);
+        }
+
+        // Check for study reminder
+        function checkStudyReminder() {
+            const settings = getReminderSettings();
+            if (!settings.daily) return;
+
+            const now = new Date();
+            const [hours, minutes] = settings.time.split(':');
+            const reminderTime = new Date();
+            reminderTime.setHours(parseInt(hours), parseInt(minutes), 0);
+
+            // Check if current time is within 5 minutes of reminder time
+            const diff = Math.abs(now - reminderTime) / 1000 / 60;
+            if (diff < 5) {
+                const lastReminder = localStorage.getItem('lastReminderDate');
+                const today = now.toISOString().split('T')[0];
+
+                if (lastReminder !== today) {
+                    showNotification('Study Time! 📚', 'It\'s time for your daily science practice!');
+                    localStorage.setItem('lastReminderDate', today);
+                }
+            }
+        }
+
+        function showNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, { body, icon: '🔬' });
+            }
+        }
+
+        // Check reminders every minute
+        setInterval(checkStudyReminder, 60000);
+
+        console.log('🏆 Leaderboard, Confetti, and Study Reminders loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
