@@ -3295,6 +3295,37 @@
             }
         }
 
+        /* Confetti Animation */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100000;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
         /* Lazy Loading Images */
         .lazy-image {
             opacity: 0;
@@ -3537,6 +3568,60 @@
 
         .add-student-btn:hover {
             background: #bbdefb !important;
+        }
+
+        /* Practice Progress Bar */
+        .practice-progress-container {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .practice-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .practice-progress-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .practice-progress-count {
+            font-size: 0.9rem;
+            color: #7b1fa2;
+            font-weight: 600;
+        }
+
+        .practice-progress-bar {
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .practice-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #7b1fa2, #9c27b0);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .practice-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
         }
 
         /* Practice Mode Styles */
@@ -6496,6 +6581,17 @@
                             </div>
                         </div>
 
+                        <!-- Practice Progress Bar -->
+                        <div id="practice-progress" class="hidden practice-progress-container">
+                            <div class="practice-progress-header">
+                                <span class="practice-progress-label">Session Progress</span>
+                                <span class="practice-progress-count" id="practice-progress-count">0 / 0 questions</span>
+                            </div>
+                            <div class="practice-progress-bar">
+                                <div class="practice-progress-fill" id="practice-progress-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
                         <!-- Practice Stats -->
                         <div id="practice-stats" class="hidden" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
                             <div style="background: #e8f5e9; padding: 1rem; border-radius: 12px; text-align: center;">
@@ -6995,6 +7091,67 @@
             window.addEventListener('online', handleOnline);
             window.addEventListener('offline', handleOffline);
         })();
+
+        // =====================================================
+        // CONFETTI ANIMATION
+        // =====================================================
+
+        window.showConfetti = function(count = 50, duration = 3000) {
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            document.body.appendChild(container);
+
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7', '#ffecd2', '#fcb69f'];
+            const shapes = ['circle', 'square', 'triangle'];
+
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                const left = Math.random() * 100;
+                const delay = Math.random() * 1;
+                const size = Math.random() * 10 + 5;
+
+                confetti.style.left = `${left}%`;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.animationDelay = `${delay}s`;
+                confetti.style.backgroundColor = color;
+
+                if (shape === 'circle') {
+                    confetti.style.borderRadius = '50%';
+                } else if (shape === 'triangle') {
+                    confetti.style.width = '0';
+                    confetti.style.height = '0';
+                    confetti.style.backgroundColor = 'transparent';
+                    confetti.style.borderLeft = `${size/2}px solid transparent`;
+                    confetti.style.borderRight = `${size/2}px solid transparent`;
+                    confetti.style.borderBottom = `${size}px solid ${color}`;
+                }
+
+                container.appendChild(confetti);
+            }
+
+            setTimeout(() => {
+                container.remove();
+            }, duration + 1000);
+        };
+
+        // Show confetti on practice complete or streak achievements
+        window.celebrateAchievement = function(type) {
+            if (type === 'practice-complete') {
+                showConfetti(100, 3000);
+                showSuccessToast('Great practice session!', 'Practice Complete!');
+            } else if (type === 'streak-5') {
+                showConfetti(30, 2000);
+                showSuccessToast('5 correct answers in a row!', 'Hot Streak!');
+            } else if (type === 'streak-10') {
+                showConfetti(60, 2500);
+                showSuccessToast('10 correct answers in a row!', 'On Fire!');
+            }
+        };
 
         // =====================================================
         // FORCE FRESH CONTENT - AGGRESSIVE CACHE BUSTING
@@ -11427,11 +11584,12 @@
             
             // Update UI
             document.getElementById('practice-start-container').classList.add('hidden');
+            document.getElementById('practice-progress').classList.remove('hidden');
             document.getElementById('practice-stats').classList.remove('hidden');
             document.getElementById('practice-stats').style.display = 'grid';
             document.getElementById('practice-question-container').classList.remove('hidden');
             document.getElementById('practice-complete').classList.add('hidden');
-            
+
             updatePracticeStats();
             showCurrentPracticeQuestion();
         };
@@ -11701,7 +11859,14 @@
             if (isCorrect) {
                 state.correct++;
                 state.streak++;
-                
+
+                // Celebrate streak achievements
+                if (state.streak === 5) {
+                    setTimeout(() => celebrateAchievement('streak-5'), 300);
+                } else if (state.streak === 10) {
+                    setTimeout(() => celebrateAchievement('streak-10'), 300);
+                }
+
                 // If this was a review question answered correctly, remove from review queue
                 if (question.isReviewQuestion) {
                     removeFromReviewQueue(question.id);
@@ -11744,12 +11909,18 @@
         window.endPractice = function() {
             const state = window.practiceState;
             const student = state.currentStudent;
-            
+
             document.getElementById('practice-question-container').classList.add('hidden');
+            document.getElementById('practice-progress').classList.add('hidden');
             document.getElementById('practice-complete').classList.remove('hidden');
-            
+
             const total = state.correct + state.wrong;
             const percentage = total > 0 ? Math.round((state.correct / total) * 100) : 0;
+
+            // Celebrate with confetti for good performance
+            if (total >= 3 && percentage >= 70) {
+                setTimeout(() => celebrateAchievement('practice-complete'), 500);
+            }
             
             // Calculate rating change during session
             const startRating = student.startRating || 1000;
@@ -11813,6 +11984,7 @@
         window.restartPractice = function() {
             document.getElementById('practice-complete').classList.add('hidden');
             document.getElementById('practice-start-container').classList.remove('hidden');
+            document.getElementById('practice-progress').classList.add('hidden');
             document.getElementById('practice-stats').classList.add('hidden');
             document.getElementById('practice-question-container').classList.add('hidden');
         };
@@ -11821,15 +11993,30 @@
             const state = window.practiceState;
             document.getElementById('stat-correct').textContent = state.correct;
             document.getElementById('stat-wrong').textContent = state.wrong;
-            document.getElementById('stat-remaining').textContent = 
+            document.getElementById('stat-remaining').textContent =
                 Math.max(0, state.questions.length - state.currentIndex - 1);
             document.getElementById('stat-streak').textContent = state.streak;
-            
+
             // Count review questions remaining
             const reviewRemaining = state.questions
                 .slice(state.currentIndex)
                 .filter(q => q.isReviewQuestion).length;
             document.getElementById('stat-review').textContent = reviewRemaining;
+
+            // Update progress bar
+            const totalQuestions = state.questions.length;
+            const answeredQuestions = state.currentIndex;
+            const progressPercent = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
+
+            const progressFill = document.getElementById('practice-progress-fill');
+            const progressCount = document.getElementById('practice-progress-count');
+
+            if (progressFill) {
+                progressFill.style.width = `${progressPercent}%`;
+            }
+            if (progressCount) {
+                progressCount.textContent = `${answeredQuestions} / ${totalQuestions} questions`;
+            }
         };
 
         window.loadAnsweredQuestions = async function() {
