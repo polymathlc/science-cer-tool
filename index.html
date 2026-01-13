@@ -27307,6 +27307,304 @@
             border-top: 1px solid #eee;
             color: #666;
         }
+
+        /* Batch 71: Word Scramble */
+        .scramble-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1070px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #673ab7, #9575cd);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(103, 58, 183, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .scramble-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .scramble-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scramble-modal.active {
+            display: flex;
+        }
+
+        .scramble-modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .scramble-modal-header {
+            background: linear-gradient(135deg, #673ab7, #9575cd);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scramble-modal-body {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .scramble-word {
+            font-size: 2rem;
+            letter-spacing: 8px;
+            font-weight: bold;
+            color: #673ab7;
+            background: #ede7f6;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .scramble-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #673ab7;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .scramble-hint {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .scramble-result {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Science Heroes */
+        .heroes-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1550px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3f51b5, #7986cb);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(63, 81, 181, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .heroes-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .heroes-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heroes-modal.active {
+            display: flex;
+        }
+
+        .heroes-modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .heroes-modal-header {
+            background: linear-gradient(135deg, #3f51b5, #7986cb);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .heroes-modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .hero-card {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: #e8eaf6;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .hero-avatar {
+            font-size: 2.5rem;
+        }
+
+        .hero-info h4 {
+            color: #3f51b5;
+            margin: 0 0 5px 0;
+        }
+
+        .hero-info p {
+            font-size: 0.9rem;
+            color: #555;
+            margin: 0;
+        }
+
+        .hero-field {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #3f51b5;
+            color: white;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+        }
+
+        /* Quick Review */
+        .quick-review-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1110px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #009688, #4db6ac);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .quick-review-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .review-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .review-modal.active {
+            display: flex;
+        }
+
+        .review-modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .review-modal-header {
+            background: linear-gradient(135deg, #009688, #4db6ac);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .review-modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .review-topics {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .review-topic-btn {
+            padding: 10px 15px;
+            border: none;
+            background: #e0f2f1;
+            color: #009688;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .review-topic-btn.active {
+            background: #009688;
+            color: white;
+        }
+
+        .review-content {
+            background: #e0f2f1;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .review-content h4 {
+            color: #009688;
+            margin-top: 0;
+        }
+
+        .review-content ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .review-content li {
+            margin-bottom: 10px;
+            color: #333;
+        }
     </style>
 </head>
 
@@ -69916,6 +70214,241 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('✓✗ True/False Quiz, Science News, and Pomodoro Timer loaded!');
+    </script>
+
+    <!-- Batch 71: Word Scramble Button -->
+    <button class="scramble-btn" onclick="openScramble()" title="Word Scramble">
+        🔀
+    </button>
+
+    <!-- Word Scramble Modal -->
+    <div class="scramble-modal" id="scrambleModal">
+        <div class="scramble-modal-content">
+            <div class="scramble-modal-header">
+                <h3>🔀 Word Scramble</h3>
+                <button onclick="closeScramble()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="scramble-modal-body">
+                <div class="scramble-word" id="scrambledWord">LOADING</div>
+                <div class="scramble-hint" id="scrambleHint">Hint: Loading...</div>
+                <input type="text" class="scramble-input" id="scrambleInput" placeholder="Type your answer..." onkeyup="checkScramble(event)">
+                <div class="scramble-result" id="scrambleResult"></div>
+                <button onclick="newScramble()" style="width:100%;padding:12px;background:linear-gradient(135deg,#673ab7,#9575cd);color:white;border:none;border-radius:10px;cursor:pointer;">🔄 New Word</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Science Heroes Button -->
+    <button class="heroes-btn" onclick="openHeroes()" title="Science Heroes">
+        🦸
+    </button>
+
+    <!-- Science Heroes Modal -->
+    <div class="heroes-modal" id="heroesModal">
+        <div class="heroes-modal-content">
+            <div class="heroes-modal-header">
+                <h3>🦸 Science Heroes</h3>
+                <button onclick="closeHeroes()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="heroes-modal-body" id="heroesContainer"></div>
+        </div>
+    </div>
+
+    <!-- Quick Review Button -->
+    <button class="quick-review-btn" onclick="openQuickReview()" title="Quick Review">
+        📋
+    </button>
+
+    <!-- Quick Review Modal -->
+    <div class="review-modal" id="quickReviewModal">
+        <div class="review-modal-content">
+            <div class="review-modal-header">
+                <h3>📋 Quick Review</h3>
+                <button onclick="closeQuickReview()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="review-modal-body">
+                <div class="review-topics" id="reviewTopics"></div>
+                <div class="review-content" id="reviewContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Batch 71: Word Scramble, Science Heroes, Quick Review
+
+        // Word Scramble
+        const scrambleWords = [
+            { word: 'GRAVITY', hint: 'Force that pulls objects toward Earth' },
+            { word: 'ELECTRON', hint: 'Negatively charged particle' },
+            { word: 'PHOTON', hint: 'Particle of light' },
+            { word: 'NUCLEUS', hint: 'Center of an atom or cell' },
+            { word: 'DENSITY', hint: 'Mass per unit volume' },
+            { word: 'MOLECULE', hint: 'Bonded group of atoms' },
+            { word: 'FRICTION', hint: 'Force resisting motion' },
+            { word: 'OSMOSIS', hint: 'Water movement through membrane' },
+            { word: 'VELOCITY', hint: 'Speed with direction' },
+            { word: 'ECOSYSTEM', hint: 'Living community and environment' },
+            { word: 'CHLOROPHYLL', hint: 'Green pigment in plants' },
+            { word: 'MITOCHONDRIA', hint: 'Cell powerhouse' }
+        ];
+
+        let currentScramble = null;
+
+        function openScramble() {
+            document.getElementById('scrambleModal').classList.add('active');
+            newScramble();
+        }
+
+        function closeScramble() {
+            document.getElementById('scrambleModal').classList.remove('active');
+        }
+
+        function scrambleString(str) {
+            return str.split('').sort(() => Math.random() - 0.5).join('');
+        }
+
+        function newScramble() {
+            currentScramble = scrambleWords[Math.floor(Math.random() * scrambleWords.length)];
+            let scrambled = scrambleString(currentScramble.word);
+            while (scrambled === currentScramble.word) {
+                scrambled = scrambleString(currentScramble.word);
+            }
+            document.getElementById('scrambledWord').textContent = scrambled;
+            document.getElementById('scrambleHint').textContent = `Hint: ${currentScramble.hint}`;
+            document.getElementById('scrambleInput').value = '';
+            document.getElementById('scrambleResult').innerHTML = '';
+            document.getElementById('scrambleInput').disabled = false;
+        }
+
+        function checkScramble(event) {
+            if (!currentScramble) return;
+            const input = document.getElementById('scrambleInput').value.toUpperCase().trim();
+
+            if (event.key === 'Enter' || input === currentScramble.word) {
+                if (input === currentScramble.word) {
+                    document.getElementById('scrambleResult').innerHTML = '<span style="color:#4caf50;">✓ Correct! +15 XP</span>';
+                    document.getElementById('scrambleResult').style.background = '#e8f5e9';
+                    document.getElementById('scrambleInput').disabled = true;
+                    addXP(15);
+                } else if (event.key === 'Enter') {
+                    document.getElementById('scrambleResult').innerHTML = `<span style="color:#f44336;">✗ Wrong! Answer: ${currentScramble.word}</span>`;
+                    document.getElementById('scrambleResult').style.background = '#ffebee';
+                }
+            }
+        }
+
+        // Science Heroes
+        const scienceHeroes = [
+            { avatar: '🧑‍🔬', name: 'Marie Curie', desc: 'Discovered radioactivity and won 2 Nobel Prizes', field: 'Physics/Chemistry' },
+            { avatar: '👨‍🔬', name: 'Albert Einstein', desc: 'Developed theory of relativity (E=mc²)', field: 'Physics' },
+            { avatar: '🧬', name: 'Charles Darwin', desc: 'Theory of evolution by natural selection', field: 'Biology' },
+            { avatar: '🔭', name: 'Galileo Galilei', desc: 'Father of modern observational astronomy', field: 'Astronomy' },
+            { avatar: '⚡', name: 'Nikola Tesla', desc: 'Invented AC electrical system', field: 'Engineering' },
+            { avatar: '🍎', name: 'Isaac Newton', desc: 'Laws of motion and universal gravitation', field: 'Physics' },
+            { avatar: '💉', name: 'Louis Pasteur', desc: 'Germ theory and pasteurization', field: 'Microbiology' },
+            { avatar: '🧪', name: 'Dmitri Mendeleev', desc: 'Created the periodic table', field: 'Chemistry' },
+            { avatar: '🌡️', name: 'Stephen Hawking', desc: 'Black hole theory and cosmology', field: 'Physics' },
+            { avatar: '🧫', name: 'Jane Goodall', desc: 'Pioneering study of chimpanzees', field: 'Primatology' }
+        ];
+
+        function openHeroes() {
+            document.getElementById('heroesModal').classList.add('active');
+            renderHeroes();
+        }
+
+        function closeHeroes() {
+            document.getElementById('heroesModal').classList.remove('active');
+        }
+
+        function renderHeroes() {
+            document.getElementById('heroesContainer').innerHTML = scienceHeroes.map(h => `
+                <div class="hero-card">
+                    <div class="hero-avatar">${h.avatar}</div>
+                    <div class="hero-info">
+                        <h4>${h.name}</h4>
+                        <p>${h.desc}</p>
+                        <span class="hero-field">${h.field}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Quick Review
+        const quickReviews = {
+            'Forces': {
+                title: 'Forces',
+                points: [
+                    'Force = Mass × Acceleration (F = ma)',
+                    'Friction opposes motion between surfaces',
+                    'Gravity pulls objects toward Earth (9.8 m/s²)',
+                    'Normal force acts perpendicular to surfaces',
+                    'Balanced forces = no change in motion'
+                ]
+            },
+            'Cells': {
+                title: 'Cells',
+                points: [
+                    'Cell membrane controls what enters/exits',
+                    'Nucleus contains DNA (control center)',
+                    'Mitochondria produce energy (ATP)',
+                    'Ribosomes make proteins',
+                    'Plant cells have cell walls and chloroplasts'
+                ]
+            },
+            'Atoms': {
+                title: 'Atoms',
+                points: [
+                    'Protons (+) and neutrons in nucleus',
+                    'Electrons (-) orbit in shells',
+                    'Atomic number = number of protons',
+                    'Mass number = protons + neutrons',
+                    'Isotopes have different neutron counts'
+                ]
+            },
+            'Energy': {
+                title: 'Energy',
+                points: [
+                    'Energy cannot be created or destroyed',
+                    'Kinetic energy = energy of motion',
+                    'Potential energy = stored energy',
+                    'Work = Force × Distance',
+                    'Power = Work ÷ Time'
+                ]
+            }
+        };
+
+        function openQuickReview() {
+            document.getElementById('quickReviewModal').classList.add('active');
+            renderReviewTopics();
+            showReview('Forces');
+        }
+
+        function closeQuickReview() {
+            document.getElementById('quickReviewModal').classList.remove('active');
+        }
+
+        function renderReviewTopics() {
+            const topics = Object.keys(quickReviews);
+            document.getElementById('reviewTopics').innerHTML = topics.map(t => `
+                <button class="review-topic-btn" onclick="showReview('${t}')">${t}</button>
+            `).join('');
+        }
+
+        function showReview(topic) {
+            document.querySelectorAll('.review-topic-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === topic);
+            });
+
+            const review = quickReviews[topic];
+            document.getElementById('reviewContent').innerHTML = `
+                <h4>📚 ${review.title}</h4>
+                <ul>
+                    ${review.points.map(p => `<li>${p}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        console.log('🔀 Word Scramble, Science Heroes, and Quick Review loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
