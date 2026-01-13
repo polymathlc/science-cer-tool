@@ -14,7 +14,7 @@
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <!-- APP VERSION - Update this when making changes -->
-    <meta name="app-version" content="2026.01.13.2">
+    <meta name="app-version" content="2026.01.13.3">
     <title>CER Interactive Questions</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -7794,6 +7794,134 @@
             updateWorksheetUI();
             window.showToast('Questions shuffled!', 'success');
         };
+
+        // =====================================================
+        // STUDY TIMER & SESSION STATISTICS
+        // =====================================================
+
+        window.studyTimer = {
+            startTime: null,
+            elapsed: 0,
+            interval: null,
+            isRunning: false
+        };
+
+        window.sessionStats = {
+            questionsViewed: 0,
+            questionsAnswered: 0,
+            correctAnswers: 0,
+            incorrectAnswers: 0,
+            startTime: Date.now()
+        };
+
+        /**
+         * Start the study timer
+         */
+        window.startStudyTimer = function() {
+            if (window.studyTimer.isRunning) return;
+
+            window.studyTimer.startTime = Date.now() - window.studyTimer.elapsed;
+            window.studyTimer.isRunning = true;
+
+            window.studyTimer.interval = setInterval(() => {
+                window.studyTimer.elapsed = Date.now() - window.studyTimer.startTime;
+            }, 1000);
+        };
+
+        /**
+         * Format time in MM:SS or HH:MM:SS
+         */
+        window.formatStudyTime = function(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            if (hours > 0) {
+                return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        };
+
+        /**
+         * Track an answer submission
+         */
+        window.trackAnswer = function(isCorrect) {
+            window.sessionStats.questionsAnswered++;
+            if (isCorrect) {
+                window.sessionStats.correctAnswers++;
+            } else {
+                window.sessionStats.incorrectAnswers++;
+            }
+        };
+
+        /**
+         * Get session accuracy percentage
+         */
+        window.getSessionAccuracy = function() {
+            if (window.sessionStats.questionsAnswered === 0) return 0;
+            return Math.round((window.sessionStats.correctAnswers / window.sessionStats.questionsAnswered) * 100);
+        };
+
+        /**
+         * Show session statistics modal
+         */
+        window.showSessionStats = function() {
+            const duration = window.studyTimer.elapsed;
+            const accuracy = window.getSessionAccuracy();
+
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay visible';
+            modal.style.zIndex = '10005';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.innerHTML = `
+                <div class="modal-box" style="max-width: 450px;">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary-blue); display: flex; align-items: center; gap: 10px;">
+                        📊 Session Statistics
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 1.5rem;">
+                        <div style="background: var(--blue-light); padding: 16px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-blue);">${window.formatStudyTime(duration)}</div>
+                            <div style="color: var(--light-text); font-size: 0.9rem;">Study Time</div>
+                        </div>
+                        <div style="background: var(--teal); padding: 16px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #2e7d32;">${window.sessionStats.questionsAnswered}</div>
+                            <div style="color: var(--light-text); font-size: 0.9rem;">Questions Answered</div>
+                        </div>
+                        <div style="background: #e8f5e9; padding: 16px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--correct-color);">${window.sessionStats.correctAnswers}</div>
+                            <div style="color: var(--light-text); font-size: 0.9rem;">Correct</div>
+                        </div>
+                        <div style="background: #ffebee; padding: 16px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--incorrect-color);">${window.sessionStats.incorrectAnswers}</div>
+                            <div style="color: var(--light-text); font-size: 0.9rem;">Incorrect</div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px; border-radius: 12px; text-align: center; color: white; margin-bottom: 1.5rem;">
+                        <div style="font-size: 2.5rem; font-weight: 700;">${accuracy}%</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Session Accuracy</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <button onclick="this.closest('.modal-overlay').remove()" class="btn" style="background: var(--primary-blue); color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            Continue Studying
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+        };
+
+        // Start study timer on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.startStudyTimer);
+        } else {
+            window.startStudyTimer();
+        }
 
         // Toggle question in/out of worksheet
         window.toggleWorksheetItem = function (btn) {
