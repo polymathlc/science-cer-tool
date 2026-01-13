@@ -5820,7 +5820,7 @@
 
                                 <!-- Countdown Timer -->
                                 <div style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; text-align: center;">
-                                    <p style="color: rgba(255,255,255,0.8); margin: 0 0 0.75rem 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">⏰ Draw Date: January 15, 2026</p>
+                                    <p style="color: rgba(255,255,255,0.8); margin: 0 0 0.75rem 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">⏰ Draw Date: February 15, 2026</p>
                                     <div id="prize-countdown" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
                                         <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 20px; min-width: 80px;">
                                             <div id="countdown-days" style="color: #FFD700; font-size: 2rem; font-weight: 800; line-height: 1;">--</div>
@@ -8835,7 +8835,7 @@
         // PRIZE DRAW SYSTEM
         // =====================================================
 
-        const PRIZE_DRAW_DATE = new Date('2026-01-15T12:00:00+08:00'); // Jan 15, 2026 at noon SGT
+        const PRIZE_DRAW_DATE = new Date('2026-02-15T12:00:00+08:00'); // Feb 15, 2026 at noon SGT
 
         // Start countdown timer
         window.startPrizeCountdown = function() {
@@ -10405,21 +10405,123 @@
                     <div class="question-body" style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
                         ${question.html || '<p style="color: #999;">Question content not available.</p>'}
                     </div>
+                    <div id="popup-submit-area" style="margin-top: 1rem; text-align: center;"></div>
+                    <div id="popup-result-area" style="margin-top: 1rem; display: none;"></div>
                 </div>
             `;
             document.body.appendChild(modal);
 
-            // Setup question functionality if needed
-            if (window.setupQuestionFormGlobal && question.id) {
-                setTimeout(() => {
-                    const bodyDiv = modal.querySelector('.question-body');
-                    if (bodyDiv) {
-                        // Create a temporary ID for the question body
-                        bodyDiv.id = question.id + '-popup-body';
-                        window.setupQuestionFormGlobal(bodyDiv.id);
+            // Setup question functionality
+            setTimeout(() => {
+                const bodyDiv = modal.querySelector('.question-body');
+                const submitArea = modal.querySelector('#popup-submit-area');
+                const resultArea = modal.querySelector('#popup-result-area');
+
+                if (bodyDiv) {
+                    bodyDiv.id = question.id + '-popup-body';
+
+                    // Hide any existing explanation boxes initially
+                    bodyDiv.querySelectorAll('.explanation-box').forEach(e => e.style.display = 'none');
+
+                    // Check if it's an MCQ question
+                    const mcqContainer = bodyDiv.querySelector('.mcq-container');
+                    const hasRadios = bodyDiv.querySelectorAll('input[type="radio"]').length > 0;
+
+                    if (mcqContainer || hasRadios) {
+                        // MCQ Question - Add submit button
+                        const uniqueName = 'popup-mcq-' + question.id + '-' + Date.now();
+                        bodyDiv.querySelectorAll('input[type="radio"]').forEach((radio, idx) => {
+                            radio.name = uniqueName;
+                            radio.checked = false;
+                            radio.disabled = false;
+                        });
+
+                        // Reset option styling
+                        bodyDiv.querySelectorAll('label, .mcq-option').forEach(opt => {
+                            opt.style.borderColor = '';
+                            opt.style.background = '';
+                            opt.querySelectorAll('.option-feedback-icon').forEach(i => i.remove());
+                        });
+
+                        // Remove any existing submit buttons from inside the body
+                        bodyDiv.querySelectorAll('.submit-btn, button[onclick*="check"]').forEach(b => b.remove());
+
+                        // Create submit button in submit area
+                        const submitBtn = document.createElement('button');
+                        submitBtn.className = 'btn btn-primary';
+                        submitBtn.style.cssText = 'background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px 30px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 600;';
+                        submitBtn.textContent = 'Submit Answer';
+                        submitBtn.onclick = function() {
+                            const selected = bodyDiv.querySelector('input[type="radio"]:checked');
+                            if (!selected) {
+                                alert('Please select an answer.');
+                                return;
+                            }
+
+                            const isCorrect = selected.dataset.correct === 'true';
+
+                            // Show correct/incorrect styling
+                            bodyDiv.querySelectorAll('label, .mcq-option').forEach(opt => {
+                                const radio = opt.querySelector('input[type="radio"]');
+                                opt.querySelectorAll('.option-feedback-icon').forEach(i => i.remove());
+
+                                if (radio) {
+                                    radio.disabled = true;
+                                    if (radio.dataset.correct === 'true') {
+                                        opt.style.background = '#d4edda';
+                                        opt.style.borderColor = '#28a745';
+                                        const icon = document.createElement('span');
+                                        icon.className = 'option-feedback-icon';
+                                        icon.textContent = ' ✔';
+                                        icon.style.cssText = 'font-size: 1.2rem; font-weight: bold; color: #28a745; margin-left: 8px;';
+                                        opt.appendChild(icon);
+                                    } else if (radio.checked && !isCorrect) {
+                                        opt.style.background = '#f8d7da';
+                                        opt.style.borderColor = '#dc3545';
+                                        const icon = document.createElement('span');
+                                        icon.className = 'option-feedback-icon';
+                                        icon.textContent = ' ✘';
+                                        icon.style.cssText = 'font-size: 1.2rem; font-weight: bold; color: #dc3545; margin-left: 8px;';
+                                        opt.appendChild(icon);
+                                    }
+                                }
+                            });
+
+                            // Hide submit button
+                            submitBtn.style.display = 'none';
+
+                            // Show result
+                            resultArea.style.display = 'block';
+                            resultArea.innerHTML = isCorrect
+                                ? '<div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; text-align: center; font-weight: 600; font-size: 1.1rem;">✅ Correct! Well done!</div>'
+                                : '<div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; text-align: center; font-weight: 600; font-size: 1.1rem;">❌ Incorrect. Check the explanation below.</div>';
+
+                            // Show explanation box if it exists
+                            const explanationBox = bodyDiv.querySelector('.explanation-box');
+                            if (explanationBox) {
+                                explanationBox.style.display = 'block';
+                                explanationBox.style.marginTop = '1rem';
+                                explanationBox.style.background = '#e3f2fd';
+                                explanationBox.style.padding = '15px';
+                                explanationBox.style.borderRadius = '8px';
+                                explanationBox.style.borderLeft = '4px solid #1976d2';
+                            }
+
+                            // Show video container if it exists
+                            const videoContainer = bodyDiv.querySelector('.video-container');
+                            if (videoContainer) {
+                                videoContainer.style.display = 'block';
+                            }
+                        };
+                        submitArea.appendChild(submitBtn);
+                    } else {
+                        // OEQ or fill-in-the-blank question - use setupQuestionFormGlobal
+                        if (window.setupQuestionFormGlobal) {
+                            window.setupQuestionFormGlobal(bodyDiv.id);
+                        }
                     }
-                }, 100);
-            }
+                }
+            }, 100);
 
             // Close on overlay click
             modal.addEventListener('click', (e) => {
