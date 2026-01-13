@@ -30899,6 +30899,301 @@
             color: #00897b;
             font-weight: bold;
         }
+
+        /* Batch 83: Science Quote */
+        .quote-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2470px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6a1b9a, #ab47bc);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .quote-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .quote-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quote-modal.active {
+            display: flex;
+        }
+
+        .quote-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+            overflow: hidden;
+        }
+
+        .quote-header {
+            background: linear-gradient(135deg, #6a1b9a, #ab47bc);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quote-body {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .quote-author {
+            font-weight: bold;
+            color: #6a1b9a;
+        }
+
+        /* Practice Mode */
+        .practice-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1990px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1976d2, #64b5f6);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .practice-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .practice-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .practice-modal.active {
+            display: flex;
+        }
+
+        .practice-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .practice-header {
+            background: linear-gradient(135deg, #1976d2, #64b5f6);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .practice-body {
+            padding: 20px;
+        }
+
+        .practice-topic-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #1976d2;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .practice-question {
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            text-align: center;
+        }
+
+        .practice-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .practice-option {
+            padding: 15px;
+            border: 2px solid #1976d2;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .practice-option:hover {
+            background: #e3f2fd;
+        }
+
+        .practice-option.correct {
+            background: #c8e6c9;
+            border-color: #4caf50;
+        }
+
+        .practice-option.wrong {
+            background: #ffcdd2;
+            border-color: #f44336;
+        }
+
+        /* Daily Challenge */
+        .daily-challenge-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2530px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f57c00, #ffb74d);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245, 124, 0, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .daily-challenge-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .daily-challenge-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .daily-challenge-modal.active {
+            display: flex;
+        }
+
+        .daily-challenge-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .daily-challenge-header {
+            background: linear-gradient(135deg, #f57c00, #ffb74d);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .daily-challenge-body {
+            padding: 20px;
+        }
+
+        .challenge-info {
+            text-align: center;
+            padding: 20px;
+            background: #fff3e0;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .challenge-date {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .challenge-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+
+        .challenge-desc {
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .challenge-progress {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .challenge-progress-bar {
+            height: 20px;
+            background: #ffe0b2;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .challenge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f57c00, #ffb74d);
+            transition: width 0.3s ease;
+        }
+
+        .challenge-reward {
+            padding: 15px;
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: #e65100;
+        }
     </style>
 </head>
 
@@ -76372,6 +76667,247 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('📅 Science Timeline, Lab Equipment, and Quick Quiz loaded!');
+    </script>
+
+    <!-- Batch 83: Science Quote Button -->
+    <button class="quote-btn" onclick="openQuote()" title="Science Quote">💬</button>
+
+    <!-- Science Quote Modal -->
+    <div class="quote-modal" id="quoteModal">
+        <div class="quote-content">
+            <div class="quote-header">
+                <h3 style="margin:0;">💬 Science Quote</h3>
+                <button onclick="closeQuote()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="quote-body">
+                <div class="quote-text" id="quoteText">"Loading..."</div>
+                <div class="quote-author" id="quoteAuthor">- Loading</div>
+                <button onclick="newQuote()" style="margin-top:20px;padding:12px 30px;background:#6a1b9a;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;">New Quote</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Practice Mode Button -->
+    <button class="practice-btn" onclick="openPractice()" title="Practice Mode">📚</button>
+
+    <!-- Practice Mode Modal -->
+    <div class="practice-modal" id="practiceModal">
+        <div class="practice-content">
+            <div class="practice-header">
+                <h3 style="margin:0;">📚 Practice Mode</h3>
+                <button onclick="closePractice()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="practice-body">
+                <select class="practice-topic-select" id="practiceTopic" onchange="startPractice()">
+                    <option value="physics">Physics</option>
+                    <option value="biology">Biology</option>
+                    <option value="chemistry">Chemistry</option>
+                </select>
+                <div class="practice-question" id="practiceQuestion">Select a topic to start!</div>
+                <div class="practice-options" id="practiceOptions"></div>
+                <p style="text-align:center;margin-top:15px;color:#1976d2;font-weight:bold;" id="practiceScore">Score: 0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Challenge Button -->
+    <button class="daily-challenge-btn" onclick="openDailyChallenge()" title="Daily Challenge">🏆</button>
+
+    <!-- Daily Challenge Modal -->
+    <div class="daily-challenge-modal" id="dailyChallengeModal">
+        <div class="daily-challenge-content">
+            <div class="daily-challenge-header">
+                <h3 style="margin:0;">🏆 Daily Challenge</h3>
+                <button onclick="closeDailyChallenge()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="daily-challenge-body">
+                <div class="challenge-info">
+                    <div class="challenge-date" id="challengeDate">Today's Challenge</div>
+                    <div class="challenge-title" id="challengeTitle">Loading...</div>
+                    <div class="challenge-desc" id="challengeDesc">...</div>
+                </div>
+                <div class="challenge-progress">
+                    <div class="challenge-progress-bar">
+                        <div class="challenge-progress-fill" id="challengeProgressFill" style="width: 0%;"></div>
+                    </div>
+                    <span id="challengeProgressText">0 / 5 completed</span>
+                </div>
+                <button onclick="startDailyChallenge()" id="challengeStartBtn" style="width:100%;padding:15px;background:#f57c00;color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer;">Start Challenge</button>
+                <div class="challenge-reward" id="challengeReward">Reward: 50 XP</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Science Quote System
+        const scienceQuotes = [
+            { text: "The important thing is not to stop questioning. Curiosity has its own reason for existing.", author: "Albert Einstein" },
+            { text: "Science is a way of thinking much more than it is a body of knowledge.", author: "Carl Sagan" },
+            { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
+            { text: "The good thing about science is that it's true whether or not you believe in it.", author: "Neil deGrasse Tyson" },
+            { text: "Somewhere, something incredible is waiting to be known.", author: "Carl Sagan" },
+            { text: "In science, there are no shortcuts to truth.", author: "Karl Popper" },
+            { text: "Research is what I'm doing when I don't know what I'm doing.", author: "Wernher von Braun" },
+            { text: "Science is not only a disciple of reason but also one of romance and passion.", author: "Stephen Hawking" },
+            { text: "The science of today is the technology of tomorrow.", author: "Edward Teller" },
+            { text: "Science knows no country, because knowledge belongs to humanity.", author: "Louis Pasteur" }
+        ];
+
+        function openQuote() {
+            document.getElementById('quoteModal').classList.add('active');
+            newQuote();
+        }
+
+        function closeQuote() {
+            document.getElementById('quoteModal').classList.remove('active');
+        }
+
+        function newQuote() {
+            const q = scienceQuotes[Math.floor(Math.random() * scienceQuotes.length)];
+            document.getElementById('quoteText').textContent = `"${q.text}"`;
+            document.getElementById('quoteAuthor').textContent = `- ${q.author}`;
+        }
+
+        // Practice Mode System
+        const practiceQuestions = {
+            physics: [
+                { q: 'What is the unit of force?', a: 'Newton', options: ['Joule', 'Newton', 'Watt', 'Pascal'] },
+                { q: 'What is Newton\'s first law about?', a: 'Inertia', options: ['Inertia', 'Acceleration', 'Action-Reaction', 'Gravity'] },
+                { q: 'What type of energy is stored energy?', a: 'Potential', options: ['Kinetic', 'Potential', 'Thermal', 'Nuclear'] }
+            ],
+            biology: [
+                { q: 'What organelle produces ATP?', a: 'Mitochondria', options: ['Nucleus', 'Mitochondria', 'Ribosome', 'Vacuole'] },
+                { q: 'What is the process of cell division?', a: 'Mitosis', options: ['Osmosis', 'Mitosis', 'Photosynthesis', 'Respiration'] },
+                { q: 'DNA stands for?', a: 'Deoxyribonucleic acid', options: ['Deoxyribonucleic acid', 'Dinitrogen acid', 'Double nucleic acid', 'Direct nuclear acid'] }
+            ],
+            chemistry: [
+                { q: 'What is the atomic number of Carbon?', a: '6', options: ['4', '6', '8', '12'] },
+                { q: 'What is H2O commonly called?', a: 'Water', options: ['Hydrogen', 'Oxygen', 'Water', 'Salt'] },
+                { q: 'What type of bond shares electrons?', a: 'Covalent', options: ['Ionic', 'Covalent', 'Metallic', 'Hydrogen'] }
+            ]
+        };
+
+        let practiceScore = 0;
+
+        function openPractice() {
+            document.getElementById('practiceModal').classList.add('active');
+            practiceScore = 0;
+            startPractice();
+        }
+
+        function closePractice() {
+            document.getElementById('practiceModal').classList.remove('active');
+        }
+
+        function startPractice() {
+            const topic = document.getElementById('practiceTopic').value;
+            const questions = practiceQuestions[topic];
+            const q = questions[Math.floor(Math.random() * questions.length)];
+
+            document.getElementById('practiceQuestion').textContent = q.q;
+
+            const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+            document.getElementById('practiceOptions').innerHTML = shuffled.map(opt =>
+                `<button class="practice-option" onclick="checkPractice('${opt}', '${q.a}')">${opt}</button>`
+            ).join('');
+
+            document.getElementById('practiceScore').textContent = `Score: ${practiceScore}`;
+        }
+
+        function checkPractice(answer, correct) {
+            const buttons = document.querySelectorAll('.practice-option');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === answer && answer !== correct) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            if (answer === correct) {
+                practiceScore++;
+                addXP(5);
+            }
+
+            document.getElementById('practiceScore').textContent = `Score: ${practiceScore}`;
+            setTimeout(startPractice, 1500);
+        }
+
+        // Daily Challenge System
+        const dailyChallenges = [
+            { title: 'Speed Master', desc: 'Answer 5 physics questions correctly', goal: 5 },
+            { title: 'Cell Explorer', desc: 'Answer 5 biology questions correctly', goal: 5 },
+            { title: 'Element Hunter', desc: 'Answer 5 chemistry questions correctly', goal: 5 },
+            { title: 'Science Sprint', desc: 'Complete 5 quick quizzes', goal: 5 },
+            { title: 'Knowledge Seeker', desc: 'Answer any 5 questions correctly', goal: 5 }
+        ];
+
+        let challengeProgress = 0;
+        let todayChallenge = null;
+
+        function openDailyChallenge() {
+            document.getElementById('dailyChallengeModal').classList.add('active');
+            loadDailyChallenge();
+        }
+
+        function closeDailyChallenge() {
+            document.getElementById('dailyChallengeModal').classList.remove('active');
+        }
+
+        function loadDailyChallenge() {
+            const today = new Date().toDateString();
+            const stored = JSON.parse(localStorage.getItem('dailyChallengeData') || '{}');
+
+            if (stored.date !== today) {
+                // New day, new challenge
+                todayChallenge = dailyChallenges[Math.floor(Math.random() * dailyChallenges.length)];
+                challengeProgress = 0;
+                localStorage.setItem('dailyChallengeData', JSON.stringify({
+                    date: today,
+                    challenge: todayChallenge,
+                    progress: 0,
+                    completed: false
+                }));
+            } else {
+                todayChallenge = stored.challenge;
+                challengeProgress = stored.progress || 0;
+            }
+
+            document.getElementById('challengeDate').textContent = new Date().toLocaleDateString();
+            document.getElementById('challengeTitle').textContent = todayChallenge.title;
+            document.getElementById('challengeDesc').textContent = todayChallenge.desc;
+            updateChallengeProgress();
+        }
+
+        function updateChallengeProgress() {
+            const percent = Math.min((challengeProgress / todayChallenge.goal) * 100, 100);
+            document.getElementById('challengeProgressFill').style.width = `${percent}%`;
+            document.getElementById('challengeProgressText').textContent = `${challengeProgress} / ${todayChallenge.goal} completed`;
+
+            if (challengeProgress >= todayChallenge.goal) {
+                document.getElementById('challengeStartBtn').textContent = 'Challenge Complete!';
+                document.getElementById('challengeStartBtn').disabled = true;
+                document.getElementById('challengeReward').innerHTML = '✓ Reward Claimed: 50 XP';
+            }
+        }
+
+        function startDailyChallenge() {
+            challengeProgress++;
+            addXP(10);
+
+            const stored = JSON.parse(localStorage.getItem('dailyChallengeData') || '{}');
+            stored.progress = challengeProgress;
+            if (challengeProgress >= todayChallenge.goal) {
+                stored.completed = true;
+                addXP(40); // Bonus for completing
+            }
+            localStorage.setItem('dailyChallengeData', JSON.stringify(stored));
+
+            updateChallengeProgress();
+        }
+
+        console.log('💬 Science Quote, Practice Mode, and Daily Challenge loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
