@@ -16856,6 +16856,390 @@
         .floating-milestones-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ===== Batch 43 Styles: Vocabulary Builder, Experiment Simulator, Streak Bonus ===== */
+
+        /* Vocabulary Builder */
+        .vocab-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vocab-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #4a90d9;
+        }
+
+        .vocab-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .vocab-header h2 {
+            color: #4a90d9;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .vocab-category-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .vocab-tab {
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: rgba(74, 144, 217, 0.2);
+            color: #4a90d9;
+            border: 1px solid #4a90d9;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .vocab-tab.active {
+            background: #4a90d9;
+            color: white;
+        }
+
+        .vocab-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a90d9;
+        }
+
+        .vocab-term {
+            font-size: 1.3rem;
+            color: #4a90d9;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .vocab-definition {
+            color: #b0b0b0;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .vocab-example {
+            font-style: italic;
+            color: #888;
+            font-size: 0.9rem;
+            padding-left: 15px;
+            border-left: 2px solid #4a90d9;
+        }
+
+        .vocab-learned {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .vocab-learned input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .vocab-learned label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .vocab-progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .vocab-progress-bar {
+            height: 10px;
+            background: rgba(74, 144, 217, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .vocab-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a90d9, #67b8f7);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        /* Experiment Simulator */
+        .experiment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .experiment-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #9c27b0;
+        }
+
+        .experiment-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .experiment-header h2 {
+            color: #9c27b0;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .experiment-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .experiment-card {
+            background: rgba(156, 39, 176, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .experiment-card:hover {
+            border-color: #9c27b0;
+            transform: translateY(-3px);
+        }
+
+        .experiment-card.active {
+            border-color: #9c27b0;
+            background: rgba(156, 39, 176, 0.2);
+        }
+
+        .experiment-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .experiment-title {
+            color: #ce93d8;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .experiment-desc {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .experiment-workspace {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .experiment-workspace.active {
+            display: block;
+        }
+
+        .experiment-step {
+            background: rgba(156, 39, 176, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #9c27b0;
+        }
+
+        .experiment-step-num {
+            color: #9c27b0;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .experiment-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .experiment-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .experiment-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .experiment-result {
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.2) 0%, rgba(186, 104, 200, 0.2) 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .experiment-result.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .experiment-result-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .experiment-result-text {
+            color: #ce93d8;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        /* Streak Bonus Indicator */
+        .streak-bonus-indicator {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            border-radius: 15px;
+            padding: 15px 20px;
+            z-index: 9999;
+            display: none;
+            animation: bounceIn 0.5s ease;
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .streak-bonus-indicator.show {
+            display: block;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .streak-bonus-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .streak-fire {
+            font-size: 2rem;
+            animation: fireFlicker 0.5s ease infinite alternate;
+        }
+
+        @keyframes fireFlicker {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .streak-info h4 {
+            color: white;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .streak-multiplier {
+            color: #ffe066;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .streak-count {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+        }
+
+        /* Floating Buttons for Batch 43 */
+        .floating-vocab-btn {
+            position: fixed;
+            bottom: 3580px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a90d9 0%, #67b8f7 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(74, 144, 217, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-vocab-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-experiment-btn {
+            position: fixed;
+            bottom: 3640px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(156, 39, 176, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-experiment-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -49294,6 +49678,405 @@ Science Made Fun!
         }
 
         console.log('🧩 Trivia Game, Study Breaks, and Progress Milestones loaded!');
+    </script>
+
+    <!-- ===== Batch 43: Vocabulary Builder, Experiment Simulator, Streak Bonus ===== -->
+    <button class="floating-vocab-btn" onclick="openVocabModal()" title="Vocabulary Builder">📚</button>
+    <button class="floating-experiment-btn" onclick="openExperimentModal()" title="Science Experiments">🔬</button>
+
+    <!-- Streak Bonus Indicator -->
+    <div class="streak-bonus-indicator" id="streak-bonus-indicator">
+        <div class="streak-bonus-content">
+            <span class="streak-fire">🔥</span>
+            <div class="streak-info">
+                <h4>Answer Streak!</h4>
+                <div class="streak-multiplier" id="streak-multiplier">x1.0</div>
+                <div class="streak-count" id="streak-count-display">0 in a row</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vocabulary Builder Modal -->
+    <div class="vocab-modal" id="vocab-modal">
+        <div class="vocab-content">
+            <button class="modal-close-btn" onclick="closeVocabModal()">&times;</button>
+            <div class="vocab-header">
+                <h2>📚 Science Vocabulary</h2>
+                <p style="color: #aaa;">Learn important science terms!</p>
+            </div>
+            <div class="vocab-progress">
+                <span style="color: #4a90d9; font-weight: bold;">Your Progress</span>
+                <div style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">
+                    <span id="vocab-learned-count">0</span> / <span id="vocab-total-count">0</span> terms learned
+                </div>
+                <div class="vocab-progress-bar">
+                    <div class="vocab-progress-fill" id="vocab-progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="vocab-category-tabs" id="vocab-category-tabs"></div>
+            <div id="vocab-cards-container"></div>
+        </div>
+    </div>
+
+    <!-- Experiment Simulator Modal -->
+    <div class="experiment-modal" id="experiment-modal">
+        <div class="experiment-content">
+            <button class="modal-close-btn" onclick="closeExperimentModal()">&times;</button>
+            <div class="experiment-header">
+                <h2>🔬 Science Experiments</h2>
+                <p style="color: #aaa;">Try virtual experiments to learn science concepts!</p>
+            </div>
+            <div class="experiment-list" id="experiment-list"></div>
+            <div class="experiment-workspace" id="experiment-workspace"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Batch 43: Vocabulary Builder, Experiment Simulator, Streak Bonus =====
+
+        // Science Vocabulary Data
+        const vocabularyData = {
+            'Matter': [
+                { term: 'Atom', definition: 'The smallest unit of matter that retains the properties of an element.', example: 'Everything around us is made of atoms.' },
+                { term: 'Molecule', definition: 'A group of atoms bonded together, representing the smallest unit of a chemical compound.', example: 'Water (H₂O) is a molecule made of 2 hydrogen atoms and 1 oxygen atom.' },
+                { term: 'Solid', definition: 'A state of matter with a definite shape and volume, where particles are tightly packed.', example: 'Ice is water in its solid state.' },
+                { term: 'Liquid', definition: 'A state of matter with a definite volume but no fixed shape, taking the shape of its container.', example: 'Water is a liquid at room temperature.' },
+                { term: 'Gas', definition: 'A state of matter with no fixed shape or volume, where particles move freely.', example: 'The air we breathe is made of gases.' }
+            ],
+            'Energy': [
+                { term: 'Kinetic Energy', definition: 'The energy of motion. Moving objects have kinetic energy.', example: 'A rolling ball has kinetic energy.' },
+                { term: 'Potential Energy', definition: 'Stored energy that can be converted to other forms.', example: 'A book on a shelf has gravitational potential energy.' },
+                { term: 'Heat', definition: 'A form of energy transferred between objects due to temperature difference.', example: 'Heat flows from a hot cup to your cold hands.' },
+                { term: 'Light', definition: 'A form of electromagnetic energy that we can see.', example: 'The sun produces light energy.' },
+                { term: 'Sound', definition: 'Energy produced by vibrations that travels through matter as waves.', example: 'Sound waves carry the music from speakers to your ears.' }
+            ],
+            'Forces': [
+                { term: 'Gravity', definition: 'A force that pulls objects toward each other. Earth\'s gravity pulls things down.', example: 'Gravity keeps us on the ground and makes things fall.' },
+                { term: 'Friction', definition: 'A force that opposes motion between surfaces in contact.', example: 'Friction helps you walk without slipping.' },
+                { term: 'Magnetism', definition: 'A force produced by magnets that attracts or repels certain materials.', example: 'Magnets stick to refrigerators because of magnetism.' },
+                { term: 'Buoyancy', definition: 'The upward force exerted by a fluid that opposes the weight of an object.', example: 'Buoyancy makes boats float on water.' }
+            ],
+            'Life Science': [
+                { term: 'Photosynthesis', definition: 'The process by which plants make food using sunlight, water, and carbon dioxide.', example: 'Plants use photosynthesis to produce glucose and oxygen.' },
+                { term: 'Respiration', definition: 'The process of using oxygen to release energy from food in living cells.', example: 'We breathe to get oxygen for respiration.' },
+                { term: 'Habitat', definition: 'The natural home or environment of a plant or animal.', example: 'A pond is a habitat for frogs and fish.' },
+                { term: 'Food Chain', definition: 'A series showing how energy passes from one organism to another.', example: 'Grass → Grasshopper → Frog → Snake is a food chain.' },
+                { term: 'Adaptation', definition: 'A feature that helps an organism survive in its environment.', example: 'Thick fur is an adaptation for polar bears in cold climates.' }
+            ],
+            'Earth Science': [
+                { term: 'Erosion', definition: 'The process of wearing away rock and soil by wind, water, or ice.', example: 'Rivers cause erosion of riverbanks over time.' },
+                { term: 'Water Cycle', definition: 'The continuous movement of water between Earth\'s surface and atmosphere.', example: 'Evaporation, condensation, and precipitation are parts of the water cycle.' },
+                { term: 'Volcano', definition: 'An opening in Earth\'s crust through which lava, ash, and gases erupt.', example: 'Mount Fuji is a famous volcano in Japan.' },
+                { term: 'Atmosphere', definition: 'The layer of gases surrounding Earth.', example: 'The atmosphere protects us from harmful radiation.' }
+            ]
+        };
+
+        // Experiment Data
+        const experimentsData = [
+            {
+                id: 'density',
+                icon: '🧪',
+                title: 'Density Tower',
+                desc: 'See how liquids layer based on density',
+                steps: [
+                    'Pour honey into the bottom of a glass.',
+                    'Slowly pour dish soap on top of the honey.',
+                    'Gently add water to the glass.',
+                    'Finally, carefully add vegetable oil.',
+                    'Observe how the liquids form layers!'
+                ],
+                result: { icon: '🏆', text: 'The liquids stack in layers because they have different densities! Honey is the densest (heaviest), so it sinks to the bottom. Oil is the least dense (lightest), so it floats on top.' }
+            },
+            {
+                id: 'volcano',
+                icon: '🌋',
+                title: 'Baking Soda Volcano',
+                desc: 'Create a fizzy eruption with a chemical reaction',
+                steps: [
+                    'Build a small mound of clay or playdough with a hole in the center.',
+                    'Add 2 tablespoons of baking soda into the hole.',
+                    'Add a few drops of red food coloring.',
+                    'Pour vinegar into the hole.',
+                    'Watch the volcano erupt!'
+                ],
+                result: { icon: '🎉', text: 'The baking soda (base) and vinegar (acid) react together to produce carbon dioxide gas! The bubbles create the "lava" effect. This is called an acid-base reaction.' }
+            },
+            {
+                id: 'rainbow',
+                icon: '🌈',
+                title: 'Walking Rainbow',
+                desc: 'Watch water travel through paper towels',
+                steps: [
+                    'Place 6 cups in a row.',
+                    'Fill cups 1, 3, and 5 with water.',
+                    'Add red food coloring to cup 1, yellow to cup 3, blue to cup 5.',
+                    'Fold paper towels and place them between adjacent cups.',
+                    'Wait and watch the colors "walk" into the empty cups!'
+                ],
+                result: { icon: '🌟', text: 'This demonstrates capillary action! Water molecules climb up tiny spaces in the paper towel. When the colors mix in the empty cups, you get orange, green, and purple - the secondary colors!' }
+            },
+            {
+                id: 'magnet',
+                icon: '🧲',
+                title: 'Magnetic Field Explorer',
+                desc: 'Visualize invisible magnetic forces',
+                steps: [
+                    'Place a bar magnet on a flat surface.',
+                    'Put a piece of white paper over the magnet.',
+                    'Sprinkle iron filings evenly over the paper.',
+                    'Gently tap the paper.',
+                    'Observe the pattern that forms!'
+                ],
+                result: { icon: '✨', text: 'The iron filings line up along the magnetic field lines! You can see that the field is strongest at the poles (ends) of the magnet. This invisible force is what makes magnets attract or repel each other.' }
+            },
+            {
+                id: 'static',
+                icon: '⚡',
+                title: 'Static Electricity',
+                desc: 'Make objects move without touching them',
+                steps: [
+                    'Cut small pieces of paper or tissue.',
+                    'Rub a balloon vigorously on your hair or wool sweater.',
+                    'Bring the balloon near the paper pieces.',
+                    'Watch the paper jump to the balloon!',
+                    'Try bending a stream of water with the charged balloon!'
+                ],
+                result: { icon: '💡', text: 'Rubbing the balloon creates static electricity by transferring electrons. The balloon becomes negatively charged and attracts the neutral paper pieces. This is the same force that makes your hair stand up!' }
+            }
+        ];
+
+        let currentVocabCategory = 'Matter';
+        let learnedVocab = JSON.parse(localStorage.getItem('learnedVocab')) || {};
+        let currentExperiment = null;
+        let answerStreak = parseInt(localStorage.getItem('answerStreak')) || 0;
+
+        // Vocabulary Functions
+        function openVocabModal() {
+            document.getElementById('vocab-modal').style.display = 'flex';
+            initVocabCategories();
+            displayVocabCards();
+            updateVocabProgress();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeVocabModal() {
+            document.getElementById('vocab-modal').style.display = 'none';
+        }
+
+        function initVocabCategories() {
+            const tabsContainer = document.getElementById('vocab-category-tabs');
+            const categories = Object.keys(vocabularyData);
+
+            tabsContainer.innerHTML = categories.map(cat => `
+                <button class="vocab-tab ${cat === currentVocabCategory ? 'active' : ''}" onclick="selectVocabCategory('${cat}')">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function selectVocabCategory(category) {
+            currentVocabCategory = category;
+            document.querySelectorAll('.vocab-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent.trim() === category);
+            });
+            displayVocabCards();
+        }
+
+        function displayVocabCards() {
+            const container = document.getElementById('vocab-cards-container');
+            const terms = vocabularyData[currentVocabCategory] || [];
+
+            container.innerHTML = terms.map((item, index) => {
+                const termKey = `${currentVocabCategory}-${index}`;
+                const isLearned = learnedVocab[termKey] || false;
+
+                return `
+                    <div class="vocab-card">
+                        <div class="vocab-term">${item.term}</div>
+                        <div class="vocab-definition">${item.definition}</div>
+                        <div class="vocab-example">"${item.example}"</div>
+                        <div class="vocab-learned">
+                            <input type="checkbox" id="vocab-${termKey}" ${isLearned ? 'checked' : ''} onchange="toggleVocabLearned('${termKey}')">
+                            <label for="vocab-${termKey}">I've learned this term</label>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleVocabLearned(termKey) {
+            learnedVocab[termKey] = !learnedVocab[termKey];
+            localStorage.setItem('learnedVocab', JSON.stringify(learnedVocab));
+            updateVocabProgress();
+
+            if (learnedVocab[termKey] && typeof addXP === 'function') {
+                addXP(5);
+                showToast('📚 New term learned! +5 XP', 'success');
+            }
+        }
+
+        function updateVocabProgress() {
+            let totalTerms = 0;
+            let learnedCount = 0;
+
+            Object.keys(vocabularyData).forEach(category => {
+                vocabularyData[category].forEach((_, index) => {
+                    totalTerms++;
+                    if (learnedVocab[`${category}-${index}`]) learnedCount++;
+                });
+            });
+
+            document.getElementById('vocab-learned-count').textContent = learnedCount;
+            document.getElementById('vocab-total-count').textContent = totalTerms;
+
+            const percentage = totalTerms > 0 ? (learnedCount / totalTerms) * 100 : 0;
+            document.getElementById('vocab-progress-fill').style.width = `${percentage}%`;
+        }
+
+        // Experiment Functions
+        function openExperimentModal() {
+            document.getElementById('experiment-modal').style.display = 'flex';
+            displayExperimentList();
+            document.getElementById('experiment-workspace').classList.remove('active');
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeExperimentModal() {
+            document.getElementById('experiment-modal').style.display = 'none';
+            currentExperiment = null;
+        }
+
+        function displayExperimentList() {
+            const container = document.getElementById('experiment-list');
+
+            container.innerHTML = experimentsData.map(exp => `
+                <div class="experiment-card ${currentExperiment === exp.id ? 'active' : ''}" onclick="selectExperiment('${exp.id}')">
+                    <div class="experiment-icon">${exp.icon}</div>
+                    <div class="experiment-title">${exp.title}</div>
+                    <div class="experiment-desc">${exp.desc}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectExperiment(expId) {
+            currentExperiment = expId;
+            displayExperimentList();
+
+            const experiment = experimentsData.find(e => e.id === expId);
+            if (!experiment) return;
+
+            const workspace = document.getElementById('experiment-workspace');
+            workspace.classList.add('active');
+
+            workspace.innerHTML = `
+                <h3 style="color: #ce93d8; margin-bottom: 20px;">${experiment.icon} ${experiment.title}</h3>
+                <div class="experiment-steps">
+                    ${experiment.steps.map((step, i) => `
+                        <div class="experiment-step">
+                            <div class="experiment-step-num">Step ${i + 1}</div>
+                            <div style="color: #ddd;">${step}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="experiment-controls">
+                    <button class="experiment-btn" onclick="completeExperiment('${expId}')">🎬 I Completed This Experiment!</button>
+                </div>
+                <div class="experiment-result" id="experiment-result-${expId}">
+                    <div class="experiment-result-icon">${experiment.result.icon}</div>
+                    <div class="experiment-result-text">${experiment.result.text}</div>
+                </div>
+            `;
+        }
+
+        function completeExperiment(expId) {
+            const resultDiv = document.getElementById(`experiment-result-${expId}`);
+            if (resultDiv) {
+                resultDiv.classList.add('show');
+
+                // Track completed experiments
+                const completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+                if (!completedExperiments.includes(expId)) {
+                    completedExperiments.push(expId);
+                    localStorage.setItem('completedExperiments', JSON.stringify(completedExperiments));
+
+                    if (typeof addXP === 'function') addXP(25);
+                    showToast('🔬 Experiment completed! +25 XP', 'success');
+                    if (typeof playLevelUpSound === 'function') playLevelUpSound();
+                }
+            }
+        }
+
+        // Streak Bonus System
+        function updateStreakBonus(isCorrect) {
+            const indicator = document.getElementById('streak-bonus-indicator');
+
+            if (isCorrect) {
+                answerStreak++;
+            } else {
+                answerStreak = 0;
+            }
+
+            localStorage.setItem('answerStreak', answerStreak);
+
+            if (answerStreak >= 3) {
+                const multiplier = getStreakMultiplier();
+                document.getElementById('streak-multiplier').textContent = `x${multiplier.toFixed(1)}`;
+                document.getElementById('streak-count-display').textContent = `${answerStreak} in a row!`;
+                indicator.classList.add('show');
+            } else {
+                indicator.classList.remove('show');
+            }
+        }
+
+        function getStreakMultiplier() {
+            if (answerStreak >= 10) return 2.0;
+            if (answerStreak >= 7) return 1.7;
+            if (answerStreak >= 5) return 1.5;
+            if (answerStreak >= 3) return 1.2;
+            return 1.0;
+        }
+
+        function getStreakBonusXP(baseXP) {
+            return Math.round(baseXP * getStreakMultiplier());
+        }
+
+        // Initialize streak display on load
+        function initStreakDisplay() {
+            if (answerStreak >= 3) {
+                const multiplier = getStreakMultiplier();
+                document.getElementById('streak-multiplier').textContent = `x${multiplier.toFixed(1)}`;
+                document.getElementById('streak-count-display').textContent = `${answerStreak} in a row!`;
+                document.getElementById('streak-bonus-indicator').classList.add('show');
+            }
+        }
+
+        // Helper toast function if not available
+        if (typeof showToast !== 'function') {
+            function showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                    color: white;
+                    font-weight: bold;
+                    z-index: 99999;
+                    animation: fadeInOut 3s ease forwards;
+                    background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'};
+                `;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            }
+        }
+
+        // Initialize on load
+        setTimeout(initStreakDisplay, 500);
+
+        console.log('📚 Vocabulary Builder, Experiment Simulator, and Streak Bonus loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
