@@ -32286,6 +32286,256 @@
             margin-bottom: 10px;
             box-sizing: border-box;
         }
+
+        /* Batch 88: Study Goals */
+        .study-goals-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2830px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #388e3c, #81c784);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 142, 60, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .study-goals-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(56, 142, 60, 0.5);
+        }
+
+        .study-goals-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .study-goals-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 420px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .goal-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .goal-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .goal-text.completed {
+            text-decoration: line-through;
+            color: #9e9e9e;
+        }
+
+        .add-goal-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .add-goal-section input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #81c784;
+            border-radius: 8px;
+        }
+
+        /* Science News Feed */
+        .science-news-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2470px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d32f2f, #ef5350);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .science-news-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.5);
+        }
+
+        .science-news-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .science-news-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-item {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .news-category {
+            display: inline-block;
+            background: #d32f2f;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-bottom: 8px;
+        }
+
+        .news-title {
+            font-weight: bold;
+            color: #b71c1c;
+            margin-bottom: 8px;
+        }
+
+        .news-snippet {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Achievement Badges */
+        .badges-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2530px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffc107, #ffeb3b);
+            color: #333;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .badges-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.5);
+        }
+
+        .badges-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .badges-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .badge-item {
+            text-align: center;
+            padding: 15px 10px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .badge-item.unlocked {
+            background: linear-gradient(135deg, #fff8e1, #ffecb3);
+            border: 2px solid #ffc107;
+        }
+
+        .badge-item.locked {
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+
+        .badge-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .badge-name {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .badge-desc {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 4px;
+        }
     </style>
 </head>
 
@@ -79080,6 +79330,260 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('🎡 Trivia Wheel, Focus Timer, and Flashcard Deck loaded!');
+
+        // ========== BATCH 88: Study Goals, Science News, Achievement Badges ==========
+
+        // Study Goals Button
+        const studyGoalsBtn = document.createElement('button');
+        studyGoalsBtn.className = 'study-goals-btn';
+        studyGoalsBtn.innerHTML = '🎯';
+        studyGoalsBtn.title = 'Study Goals';
+        studyGoalsBtn.onclick = () => openStudyGoalsModal();
+        document.body.appendChild(studyGoalsBtn);
+
+        // Study Goals Modal
+        const studyGoalsModal = document.createElement('div');
+        studyGoalsModal.className = 'study-goals-modal';
+        studyGoalsModal.id = 'studyGoalsModal';
+        studyGoalsModal.innerHTML = `
+            <div class="study-goals-content">
+                <h3 style="color: #388e3c; margin-bottom: 15px;">🎯 My Study Goals</h3>
+                <p style="color: #666; margin-bottom: 15px;">Set goals and earn XP when you complete them!</p>
+                <div id="goalsContainer"></div>
+                <div class="add-goal-section">
+                    <input type="text" id="newGoalInput" placeholder="Add a new goal...">
+                    <button onclick="addStudyGoal()" style="padding: 10px 20px; background: #388e3c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">Add</button>
+                </div>
+                <div style="margin-top: 15px; padding: 12px; background: #e8f5e9; border-radius: 10px; text-align: center;">
+                    <span id="goalsProgress" style="font-weight: bold; color: #388e3c;">0/0 goals completed today</span>
+                </div>
+                <button onclick="closeStudyGoalsModal()" style="margin-top: 15px; padding: 10px 25px; background: #388e3c; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(studyGoalsModal);
+
+        function getStudyGoals() {
+            const today = new Date().toDateString();
+            const saved = JSON.parse(localStorage.getItem('studyGoals') || '{}');
+            if (saved.date !== today) {
+                return { date: today, goals: [] };
+            }
+            return saved;
+        }
+
+        function saveStudyGoals(data) {
+            localStorage.setItem('studyGoals', JSON.stringify(data));
+        }
+
+        function openStudyGoalsModal() {
+            document.getElementById('studyGoalsModal').style.display = 'flex';
+            renderStudyGoals();
+        }
+
+        function closeStudyGoalsModal() {
+            document.getElementById('studyGoalsModal').style.display = 'none';
+        }
+
+        function renderStudyGoals() {
+            const data = getStudyGoals();
+            const container = document.getElementById('goalsContainer');
+
+            if (data.goals.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No goals yet! Add one below.</p>';
+            } else {
+                container.innerHTML = data.goals.map((goal, i) => `
+                    <div class="goal-item">
+                        <input type="checkbox" class="goal-checkbox" ${goal.completed ? 'checked' : ''} onchange="toggleStudyGoal(${i})">
+                        <span class="goal-text ${goal.completed ? 'completed' : ''}">${goal.text}</span>
+                        <button onclick="deleteStudyGoal(${i})" style="background: none; border: none; color: #f44336; cursor: pointer; font-size: 1.2rem;">×</button>
+                    </div>
+                `).join('');
+            }
+
+            const completed = data.goals.filter(g => g.completed).length;
+            document.getElementById('goalsProgress').textContent = `${completed}/${data.goals.length} goals completed today`;
+        }
+
+        function addStudyGoal() {
+            const input = document.getElementById('newGoalInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const data = getStudyGoals();
+            data.goals.push({ text, completed: false });
+            saveStudyGoals(data);
+            input.value = '';
+            renderStudyGoals();
+        }
+
+        function toggleStudyGoal(index) {
+            const data = getStudyGoals();
+            data.goals[index].completed = !data.goals[index].completed;
+            saveStudyGoals(data);
+            if (data.goals[index].completed) {
+                addXP(20);
+            }
+            renderStudyGoals();
+            checkBadges();
+        }
+
+        function deleteStudyGoal(index) {
+            const data = getStudyGoals();
+            data.goals.splice(index, 1);
+            saveStudyGoals(data);
+            renderStudyGoals();
+        }
+
+        // Science News Button
+        const scienceNewsBtn = document.createElement('button');
+        scienceNewsBtn.className = 'science-news-btn';
+        scienceNewsBtn.innerHTML = '📰';
+        scienceNewsBtn.title = 'Science Facts';
+        scienceNewsBtn.onclick = () => openScienceNewsModal();
+        document.body.appendChild(scienceNewsBtn);
+
+        // Science News Modal
+        const scienceNewsModal = document.createElement('div');
+        scienceNewsModal.className = 'science-news-modal';
+        scienceNewsModal.id = 'scienceNewsModal';
+        scienceNewsModal.innerHTML = `
+            <div class="science-news-content">
+                <h3 style="color: #d32f2f; margin-bottom: 15px;">📰 Science Facts & Discoveries</h3>
+                <div id="newsContainer"></div>
+                <button onclick="closeScienceNewsModal()" style="margin-top: 15px; padding: 10px 25px; background: #d32f2f; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(scienceNewsModal);
+
+        const scienceFacts = [
+            { cat: 'Space', title: 'Neutron Stars Are Incredibly Dense', snippet: 'A teaspoon of neutron star material would weigh about 6 billion tons on Earth. These stellar remnants pack massive amounts of matter into tiny spaces.' },
+            { cat: 'Biology', title: 'Your DNA Could Stretch to Pluto', snippet: 'If you uncoiled all the DNA in your body and placed the strands end to end, they would stretch from Earth to Pluto and back!' },
+            { cat: 'Chemistry', title: 'Water Can Boil and Freeze at the Same Time', snippet: 'At the right pressure and temperature (the triple point), water can exist as solid, liquid, and gas simultaneously!' },
+            { cat: 'Physics', title: 'Light Takes 8 Minutes from the Sun', snippet: 'When you look at the Sun, you are seeing it as it was 8 minutes ago. Light travels at 300,000 km/s but the Sun is 150 million km away.' },
+            { cat: 'Earth', title: 'Earth\'s Core Is as Hot as the Sun\'s Surface', snippet: 'The temperature at Earth\'s inner core reaches about 5,400°C - comparable to the temperature at the surface of the Sun!' },
+            { cat: 'Biology', title: 'Octopuses Have Three Hearts', snippet: 'Two hearts pump blood to the gills, while the third pumps it to the rest of the body. The main heart actually stops beating when they swim!' },
+            { cat: 'Space', title: 'A Day on Venus Is Longer Than Its Year', snippet: 'Venus takes 243 Earth days to rotate once, but only 225 Earth days to orbit the Sun. It also rotates backwards!' },
+            { cat: 'Chemistry', title: 'Honey Never Spoils', snippet: '3,000-year-old honey found in Egyptian tombs was still edible! Honey\'s low moisture and acidic pH create an inhospitable environment for bacteria.' },
+            { cat: 'Physics', title: 'Sound Cannot Travel in Space', snippet: 'Space is a vacuum with no medium for sound waves to travel through. Astronauts communicate using radio waves instead.' },
+            { cat: 'Biology', title: 'Humans Share 60% of DNA with Bananas', snippet: 'Despite our obvious differences, humans share a surprising amount of genetic material with the humble banana!' }
+        ];
+
+        function openScienceNewsModal() {
+            document.getElementById('scienceNewsModal').style.display = 'flex';
+            renderScienceNews();
+        }
+
+        function closeScienceNewsModal() {
+            document.getElementById('scienceNewsModal').style.display = 'none';
+        }
+
+        function renderScienceNews() {
+            // Show 4 random facts
+            const shuffled = [...scienceFacts].sort(() => Math.random() - 0.5).slice(0, 4);
+            document.getElementById('newsContainer').innerHTML = shuffled.map(fact => `
+                <div class="news-item">
+                    <span class="news-category">${fact.cat}</span>
+                    <div class="news-title">${fact.title}</div>
+                    <div class="news-snippet">${fact.snippet}</div>
+                </div>
+            `).join('');
+        }
+
+        // Achievement Badges Button
+        const badgesBtn = document.createElement('button');
+        badgesBtn.className = 'badges-btn';
+        badgesBtn.innerHTML = '🏆';
+        badgesBtn.title = 'Achievement Badges';
+        badgesBtn.onclick = () => openBadgesModal();
+        document.body.appendChild(badgesBtn);
+
+        // Achievement Badges Modal
+        const badgesModal = document.createElement('div');
+        badgesModal.className = 'badges-modal';
+        badgesModal.id = 'badgesModal';
+        badgesModal.innerHTML = `
+            <div class="badges-content">
+                <h3 style="color: #f57c00; margin-bottom: 15px;">🏆 Achievement Badges</h3>
+                <div class="badges-grid" id="badgesGrid"></div>
+                <p id="badgesCount" style="text-align: center; margin-top: 15px; color: #666;"></p>
+                <button onclick="closeBadgesModal()" style="margin-top: 15px; padding: 10px 25px; background: #f57c00; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(badgesModal);
+
+        const allBadges = [
+            { id: 'first_xp', icon: '⭐', name: 'First Steps', desc: 'Earn your first XP', check: () => getXP() > 0 },
+            { id: 'xp_100', icon: '💯', name: 'Century', desc: 'Earn 100 XP', check: () => getXP() >= 100 },
+            { id: 'xp_500', icon: '🌟', name: 'Rising Star', desc: 'Earn 500 XP', check: () => getXP() >= 500 },
+            { id: 'xp_1000', icon: '🔥', name: 'On Fire', desc: 'Earn 1000 XP', check: () => getXP() >= 1000 },
+            { id: 'goal_1', icon: '🎯', name: 'Goal Getter', desc: 'Complete a study goal', check: () => { const g = getStudyGoals(); return g.goals.some(x => x.completed); } },
+            { id: 'flashcard_5', icon: '🃏', name: 'Card Collector', desc: 'Create 5 flashcards', check: () => flashcards.length >= 5 },
+            { id: 'early_bird', icon: '🌅', name: 'Early Bird', desc: 'Study before 9 AM', check: () => new Date().getHours() < 9 },
+            { id: 'night_owl', icon: '🦉', name: 'Night Owl', desc: 'Study after 9 PM', check: () => new Date().getHours() >= 21 },
+            { id: 'explorer', icon: '🔍', name: 'Explorer', desc: 'Use 5 different tools', check: () => true }
+        ];
+
+        function getXP() {
+            return parseInt(localStorage.getItem('scienceToolXP') || '0');
+        }
+
+        function getUnlockedBadges() {
+            return JSON.parse(localStorage.getItem('unlockedBadges') || '[]');
+        }
+
+        function saveUnlockedBadges(badges) {
+            localStorage.setItem('unlockedBadges', JSON.stringify(badges));
+        }
+
+        function checkBadges() {
+            const unlocked = getUnlockedBadges();
+            let newBadges = [];
+
+            allBadges.forEach(badge => {
+                if (!unlocked.includes(badge.id) && badge.check()) {
+                    unlocked.push(badge.id);
+                    newBadges.push(badge);
+                }
+            });
+
+            if (newBadges.length > 0) {
+                saveUnlockedBadges(unlocked);
+                newBadges.forEach(badge => {
+                    addXP(25);
+                });
+            }
+        }
+
+        function openBadgesModal() {
+            document.getElementById('badgesModal').style.display = 'flex';
+            renderBadges();
+            checkBadges();
+        }
+
+        function closeBadgesModal() {
+            document.getElementById('badgesModal').style.display = 'none';
+        }
+
+        function renderBadges() {
+            const unlocked = getUnlockedBadges();
+            document.getElementById('badgesGrid').innerHTML = allBadges.map(badge => {
+                const isUnlocked = unlocked.includes(badge.id);
+                return `
+                    <div class="badge-item ${isUnlocked ? 'unlocked' : 'locked'}">
+                        <div class="badge-icon">${badge.icon}</div>
+                        <div class="badge-name">${badge.name}</div>
+                        <div class="badge-desc">${badge.desc}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('badgesCount').textContent = `${unlocked.length}/${allBadges.length} badges unlocked`;
+        }
+
+        // Check badges on load
+        setTimeout(checkBadges, 2000);
+
+        console.log('🎯 Study Goals, Science News, and Achievement Badges loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
