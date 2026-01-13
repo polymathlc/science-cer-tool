@@ -17718,6 +17718,558 @@
         .floating-weekly-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ===== Batch 45 Styles: Science Flashcards, Learning Paths, Speed Quiz ===== */
+
+        /* Flashcards Modal */
+        .flashcards-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcards-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border: 2px solid #8bc34a;
+        }
+
+        .flashcards-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .flashcards-header h2 {
+            color: #8bc34a;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 250px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .flashcard-front {
+            background: linear-gradient(135deg, #8bc34a 0%, #aed581 100%);
+            color: white;
+        }
+
+        .flashcard-back {
+            background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-category {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .flashcard-question {
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .flashcard-answer {
+            font-size: 1.2rem;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .flashcard-hint {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 15px;
+        }
+
+        .flashcard-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .flashcard-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .flashcard-btn.prev {
+            background: rgba(139, 195, 74, 0.2);
+            color: #8bc34a;
+        }
+
+        .flashcard-btn.next {
+            background: linear-gradient(135deg, #8bc34a 0%, #aed581 100%);
+            color: white;
+        }
+
+        .flashcard-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .flashcard-progress {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Learning Paths Modal */
+        .paths-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .paths-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #673ab7;
+        }
+
+        .paths-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .paths-header h2 {
+            color: #673ab7;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .learning-path {
+            background: rgba(103, 58, 183, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #673ab7;
+        }
+
+        .path-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .path-icon {
+            font-size: 2.5rem;
+        }
+
+        .path-info h3 {
+            color: #b39ddb;
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+        }
+
+        .path-info p {
+            color: #aaa;
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .path-steps {
+            margin-top: 15px;
+        }
+
+        .path-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .path-step.completed {
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .path-step.current {
+            background: rgba(103, 58, 183, 0.3);
+            border: 1px solid #673ab7;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #673ab7;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .path-step.completed .step-number {
+            background: #4caf50;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            color: #ddd;
+            font-size: 0.95rem;
+        }
+
+        .step-status {
+            font-size: 1.2rem;
+        }
+
+        .path-progress-bar {
+            height: 8px;
+            background: rgba(103, 58, 183, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .path-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #673ab7, #9575cd);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Speed Quiz Modal */
+        .speed-quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .speed-quiz-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border: 2px solid #ff5722;
+        }
+
+        .speed-quiz-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .speed-quiz-header h2 {
+            color: #ff5722;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .speed-timer-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .speed-timer {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff5722;
+            font-family: monospace;
+        }
+
+        .speed-timer.warning {
+            color: #ffc107;
+            animation: pulse 0.5s ease infinite;
+        }
+
+        .speed-timer.danger {
+            color: #f44336;
+            animation: pulse 0.3s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .speed-score {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 87, 34, 0.2);
+            border-radius: 10px;
+        }
+
+        .speed-score-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff5722;
+        }
+
+        .speed-score-label {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .speed-question {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .speed-question-text {
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .speed-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .speed-option {
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 87, 34, 0.1);
+            color: #ff8a65;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .speed-option:hover {
+            border-color: #ff5722;
+            background: rgba(255, 87, 34, 0.2);
+        }
+
+        .speed-option.correct {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+            color: #81c784;
+        }
+
+        .speed-option.incorrect {
+            background: rgba(244, 67, 54, 0.3);
+            border-color: #f44336;
+            color: #ef9a9a;
+        }
+
+        .speed-start-screen {
+            text-align: center;
+        }
+
+        .speed-difficulty-select {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .difficulty-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            border: 2px solid #ff5722;
+            background: transparent;
+            color: #ff5722;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-btn:hover, .difficulty-btn.selected {
+            background: #ff5722;
+            color: white;
+        }
+
+        .speed-start-btn {
+            padding: 15px 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff5722 0%, #ff8a65 100%);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .speed-start-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .speed-results {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .speed-results-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff5722;
+            margin: 20px 0;
+        }
+
+        .speed-results-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .speed-stat {
+            background: rgba(255, 87, 34, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .speed-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff8a65;
+        }
+
+        .speed-stat-label {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        /* Floating Buttons for Batch 45 */
+        .floating-flashcards-btn {
+            position: fixed;
+            bottom: 3880px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8bc34a 0%, #aed581 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(139, 195, 74, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-flashcards-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-paths-btn {
+            position: fixed;
+            bottom: 3940px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #673ab7 0%, #9575cd 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(103, 58, 183, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-paths-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-speedquiz-btn {
+            position: fixed;
+            bottom: 4000px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff5722 0%, #ff8a65 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 87, 34, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-speedquiz-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -50980,6 +51532,467 @@ Science Made Fun!
         checkWeeklyReset();
 
         console.log('📜 Question History, Science Calculator, and Weekly Challenges loaded!');
+    </script>
+
+    <!-- ===== Batch 45: Science Flashcards, Learning Paths, Speed Quiz ===== -->
+    <button class="floating-flashcards-btn" onclick="openFlashcardsModal()" title="Flashcards">🎴</button>
+    <button class="floating-paths-btn" onclick="openPathsModal()" title="Learning Paths">🛤️</button>
+    <button class="floating-speedquiz-btn" onclick="openSpeedQuizModal()" title="Speed Quiz">⚡</button>
+
+    <!-- Flashcards Modal -->
+    <div class="flashcards-modal" id="flashcards-modal">
+        <div class="flashcards-content">
+            <button class="modal-close-btn" onclick="closeFlashcardsModal()">&times;</button>
+            <div class="flashcards-header">
+                <h2>🎴 Science Flashcards</h2>
+                <p style="color: #aaa;">Click the card to flip and reveal the answer!</p>
+            </div>
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipFlashcard()">
+                    <div class="flashcard-face flashcard-front" id="flashcard-front"></div>
+                    <div class="flashcard-face flashcard-back" id="flashcard-back"></div>
+                </div>
+            </div>
+            <div class="flashcard-progress" id="flashcard-progress"></div>
+            <div class="flashcard-controls">
+                <button class="flashcard-btn prev" onclick="prevFlashcard()">← Previous</button>
+                <button class="flashcard-btn next" onclick="nextFlashcard()">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Paths Modal -->
+    <div class="paths-modal" id="paths-modal">
+        <div class="paths-content">
+            <button class="modal-close-btn" onclick="closePathsModal()">&times;</button>
+            <div class="paths-header">
+                <h2>🛤️ Learning Paths</h2>
+                <p style="color: #aaa;">Follow structured paths to master science topics!</p>
+            </div>
+            <div id="learning-paths-container"></div>
+        </div>
+    </div>
+
+    <!-- Speed Quiz Modal -->
+    <div class="speed-quiz-modal" id="speed-quiz-modal">
+        <div class="speed-quiz-content">
+            <button class="modal-close-btn" onclick="closeSpeedQuizModal()">&times;</button>
+            <div class="speed-quiz-header">
+                <h2>⚡ Speed Quiz</h2>
+                <p style="color: #aaa;">Answer as many questions as you can before time runs out!</p>
+            </div>
+            <div id="speed-quiz-area"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Batch 45: Science Flashcards, Learning Paths, Speed Quiz =====
+
+        // Flashcard Data
+        const flashcardsData = [
+            { category: 'Matter', question: 'What are the three states of matter?', answer: 'Solid, Liquid, and Gas' },
+            { category: 'Matter', question: 'What is the smallest particle of an element?', answer: 'An atom' },
+            { category: 'Energy', question: 'What is the energy of motion called?', answer: 'Kinetic energy' },
+            { category: 'Energy', question: 'What type of energy is stored in food?', answer: 'Chemical energy' },
+            { category: 'Forces', question: 'What force pulls objects toward the Earth?', answer: 'Gravity' },
+            { category: 'Forces', question: 'What force opposes motion between surfaces?', answer: 'Friction' },
+            { category: 'Light', question: 'What happens when light passes through a prism?', answer: 'It separates into a spectrum of colors (rainbow)' },
+            { category: 'Light', question: 'What are the primary colors of light?', answer: 'Red, Green, and Blue' },
+            { category: 'Heat', question: 'How does heat transfer through direct contact?', answer: 'Conduction' },
+            { category: 'Heat', question: 'Does heat flow from hot to cold or cold to hot?', answer: 'Hot to cold' },
+            { category: 'Plants', question: 'What process do plants use to make food?', answer: 'Photosynthesis' },
+            { category: 'Plants', question: 'What gas do plants release during photosynthesis?', answer: 'Oxygen' },
+            { category: 'Electricity', question: 'What is a complete path for electricity called?', answer: 'An electrical circuit' },
+            { category: 'Electricity', question: 'What materials allow electricity to flow through them?', answer: 'Conductors' },
+            { category: 'Animals', question: 'What do we call animals that eat only plants?', answer: 'Herbivores' },
+            { category: 'Animals', question: 'What are animals with backbones called?', answer: 'Vertebrates' }
+        ];
+
+        let currentFlashcardIndex = 0;
+        let isFlashcardFlipped = false;
+
+        function openFlashcardsModal() {
+            document.getElementById('flashcards-modal').style.display = 'flex';
+            currentFlashcardIndex = 0;
+            isFlashcardFlipped = false;
+            displayFlashcard();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeFlashcardsModal() {
+            document.getElementById('flashcards-modal').style.display = 'none';
+        }
+
+        function displayFlashcard() {
+            const card = flashcardsData[currentFlashcardIndex];
+            const flashcard = document.getElementById('flashcard');
+
+            flashcard.classList.remove('flipped');
+            isFlashcardFlipped = false;
+
+            document.getElementById('flashcard-front').innerHTML = `
+                <div class="flashcard-category">${card.category}</div>
+                <div class="flashcard-question">${card.question}</div>
+                <div class="flashcard-hint">Click to reveal answer</div>
+            `;
+
+            document.getElementById('flashcard-back').innerHTML = `
+                <div class="flashcard-category">Answer</div>
+                <div class="flashcard-answer">${card.answer}</div>
+            `;
+
+            document.getElementById('flashcard-progress').textContent =
+                `Card ${currentFlashcardIndex + 1} of ${flashcardsData.length}`;
+        }
+
+        function flipFlashcard() {
+            const flashcard = document.getElementById('flashcard');
+            flashcard.classList.toggle('flipped');
+            isFlashcardFlipped = !isFlashcardFlipped;
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function nextFlashcard() {
+            currentFlashcardIndex = (currentFlashcardIndex + 1) % flashcardsData.length;
+            displayFlashcard();
+        }
+
+        function prevFlashcard() {
+            currentFlashcardIndex = (currentFlashcardIndex - 1 + flashcardsData.length) % flashcardsData.length;
+            displayFlashcard();
+        }
+
+        // Learning Paths Data
+        const learningPathsData = [
+            {
+                id: 'matter',
+                icon: '🧪',
+                title: 'Matter Explorer',
+                desc: 'Learn about states of matter and changes',
+                steps: [
+                    { title: 'States of Matter', key: 'matter_states' },
+                    { title: 'Properties of Matter', key: 'matter_properties' },
+                    { title: 'Changes in Matter', key: 'matter_changes' },
+                    { title: 'Matter Quiz', key: 'matter_quiz' }
+                ]
+            },
+            {
+                id: 'energy',
+                icon: '⚡',
+                title: 'Energy Master',
+                desc: 'Understand different forms of energy',
+                steps: [
+                    { title: 'Types of Energy', key: 'energy_types' },
+                    { title: 'Energy Transfer', key: 'energy_transfer' },
+                    { title: 'Conservation of Energy', key: 'energy_conservation' },
+                    { title: 'Energy Quiz', key: 'energy_quiz' }
+                ]
+            },
+            {
+                id: 'life',
+                icon: '🌱',
+                title: 'Life Science Journey',
+                desc: 'Explore plants, animals, and ecosystems',
+                steps: [
+                    { title: 'Plant Life', key: 'life_plants' },
+                    { title: 'Animal Classifications', key: 'life_animals' },
+                    { title: 'Food Chains & Webs', key: 'life_food' },
+                    { title: 'Ecosystems', key: 'life_ecosystems' },
+                    { title: 'Life Science Quiz', key: 'life_quiz' }
+                ]
+            }
+        ];
+
+        let pathProgress = JSON.parse(localStorage.getItem('pathProgress')) || {};
+
+        function openPathsModal() {
+            document.getElementById('paths-modal').style.display = 'flex';
+            displayLearningPaths();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closePathsModal() {
+            document.getElementById('paths-modal').style.display = 'none';
+        }
+
+        function displayLearningPaths() {
+            const container = document.getElementById('learning-paths-container');
+
+            container.innerHTML = learningPathsData.map(path => {
+                const completedSteps = path.steps.filter(s => pathProgress[s.key]).length;
+                const progress = (completedSteps / path.steps.length) * 100;
+                const currentStepIndex = path.steps.findIndex(s => !pathProgress[s.key]);
+
+                return `
+                    <div class="learning-path">
+                        <div class="path-header">
+                            <div class="path-icon">${path.icon}</div>
+                            <div class="path-info">
+                                <h3>${path.title}</h3>
+                                <p>${path.desc}</p>
+                            </div>
+                        </div>
+                        <div class="path-steps">
+                            ${path.steps.map((step, i) => {
+                                const isCompleted = pathProgress[step.key];
+                                const isCurrent = i === currentStepIndex;
+                                return `
+                                    <div class="path-step ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}" onclick="completePathStep('${step.key}')">
+                                        <div class="step-number">${isCompleted ? '✓' : i + 1}</div>
+                                        <div class="step-content">
+                                            <div class="step-title">${step.title}</div>
+                                        </div>
+                                        <div class="step-status">${isCompleted ? '✅' : isCurrent ? '👆' : '⏳'}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        <div class="path-progress-bar">
+                            <div class="path-progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 10px; color: #aaa; font-size: 0.85rem;">
+                            ${completedSteps} / ${path.steps.length} steps completed
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function completePathStep(stepKey) {
+            if (!pathProgress[stepKey]) {
+                pathProgress[stepKey] = true;
+                localStorage.setItem('pathProgress', JSON.stringify(pathProgress));
+
+                if (typeof addXP === 'function') addXP(15);
+                showToast('🛤️ Step completed! +15 XP', 'success');
+            }
+            displayLearningPaths();
+        }
+
+        // Speed Quiz System
+        const speedQuizQuestions = [
+            { q: 'What is the boiling point of water in Celsius?', options: ['50°C', '100°C', '150°C', '200°C'], answer: 1 },
+            { q: 'Which planet is closest to the Sun?', options: ['Venus', 'Earth', 'Mercury', 'Mars'], answer: 2 },
+            { q: 'What gas do plants absorb from the air?', options: ['Oxygen', 'Nitrogen', 'Carbon dioxide', 'Hydrogen'], answer: 2 },
+            { q: 'What is the largest organ in the human body?', options: ['Heart', 'Liver', 'Brain', 'Skin'], answer: 3 },
+            { q: 'How many legs does an insect have?', options: ['4', '6', '8', '10'], answer: 1 },
+            { q: 'What type of animal is a frog?', options: ['Reptile', 'Mammal', 'Amphibian', 'Fish'], answer: 2 },
+            { q: 'What force keeps planets in orbit around the Sun?', options: ['Magnetism', 'Friction', 'Gravity', 'Electricity'], answer: 2 },
+            { q: 'What is H2O commonly known as?', options: ['Salt', 'Sugar', 'Water', 'Air'], answer: 2 },
+            { q: 'Which metal is liquid at room temperature?', options: ['Iron', 'Mercury', 'Gold', 'Silver'], answer: 1 },
+            { q: 'What do we call a scientist who studies rocks?', options: ['Biologist', 'Geologist', 'Chemist', 'Physicist'], answer: 1 },
+            { q: 'How many bones are in an adult human body?', options: ['106', '156', '206', '256'], answer: 2 },
+            { q: 'What is the process of water turning into vapor called?', options: ['Condensation', 'Evaporation', 'Precipitation', 'Freezing'], answer: 1 },
+            { q: 'What color is chlorophyll?', options: ['Red', 'Yellow', 'Green', 'Blue'], answer: 2 },
+            { q: 'Which is NOT a renewable energy source?', options: ['Solar', 'Wind', 'Coal', 'Hydro'], answer: 2 },
+            { q: 'What is the chemical symbol for gold?', options: ['Go', 'Gd', 'Au', 'Ag'], answer: 2 }
+        ];
+
+        let speedQuizState = {
+            isActive: false,
+            difficulty: 'medium',
+            timeRemaining: 60,
+            score: 0,
+            questionsAnswered: 0,
+            correctAnswers: 0,
+            currentQuestion: null,
+            usedQuestions: [],
+            timerInterval: null
+        };
+
+        function openSpeedQuizModal() {
+            document.getElementById('speed-quiz-modal').style.display = 'flex';
+            showSpeedStartScreen();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeSpeedQuizModal() {
+            document.getElementById('speed-quiz-modal').style.display = 'none';
+            endSpeedQuiz();
+        }
+
+        function showSpeedStartScreen() {
+            const area = document.getElementById('speed-quiz-area');
+            area.innerHTML = `
+                <div class="speed-start-screen">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">⚡</div>
+                    <p style="color: #aaa; font-size: 1.1rem;">Answer as many questions as possible!</p>
+                    <div class="speed-difficulty-select">
+                        <button class="difficulty-btn ${speedQuizState.difficulty === 'easy' ? 'selected' : ''}" onclick="setSpeedDifficulty('easy')">Easy (90s)</button>
+                        <button class="difficulty-btn ${speedQuizState.difficulty === 'medium' ? 'selected' : ''}" onclick="setSpeedDifficulty('medium')">Medium (60s)</button>
+                        <button class="difficulty-btn ${speedQuizState.difficulty === 'hard' ? 'selected' : ''}" onclick="setSpeedDifficulty('hard')">Hard (30s)</button>
+                    </div>
+                    <button class="speed-start-btn" onclick="startSpeedQuiz()">Start Quiz!</button>
+                </div>
+            `;
+        }
+
+        function setSpeedDifficulty(difficulty) {
+            speedQuizState.difficulty = difficulty;
+            showSpeedStartScreen();
+        }
+
+        function startSpeedQuiz() {
+            speedQuizState.isActive = true;
+            speedQuizState.score = 0;
+            speedQuizState.questionsAnswered = 0;
+            speedQuizState.correctAnswers = 0;
+            speedQuizState.usedQuestions = [];
+
+            switch(speedQuizState.difficulty) {
+                case 'easy': speedQuizState.timeRemaining = 90; break;
+                case 'medium': speedQuizState.timeRemaining = 60; break;
+                case 'hard': speedQuizState.timeRemaining = 30; break;
+            }
+
+            loadSpeedQuestion();
+            startSpeedTimer();
+        }
+
+        function startSpeedTimer() {
+            speedQuizState.timerInterval = setInterval(() => {
+                speedQuizState.timeRemaining--;
+                updateSpeedTimerDisplay();
+
+                if (speedQuizState.timeRemaining <= 0) {
+                    endSpeedQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateSpeedTimerDisplay() {
+            const timerEl = document.getElementById('speed-timer');
+            if (timerEl) {
+                timerEl.textContent = speedQuizState.timeRemaining;
+                timerEl.className = 'speed-timer';
+                if (speedQuizState.timeRemaining <= 10) {
+                    timerEl.classList.add('danger');
+                } else if (speedQuizState.timeRemaining <= 20) {
+                    timerEl.classList.add('warning');
+                }
+            }
+        }
+
+        function loadSpeedQuestion() {
+            // Get unused questions
+            const availableQuestions = speedQuizQuestions.filter((_, i) => !speedQuizState.usedQuestions.includes(i));
+
+            if (availableQuestions.length === 0) {
+                speedQuizState.usedQuestions = [];
+            }
+
+            const remainingIndices = speedQuizQuestions.map((_, i) => i).filter(i => !speedQuizState.usedQuestions.includes(i));
+            const randomIndex = remainingIndices[Math.floor(Math.random() * remainingIndices.length)];
+
+            speedQuizState.usedQuestions.push(randomIndex);
+            speedQuizState.currentQuestion = { ...speedQuizQuestions[randomIndex], index: randomIndex };
+
+            displaySpeedQuestion();
+        }
+
+        function displaySpeedQuestion() {
+            const area = document.getElementById('speed-quiz-area');
+            const q = speedQuizState.currentQuestion;
+
+            area.innerHTML = `
+                <div class="speed-timer-display">
+                    <div class="speed-timer" id="speed-timer">${speedQuizState.timeRemaining}</div>
+                    <div class="speed-score">
+                        <div class="speed-score-value">${speedQuizState.score}</div>
+                        <div class="speed-score-label">Points</div>
+                    </div>
+                </div>
+                <div class="speed-question">
+                    <div class="speed-question-text">${q.q}</div>
+                </div>
+                <div class="speed-options">
+                    ${q.options.map((opt, i) => `
+                        <button class="speed-option" onclick="answerSpeedQuestion(${i})">${opt}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function answerSpeedQuestion(selectedIndex) {
+            if (!speedQuizState.isActive) return;
+
+            const q = speedQuizState.currentQuestion;
+            const isCorrect = selectedIndex === q.answer;
+
+            speedQuizState.questionsAnswered++;
+            if (isCorrect) {
+                speedQuizState.correctAnswers++;
+                speedQuizState.score += 10;
+                speedQuizState.timeRemaining += 2; // Bonus time for correct answer
+            }
+
+            // Show feedback briefly
+            const options = document.querySelectorAll('.speed-option');
+            options[q.answer].classList.add('correct');
+            if (!isCorrect) {
+                options[selectedIndex].classList.add('incorrect');
+            }
+
+            // Disable options
+            options.forEach(opt => opt.onclick = null);
+
+            // Load next question after brief delay
+            setTimeout(() => {
+                if (speedQuizState.isActive) {
+                    loadSpeedQuestion();
+                }
+            }, 500);
+        }
+
+        function endSpeedQuiz() {
+            speedQuizState.isActive = false;
+            if (speedQuizState.timerInterval) {
+                clearInterval(speedQuizState.timerInterval);
+                speedQuizState.timerInterval = null;
+            }
+
+            showSpeedResults();
+        }
+
+        function showSpeedResults() {
+            const area = document.getElementById('speed-quiz-area');
+            const accuracy = speedQuizState.questionsAnswered > 0
+                ? Math.round((speedQuizState.correctAnswers / speedQuizState.questionsAnswered) * 100)
+                : 0;
+
+            // Award XP based on score
+            const xpEarned = Math.round(speedQuizState.score * 1.5);
+            if (typeof addXP === 'function' && xpEarned > 0) addXP(xpEarned);
+
+            area.innerHTML = `
+                <div class="speed-results">
+                    <div style="font-size: 4rem;">🏁</div>
+                    <h3 style="color: #ff8a65;">Time's Up!</h3>
+                    <div class="speed-results-score">${speedQuizState.score} Points</div>
+                    <div class="speed-results-stats">
+                        <div class="speed-stat">
+                            <div class="speed-stat-value">${speedQuizState.questionsAnswered}</div>
+                            <div class="speed-stat-label">Questions</div>
+                        </div>
+                        <div class="speed-stat">
+                            <div class="speed-stat-value">${speedQuizState.correctAnswers}</div>
+                            <div class="speed-stat-label">Correct</div>
+                        </div>
+                        <div class="speed-stat">
+                            <div class="speed-stat-value">${accuracy}%</div>
+                            <div class="speed-stat-label">Accuracy</div>
+                        </div>
+                        <div class="speed-stat">
+                            <div class="speed-stat-value">+${xpEarned}</div>
+                            <div class="speed-stat-label">XP Earned</div>
+                        </div>
+                    </div>
+                    <button class="speed-start-btn" onclick="showSpeedStartScreen()">Play Again</button>
+                </div>
+            `;
+        }
+
+        console.log('🎴 Flashcards, Learning Paths, and Speed Quiz loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
