@@ -31194,6 +31194,539 @@
             font-weight: bold;
             color: #e65100;
         }
+
+        /* Batch 84: Science Vocab Builder */
+        .vocab-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2050px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5c6bc0, #9fa8da);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(92, 107, 192, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .vocab-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .vocab-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vocab-modal.active {
+            display: flex;
+        }
+
+        .vocab-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+            overflow: hidden;
+        }
+
+        .vocab-header {
+            background: linear-gradient(135deg, #5c6bc0, #9fa8da);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vocab-body {
+            padding: 20px;
+        }
+
+        .vocab-card {
+            padding: 25px;
+            background: linear-gradient(135deg, #e8eaf6, #c5cae9);
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .vocab-word {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3949ab;
+            margin-bottom: 10px;
+        }
+
+        .vocab-definition {
+            font-size: 0.95rem;
+            color: #666;
+            display: none;
+        }
+
+        .vocab-definition.show {
+            display: block;
+        }
+
+        .vocab-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .vocab-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Experiment Log */
+        .exp-log-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2590px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #388e3c, #81c784);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 142, 60, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .exp-log-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .exp-log-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .exp-log-modal.active {
+            display: flex;
+        }
+
+        .exp-log-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 480px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .exp-log-header {
+            background: linear-gradient(135deg, #388e3c, #81c784);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exp-log-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .exp-log-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #388e3c;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .exp-log-textarea {
+            width: 100%;
+            height: 80px;
+            padding: 12px;
+            border: 2px solid #388e3c;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            resize: none;
+        }
+
+        .exp-log-list {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .exp-log-item {
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #388e3c;
+        }
+
+        .exp-log-item-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .exp-log-item-notes {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .exp-log-item-date {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        /* Brain Break */
+        .brain-break-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2110px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e91e63, #f48fb1);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .brain-break-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .brain-break-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brain-break-modal.active {
+            display: flex;
+        }
+
+        .brain-break-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .brain-break-header {
+            background: linear-gradient(135deg, #e91e63, #f48fb1);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brain-break-body {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .brain-break-activity {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .brain-break-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #c2185b;
+            margin-bottom: 10px;
+        }
+
+        .brain-break-desc {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .brain-break-timer {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e91e63;
+            margin-bottom: 15px;
+        }
+
+        /* Batch 85: Science Word of the Day */
+        .wotd-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2110px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00897b, #4db6ac);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 137, 123, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .wotd-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 137, 123, 0.5);
+        }
+
+        .wotd-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wotd-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .wotd-word {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00897b;
+            margin-bottom: 10px;
+        }
+
+        .wotd-pronunciation {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .wotd-definition {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .wotd-example {
+            background: #e0f2f1;
+            padding: 15px;
+            border-radius: 10px;
+            color: #00695c;
+            font-style: italic;
+        }
+
+        /* Lab Report Builder */
+        .lab-report-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2650px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5d4037, #8d6e63);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .lab-report-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(93, 64, 55, 0.5);
+        }
+
+        .lab-report-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lab-report-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .lab-report-section {
+            margin-bottom: 15px;
+        }
+
+        .lab-report-section label {
+            display: block;
+            font-weight: bold;
+            color: #5d4037;
+            margin-bottom: 5px;
+        }
+
+        .lab-report-section textarea,
+        .lab-report-section input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d7ccc8;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+        }
+
+        .lab-report-section textarea:focus,
+        .lab-report-section input:focus {
+            border-color: #8d6e63;
+            outline: none;
+        }
+
+        /* Quick Reference Cards */
+        .quick-ref-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2170px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1565c0, #42a5f5);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(21, 101, 192, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .quick-ref-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(21, 101, 192, 0.5);
+        }
+
+        .quick-ref-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quick-ref-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .quick-ref-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quick-ref-tab {
+            padding: 8px 16px;
+            border: none;
+            background: #e3f2fd;
+            color: #1565c0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .quick-ref-tab.active {
+            background: #1565c0;
+            color: white;
+        }
+
+        .quick-ref-card {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .quick-ref-card h4 {
+            color: #1565c0;
+            margin: 0 0 8px 0;
+        }
+
+        .quick-ref-card p {
+            margin: 0;
+            color: #555;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 
@@ -76908,6 +77441,518 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('💬 Science Quote, Practice Mode, and Daily Challenge loaded!');
+    </script>
+
+    <!-- Batch 84: Vocab Builder Button -->
+    <button class="vocab-btn" onclick="openVocab()" title="Vocab Builder">📖</button>
+
+    <!-- Vocab Builder Modal -->
+    <div class="vocab-modal" id="vocabModal">
+        <div class="vocab-content">
+            <div class="vocab-header">
+                <h3 style="margin:0;">📖 Vocab Builder</h3>
+                <button onclick="closeVocab()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="vocab-body">
+                <div class="vocab-card">
+                    <div class="vocab-word" id="vocabWord">Loading...</div>
+                    <div class="vocab-definition" id="vocabDef">...</div>
+                </div>
+                <div class="vocab-buttons">
+                    <button onclick="showVocabDef()" style="background:#5c6bc0;color:white;">Show Definition</button>
+                    <button onclick="nextVocab()" style="background:#9fa8da;color:white;">Next Word</button>
+                </div>
+                <p style="text-align:center;margin-top:15px;color:#5c6bc0;font-weight:bold;" id="vocabProgress">1 / 20</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experiment Log Button -->
+    <button class="exp-log-btn" onclick="openExpLog()" title="Experiment Log">🔬</button>
+
+    <!-- Experiment Log Modal -->
+    <div class="exp-log-modal" id="expLogModal">
+        <div class="exp-log-content">
+            <div class="exp-log-header">
+                <h3 style="margin:0;">🔬 Experiment Log</h3>
+                <button onclick="closeExpLog()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="exp-log-body">
+                <input type="text" class="exp-log-input" id="expLogTitle" placeholder="Experiment Title">
+                <textarea class="exp-log-textarea" id="expLogNotes" placeholder="Observations and Results..."></textarea>
+                <button onclick="saveExpLog()" style="width:100%;padding:12px;background:#388e3c;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:15px;">Save Experiment</button>
+                <h4 style="margin:0 0 10px 0;color:#388e3c;">Previous Experiments</h4>
+                <div class="exp-log-list" id="expLogList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brain Break Button -->
+    <button class="brain-break-btn" onclick="openBrainBreak()" title="Brain Break">🧠</button>
+
+    <!-- Brain Break Modal -->
+    <div class="brain-break-modal" id="brainBreakModal">
+        <div class="brain-break-content">
+            <div class="brain-break-header">
+                <h3 style="margin:0;">🧠 Brain Break</h3>
+                <button onclick="closeBrainBreak()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="brain-break-body">
+                <div class="brain-break-activity" id="brainBreakIcon">🧘</div>
+                <div class="brain-break-title" id="brainBreakTitle">Take a Break!</div>
+                <div class="brain-break-desc" id="brainBreakDesc">Choose an activity</div>
+                <div class="brain-break-timer" id="brainBreakTimer">1:00</div>
+                <button onclick="startBrainBreak()" id="brainBreakStartBtn" style="padding:15px 30px;background:#e91e63;color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer;">Start Break</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vocab Builder System
+        const vocabWords = [
+            { word: 'Hypothesis', def: 'A proposed explanation that can be tested' },
+            { word: 'Variable', def: 'A factor that can change in an experiment' },
+            { word: 'Control', def: 'A standard for comparison in an experiment' },
+            { word: 'Organism', def: 'Any living thing' },
+            { word: 'Photosynthesis', def: 'Process where plants make food using light' },
+            { word: 'Ecosystem', def: 'A community of organisms and their environment' },
+            { word: 'Catalyst', def: 'A substance that speeds up a reaction' },
+            { word: 'Isotope', def: 'Atoms with same protons but different neutrons' },
+            { word: 'Momentum', def: 'Mass times velocity of an object' },
+            { word: 'Amplitude', def: 'Maximum displacement of a wave' },
+            { word: 'Frequency', def: 'Number of waves passing a point per second' },
+            { word: 'Nucleus', def: 'Control center of a cell containing DNA' },
+            { word: 'Chromosome', def: 'Structure containing genetic information' },
+            { word: 'Oxidation', def: 'Loss of electrons in a chemical reaction' },
+            { word: 'Reduction', def: 'Gain of electrons in a chemical reaction' },
+            { word: 'Inertia', def: 'Tendency of an object to resist change in motion' },
+            { word: 'Diffusion', def: 'Movement of particles from high to low concentration' },
+            { word: 'Solute', def: 'Substance dissolved in a solution' },
+            { word: 'Enzyme', def: 'Biological catalyst that speeds up reactions' },
+            { word: 'Polymer', def: 'Large molecule made of repeating units' }
+        ];
+
+        let vocabIndex = 0;
+
+        function openVocab() {
+            document.getElementById('vocabModal').classList.add('active');
+            vocabIndex = 0;
+            updateVocabCard();
+        }
+
+        function closeVocab() {
+            document.getElementById('vocabModal').classList.remove('active');
+        }
+
+        function updateVocabCard() {
+            const v = vocabWords[vocabIndex];
+            document.getElementById('vocabWord').textContent = v.word;
+            document.getElementById('vocabDef').textContent = v.def;
+            document.getElementById('vocabDef').classList.remove('show');
+            document.getElementById('vocabProgress').textContent = `${vocabIndex + 1} / ${vocabWords.length}`;
+        }
+
+        function showVocabDef() {
+            document.getElementById('vocabDef').classList.add('show');
+            addXP(2);
+        }
+
+        function nextVocab() {
+            vocabIndex = (vocabIndex + 1) % vocabWords.length;
+            updateVocabCard();
+        }
+
+        // Experiment Log System
+        function openExpLog() {
+            document.getElementById('expLogModal').classList.add('active');
+            renderExpLogs();
+        }
+
+        function closeExpLog() {
+            document.getElementById('expLogModal').classList.remove('active');
+        }
+
+        function getExpLogs() {
+            return JSON.parse(localStorage.getItem('experimentLogs') || '[]');
+        }
+
+        function saveExpLog() {
+            const title = document.getElementById('expLogTitle').value.trim();
+            const notes = document.getElementById('expLogNotes').value.trim();
+
+            if (!title) {
+                alert('Please enter an experiment title');
+                return;
+            }
+
+            const logs = getExpLogs();
+            logs.unshift({
+                title: title,
+                notes: notes,
+                date: new Date().toLocaleString()
+            });
+
+            if (logs.length > 20) logs.pop();
+            localStorage.setItem('experimentLogs', JSON.stringify(logs));
+
+            document.getElementById('expLogTitle').value = '';
+            document.getElementById('expLogNotes').value = '';
+            renderExpLogs();
+            addXP(10);
+        }
+
+        function renderExpLogs() {
+            const logs = getExpLogs();
+            document.getElementById('expLogList').innerHTML = logs.length > 0 ?
+                logs.map(log => `
+                    <div class="exp-log-item">
+                        <div class="exp-log-item-title">${log.title}</div>
+                        <div class="exp-log-item-notes">${log.notes || 'No notes'}</div>
+                        <div class="exp-log-item-date">${log.date}</div>
+                    </div>
+                `).join('') :
+                '<p style="text-align:center;color:#999;">No experiments logged yet</p>';
+        }
+
+        // Brain Break System
+        const brainBreakActivities = [
+            { icon: '🧘', title: 'Deep Breathing', desc: 'Take 5 slow, deep breaths', duration: 60 },
+            { icon: '🚶', title: 'Quick Walk', desc: 'Walk around for a minute', duration: 60 },
+            { icon: '💪', title: 'Stretch', desc: 'Stretch your arms and legs', duration: 45 },
+            { icon: '👀', title: 'Eye Rest', desc: 'Close your eyes and relax', duration: 30 },
+            { icon: '🙆', title: 'Shoulder Rolls', desc: 'Roll your shoulders 10 times', duration: 30 },
+            { icon: '🎵', title: 'Hum a Song', desc: 'Hum your favorite tune', duration: 45 }
+        ];
+
+        let currentBreakActivity = null;
+        let breakInterval = null;
+        let breakSeconds = 0;
+
+        function openBrainBreak() {
+            document.getElementById('brainBreakModal').classList.add('active');
+            selectRandomActivity();
+        }
+
+        function closeBrainBreak() {
+            document.getElementById('brainBreakModal').classList.remove('active');
+            if (breakInterval) {
+                clearInterval(breakInterval);
+                breakInterval = null;
+            }
+        }
+
+        function selectRandomActivity() {
+            currentBreakActivity = brainBreakActivities[Math.floor(Math.random() * brainBreakActivities.length)];
+            document.getElementById('brainBreakIcon').textContent = currentBreakActivity.icon;
+            document.getElementById('brainBreakTitle').textContent = currentBreakActivity.title;
+            document.getElementById('brainBreakDesc').textContent = currentBreakActivity.desc;
+            breakSeconds = currentBreakActivity.duration;
+            updateBreakTimer();
+            document.getElementById('brainBreakStartBtn').textContent = 'Start Break';
+            document.getElementById('brainBreakStartBtn').disabled = false;
+        }
+
+        function updateBreakTimer() {
+            const mins = Math.floor(breakSeconds / 60);
+            const secs = breakSeconds % 60;
+            document.getElementById('brainBreakTimer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startBrainBreak() {
+            document.getElementById('brainBreakStartBtn').textContent = 'Taking a break...';
+            document.getElementById('brainBreakStartBtn').disabled = true;
+
+            breakInterval = setInterval(() => {
+                breakSeconds--;
+                updateBreakTimer();
+
+                if (breakSeconds <= 0) {
+                    clearInterval(breakInterval);
+                    breakInterval = null;
+                    document.getElementById('brainBreakTitle').textContent = 'Break Complete!';
+                    document.getElementById('brainBreakStartBtn').textContent = 'New Activity';
+                    document.getElementById('brainBreakStartBtn').disabled = false;
+                    document.getElementById('brainBreakStartBtn').onclick = selectRandomActivity;
+                    addXP(5);
+                }
+            }, 1000);
+        }
+
+        console.log('📖 Vocab Builder, Experiment Log, and Brain Break loaded!');
+
+        // ========== BATCH 85: Word of the Day, Lab Report Builder, Quick Reference ==========
+
+        // Word of the Day Button
+        const wotdBtn = document.createElement('button');
+        wotdBtn.className = 'wotd-btn';
+        wotdBtn.innerHTML = '📅';
+        wotdBtn.title = 'Word of the Day';
+        wotdBtn.onclick = () => openWotdModal();
+        document.body.appendChild(wotdBtn);
+
+        // Word of the Day Modal
+        const wotdModal = document.createElement('div');
+        wotdModal.className = 'wotd-modal';
+        wotdModal.id = 'wotdModal';
+        wotdModal.innerHTML = `
+            <div class="wotd-content">
+                <h3 style="color: #00897b; margin-bottom: 20px;">📅 Word of the Day</h3>
+                <div class="wotd-word" id="wotdWord">Loading...</div>
+                <div class="wotd-pronunciation" id="wotdPronunciation"></div>
+                <div class="wotd-definition" id="wotdDefinition"></div>
+                <div class="wotd-example" id="wotdExample"></div>
+                <button onclick="closeWotdModal()" style="margin-top: 20px; padding: 12px 30px; background: #00897b; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold;">Got It! +10 XP</button>
+            </div>
+        `;
+        document.body.appendChild(wotdModal);
+
+        const wordsOfTheDay = [
+            { word: 'Photosynthesis', pron: '/ˌfoʊtoʊˈsɪnθəsɪs/', def: 'The process by which plants convert light energy into chemical energy, using carbon dioxide and water to produce glucose and oxygen.', ex: 'Example: Plants use photosynthesis to make their own food from sunlight.' },
+            { word: 'Mitochondria', pron: '/ˌmaɪtəˈkɒndriə/', def: 'Organelles found in cells that generate most of the cell\'s supply of ATP, used as a source of chemical energy.', ex: 'Example: The mitochondria are often called the "powerhouse of the cell."' },
+            { word: 'Entropy', pron: '/ˈɛntrəpi/', def: 'A measure of the disorder or randomness in a system. In thermodynamics, it always increases in an isolated system.', ex: 'Example: When ice melts, entropy increases as molecules become more disordered.' },
+            { word: 'Catalyst', pron: '/ˈkætəlɪst/', def: 'A substance that increases the rate of a chemical reaction without being consumed in the process.', ex: 'Example: Enzymes are biological catalysts that speed up reactions in living organisms.' },
+            { word: 'Osmosis', pron: '/ɒzˈmoʊsɪs/', def: 'The movement of water molecules through a semipermeable membrane from a region of low solute concentration to high.', ex: 'Example: Plant roots absorb water from soil through osmosis.' },
+            { word: 'Momentum', pron: '/moʊˈmɛntəm/', def: 'The quantity of motion of a moving body, measured as mass times velocity. It is conserved in closed systems.', ex: 'Example: A moving truck has more momentum than a bicycle at the same speed.' },
+            { word: 'Equilibrium', pron: '/ˌiːkwɪˈlɪbriəm/', def: 'A state of balance where opposing forces or rates are equal, resulting in no net change.', ex: 'Example: Chemical equilibrium is reached when forward and reverse reactions occur at equal rates.' },
+            { word: 'Chromosome', pron: '/ˈkroʊməsoʊm/', def: 'A thread-like structure of DNA and proteins found in the nucleus that carries genetic information.', ex: 'Example: Humans have 23 pairs of chromosomes in each cell.' },
+            { word: 'Inertia', pron: '/ɪˈnɜːrʃə/', def: 'The resistance of an object to any change in its state of motion or rest. Objects maintain their state unless acted upon.', ex: 'Example: A ball at rest stays at rest due to inertia until you kick it.' },
+            { word: 'Diffraction', pron: '/dɪˈfrækʃən/', def: 'The bending of waves around obstacles or through openings. It occurs with all types of waves.', ex: 'Example: Light diffracts when passing through a narrow slit, creating an interference pattern.' },
+            { word: 'Covalent', pron: '/koʊˈveɪlənt/', def: 'A type of chemical bond where atoms share electrons to achieve a stable electron configuration.', ex: 'Example: Water molecules have covalent bonds between hydrogen and oxygen atoms.' },
+            { word: 'Amplitude', pron: '/ˈæmplɪtuːd/', def: 'The maximum displacement of a wave from its equilibrium position. It determines wave energy and intensity.', ex: 'Example: A louder sound has a greater amplitude than a quieter one.' },
+            { word: 'Nucleus', pron: '/ˈnuːkliəs/', def: 'The central part of an atom containing protons and neutrons, or the organelle in cells containing DNA.', ex: 'Example: The nucleus of an atom contains nearly all of its mass.' },
+            { word: 'Biodiversity', pron: '/ˌbaɪoʊdaɪˈvɜːrsɪti/', def: 'The variety of life forms in an ecosystem, including genetic, species, and ecosystem diversity.', ex: 'Example: Rainforests have high biodiversity with millions of species.' }
+        ];
+
+        function getTodaysWord() {
+            const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+            return wordsOfTheDay[dayOfYear % wordsOfTheDay.length];
+        }
+
+        function openWotdModal() {
+            const word = getTodaysWord();
+            document.getElementById('wotdWord').textContent = word.word;
+            document.getElementById('wotdPronunciation').textContent = word.pron;
+            document.getElementById('wotdDefinition').textContent = word.def;
+            document.getElementById('wotdExample').textContent = word.ex;
+            document.getElementById('wotdModal').style.display = 'flex';
+        }
+
+        function closeWotdModal() {
+            document.getElementById('wotdModal').style.display = 'none';
+            addXP(10);
+        }
+
+        // Lab Report Builder Button
+        const labReportBtn = document.createElement('button');
+        labReportBtn.className = 'lab-report-btn';
+        labReportBtn.innerHTML = '📋';
+        labReportBtn.title = 'Lab Report Builder';
+        labReportBtn.onclick = () => openLabReportModal();
+        document.body.appendChild(labReportBtn);
+
+        // Lab Report Builder Modal
+        const labReportModal = document.createElement('div');
+        labReportModal.className = 'lab-report-modal';
+        labReportModal.id = 'labReportModal';
+        labReportModal.innerHTML = `
+            <div class="lab-report-content">
+                <h3 style="color: #5d4037; margin-bottom: 20px;">📋 Lab Report Builder</h3>
+                <div class="lab-report-section">
+                    <label>📌 Title</label>
+                    <input type="text" id="labReportTitle" placeholder="Enter experiment title...">
+                </div>
+                <div class="lab-report-section">
+                    <label>🎯 Objective</label>
+                    <textarea id="labReportObjective" rows="2" placeholder="What are you trying to find out?"></textarea>
+                </div>
+                <div class="lab-report-section">
+                    <label>💡 Hypothesis</label>
+                    <textarea id="labReportHypothesis" rows="2" placeholder="What do you think will happen?"></textarea>
+                </div>
+                <div class="lab-report-section">
+                    <label>🧪 Materials</label>
+                    <textarea id="labReportMaterials" rows="3" placeholder="List all materials needed..."></textarea>
+                </div>
+                <div class="lab-report-section">
+                    <label>📝 Procedure</label>
+                    <textarea id="labReportProcedure" rows="4" placeholder="List the steps of your experiment..."></textarea>
+                </div>
+                <div class="lab-report-section">
+                    <label>📊 Results</label>
+                    <textarea id="labReportResults" rows="3" placeholder="What happened? Record your data..."></textarea>
+                </div>
+                <div class="lab-report-section">
+                    <label>🔬 Conclusion</label>
+                    <textarea id="labReportConclusion" rows="3" placeholder="What did you learn? Was your hypothesis correct?"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                    <button onclick="saveLabReport()" style="padding: 12px 25px; background: #5d4037; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold;">💾 Save Report</button>
+                    <button onclick="clearLabReport()" style="padding: 12px 25px; background: #9e9e9e; color: white; border: none; border-radius: 25px; cursor: pointer;">Clear</button>
+                    <button onclick="closeLabReportModal()" style="padding: 12px 25px; background: #ef5350; color: white; border: none; border-radius: 25px; cursor: pointer;">Close</button>
+                </div>
+                <div id="savedLabReports" style="margin-top: 20px;"></div>
+            </div>
+        `;
+        document.body.appendChild(labReportModal);
+
+        function openLabReportModal() {
+            document.getElementById('labReportModal').style.display = 'flex';
+            displaySavedLabReports();
+        }
+
+        function closeLabReportModal() {
+            document.getElementById('labReportModal').style.display = 'none';
+        }
+
+        function saveLabReport() {
+            const report = {
+                title: document.getElementById('labReportTitle').value || 'Untitled',
+                objective: document.getElementById('labReportObjective').value,
+                hypothesis: document.getElementById('labReportHypothesis').value,
+                materials: document.getElementById('labReportMaterials').value,
+                procedure: document.getElementById('labReportProcedure').value,
+                results: document.getElementById('labReportResults').value,
+                conclusion: document.getElementById('labReportConclusion').value,
+                date: new Date().toLocaleString()
+            };
+            const reports = JSON.parse(localStorage.getItem('labReports') || '[]');
+            reports.unshift(report);
+            localStorage.setItem('labReports', JSON.stringify(reports.slice(0, 10)));
+            addXP(25);
+            alert('Lab report saved! +25 XP');
+            displaySavedLabReports();
+        }
+
+        function clearLabReport() {
+            document.getElementById('labReportTitle').value = '';
+            document.getElementById('labReportObjective').value = '';
+            document.getElementById('labReportHypothesis').value = '';
+            document.getElementById('labReportMaterials').value = '';
+            document.getElementById('labReportProcedure').value = '';
+            document.getElementById('labReportResults').value = '';
+            document.getElementById('labReportConclusion').value = '';
+        }
+
+        function displaySavedLabReports() {
+            const reports = JSON.parse(localStorage.getItem('labReports') || '[]');
+            const container = document.getElementById('savedLabReports');
+            if (reports.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">No saved reports yet</p>';
+                return;
+            }
+            container.innerHTML = '<h4 style="color: #5d4037; margin-bottom: 10px;">📁 Saved Reports</h4>' +
+                reports.slice(0, 3).map((r, i) => `
+                    <div style="background: #efebe9; padding: 10px; border-radius: 8px; margin-bottom: 8px; cursor: pointer;" onclick="loadLabReport(${i})">
+                        <strong>${r.title}</strong><br>
+                        <small style="color: #666;">${r.date}</small>
+                    </div>
+                `).join('');
+        }
+
+        function loadLabReport(index) {
+            const reports = JSON.parse(localStorage.getItem('labReports') || '[]');
+            if (reports[index]) {
+                const r = reports[index];
+                document.getElementById('labReportTitle').value = r.title;
+                document.getElementById('labReportObjective').value = r.objective;
+                document.getElementById('labReportHypothesis').value = r.hypothesis;
+                document.getElementById('labReportMaterials').value = r.materials;
+                document.getElementById('labReportProcedure').value = r.procedure;
+                document.getElementById('labReportResults').value = r.results;
+                document.getElementById('labReportConclusion').value = r.conclusion;
+            }
+        }
+
+        // Quick Reference Button
+        const quickRefBtn = document.createElement('button');
+        quickRefBtn.className = 'quick-ref-btn';
+        quickRefBtn.innerHTML = '📚';
+        quickRefBtn.title = 'Quick Reference';
+        quickRefBtn.onclick = () => openQuickRefModal();
+        document.body.appendChild(quickRefBtn);
+
+        // Quick Reference Modal
+        const quickRefModal = document.createElement('div');
+        quickRefModal.className = 'quick-ref-modal';
+        quickRefModal.id = 'quickRefModal';
+        quickRefModal.innerHTML = `
+            <div class="quick-ref-content">
+                <h3 style="color: #1565c0; margin-bottom: 15px;">📚 Quick Reference</h3>
+                <div class="quick-ref-tabs">
+                    <button class="quick-ref-tab active" onclick="showRefCategory('physics')">Physics</button>
+                    <button class="quick-ref-tab" onclick="showRefCategory('chemistry')">Chemistry</button>
+                    <button class="quick-ref-tab" onclick="showRefCategory('biology')">Biology</button>
+                    <button class="quick-ref-tab" onclick="showRefCategory('constants')">Constants</button>
+                </div>
+                <div id="quickRefCards"></div>
+                <button onclick="closeQuickRefModal()" style="margin-top: 15px; padding: 10px 25px; background: #1565c0; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(quickRefModal);
+
+        const quickRefData = {
+            physics: [
+                { title: 'Speed Formula', content: 'Speed = Distance ÷ Time (v = d/t)' },
+                { title: 'Force Formula', content: 'Force = Mass × Acceleration (F = ma)' },
+                { title: 'Work Formula', content: 'Work = Force × Distance (W = Fd)' },
+                { title: 'Power Formula', content: 'Power = Work ÷ Time (P = W/t)' },
+                { title: 'Kinetic Energy', content: 'KE = ½mv² (half mass times velocity squared)' },
+                { title: 'Potential Energy', content: 'PE = mgh (mass × gravity × height)' },
+                { title: 'Ohm\'s Law', content: 'V = IR (Voltage = Current × Resistance)' },
+                { title: 'Wave Speed', content: 'v = fλ (velocity = frequency × wavelength)' }
+            ],
+            chemistry: [
+                { title: 'Density', content: 'Density = Mass ÷ Volume (ρ = m/V)' },
+                { title: 'Moles', content: 'n = m/M (moles = mass ÷ molar mass)' },
+                { title: 'pH Scale', content: 'pH 0-6: Acid | pH 7: Neutral | pH 8-14: Base' },
+                { title: 'Common Elements', content: 'H-1, C-6, N-7, O-8, Na-11, Cl-17, Fe-26' },
+                { title: 'Balancing Equations', content: 'Same atoms on both sides; adjust coefficients' },
+                { title: 'State Symbols', content: '(s) solid, (l) liquid, (g) gas, (aq) aqueous' }
+            ],
+            biology: [
+                { title: 'Cell Parts', content: 'Nucleus, Mitochondria, Ribosome, Cell Membrane' },
+                { title: 'Photosynthesis', content: '6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂' },
+                { title: 'Respiration', content: 'C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + Energy' },
+                { title: 'DNA Bases', content: 'A-T (Adenine-Thymine), G-C (Guanine-Cytosine)' },
+                { title: 'Food Chain', content: 'Producer → Primary → Secondary → Tertiary' },
+                { title: 'Classification', content: 'Kingdom → Phylum → Class → Order → Family → Genus → Species' }
+            ],
+            constants: [
+                { title: 'Speed of Light', content: 'c = 3 × 10⁸ m/s' },
+                { title: 'Gravity (Earth)', content: 'g = 9.8 m/s² (≈10 m/s²)' },
+                { title: 'Avogadro\'s Number', content: '6.02 × 10²³ particles/mol' },
+                { title: 'Planck\'s Constant', content: 'h = 6.63 × 10⁻³⁴ J·s' },
+                { title: 'Gas Constant', content: 'R = 8.314 J/(mol·K)' },
+                { title: 'Electron Charge', content: 'e = 1.6 × 10⁻¹⁹ C' }
+            ]
+        };
+
+        let currentRefCategory = 'physics';
+
+        function openQuickRefModal() {
+            document.getElementById('quickRefModal').style.display = 'flex';
+            showRefCategory('physics');
+        }
+
+        function closeQuickRefModal() {
+            document.getElementById('quickRefModal').style.display = 'none';
+        }
+
+        function showRefCategory(category) {
+            currentRefCategory = category;
+            document.querySelectorAll('.quick-ref-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = quickRefData[category];
+            document.getElementById('quickRefCards').innerHTML = cards.map(card => `
+                <div class="quick-ref-card">
+                    <h4>${card.title}</h4>
+                    <p>${card.content}</p>
+                </div>
+            `).join('');
+        }
+
+        console.log('📅 Word of the Day, Lab Report Builder, and Quick Reference loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
