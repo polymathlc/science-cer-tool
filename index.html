@@ -4776,6 +4776,704 @@
                 display: none !important;
             }
         }
+
+        /* =====================================================
+           GAMIFICATION SYSTEM STYLES
+           ===================================================== */
+
+        /* XP Bar in Sidebar */
+        .xp-progress-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 1rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .xp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .xp-level {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .xp-level-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .xp-level-title {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .xp-points {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .xp-bar-outer {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .xp-bar-inner {
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .xp-bar-inner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: xpShimmer 2s infinite;
+        }
+
+        @keyframes xpShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Daily Challenge Card */
+        .daily-challenge-card {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 1rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .daily-challenge-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .daily-challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .daily-challenge-title {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .daily-challenge-timer {
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .daily-challenge-task {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .daily-challenge-progress {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .daily-challenge-progress-bar {
+            background: #FFD700;
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+
+        .daily-challenge-reward {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Achievement Badge Styles */
+        .achievements-btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #333;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .achievements-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .achievements-modal {
+            max-width: 600px;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+            padding: 16px 0;
+        }
+
+        .achievement-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card.unlocked {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.6;
+            filter: grayscale(0.5);
+        }
+
+        .achievement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .achievement-card.locked .achievement-icon {
+            filter: grayscale(1);
+        }
+
+        .achievement-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            color: var(--main-text);
+        }
+
+        .achievement-desc {
+            font-size: 0.75rem;
+            color: var(--light-text);
+            line-height: 1.3;
+        }
+
+        .achievement-xp {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        /* Celebration Effects */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* XP Popup Animation */
+        .xp-popup {
+            position: fixed;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #FFD700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.5);
+            pointer-events: none;
+            z-index: 10001;
+            animation: xpFloat 1.5s ease-out forwards;
+        }
+
+        @keyframes xpFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-30px) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-60px) scale(0.8);
+            }
+        }
+
+        /* Level Up Modal */
+        .level-up-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            z-index: 10002;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: levelUpAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes levelUpAppear {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .level-up-modal h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .level-up-modal .new-level {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 20px 0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .level-up-modal .level-title {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .level-up-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-up-close-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Streak Fire Animation */
+        .streak-fire {
+            animation: fireGlow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes fireGlow {
+            0% { text-shadow: 0 0 5px #FF6B00, 0 0 10px #FF6B00; }
+            100% { text-shadow: 0 0 10px #FF6B00, 0 0 20px #FF6B00, 0 0 30px #FF4500; }
+        }
+
+        /* Quick Start Wizard Styles */
+        .quickstart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10003;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .quickstart-modal {
+            background: white;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .quickstart-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .quickstart-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .quickstart-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .quickstart-content {
+            padding: 30px;
+        }
+
+        .quickstart-step {
+            display: none;
+        }
+
+        .quickstart-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .quickstart-step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quickstart-step-content {
+            color: #555;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .quickstart-feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .quickstart-feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .quickstart-feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .quickstart-feature-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .quickstart-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quickstart-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .quickstart-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .quickstart-dot.active {
+            background: #667eea;
+            width: 24px;
+            border-radius: 5px;
+        }
+
+        .quickstart-nav-btn {
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .quickstart-nav-btn.prev {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .quickstart-nav-btn.next {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .quickstart-nav-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .quickstart-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Skeleton Loading Styles */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeletonShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-text {
+            height: 16px;
+            margin-bottom: 8px;
+            width: 80%;
+        }
+
+        .skeleton-text.short {
+            width: 40%;
+        }
+
+        .skeleton-text.medium {
+            width: 60%;
+        }
+
+        .skeleton-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .skeleton-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        /* Smart Recommendation Card */
+        .recommendation-card {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 1rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .recommendation-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .recommendation-content {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .recommendation-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .recommendation-btn:hover {
+            background: white;
+            color: #11998e;
+        }
+
+        /* Streak Bonus Display */
+        .streak-bonus-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 1rem;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+        }
+
+        .streak-bonus-flame {
+            font-size: 2.5rem;
+            animation: flamePulse 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes flamePulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .streak-bonus-count {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 5px 0;
+        }
+
+        .streak-bonus-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .streak-bonus-multiplier {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* Sound Toggle */
+        .sound-toggle-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .sound-toggle-btn.active {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .sound-toggle-btn:hover {
+            transform: scale(1.02);
+        }
+
+        /* Dark Mode Gamification Adjustments */
+        [data-theme="dark"] .achievement-card {
+            background: var(--card-bg);
+        }
+
+        [data-theme="dark"] .achievement-card.unlocked {
+            background: linear-gradient(135deg, #3d3d1a 0%, #4a4a2a 100%);
+            border-color: #FFD700;
+        }
+
+        [data-theme="dark"] .quickstart-modal {
+            background: var(--modal-bg);
+        }
+
+        [data-theme="dark"] .quickstart-step-title {
+            color: var(--main-text);
+        }
+
+        [data-theme="dark"] .quickstart-step-content {
+            color: var(--light-text);
+        }
+
+        [data-theme="dark"] .quickstart-feature-list li {
+            border-color: var(--border-color);
+        }
+
+        [data-theme="dark"] .quickstart-footer {
+            border-color: var(--border-color);
+        }
+
+        [data-theme="dark"] .skeleton {
+            background: linear-gradient(90deg, #2a2a3e 25%, #353548 50%, #2a2a3e 75%);
+            background-size: 200% 100%;
+        }
     </style>
 </head>
 
@@ -5063,7 +5761,53 @@
                 <!-- TOP SECTION: Streak, Practice, Toggle -->
                 <div class="sidebar-top-section">
                     <div id="login-days-display">📅 Loading Streak...</div>
-                    
+
+                    <!-- XP Progress Bar -->
+                    <div class="xp-progress-container" id="xp-progress-container">
+                        <div class="xp-header">
+                            <div class="xp-level">
+                                <span class="xp-level-badge" id="xp-level-badge">Lv 1</span>
+                                <span class="xp-level-title" id="xp-level-title">Beginner</span>
+                            </div>
+                            <span class="xp-points" id="xp-points-display">0 / 100 XP</span>
+                        </div>
+                        <div class="xp-bar-outer">
+                            <div class="xp-bar-inner" id="xp-bar-inner" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Challenge Card -->
+                    <div class="daily-challenge-card" id="daily-challenge-card" onclick="showDailyChallengeDetails()">
+                        <div class="daily-challenge-header">
+                            <div class="daily-challenge-title">
+                                <span>🎯</span> Daily Challenge
+                            </div>
+                            <span class="daily-challenge-timer" id="daily-challenge-timer">23:59:59</span>
+                        </div>
+                        <div class="daily-challenge-task" id="daily-challenge-task">
+                            Answer 5 questions correctly
+                        </div>
+                        <div class="daily-challenge-progress">
+                            <div class="daily-challenge-progress-bar" id="daily-challenge-progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <div class="daily-challenge-reward">
+                            <span>🎁</span> Reward: <span id="daily-challenge-reward-xp">+50 XP</span>
+                        </div>
+                    </div>
+
+                    <!-- Achievements Button -->
+                    <button class="achievements-btn" onclick="showAchievementsModal()">
+                        <span>🏅</span> Achievements <span id="achievements-unlocked-count">(0/12)</span>
+                    </button>
+
+                    <!-- Streak Bonus Card (shown when streak >= 3) -->
+                    <div class="streak-bonus-card" id="streak-bonus-card" style="display: none;">
+                        <div class="streak-bonus-flame">🔥</div>
+                        <div class="streak-bonus-count" id="streak-bonus-count">0</div>
+                        <div class="streak-bonus-label">Day Streak!</div>
+                        <div class="streak-bonus-multiplier" id="streak-bonus-multiplier">+10% XP Bonus</div>
+                    </div>
+
                     <!-- Animated Practice Mode Button -->
                     <button id="btn-sidebar-practice" class="practice-btn-animated tooltip-container" onclick="switchTab('practice', this)" data-tooltip="Enter practice mode to work through questions at your own pace">
                         <span class="practice-btn-icon">🎯</span>
@@ -6679,6 +7423,246 @@
             <div id="question-popup-content" style="padding: 1rem 0;"></div>
         </div>
     </div>
+
+    <!-- Achievements Modal -->
+    <div id="achievements-modal" class="modal-overlay">
+        <div class="modal-box achievements-modal" style="max-width: 650px; max-height: 85vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #FFD700; padding-bottom: 1rem;">
+                <h3 style="margin: 0; color: #333; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.5rem;">🏅</span> Achievements
+                </h3>
+                <button class="btn" style="background: #666; color: white; padding: 8px 16px;" onclick="hideAchievementsModal()">✕ Close</button>
+            </div>
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; text-align: center;">
+                <div style="font-size: 0.9rem; opacity: 0.9;">Total XP Earned</div>
+                <div style="font-size: 2rem; font-weight: 700;" id="achievements-total-xp">0 XP</div>
+            </div>
+            <div class="achievement-grid" id="achievements-grid">
+                <!-- Achievements will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Challenge Details Modal -->
+    <div id="daily-challenge-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 450px;">
+            <div style="background: linear-gradient(135deg, #FF6B6B, #FF8E53); color: white; padding: 1.5rem; border-radius: 12px 12px 0 0; margin: -24px -24px 1.5rem -24px; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎯</div>
+                <h3 style="margin: 0; font-size: 1.5rem;">Daily Challenge</h3>
+                <div style="opacity: 0.9; margin-top: 0.5rem;" id="dc-modal-timer">Resets in: 23:59:59</div>
+            </div>
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-size: 1.2rem; font-weight: 600; color: #333; margin-bottom: 1rem;" id="dc-modal-task">
+                    Answer 5 questions correctly
+                </div>
+                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem;">
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #FF6B6B;" id="dc-modal-progress">0/5</div>
+                        <div style="font-size: 0.85rem; color: #666;">Progress</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #FFD700;" id="dc-modal-reward">+50 XP</div>
+                        <div style="font-size: 0.85rem; color: #666;">Reward</div>
+                    </div>
+                </div>
+                <div style="background: #f5f5f5; border-radius: 12px; height: 16px; overflow: hidden; margin: 1rem 0;">
+                    <div id="dc-modal-progress-bar" style="background: linear-gradient(90deg, #FF6B6B, #FF8E53); height: 100%; border-radius: 12px; transition: width 0.5s; width: 0%;"></div>
+                </div>
+            </div>
+            <div style="background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 8px; color: #2e7d32; font-weight: 600;">
+                    <span>💡</span> Tip
+                </div>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #555;">
+                    Complete daily challenges consistently to earn bonus XP and unlock special achievements!
+                </p>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button class="btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px 30px;" onclick="hideDailyChallengeModal(); switchTab('practice', document.getElementById('btn-sidebar-practice'));">
+                    🎮 Start Practicing
+                </button>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button style="background: none; border: none; color: #666; cursor: pointer;" onclick="hideDailyChallengeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Start Wizard (for new users) -->
+    <div id="quickstart-wizard" class="quickstart-overlay" style="display: none;">
+        <div class="quickstart-modal">
+            <div class="quickstart-header">
+                <h2>Welcome to CER Questions! 🎓</h2>
+                <p>Let's get you started on your learning journey</p>
+            </div>
+            <div class="quickstart-content">
+                <!-- Step 1: Welcome -->
+                <div class="quickstart-step active" data-step="1">
+                    <div class="quickstart-step-title">
+                        <span style="font-size: 1.5rem;">👋</span> Hello, Young Scientist!
+                    </div>
+                    <div class="quickstart-step-content">
+                        <p>This app will help you master Science questions and become a pro at answering exam questions!</p>
+                        <ul class="quickstart-feature-list">
+                            <li>
+                                <span class="quickstart-feature-icon">📝</span>
+                                <div>
+                                    <strong>Practice Questions</strong><br>
+                                    <span style="color: #777;">Answer MCQ and Open-Ended questions</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="quickstart-feature-icon">⭐</span>
+                                <div>
+                                    <strong>Earn XP & Level Up</strong><br>
+                                    <span style="color: #777;">Gain experience points with each answer</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="quickstart-feature-icon">🏆</span>
+                                <div>
+                                    <strong>Compete & Achieve</strong><br>
+                                    <span style="color: #777;">Unlock badges and climb the leaderboard</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 2: Practice Mode -->
+                <div class="quickstart-step" data-step="2">
+                    <div class="quickstart-step-title">
+                        <span style="font-size: 1.5rem;">🎯</span> Practice Mode
+                    </div>
+                    <div class="quickstart-step-content">
+                        <p>This is where you'll spend most of your time!</p>
+                        <ul class="quickstart-feature-list">
+                            <li>
+                                <span class="quickstart-feature-icon">🎮</span>
+                                <div>
+                                    <strong>Click "Practice Mode"</strong><br>
+                                    <span style="color: #777;">Start answering questions tailored to your level</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="quickstart-feature-icon">🔄</span>
+                                <div>
+                                    <strong>OEQ or MCQ</strong><br>
+                                    <span style="color: #777;">Toggle between Open-Ended and Multiple Choice</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="quickstart-feature-icon">📊</span>
+                                <div>
+                                    <strong>See Instant Feedback</strong><br>
+                                    <span style="color: #777;">Learn from your mistakes right away</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3: Gamification -->
+                <div class="quickstart-step" data-step="3">
+                    <div class="quickstart-step-title">
+                        <span style="font-size: 1.5rem;">🎮</span> Level Up & Earn Rewards
+                    </div>
+                    <div class="quickstart-step-content">
+                        <p>Make learning fun with our gamification system!</p>
+                        <ul class="quickstart-feature-list">
+                            <li>
+                                <span class="quickstart-feature-icon">✨</span>
+                                <div>
+                                    <strong>Earn XP</strong><br>
+                                    <span style="color: #777;">+10 XP for correct answers, +5 XP for trying</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="quickstart-feature-icon">🔥</span>
+                                <div>
+                                    <strong>Daily Streaks</strong><br>
+                                    <span style="color: #777;">Practice daily for bonus XP multipliers</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="quickstart-feature-icon">🏅</span>
+                                <div>
+                                    <strong>Unlock Achievements</strong><br>
+                                    <span style="color: #777;">Earn badges for completing challenges</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 4: Daily Challenges -->
+                <div class="quickstart-step" data-step="4">
+                    <div class="quickstart-step-title">
+                        <span style="font-size: 1.5rem;">🎯</span> Daily Challenges
+                    </div>
+                    <div class="quickstart-step-content">
+                        <p>Complete daily challenges for extra rewards!</p>
+                        <ul class="quickstart-feature-list">
+                            <li>
+                                <span class="quickstart-feature-icon">📅</span>
+                                <div>
+                                    <strong>New Challenge Every Day</strong><br>
+                                    <span style="color: #777;">Fresh goals to keep you motivated</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="quickstart-feature-icon">🎁</span>
+                                <div>
+                                    <strong>Bonus XP Rewards</strong><br>
+                                    <span style="color: #777;">Complete challenges for +50 to +100 XP</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="quickstart-feature-icon">⏰</span>
+                                <div>
+                                    <strong>Resets at Midnight</strong><br>
+                                    <span style="color: #777;">Don't miss your daily bonus!</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 5: Ready to Go -->
+                <div class="quickstart-step" data-step="5">
+                    <div class="quickstart-step-title">
+                        <span style="font-size: 1.5rem;">🚀</span> You're Ready!
+                    </div>
+                    <div class="quickstart-step-content" style="text-align: center;">
+                        <div style="font-size: 4rem; margin: 1rem 0;">🎉</div>
+                        <p style="font-size: 1.1rem; font-weight: 600; color: #333; margin-bottom: 1rem;">
+                            Time to start your science journey!
+                        </p>
+                        <p>Click "Let's Go!" to begin practicing and earning XP.</p>
+                        <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 1rem; border-radius: 12px; margin-top: 1.5rem;">
+                            <div style="color: #2e7d32; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <span>🎁</span> Welcome Bonus: +25 XP!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="quickstart-footer">
+                <button class="quickstart-nav-btn prev" id="quickstart-prev-btn" onclick="quickstartPrevStep()" disabled>← Back</button>
+                <div class="quickstart-dots" id="quickstart-dots">
+                    <div class="quickstart-dot active"></div>
+                    <div class="quickstart-dot"></div>
+                    <div class="quickstart-dot"></div>
+                    <div class="quickstart-dot"></div>
+                    <div class="quickstart-dot"></div>
+                </div>
+                <button class="quickstart-nav-btn next" id="quickstart-next-btn" onclick="quickstartNextStep()">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Overlay Container -->
+    <div id="celebration-overlay" class="celebration-overlay" style="display: none;"></div>
 
     <!-- Account Settings Modal -->
     <div id="account-settings-modal" class="modal-overlay">
@@ -20056,6 +21040,552 @@
             }, 100);
             return result;
         };
+    </script>
+
+    <!-- =====================================================
+         GAMIFICATION SYSTEM
+         ===================================================== -->
+    <script>
+        // =====================================================
+        // GAMIFICATION CONFIGURATION
+        // =====================================================
+        window.GAMIFICATION_CONFIG = {
+            XP_PER_CORRECT: 15,
+            XP_PER_INCORRECT: 3,
+            XP_PER_ATTEMPT: 5,
+            XP_DAILY_CHALLENGE_BONUS: 50,
+            XP_WELCOME_BONUS: 25,
+            XP_STREAK_MULTIPLIER: 0.1,
+            MAX_STREAK_BONUS: 0.5,
+            LEVELS: [
+                { level: 1, xpRequired: 0, title: 'Beginner', color: '#9E9E9E' },
+                { level: 2, xpRequired: 100, title: 'Learner', color: '#8BC34A' },
+                { level: 3, xpRequired: 250, title: 'Explorer', color: '#4CAF50' },
+                { level: 4, xpRequired: 500, title: 'Scientist', color: '#2196F3' },
+                { level: 5, xpRequired: 850, title: 'Researcher', color: '#3F51B5' },
+                { level: 6, xpRequired: 1300, title: 'Expert', color: '#9C27B0' },
+                { level: 7, xpRequired: 1900, title: 'Master', color: '#E91E63' },
+                { level: 8, xpRequired: 2700, title: 'Professor', color: '#FF5722' },
+                { level: 9, xpRequired: 3800, title: 'Genius', color: '#FF9800' },
+                { level: 10, xpRequired: 5200, title: 'Legend', color: '#FFD700' }
+            ],
+            ACHIEVEMENTS: [
+                { id: 'first_steps', name: 'First Steps', desc: 'Answer your first question', icon: '👣', xp: 10, condition: (s) => s.totalAttempts >= 1 },
+                { id: 'getting_started', name: 'Getting Started', desc: 'Answer 10 questions', icon: '🌱', xp: 25, condition: (s) => s.totalAttempts >= 10 },
+                { id: 'on_a_roll', name: 'On a Roll', desc: 'Get 5 correct in a row', icon: '🔥', xp: 30, condition: (s) => s.maxStreak >= 5 },
+                { id: 'streak_master', name: 'Streak Master', desc: 'Maintain a 7-day login streak', icon: '📅', xp: 50, condition: (s) => s.loginStreak >= 7 },
+                { id: 'dedicated', name: 'Dedicated Learner', desc: 'Answer 50 questions', icon: '📚', xp: 50, condition: (s) => s.totalAttempts >= 50 },
+                { id: 'perfectionist', name: 'Perfectionist', desc: 'Get 10 correct in a row', icon: '💎', xp: 75, condition: (s) => s.maxStreak >= 10 },
+                { id: 'century', name: 'Century', desc: 'Answer 100 questions', icon: '💯', xp: 100, condition: (s) => s.totalAttempts >= 100 },
+                { id: 'daily_warrior', name: 'Daily Warrior', desc: 'Complete 5 daily challenges', icon: '⚔️', xp: 75, condition: (s) => s.dailyChallengesCompleted >= 5 },
+                { id: 'topic_master', name: 'Topic Master', desc: 'Achieve 80% mastery in any topic', icon: '🎓', xp: 60, condition: (s) => s.hasTopicMastery },
+                { id: 'speed_demon', name: 'Speed Demon', desc: 'Answer 20 questions in one session', icon: '⚡', xp: 40, condition: (s) => s.sessionAttempts >= 20 },
+                { id: 'science_pro', name: 'Science Pro', desc: 'Reach level 5', icon: '🧪', xp: 100, condition: (s) => s.level >= 5 },
+                { id: 'legendary', name: 'Legendary', desc: 'Reach level 10', icon: '🏆', xp: 200, condition: (s) => s.level >= 10 }
+            ],
+            DAILY_CHALLENGES: [
+                { id: 'correct_5', task: 'Answer 5 questions correctly', target: 5, type: 'correct', reward: 50 },
+                { id: 'correct_10', task: 'Answer 10 questions correctly', target: 10, type: 'correct', reward: 80 },
+                { id: 'attempt_15', task: 'Attempt 15 questions', target: 15, type: 'attempts', reward: 60 },
+                { id: 'streak_3', task: 'Get 3 correct answers in a row', target: 3, type: 'streak', reward: 40 },
+                { id: 'topics_3', task: 'Practice 3 different topics', target: 3, type: 'topics', reward: 70 },
+                { id: 'mcq_5', task: 'Answer 5 MCQ questions correctly', target: 5, type: 'mcq_correct', reward: 45 },
+                { id: 'oeq_3', task: 'Answer 3 OEQ questions correctly', target: 3, type: 'oeq_correct', reward: 55 }
+            ]
+        };
+
+        // Gamification State
+        window.gamificationState = {
+            xp: 0, level: 1, totalAttempts: 0, correctCount: 0, currentStreak: 0, maxStreak: 0,
+            loginStreak: 0, sessionAttempts: 0, dailyChallengesCompleted: 0, hasTopicMastery: false,
+            unlockedAchievements: [], soundEnabled: true, dailyChallenge: null, dailyChallengeProgress: 0,
+            lastDailyChallengeDate: null, topicsPracticedToday: new Set()
+        };
+
+        // XP and Level Calculations
+        window.calculateLevel = function(xp) {
+            const levels = window.GAMIFICATION_CONFIG.LEVELS;
+            for (let i = levels.length - 1; i >= 0; i--) {
+                if (xp >= levels[i].xpRequired) return levels[i];
+            }
+            return levels[0];
+        };
+
+        window.getXPForNextLevel = function(currentLevel) {
+            const levels = window.GAMIFICATION_CONFIG.LEVELS;
+            const nextLevel = levels.find(l => l.level === currentLevel + 1);
+            return nextLevel ? nextLevel.xpRequired : null;
+        };
+
+        window.updateXPDisplay = function() {
+            const state = window.gamificationState;
+            const currentLevelInfo = calculateLevel(state.xp);
+            const nextLevelXP = getXPForNextLevel(currentLevelInfo.level);
+            const prevLevelXP = currentLevelInfo.xpRequired;
+
+            const levelBadge = document.getElementById('xp-level-badge');
+            const levelTitle = document.getElementById('xp-level-title');
+            const xpPoints = document.getElementById('xp-points-display');
+            const xpBar = document.getElementById('xp-bar-inner');
+
+            if (levelBadge) levelBadge.textContent = `Lv ${currentLevelInfo.level}`;
+            if (levelTitle) levelTitle.textContent = currentLevelInfo.title;
+
+            if (nextLevelXP) {
+                const xpInCurrentLevel = state.xp - prevLevelXP;
+                const xpNeededForLevel = nextLevelXP - prevLevelXP;
+                const progressPercent = (xpInCurrentLevel / xpNeededForLevel) * 100;
+                if (xpPoints) xpPoints.textContent = `${state.xp} / ${nextLevelXP} XP`;
+                if (xpBar) xpBar.style.width = `${Math.min(progressPercent, 100)}%`;
+            } else {
+                if (xpPoints) xpPoints.textContent = `${state.xp} XP (MAX)`;
+                if (xpBar) xpBar.style.width = '100%';
+            }
+
+            const achievementsTotalXP = document.getElementById('achievements-total-xp');
+            if (achievementsTotalXP) achievementsTotalXP.textContent = `${state.xp} XP`;
+        };
+
+        window.addXP = function(amount, reason, sourceElement) {
+            const state = window.gamificationState;
+            const oldLevel = calculateLevel(state.xp).level;
+
+            let bonusMultiplier = 1;
+            if (state.loginStreak >= 3) {
+                const streakBonus = Math.min(state.loginStreak * window.GAMIFICATION_CONFIG.XP_STREAK_MULTIPLIER, window.GAMIFICATION_CONFIG.MAX_STREAK_BONUS);
+                bonusMultiplier = 1 + streakBonus;
+            }
+
+            const finalAmount = Math.round(amount * bonusMultiplier);
+            state.xp += finalAmount;
+
+            showXPPopup(finalAmount, sourceElement);
+
+            const newLevel = calculateLevel(state.xp).level;
+            if (newLevel > oldLevel) showLevelUpModal(newLevel);
+
+            updateXPDisplay();
+            saveGamificationState();
+            checkAchievements();
+            return finalAmount;
+        };
+
+        window.showXPPopup = function(amount, sourceElement) {
+            const popup = document.createElement('div');
+            popup.className = 'xp-popup';
+            popup.textContent = `+${amount} XP`;
+
+            if (sourceElement) {
+                const rect = sourceElement.getBoundingClientRect();
+                popup.style.left = `${rect.left + rect.width / 2}px`;
+                popup.style.top = `${rect.top}px`;
+            } else {
+                popup.style.left = '50%';
+                popup.style.top = '40%';
+                popup.style.transform = 'translateX(-50%)';
+            }
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 1500);
+        };
+
+        window.showLevelUpModal = function(newLevel) {
+            const levelInfo = window.GAMIFICATION_CONFIG.LEVELS.find(l => l.level === newLevel);
+            const modal = document.createElement('div');
+            modal.className = 'level-up-modal';
+            modal.innerHTML = `<h2>🎉 Level Up!</h2><div class="new-level">${newLevel}</div><div class="level-title">${levelInfo.title}</div><button class="level-up-close-btn" onclick="this.parentElement.remove()">Awesome!</button>`;
+            document.body.appendChild(modal);
+            triggerCelebration();
+            if (window.gamificationState.soundEnabled) playLevelUpSound();
+            setTimeout(() => { if (modal.parentElement) modal.remove(); }, 5000);
+        };
+
+        // Celebration Effects
+        window.triggerCelebration = function() {
+            const overlay = document.getElementById('celebration-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'block';
+            overlay.innerHTML = '';
+            const colors = ['#FFD700', '#FF6B6B', '#4CAF50', '#2196F3', '#9C27B0', '#FF9800'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = confetti.style.width;
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.animation = `confettiFall ${Math.random() * 2 + 1.5}s ease-out forwards`;
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                overlay.appendChild(confetti);
+            }
+            setTimeout(() => { overlay.style.display = 'none'; overlay.innerHTML = ''; }, 3500);
+        };
+
+        window.triggerCorrectAnswerCelebration = function(element) {
+            if (!element) return;
+            const rect = element.getBoundingClientRect();
+            const stars = ['✨', '⭐', '🌟', '💫'];
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('div');
+                star.textContent = stars[Math.floor(Math.random() * stars.length)];
+                star.style.cssText = `position:fixed;left:${rect.left + Math.random() * rect.width}px;top:${rect.top + Math.random() * rect.height}px;font-size:1.5rem;pointer-events:none;z-index:10000;animation:xpFloat 1s ease-out forwards;animation-delay:${i * 0.1}s`;
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 1100 + i * 100);
+            }
+        };
+
+        // Sound Effects
+        window.playCorrectSound = function() {
+            if (!window.gamificationState.soundEnabled) return;
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                oscillator.frequency.value = 523.25;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) { }
+        };
+
+        window.playLevelUpSound = function() {
+            if (!window.gamificationState.soundEnabled) return;
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const notes = [523.25, 659.25, 783.99];
+                notes.forEach((freq, i) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    oscillator.frequency.value = freq;
+                    oscillator.type = 'sine';
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime + i * 0.15);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.15 + 0.4);
+                    oscillator.start(audioContext.currentTime + i * 0.15);
+                    oscillator.stop(audioContext.currentTime + i * 0.15 + 0.4);
+                });
+            } catch (e) { }
+        };
+
+        // Achievements System
+        window.checkAchievements = function() {
+            const state = window.gamificationState;
+            state.level = calculateLevel(state.xp).level;
+            window.GAMIFICATION_CONFIG.ACHIEVEMENTS.forEach(achievement => {
+                if (!state.unlockedAchievements.includes(achievement.id) && achievement.condition(state)) {
+                    unlockAchievement(achievement);
+                }
+            });
+            updateAchievementsCount();
+        };
+
+        window.unlockAchievement = function(achievement) {
+            const state = window.gamificationState;
+            state.unlockedAchievements.push(achievement.id);
+            showAchievementUnlocked(achievement);
+            addXP(achievement.xp, `Achievement: ${achievement.name}`);
+            saveGamificationState();
+        };
+
+        window.showAchievementUnlocked = function(achievement) {
+            const notification = document.createElement('div');
+            notification.style.cssText = 'position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#333;padding:16px 24px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.3);z-index:10003;animation:slideUp 0.5s ease forwards;display:flex;align-items:center;gap:12px';
+            notification.innerHTML = `<span style="font-size:2rem;">${achievement.icon}</span><div><div style="font-weight:700;font-size:1rem;">Achievement Unlocked!</div><div style="font-size:0.9rem;">${achievement.name}</div><div style="font-size:0.8rem;opacity:0.8;">+${achievement.xp} XP</div></div>`;
+            document.body.appendChild(notification);
+            setTimeout(() => { notification.style.animation = 'fadeIn 0.3s ease reverse forwards'; setTimeout(() => notification.remove(), 300); }, 4000);
+        };
+
+        window.updateAchievementsCount = function() {
+            const state = window.gamificationState;
+            const total = window.GAMIFICATION_CONFIG.ACHIEVEMENTS.length;
+            const unlocked = state.unlockedAchievements.length;
+            const countEl = document.getElementById('achievements-unlocked-count');
+            if (countEl) countEl.textContent = `(${unlocked}/${total})`;
+        };
+
+        window.showAchievementsModal = function() {
+            const modal = document.getElementById('achievements-modal');
+            const grid = document.getElementById('achievements-grid');
+            if (!modal || !grid) return;
+            const state = window.gamificationState;
+            grid.innerHTML = window.GAMIFICATION_CONFIG.ACHIEVEMENTS.map(a => {
+                const isUnlocked = state.unlockedAchievements.includes(a.id);
+                return `<div class="achievement-card ${isUnlocked ? 'unlocked' : 'locked'}"><div class="achievement-icon">${a.icon}</div><div class="achievement-name">${a.name}</div><div class="achievement-desc">${a.desc}</div><div class="achievement-xp">${isUnlocked ? '✓ Earned' : `+${a.xp} XP`}</div></div>`;
+            }).join('');
+            modal.classList.add('visible');
+        };
+
+        window.hideAchievementsModal = function() {
+            const modal = document.getElementById('achievements-modal');
+            if (modal) modal.classList.remove('visible');
+        };
+
+        // Daily Challenges
+        window.initDailyChallenge = function() {
+            const state = window.gamificationState;
+            const today = new Date().toDateString();
+            if (state.lastDailyChallengeDate !== today) {
+                const challenges = window.GAMIFICATION_CONFIG.DAILY_CHALLENGES;
+                const randomIndex = Math.floor(Math.random() * challenges.length);
+                state.dailyChallenge = { ...challenges[randomIndex] };
+                state.dailyChallengeProgress = 0;
+                state.lastDailyChallengeDate = today;
+                state.topicsPracticedToday = new Set();
+                saveGamificationState();
+            }
+            updateDailyChallengeDisplay();
+            startDailyChallengeTimer();
+        };
+
+        window.updateDailyChallengeDisplay = function() {
+            const state = window.gamificationState;
+            const challenge = state.dailyChallenge;
+            if (!challenge) return;
+
+            const taskEl = document.getElementById('daily-challenge-task');
+            const progressBar = document.getElementById('daily-challenge-progress-bar');
+            const rewardEl = document.getElementById('daily-challenge-reward-xp');
+
+            if (taskEl) taskEl.textContent = challenge.task;
+            if (rewardEl) rewardEl.textContent = `+${challenge.reward} XP`;
+
+            const progress = Math.min((state.dailyChallengeProgress / challenge.target) * 100, 100);
+            if (progressBar) progressBar.style.width = `${progress}%`;
+
+            const modalTask = document.getElementById('dc-modal-task');
+            const modalProgress = document.getElementById('dc-modal-progress');
+            const modalReward = document.getElementById('dc-modal-reward');
+            const modalProgressBar = document.getElementById('dc-modal-progress-bar');
+
+            if (modalTask) modalTask.textContent = challenge.task;
+            if (modalProgress) modalProgress.textContent = `${state.dailyChallengeProgress}/${challenge.target}`;
+            if (modalReward) modalReward.textContent = `+${challenge.reward} XP`;
+            if (modalProgressBar) modalProgressBar.style.width = `${progress}%`;
+
+            if (state.dailyChallengeProgress >= challenge.target && !challenge.completed) completeDailyChallenge();
+        };
+
+        window.startDailyChallengeTimer = function() {
+            const updateTimer = () => {
+                const now = new Date();
+                const midnight = new Date();
+                midnight.setHours(24, 0, 0, 0);
+                const diff = midnight - now;
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+                const timeString = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                const timerEl = document.getElementById('daily-challenge-timer');
+                const modalTimerEl = document.getElementById('dc-modal-timer');
+                if (timerEl) timerEl.textContent = timeString;
+                if (modalTimerEl) modalTimerEl.textContent = `Resets in: ${timeString}`;
+            };
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        };
+
+        window.updateDailyChallengeProgress = function(type, amount = 1) {
+            const state = window.gamificationState;
+            const challenge = state.dailyChallenge;
+            if (!challenge || challenge.completed) return;
+            if (challenge.type === type) {
+                state.dailyChallengeProgress += amount;
+                updateDailyChallengeDisplay();
+                saveGamificationState();
+            }
+        };
+
+        window.completeDailyChallenge = function() {
+            const state = window.gamificationState;
+            const challenge = state.dailyChallenge;
+            if (!challenge || challenge.completed) return;
+            challenge.completed = true;
+            state.dailyChallengesCompleted++;
+            addXP(challenge.reward, 'Daily Challenge Complete');
+            triggerCelebration();
+            if (window.showToast) showToast('🎯 Daily Challenge Complete! +' + challenge.reward + ' XP', 'success');
+            saveGamificationState();
+            checkAchievements();
+        };
+
+        window.showDailyChallengeDetails = function() {
+            const modal = document.getElementById('daily-challenge-modal');
+            if (modal) modal.classList.add('visible');
+        };
+
+        window.hideDailyChallengeModal = function() {
+            const modal = document.getElementById('daily-challenge-modal');
+            if (modal) modal.classList.remove('visible');
+        };
+
+        // Streak Bonus
+        window.updateStreakBonusDisplay = function() {
+            const state = window.gamificationState;
+            const streakCard = document.getElementById('streak-bonus-card');
+            const streakCount = document.getElementById('streak-bonus-count');
+            const streakMultiplier = document.getElementById('streak-bonus-multiplier');
+            if (state.loginStreak >= 3 && streakCard) {
+                streakCard.style.display = 'block';
+                if (streakCount) streakCount.textContent = state.loginStreak;
+                const bonus = Math.min(Math.round(state.loginStreak * window.GAMIFICATION_CONFIG.XP_STREAK_MULTIPLIER * 100), Math.round(window.GAMIFICATION_CONFIG.MAX_STREAK_BONUS * 100));
+                if (streakMultiplier) streakMultiplier.textContent = `+${bonus}% XP Bonus`;
+            } else if (streakCard) {
+                streakCard.style.display = 'none';
+            }
+        };
+
+        // Quick Start Wizard
+        window.quickstartCurrentStep = 1;
+        window.quickstartTotalSteps = 5;
+
+        window.showQuickstartWizard = function() {
+            const wizard = document.getElementById('quickstart-wizard');
+            if (wizard) { wizard.style.display = 'flex'; window.quickstartCurrentStep = 1; updateQuickstartUI(); }
+        };
+
+        window.hideQuickstartWizard = function() {
+            const wizard = document.getElementById('quickstart-wizard');
+            if (wizard) wizard.style.display = 'none';
+            localStorage.setItem('quickstartCompleted', 'true');
+            addXP(window.GAMIFICATION_CONFIG.XP_WELCOME_BONUS, 'Welcome Bonus');
+        };
+
+        window.quickstartNextStep = function() {
+            if (window.quickstartCurrentStep < window.quickstartTotalSteps) { window.quickstartCurrentStep++; updateQuickstartUI(); }
+            else hideQuickstartWizard();
+        };
+
+        window.quickstartPrevStep = function() {
+            if (window.quickstartCurrentStep > 1) { window.quickstartCurrentStep--; updateQuickstartUI(); }
+        };
+
+        window.updateQuickstartUI = function() {
+            const steps = document.querySelectorAll('.quickstart-step');
+            const dots = document.querySelectorAll('.quickstart-dot');
+            const prevBtn = document.getElementById('quickstart-prev-btn');
+            const nextBtn = document.getElementById('quickstart-next-btn');
+            steps.forEach((step, i) => step.classList.toggle('active', i + 1 === window.quickstartCurrentStep));
+            dots.forEach((dot, i) => dot.classList.toggle('active', i + 1 === window.quickstartCurrentStep));
+            if (prevBtn) prevBtn.disabled = window.quickstartCurrentStep === 1;
+            if (nextBtn) nextBtn.textContent = window.quickstartCurrentStep === window.quickstartTotalSteps ? "Let's Go! 🚀" : 'Next →';
+        };
+
+        // Gamification Integration
+        window.handleQuestionAnswer = function(isCorrect, questionElement, questionType) {
+            const state = window.gamificationState;
+            state.totalAttempts++;
+            state.sessionAttempts++;
+
+            if (isCorrect) {
+                state.correctCount++;
+                state.currentStreak++;
+                state.maxStreak = Math.max(state.maxStreak, state.currentStreak);
+                addXP(window.GAMIFICATION_CONFIG.XP_PER_CORRECT, 'Correct Answer', questionElement);
+                playCorrectSound();
+                triggerCorrectAnswerCelebration(questionElement);
+                updateDailyChallengeProgress('correct');
+                updateDailyChallengeProgress('streak', state.currentStreak);
+                if (questionType === 'mcq') updateDailyChallengeProgress('mcq_correct');
+                else updateDailyChallengeProgress('oeq_correct');
+            } else {
+                state.currentStreak = 0;
+                addXP(window.GAMIFICATION_CONFIG.XP_PER_INCORRECT, 'Attempted', questionElement);
+            }
+
+            updateDailyChallengeProgress('attempts');
+
+            if (questionElement) {
+                const topic = questionElement.closest('[id^="topic-"]');
+                if (topic) {
+                    state.topicsPracticedToday.add(topic.id);
+                    updateDailyChallengeProgress('topics', state.topicsPracticedToday.size);
+                }
+            }
+
+            saveGamificationState();
+            checkAchievements();
+            updateXPDisplay();
+        };
+
+        // Save/Load State
+        window.saveGamificationState = async function() {
+            const state = window.gamificationState;
+            localStorage.setItem('gamificationState', JSON.stringify({ ...state, topicsPracticedToday: Array.from(state.topicsPracticedToday) }));
+            try {
+                const user = window.auth?.currentUser;
+                if (user && window.db_fs) {
+                    const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                    await updateDoc(doc(window.db_fs, "users", user.uid), {
+                        gamification: { xp: state.xp, level: calculateLevel(state.xp).level, unlockedAchievements: state.unlockedAchievements, dailyChallengesCompleted: state.dailyChallengesCompleted, maxStreak: state.maxStreak, lastDailyChallengeDate: state.lastDailyChallengeDate, dailyChallenge: state.dailyChallenge, dailyChallengeProgress: state.dailyChallengeProgress }
+                    });
+                }
+            } catch (e) { console.log('Gamification save failed:', e); }
+        };
+
+        window.loadGamificationState = async function() {
+            const stored = localStorage.getItem('gamificationState');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    Object.assign(window.gamificationState, parsed);
+                    if (parsed.topicsPracticedToday) window.gamificationState.topicsPracticedToday = new Set(parsed.topicsPracticedToday);
+                } catch (e) { }
+            }
+            try {
+                const user = window.auth?.currentUser;
+                if (user && window.db_fs) {
+                    const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                    const userDoc = await getDoc(doc(window.db_fs, "users", user.uid));
+                    if (userDoc.exists()) {
+                        const data = userDoc.data();
+                        const gam = data.gamification || {};
+                        const students = data.students || [];
+                        const currentStudent = students[0] || {};
+                        window.gamificationState.xp = gam.xp || 0;
+                        window.gamificationState.unlockedAchievements = gam.unlockedAchievements || [];
+                        window.gamificationState.dailyChallengesCompleted = gam.dailyChallengesCompleted || 0;
+                        window.gamificationState.maxStreak = gam.maxStreak || 0;
+                        window.gamificationState.loginStreak = currentStudent.loginStreak || 0;
+                        window.gamificationState.totalAttempts = currentStudent.totalAttempts || 0;
+                        window.gamificationState.correctCount = currentStudent.correctCount || 0;
+                        window.gamificationState.lastDailyChallengeDate = gam.lastDailyChallengeDate;
+                        window.gamificationState.dailyChallenge = gam.dailyChallenge;
+                        window.gamificationState.dailyChallengeProgress = gam.dailyChallengeProgress || 0;
+                    }
+                }
+            } catch (e) { console.log('Gamification load failed:', e); }
+            updateXPDisplay();
+            updateAchievementsCount();
+            updateStreakBonusDisplay();
+            initDailyChallenge();
+        };
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            const quickstartCompleted = localStorage.getItem('quickstartCompleted');
+            setTimeout(() => {
+                if (window.auth?.currentUser) {
+                    loadGamificationState();
+                    if (!quickstartCompleted) setTimeout(() => showQuickstartWizard(), 1500);
+                }
+            }, 2000);
+        });
+
+        // Hook into existing answer tracking
+        const originalTrackQuestionAttempt = window.trackQuestionAttempt;
+        window.trackQuestionAttempt = function(questionId, isCorrect) {
+            if (originalTrackQuestionAttempt) originalTrackQuestionAttempt(questionId, isCorrect);
+            const questionElement = document.getElementById(questionId);
+            const isMCQ = window.currentMode === 'mcq';
+            handleQuestionAnswer(isCorrect, questionElement, isMCQ ? 'mcq' : 'oeq');
+        };
+
+        console.log('🎮 Gamification system loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
