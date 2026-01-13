@@ -17240,6 +17240,484 @@
         .floating-experiment-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ===== Batch 44 Styles: Question History, Science Calculator, Weekly Challenges ===== */
+
+        /* Question History Modal */
+        .history-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .history-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #00bcd4;
+        }
+
+        .history-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .history-header h2 {
+            color: #00bcd4;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .history-stat {
+            background: rgba(0, 188, 212, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .history-stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00bcd4;
+        }
+
+        .history-stat-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .history-filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .history-filter-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 188, 212, 0.2);
+            color: #00bcd4;
+            border: 1px solid #00bcd4;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .history-filter-btn.active {
+            background: #00bcd4;
+            color: white;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid #00bcd4;
+        }
+
+        .history-item.correct {
+            border-left-color: #4caf50;
+        }
+
+        .history-item.incorrect {
+            border-left-color: #f44336;
+        }
+
+        .history-question {
+            color: #ddd;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .history-answer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .history-answer {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        .history-answer span {
+            font-weight: bold;
+        }
+
+        .history-answer span.correct-answer {
+            color: #4caf50;
+        }
+
+        .history-answer span.wrong-answer {
+            color: #f44336;
+        }
+
+        .history-date {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Science Calculator */
+        .calculator-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calculator-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 350px;
+            width: 90%;
+            position: relative;
+            border: 2px solid #ff9800;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .calculator-header h2 {
+            color: #ff9800;
+            font-size: 1.5rem;
+        }
+
+        .calculator-display {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .calculator-expression {
+            color: #888;
+            font-size: 0.9rem;
+            min-height: 20px;
+        }
+
+        .calculator-result {
+            color: #ff9800;
+            font-size: 2rem;
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calc-btn.number {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .calc-btn.operator {
+            background: rgba(255, 152, 0, 0.3);
+            color: #ff9800;
+        }
+
+        .calc-btn.function {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+        }
+
+        .calc-btn.equals {
+            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .calc-btn.clear {
+            background: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+        }
+
+        .calc-btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .calc-btn:active {
+            transform: scale(0.95);
+        }
+
+        .calculator-formulas {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .formula-title {
+            color: #ff9800;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .formula-item {
+            background: rgba(255, 152, 0, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .formula-item:hover {
+            background: rgba(255, 152, 0, 0.2);
+        }
+
+        .formula-name {
+            color: #ffc107;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .formula-equation {
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+
+        /* Weekly Challenges */
+        .weekly-challenge-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .weekly-challenge-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #e91e63;
+        }
+
+        .weekly-challenge-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .weekly-challenge-header h2 {
+            color: #e91e63;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .challenge-timer {
+            background: rgba(233, 30, 99, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .challenge-timer-label {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .challenge-timer-value {
+            color: #e91e63;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .challenge-card {
+            background: rgba(233, 30, 99, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-card.active {
+            border-color: #e91e63;
+        }
+
+        .challenge-card.completed {
+            opacity: 0.7;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .challenge-card.completed .challenge-badge {
+            display: block;
+        }
+
+        .challenge-badge {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4caf50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        .challenge-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .challenge-title {
+            color: #f48fb1;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .challenge-desc {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .challenge-progress {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .challenge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e91e63, #f48fb1);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .challenge-reward {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffc107;
+            font-size: 0.9rem;
+        }
+
+        /* Floating Buttons for Batch 44 */
+        .floating-history-btn {
+            position: fixed;
+            bottom: 3700px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bcd4 0%, #4dd0e1 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 188, 212, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-history-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-calculator-btn {
+            position: fixed;
+            bottom: 3760px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 152, 0, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-calculator-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-weekly-btn {
+            position: fixed;
+            bottom: 3820px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e91e63 0%, #f48fb1 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(233, 30, 99, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-weekly-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -50077,6 +50555,431 @@ Science Made Fun!
         setTimeout(initStreakDisplay, 500);
 
         console.log('📚 Vocabulary Builder, Experiment Simulator, and Streak Bonus loaded!');
+    </script>
+
+    <!-- ===== Batch 44: Question History, Science Calculator, Weekly Challenges ===== -->
+    <button class="floating-history-btn" onclick="openHistoryModal()" title="Question History">📜</button>
+    <button class="floating-calculator-btn" onclick="openCalculatorModal()" title="Science Calculator">🧮</button>
+    <button class="floating-weekly-btn" onclick="openWeeklyModal()" title="Weekly Challenges">🏆</button>
+
+    <!-- Question History Modal -->
+    <div class="history-modal" id="history-modal">
+        <div class="history-content">
+            <button class="modal-close-btn" onclick="closeHistoryModal()">&times;</button>
+            <div class="history-header">
+                <h2>📜 Question History</h2>
+                <p style="color: #aaa;">Review your past answers</p>
+            </div>
+            <div class="history-stats" id="history-stats"></div>
+            <div class="history-filter-tabs" id="history-filter-tabs"></div>
+            <div id="history-items-container"></div>
+        </div>
+    </div>
+
+    <!-- Science Calculator Modal -->
+    <div class="calculator-modal" id="calculator-modal">
+        <div class="calculator-content">
+            <button class="modal-close-btn" onclick="closeCalculatorModal()">&times;</button>
+            <div class="calculator-header">
+                <h2>🧮 Science Calculator</h2>
+            </div>
+            <div class="calculator-display">
+                <div class="calculator-expression" id="calc-expression"></div>
+                <div class="calculator-result" id="calc-result">0</div>
+            </div>
+            <div class="calculator-buttons">
+                <button class="calc-btn clear" onclick="clearCalc()">C</button>
+                <button class="calc-btn function" onclick="appendCalc('(')">(</button>
+                <button class="calc-btn function" onclick="appendCalc(')')">)</button>
+                <button class="calc-btn operator" onclick="appendCalc('/')">÷</button>
+                <button class="calc-btn number" onclick="appendCalc('7')">7</button>
+                <button class="calc-btn number" onclick="appendCalc('8')">8</button>
+                <button class="calc-btn number" onclick="appendCalc('9')">9</button>
+                <button class="calc-btn operator" onclick="appendCalc('*')">×</button>
+                <button class="calc-btn number" onclick="appendCalc('4')">4</button>
+                <button class="calc-btn number" onclick="appendCalc('5')">5</button>
+                <button class="calc-btn number" onclick="appendCalc('6')">6</button>
+                <button class="calc-btn operator" onclick="appendCalc('-')">−</button>
+                <button class="calc-btn number" onclick="appendCalc('1')">1</button>
+                <button class="calc-btn number" onclick="appendCalc('2')">2</button>
+                <button class="calc-btn number" onclick="appendCalc('3')">3</button>
+                <button class="calc-btn operator" onclick="appendCalc('+')">+</button>
+                <button class="calc-btn number" onclick="appendCalc('0')">0</button>
+                <button class="calc-btn number" onclick="appendCalc('.')">.</button>
+                <button class="calc-btn equals" onclick="calculateResult()">=</button>
+            </div>
+            <div class="calculator-formulas">
+                <div class="formula-title">📐 Quick Formulas</div>
+                <div class="formula-item" onclick="showFormula('speed')">
+                    <div class="formula-name">Speed</div>
+                    <div class="formula-equation">Speed = Distance ÷ Time</div>
+                </div>
+                <div class="formula-item" onclick="showFormula('density')">
+                    <div class="formula-name">Density</div>
+                    <div class="formula-equation">Density = Mass ÷ Volume</div>
+                </div>
+                <div class="formula-item" onclick="showFormula('area')">
+                    <div class="formula-name">Rectangle Area</div>
+                    <div class="formula-equation">Area = Length × Width</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Challenge Modal -->
+    <div class="weekly-challenge-modal" id="weekly-challenge-modal">
+        <div class="weekly-challenge-content">
+            <button class="modal-close-btn" onclick="closeWeeklyModal()">&times;</button>
+            <div class="weekly-challenge-header">
+                <h2>🏆 Weekly Challenges</h2>
+                <p style="color: #aaa;">Complete challenges for bonus rewards!</p>
+            </div>
+            <div class="challenge-timer">
+                <div class="challenge-timer-label">Challenges reset in</div>
+                <div class="challenge-timer-value" id="challenge-timer">--:--:--</div>
+            </div>
+            <div id="weekly-challenges-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Batch 44: Question History, Science Calculator, Weekly Challenges =====
+
+        // Question History System
+        let questionHistory = JSON.parse(localStorage.getItem('questionHistory')) || [];
+        let historyFilter = 'all';
+
+        function openHistoryModal() {
+            document.getElementById('history-modal').style.display = 'flex';
+            displayHistoryStats();
+            initHistoryFilters();
+            displayHistoryItems();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('history-modal').style.display = 'none';
+        }
+
+        function addToHistory(question, userAnswer, correctAnswer, isCorrect) {
+            const historyItem = {
+                id: Date.now(),
+                question: question,
+                userAnswer: userAnswer,
+                correctAnswer: correctAnswer,
+                isCorrect: isCorrect,
+                timestamp: new Date().toISOString()
+            };
+
+            questionHistory.unshift(historyItem);
+
+            // Keep only last 100 items
+            if (questionHistory.length > 100) {
+                questionHistory = questionHistory.slice(0, 100);
+            }
+
+            localStorage.setItem('questionHistory', JSON.stringify(questionHistory));
+        }
+
+        function displayHistoryStats() {
+            const total = questionHistory.length;
+            const correct = questionHistory.filter(h => h.isCorrect).length;
+            const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+            document.getElementById('history-stats').innerHTML = `
+                <div class="history-stat">
+                    <div class="history-stat-value">${total}</div>
+                    <div class="history-stat-label">Questions</div>
+                </div>
+                <div class="history-stat">
+                    <div class="history-stat-value">${correct}</div>
+                    <div class="history-stat-label">Correct</div>
+                </div>
+                <div class="history-stat">
+                    <div class="history-stat-value">${accuracy}%</div>
+                    <div class="history-stat-label">Accuracy</div>
+                </div>
+            `;
+        }
+
+        function initHistoryFilters() {
+            document.getElementById('history-filter-tabs').innerHTML = `
+                <button class="history-filter-btn ${historyFilter === 'all' ? 'active' : ''}" onclick="setHistoryFilter('all')">All</button>
+                <button class="history-filter-btn ${historyFilter === 'correct' ? 'active' : ''}" onclick="setHistoryFilter('correct')">Correct</button>
+                <button class="history-filter-btn ${historyFilter === 'incorrect' ? 'active' : ''}" onclick="setHistoryFilter('incorrect')">Incorrect</button>
+            `;
+        }
+
+        function setHistoryFilter(filter) {
+            historyFilter = filter;
+            initHistoryFilters();
+            displayHistoryItems();
+        }
+
+        function displayHistoryItems() {
+            const container = document.getElementById('history-items-container');
+            let filteredHistory = questionHistory;
+
+            if (historyFilter === 'correct') {
+                filteredHistory = questionHistory.filter(h => h.isCorrect);
+            } else if (historyFilter === 'incorrect') {
+                filteredHistory = questionHistory.filter(h => !h.isCorrect);
+            }
+
+            if (filteredHistory.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">📭</div>
+                        <p>No questions in history yet!</p>
+                        <p style="font-size: 0.9rem;">Start answering questions to build your history.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredHistory.slice(0, 20).map(item => {
+                const date = new Date(item.timestamp);
+                const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                return `
+                    <div class="history-item ${item.isCorrect ? 'correct' : 'incorrect'}">
+                        <div class="history-question">${item.question}</div>
+                        <div class="history-answer-info">
+                            <div class="history-answer">
+                                Your answer: <span class="${item.isCorrect ? 'correct-answer' : 'wrong-answer'}">${item.userAnswer}</span>
+                                ${!item.isCorrect ? `<br>Correct: <span class="correct-answer">${item.correctAnswer}</span>` : ''}
+                            </div>
+                            <div class="history-date">${dateStr}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Science Calculator
+        let calcExpression = '';
+
+        function openCalculatorModal() {
+            document.getElementById('calculator-modal').style.display = 'flex';
+            clearCalc();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeCalculatorModal() {
+            document.getElementById('calculator-modal').style.display = 'none';
+        }
+
+        function appendCalc(value) {
+            calcExpression += value;
+            updateCalcDisplay();
+        }
+
+        function clearCalc() {
+            calcExpression = '';
+            document.getElementById('calc-expression').textContent = '';
+            document.getElementById('calc-result').textContent = '0';
+        }
+
+        function updateCalcDisplay() {
+            const displayExpr = calcExpression
+                .replace(/\*/g, '×')
+                .replace(/\//g, '÷')
+                .replace(/-/g, '−');
+            document.getElementById('calc-expression').textContent = displayExpr;
+        }
+
+        function calculateResult() {
+            try {
+                if (calcExpression === '') return;
+
+                // Safe evaluation for basic math
+                const sanitized = calcExpression.replace(/[^0-9+\-*/().]/g, '');
+                const result = Function('"use strict"; return (' + sanitized + ')')();
+
+                if (isNaN(result) || !isFinite(result)) {
+                    document.getElementById('calc-result').textContent = 'Error';
+                } else {
+                    const displayResult = Number.isInteger(result) ? result : parseFloat(result.toFixed(8));
+                    document.getElementById('calc-result').textContent = displayResult;
+                }
+            } catch (e) {
+                document.getElementById('calc-result').textContent = 'Error';
+            }
+        }
+
+        function showFormula(type) {
+            let message = '';
+            switch(type) {
+                case 'speed':
+                    message = '📐 Speed Formula:\nSpeed = Distance ÷ Time\n\nExample: If you travel 100 km in 2 hours,\nSpeed = 100 ÷ 2 = 50 km/h';
+                    break;
+                case 'density':
+                    message = '📐 Density Formula:\nDensity = Mass ÷ Volume\n\nExample: If an object has mass 200g and volume 50cm³,\nDensity = 200 ÷ 50 = 4 g/cm³';
+                    break;
+                case 'area':
+                    message = '📐 Rectangle Area Formula:\nArea = Length × Width\n\nExample: If length is 5m and width is 3m,\nArea = 5 × 3 = 15 m²';
+                    break;
+            }
+            alert(message);
+        }
+
+        // Weekly Challenges System
+        const weeklyChallenges = [
+            {
+                id: 'answer50',
+                icon: '🎯',
+                title: 'Question Master',
+                desc: 'Answer 50 questions this week',
+                target: 50,
+                key: 'weeklyQuestionsAnswered',
+                reward: 200
+            },
+            {
+                id: 'streak5',
+                icon: '🔥',
+                title: 'Streak Builder',
+                desc: 'Get a 5-answer streak',
+                target: 5,
+                key: 'weeklyMaxStreak',
+                reward: 100
+            },
+            {
+                id: 'correct30',
+                icon: '✅',
+                title: 'Accuracy Champion',
+                desc: 'Get 30 correct answers',
+                target: 30,
+                key: 'weeklyCorrectAnswers',
+                reward: 150
+            },
+            {
+                id: 'vocab10',
+                icon: '📚',
+                title: 'Vocabulary Scholar',
+                desc: 'Learn 10 vocabulary terms',
+                target: 10,
+                key: 'weeklyVocabLearned',
+                reward: 100
+            },
+            {
+                id: 'experiment2',
+                icon: '🔬',
+                title: 'Junior Scientist',
+                desc: 'Complete 2 virtual experiments',
+                target: 2,
+                key: 'weeklyExperiments',
+                reward: 125
+            }
+        ];
+
+        let weeklyProgress = JSON.parse(localStorage.getItem('weeklyProgress')) || {};
+        let weeklyResetTime = parseInt(localStorage.getItem('weeklyResetTime')) || 0;
+
+        function openWeeklyModal() {
+            document.getElementById('weekly-challenge-modal').style.display = 'flex';
+            checkWeeklyReset();
+            displayWeeklyChallenges();
+            updateChallengeTimer();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeWeeklyModal() {
+            document.getElementById('weekly-challenge-modal').style.display = 'none';
+        }
+
+        function checkWeeklyReset() {
+            const now = Date.now();
+            if (now > weeklyResetTime) {
+                // Reset weekly progress
+                weeklyProgress = {};
+                // Set next reset to coming Sunday midnight
+                const nextSunday = new Date();
+                nextSunday.setDate(nextSunday.getDate() + (7 - nextSunday.getDay()));
+                nextSunday.setHours(0, 0, 0, 0);
+                weeklyResetTime = nextSunday.getTime();
+
+                localStorage.setItem('weeklyProgress', JSON.stringify(weeklyProgress));
+                localStorage.setItem('weeklyResetTime', weeklyResetTime);
+            }
+        }
+
+        function updateChallengeTimer() {
+            const now = Date.now();
+            const remaining = weeklyResetTime - now;
+
+            if (remaining <= 0) {
+                document.getElementById('challenge-timer').textContent = 'Resetting...';
+                return;
+            }
+
+            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById('challenge-timer').textContent = `${days}d ${hours}h ${minutes}m`;
+        }
+
+        function displayWeeklyChallenges() {
+            const container = document.getElementById('weekly-challenges-container');
+
+            container.innerHTML = weeklyChallenges.map(challenge => {
+                const current = weeklyProgress[challenge.key] || 0;
+                const progress = Math.min((current / challenge.target) * 100, 100);
+                const isCompleted = current >= challenge.target;
+                const claimedKey = `claimed_${challenge.id}`;
+                const isClaimed = weeklyProgress[claimedKey] || false;
+
+                return `
+                    <div class="challenge-card ${isCompleted ? 'completed' : ''}">
+                        <div class="challenge-icon">${challenge.icon}</div>
+                        <div class="challenge-title">${challenge.title}</div>
+                        <div class="challenge-desc">${challenge.desc}</div>
+                        <div class="challenge-progress">
+                            <div class="challenge-progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #aaa; font-size: 0.85rem;">${current} / ${challenge.target}</span>
+                            <div class="challenge-reward">
+                                ${isCompleted && !isClaimed
+                                    ? `<button onclick="claimChallengeReward('${challenge.id}', ${challenge.reward})" style="background: #ffc107; color: #333; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold;">Claim ${challenge.reward} XP</button>`
+                                    : isClaimed
+                                        ? `<span style="color: #4caf50;">✓ Claimed</span>`
+                                        : `<span>🎁 ${challenge.reward} XP</span>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function claimChallengeReward(challengeId, reward) {
+            const claimedKey = `claimed_${challengeId}`;
+            if (weeklyProgress[claimedKey]) return;
+
+            weeklyProgress[claimedKey] = true;
+            localStorage.setItem('weeklyProgress', JSON.stringify(weeklyProgress));
+
+            if (typeof addXP === 'function') addXP(reward);
+            showToast(`🏆 Challenge completed! +${reward} XP`, 'success');
+            if (typeof playLevelUpSound === 'function') playLevelUpSound();
+
+            displayWeeklyChallenges();
+        }
+
+        function updateWeeklyProgress(key, value = 1) {
+            checkWeeklyReset();
+            weeklyProgress[key] = (weeklyProgress[key] || 0) + value;
+            localStorage.setItem('weeklyProgress', JSON.stringify(weeklyProgress));
+        }
+
+        // Update timer every minute
+        setInterval(updateChallengeTimer, 60000);
+
+        // Initialize weekly reset check on load
+        checkWeeklyReset();
+
+        console.log('📜 Question History, Science Calculator, and Weekly Challenges loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
