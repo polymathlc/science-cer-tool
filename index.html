@@ -28189,6 +28189,308 @@
             color: #9c27b0;
             font-weight: bold;
         }
+
+        /* Batch 74: Equation Builder */
+        .equation-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1710px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3f51b5, #7986cb);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(63, 81, 181, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .equation-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .equation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .equation-modal.active {
+            display: flex;
+        }
+
+        .equation-modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .equation-modal-header {
+            background: linear-gradient(135deg, #3f51b5, #7986cb);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .equation-modal-body {
+            padding: 25px;
+        }
+
+        .equation-display {
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 20px;
+            background: #e8eaf6;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        .equation-keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .equation-key {
+            padding: 15px;
+            border: 2px solid #3f51b5;
+            border-radius: 10px;
+            background: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .equation-key:hover {
+            background: #e8eaf6;
+        }
+
+        .equation-key.action {
+            background: #3f51b5;
+            color: white;
+        }
+
+        /* Science Riddles */
+        .riddles-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1270px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9800, #ffcc80);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .riddles-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .riddles-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .riddles-modal.active {
+            display: flex;
+        }
+
+        .riddles-modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+            overflow: hidden;
+        }
+
+        .riddles-modal-header {
+            background: linear-gradient(135deg, #ff9800, #ffcc80);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .riddles-modal-body {
+            padding: 25px;
+        }
+
+        .riddle-box {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .riddle-question {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .riddle-hint {
+            font-size: 0.9rem;
+            color: #ff9800;
+            cursor: pointer;
+        }
+
+        .riddle-answer-area {
+            margin-top: 15px;
+        }
+
+        .riddle-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .riddle-result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Weekly Goals */
+        .goals-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1750px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4caf50, #a5d6a7);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .goals-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .goals-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .goals-modal.active {
+            display: flex;
+        }
+
+        .goals-modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .goals-modal-header {
+            background: linear-gradient(135deg, #4caf50, #a5d6a7);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .goals-modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .goal-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .goal-text {
+            flex: 1;
+        }
+
+        .goal-text.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .goal-add {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .goal-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+        }
+
+        .goal-add-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -71492,6 +71794,245 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('🏎️ Quiz Race, Study Buddy, and Quick Facts Cards loaded!');
+    </script>
+
+    <!-- Batch 74: Equation Builder Button -->
+    <button class="equation-btn" onclick="openEquationBuilder()" title="Equation Builder">
+        🔢
+    </button>
+
+    <!-- Equation Builder Modal -->
+    <div class="equation-modal" id="equationModal">
+        <div class="equation-modal-content">
+            <div class="equation-modal-header">
+                <h3>🔢 Equation Builder</h3>
+                <button onclick="closeEquationBuilder()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="equation-modal-body">
+                <div class="equation-display" id="equationDisplay">0</div>
+                <div class="equation-keypad">
+                    <button class="equation-key" onclick="eqInput('7')">7</button>
+                    <button class="equation-key" onclick="eqInput('8')">8</button>
+                    <button class="equation-key" onclick="eqInput('9')">9</button>
+                    <button class="equation-key" onclick="eqInput('/')">÷</button>
+                    <button class="equation-key" onclick="eqInput('4')">4</button>
+                    <button class="equation-key" onclick="eqInput('5')">5</button>
+                    <button class="equation-key" onclick="eqInput('6')">6</button>
+                    <button class="equation-key" onclick="eqInput('*')">×</button>
+                    <button class="equation-key" onclick="eqInput('1')">1</button>
+                    <button class="equation-key" onclick="eqInput('2')">2</button>
+                    <button class="equation-key" onclick="eqInput('3')">3</button>
+                    <button class="equation-key" onclick="eqInput('-')">-</button>
+                    <button class="equation-key" onclick="eqInput('0')">0</button>
+                    <button class="equation-key" onclick="eqInput('.')">.</button>
+                    <button class="equation-key action" onclick="eqCalculate()">=</button>
+                    <button class="equation-key" onclick="eqInput('+')">+</button>
+                    <button class="equation-key action" onclick="eqClear()" style="grid-column: span 2;">Clear</button>
+                    <button class="equation-key" onclick="eqInput('(')">(</button>
+                    <button class="equation-key" onclick="eqInput(')')">)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Science Riddles Button -->
+    <button class="riddles-btn" onclick="openRiddles()" title="Science Riddles">
+        🧩
+    </button>
+
+    <!-- Science Riddles Modal -->
+    <div class="riddles-modal" id="riddlesModal">
+        <div class="riddles-modal-content">
+            <div class="riddles-modal-header">
+                <h3>🧩 Science Riddles</h3>
+                <button onclick="closeRiddles()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="riddles-modal-body">
+                <div class="riddle-box">
+                    <div class="riddle-question" id="riddleQuestion">Loading riddle...</div>
+                    <div class="riddle-hint" id="riddleHint" onclick="showRiddleHint()">💡 Click for hint</div>
+                </div>
+                <div class="riddle-answer-area">
+                    <input type="text" class="riddle-input" id="riddleInput" placeholder="Your answer...">
+                    <button onclick="checkRiddle()" style="width:100%;padding:12px;background:#ff9800;color:white;border:none;border-radius:10px;cursor:pointer;">Check Answer</button>
+                    <div class="riddle-result" id="riddleResult"></div>
+                </div>
+                <button onclick="newRiddle()" style="width:100%;margin-top:15px;padding:12px;background:#666;color:white;border:none;border-radius:10px;cursor:pointer;">🔄 New Riddle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Goals Button -->
+    <button class="goals-btn" onclick="openWeeklyGoals()" title="Weekly Goals">
+        🎯
+    </button>
+
+    <!-- Weekly Goals Modal -->
+    <div class="goals-modal" id="goalsModal">
+        <div class="goals-modal-content">
+            <div class="goals-modal-header">
+                <h3>🎯 Weekly Goals</h3>
+                <button onclick="closeWeeklyGoals()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">✕</button>
+            </div>
+            <div class="goals-modal-body">
+                <div id="goalsList"></div>
+                <div class="goal-add">
+                    <input type="text" class="goal-input" id="goalInput" placeholder="Add new goal...">
+                    <button class="goal-add-btn" onclick="addGoal()">+ Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Batch 74: Equation Builder, Science Riddles, Weekly Goals
+
+        // Equation Builder
+        let equationStr = '';
+
+        function openEquationBuilder() {
+            document.getElementById('equationModal').classList.add('active');
+            eqClear();
+        }
+
+        function closeEquationBuilder() {
+            document.getElementById('equationModal').classList.remove('active');
+        }
+
+        function eqInput(val) {
+            equationStr += val;
+            updateEqDisplay();
+        }
+
+        function eqClear() {
+            equationStr = '';
+            document.getElementById('equationDisplay').textContent = '0';
+        }
+
+        function updateEqDisplay() {
+            let display = equationStr.replace(/\*/g, '×').replace(/\//g, '÷');
+            document.getElementById('equationDisplay').textContent = display || '0';
+        }
+
+        function eqCalculate() {
+            try {
+                const result = eval(equationStr);
+                document.getElementById('equationDisplay').textContent = result;
+                equationStr = result.toString();
+            } catch (e) {
+                document.getElementById('equationDisplay').textContent = 'Error';
+                equationStr = '';
+            }
+        }
+
+        // Science Riddles
+        const scienceRiddles = [
+            { q: "I have no mouth but I can roar. I have no legs but I can soar. What am I?", a: "wind", hint: "Moving air" },
+            { q: "I'm not alive but I grow. I don't have lungs but I need air. What am I?", a: "fire", hint: "Hot and orange" },
+            { q: "I have a head and tail but no body. What am I?", a: "coin", hint: "Money" },
+            { q: "The more you take, the more you leave behind. What am I?", a: "footsteps", hint: "Walking" },
+            { q: "I travel around the world but stay in a corner. What am I?", a: "stamp", hint: "On letters" },
+            { q: "I can be cracked, made, told, and played. What am I?", a: "joke", hint: "Makes you laugh" },
+            { q: "I have cities but no houses, forests but no trees, water but no fish. What am I?", a: "map", hint: "Shows places" },
+            { q: "I go up but never come down. What am I?", a: "age", hint: "Birthday count" },
+            { q: "I'm full of holes but can hold water. What am I?", a: "sponge", hint: "In the kitchen" },
+            { q: "The more of me there is, the less you see. What am I?", a: "darkness", hint: "No light" }
+        ];
+
+        let currentRiddle = null;
+
+        function openRiddles() {
+            document.getElementById('riddlesModal').classList.add('active');
+            newRiddle();
+        }
+
+        function closeRiddles() {
+            document.getElementById('riddlesModal').classList.remove('active');
+        }
+
+        function newRiddle() {
+            currentRiddle = scienceRiddles[Math.floor(Math.random() * scienceRiddles.length)];
+            document.getElementById('riddleQuestion').textContent = currentRiddle.q;
+            document.getElementById('riddleHint').textContent = '💡 Click for hint';
+            document.getElementById('riddleInput').value = '';
+            document.getElementById('riddleResult').innerHTML = '';
+        }
+
+        function showRiddleHint() {
+            document.getElementById('riddleHint').textContent = '💡 Hint: ' + currentRiddle.hint;
+        }
+
+        function checkRiddle() {
+            const input = document.getElementById('riddleInput').value.toLowerCase().trim();
+            const result = document.getElementById('riddleResult');
+
+            if (input === currentRiddle.a) {
+                result.innerHTML = '<span style="color:#4caf50;">✓ Correct! +15 XP</span>';
+                addXP(15);
+            } else {
+                result.innerHTML = `<span style="color:#f44336;">✗ Wrong! Answer: ${currentRiddle.a}</span>`;
+            }
+        }
+
+        // Weekly Goals
+        let weeklyGoals = JSON.parse(localStorage.getItem('weeklyGoals') || '[]');
+
+        // Add default goals if empty
+        if (weeklyGoals.length === 0) {
+            weeklyGoals = [
+                { text: 'Complete 10 quiz questions', completed: false },
+                { text: 'Learn 5 new science terms', completed: false },
+                { text: 'Review Forces topic', completed: false },
+                { text: 'Try one home experiment', completed: false }
+            ];
+            localStorage.setItem('weeklyGoals', JSON.stringify(weeklyGoals));
+        }
+
+        function openWeeklyGoals() {
+            document.getElementById('goalsModal').classList.add('active');
+            renderGoals();
+        }
+
+        function closeWeeklyGoals() {
+            document.getElementById('goalsModal').classList.remove('active');
+        }
+
+        function renderGoals() {
+            document.getElementById('goalsList').innerHTML = weeklyGoals.map((g, i) => `
+                <div class="goal-item">
+                    <input type="checkbox" class="goal-checkbox" ${g.completed ? 'checked' : ''} onchange="toggleGoal(${i})">
+                    <span class="goal-text ${g.completed ? 'completed' : ''}">${g.text}</span>
+                    <button onclick="deleteGoal(${i})" style="background:none;border:none;color:#f44336;cursor:pointer;font-size:1.2rem;">×</button>
+                </div>
+            `).join('');
+        }
+
+        function toggleGoal(idx) {
+            weeklyGoals[idx].completed = !weeklyGoals[idx].completed;
+            if (weeklyGoals[idx].completed) {
+                addXP(10);
+            }
+            localStorage.setItem('weeklyGoals', JSON.stringify(weeklyGoals));
+            renderGoals();
+        }
+
+        function addGoal() {
+            const input = document.getElementById('goalInput');
+            if (input.value.trim()) {
+                weeklyGoals.push({ text: input.value.trim(), completed: false });
+                localStorage.setItem('weeklyGoals', JSON.stringify(weeklyGoals));
+                input.value = '';
+                renderGoals();
+            }
+        }
+
+        function deleteGoal(idx) {
+            weeklyGoals.splice(idx, 1);
+            localStorage.setItem('weeklyGoals', JSON.stringify(weeklyGoals));
+            renderGoals();
+        }
+
+        console.log('🔢 Equation Builder, Science Riddles, and Weekly Goals loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
