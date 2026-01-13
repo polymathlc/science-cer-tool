@@ -29034,6 +29034,346 @@
         .sound-btn.muted {
             background: linear-gradient(135deg, #9e9e9e, #bdbdbd);
         }
+
+        /* Batch 77: Speed Reading */
+        .speed-read-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1930px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bcd4, #4dd0e1);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .speed-read-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .speed-read-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .speed-read-modal.active {
+            display: flex;
+        }
+
+        .speed-read-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .speed-read-header {
+            background: linear-gradient(135deg, #00bcd4, #4dd0e1);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .speed-read-body {
+            padding: 20px;
+        }
+
+        .speed-read-display {
+            font-size: 2rem;
+            text-align: center;
+            padding: 40px 20px;
+            background: #e0f7fa;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #006064;
+            font-weight: bold;
+        }
+
+        .speed-read-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .speed-read-controls button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .speed-wpm-selector {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .speed-wpm-btn {
+            padding: 8px 16px;
+            border: 2px solid #00bcd4;
+            border-radius: 20px;
+            background: white;
+            color: #00bcd4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .speed-wpm-btn.active {
+            background: #00bcd4;
+            color: white;
+        }
+
+        /* Formula Cards */
+        .formula-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1450px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #673ab7, #9575cd);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(103, 58, 183, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .formula-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .formula-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .formula-modal.active {
+            display: flex;
+        }
+
+        .formula-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .formula-header {
+            background: linear-gradient(135deg, #673ab7, #9575cd);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .formula-body {
+            padding: 20px;
+        }
+
+        .formula-card {
+            background: linear-gradient(135deg, #ede7f6, #d1c4e9);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 15px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .formula-name {
+            font-size: 1.1rem;
+            color: #673ab7;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .formula-equation {
+            font-size: 1.8rem;
+            color: #311b92;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .formula-description {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .formula-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .formula-nav button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            background: #673ab7;
+            color: white;
+        }
+
+        .formula-counter {
+            text-align: center;
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Daily Streak */
+        .streak-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1990px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff5722, #ff8a65);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .streak-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .streak-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .streak-modal.active {
+            display: flex;
+        }
+
+        .streak-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .streak-header {
+            background: linear-gradient(135deg, #ff5722, #ff8a65);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .streak-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .streak-number {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ff5722;
+            margin-bottom: 10px;
+        }
+
+        .streak-label {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .streak-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .streak-day {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            background: #f5f5f5;
+            color: #999;
+            margin: 0 auto;
+        }
+
+        .streak-day.active {
+            background: linear-gradient(135deg, #ff5722, #ff8a65);
+            color: white;
+        }
+
+        .streak-day.today {
+            border: 2px solid #ff5722;
+        }
+
+        .streak-message {
+            padding: 15px;
+            background: #fff3e0;
+            border-radius: 10px;
+            color: #e65100;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -72975,6 +73315,293 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('🖼️ Diagram Viewer, Question Bookmarks, and Sound Toggle loaded!');
+    </script>
+
+    <!-- Batch 77: Speed Reading Button -->
+    <button class="speed-read-btn" onclick="openSpeedReading()" title="Speed Reading">📖</button>
+
+    <!-- Speed Reading Modal -->
+    <div class="speed-read-modal" id="speedReadModal">
+        <div class="speed-read-content">
+            <div class="speed-read-header">
+                <h3 style="margin:0;">📖 Speed Reading</h3>
+                <button onclick="closeSpeedReading()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="speed-read-body">
+                <div class="speed-wpm-selector">
+                    <button class="speed-wpm-btn active" onclick="setWPM(150)">150 WPM</button>
+                    <button class="speed-wpm-btn" onclick="setWPM(200)">200 WPM</button>
+                    <button class="speed-wpm-btn" onclick="setWPM(300)">300 WPM</button>
+                    <button class="speed-wpm-btn" onclick="setWPM(400)">400 WPM</button>
+                </div>
+                <div class="speed-read-display" id="speedReadDisplay">Press Start to begin!</div>
+                <div class="speed-read-controls">
+                    <button onclick="startSpeedRead()" style="background:#00bcd4;color:white;">▶ Start</button>
+                    <button onclick="pauseSpeedRead()" style="background:#ff9800;color:white;">⏸ Pause</button>
+                    <button onclick="resetSpeedRead()" style="background:#f44336;color:white;">↺ Reset</button>
+                    <button onclick="nextPassage()" style="background:#4caf50;color:white;">Next →</button>
+                </div>
+                <p style="text-align:center;margin-top:15px;color:#666;font-size:0.9rem;" id="speedReadProgress">Passage 1 of 5</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formula Cards Button -->
+    <button class="formula-btn" onclick="openFormulas()" title="Formula Cards">∑</button>
+
+    <!-- Formula Cards Modal -->
+    <div class="formula-modal" id="formulaModal">
+        <div class="formula-content">
+            <div class="formula-header">
+                <h3 style="margin:0;">∑ Formula Cards</h3>
+                <button onclick="closeFormulas()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="formula-body">
+                <div class="formula-card" id="formulaCard">
+                    <div class="formula-name" id="formulaName">Loading...</div>
+                    <div class="formula-equation" id="formulaEquation">...</div>
+                    <div class="formula-description" id="formulaDesc">...</div>
+                </div>
+                <div class="formula-nav">
+                    <button onclick="prevFormula()">← Prev</button>
+                    <button onclick="nextFormula()">Next →</button>
+                </div>
+                <div class="formula-counter" id="formulaCounter">1 / 12</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Streak Button -->
+    <button class="streak-btn" onclick="openStreak()" title="Daily Streak">🔥</button>
+
+    <!-- Daily Streak Modal -->
+    <div class="streak-modal" id="streakModal">
+        <div class="streak-content">
+            <div class="streak-header">
+                <h3 style="margin:0;">🔥 Daily Streak</h3>
+                <button onclick="closeStreak()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="streak-body">
+                <div class="streak-number" id="streakNumber">0</div>
+                <div class="streak-label">Day Streak!</div>
+                <div class="streak-calendar" id="streakCalendar"></div>
+                <div class="streak-message" id="streakMessage">Start studying to build your streak!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Speed Reading System
+        const passages = [
+            "The cell is the basic unit of life. All living organisms are composed of cells. Cells contain genetic material that controls their functions. The cell membrane protects the cell and regulates what enters and exits. Inside the cell, the cytoplasm contains organelles that perform specific tasks.",
+            "Energy cannot be created or destroyed, only transformed from one form to another. This is the law of conservation of energy. In photosynthesis, light energy is converted to chemical energy. In respiration, chemical energy is converted to ATP for cellular processes.",
+            "The periodic table organizes elements by atomic number and properties. Elements in the same group have similar chemical properties. Metals are found on the left side, nonmetals on the right. The noble gases are unreactive due to their full outer electron shells.",
+            "Force equals mass times acceleration. This is Newton's second law of motion. When forces are balanced, objects remain stationary or move at constant velocity. Unbalanced forces cause acceleration. Gravity is a force that attracts objects with mass toward each other.",
+            "The water cycle describes how water moves through Earth's systems. Evaporation turns liquid water into vapor. Condensation forms clouds when water vapor cools. Precipitation returns water to Earth's surface as rain, snow, or hail."
+        ];
+
+        let currentPassageIndex = 0;
+        let currentWordIndex = 0;
+        let speedReadInterval = null;
+        let wordsPerMinute = 150;
+        let isPaused = false;
+
+        function openSpeedReading() {
+            document.getElementById('speedReadModal').classList.add('active');
+            updateSpeedReadProgress();
+        }
+
+        function closeSpeedReading() {
+            document.getElementById('speedReadModal').classList.remove('active');
+            pauseSpeedRead();
+        }
+
+        function setWPM(wpm) {
+            wordsPerMinute = wpm;
+            document.querySelectorAll('.speed-wpm-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(wpm));
+            });
+        }
+
+        function startSpeedRead() {
+            if (speedReadInterval) return;
+            const words = passages[currentPassageIndex].split(' ');
+            isPaused = false;
+
+            speedReadInterval = setInterval(() => {
+                if (currentWordIndex < words.length) {
+                    document.getElementById('speedReadDisplay').textContent = words[currentWordIndex];
+                    currentWordIndex++;
+                } else {
+                    pauseSpeedRead();
+                    document.getElementById('speedReadDisplay').textContent = '✓ Passage Complete!';
+                    addXP(10);
+                }
+            }, (60 / wordsPerMinute) * 1000);
+        }
+
+        function pauseSpeedRead() {
+            if (speedReadInterval) {
+                clearInterval(speedReadInterval);
+                speedReadInterval = null;
+                isPaused = true;
+            }
+        }
+
+        function resetSpeedRead() {
+            pauseSpeedRead();
+            currentWordIndex = 0;
+            document.getElementById('speedReadDisplay').textContent = 'Press Start to begin!';
+        }
+
+        function nextPassage() {
+            pauseSpeedRead();
+            currentPassageIndex = (currentPassageIndex + 1) % passages.length;
+            currentWordIndex = 0;
+            document.getElementById('speedReadDisplay').textContent = 'Press Start to begin!';
+            updateSpeedReadProgress();
+        }
+
+        function updateSpeedReadProgress() {
+            document.getElementById('speedReadProgress').textContent = `Passage ${currentPassageIndex + 1} of ${passages.length}`;
+        }
+
+        // Formula Cards System
+        const formulas = [
+            { name: 'Speed', equation: 'v = d / t', desc: 'Speed equals distance divided by time' },
+            { name: 'Force', equation: 'F = m × a', desc: 'Force equals mass times acceleration' },
+            { name: 'Work', equation: 'W = F × d', desc: 'Work equals force times distance' },
+            { name: 'Power', equation: 'P = W / t', desc: 'Power equals work divided by time' },
+            { name: 'Kinetic Energy', equation: 'KE = ½mv²', desc: 'Half mass times velocity squared' },
+            { name: 'Potential Energy', equation: 'PE = mgh', desc: 'Mass times gravity times height' },
+            { name: 'Density', equation: 'ρ = m / V', desc: 'Density equals mass divided by volume' },
+            { name: 'Pressure', equation: 'P = F / A', desc: 'Pressure equals force divided by area' },
+            { name: 'Ohms Law', equation: 'V = I × R', desc: 'Voltage equals current times resistance' },
+            { name: 'Wave Speed', equation: 'v = f × λ', desc: 'Wave speed equals frequency times wavelength' },
+            { name: 'Weight', equation: 'W = m × g', desc: 'Weight equals mass times gravity' },
+            { name: 'Momentum', equation: 'p = m × v', desc: 'Momentum equals mass times velocity' }
+        ];
+
+        let currentFormulaIndex = 0;
+
+        function openFormulas() {
+            document.getElementById('formulaModal').classList.add('active');
+            updateFormulaDisplay();
+        }
+
+        function closeFormulas() {
+            document.getElementById('formulaModal').classList.remove('active');
+        }
+
+        function updateFormulaDisplay() {
+            const f = formulas[currentFormulaIndex];
+            document.getElementById('formulaName').textContent = f.name;
+            document.getElementById('formulaEquation').textContent = f.equation;
+            document.getElementById('formulaDesc').textContent = f.desc;
+            document.getElementById('formulaCounter').textContent = `${currentFormulaIndex + 1} / ${formulas.length}`;
+        }
+
+        function nextFormula() {
+            currentFormulaIndex = (currentFormulaIndex + 1) % formulas.length;
+            updateFormulaDisplay();
+        }
+
+        function prevFormula() {
+            currentFormulaIndex = (currentFormulaIndex - 1 + formulas.length) % formulas.length;
+            updateFormulaDisplay();
+        }
+
+        // Daily Streak System
+        function openStreak() {
+            document.getElementById('streakModal').classList.add('active');
+            updateStreakDisplay();
+        }
+
+        function closeStreak() {
+            document.getElementById('streakModal').classList.remove('active');
+        }
+
+        function getStreakData() {
+            const data = JSON.parse(localStorage.getItem('dailyStreakData') || '{}');
+            return {
+                streak: data.streak || 0,
+                lastDate: data.lastDate || null,
+                activeDays: data.activeDays || []
+            };
+        }
+
+        function saveStreakData(data) {
+            localStorage.setItem('dailyStreakData', JSON.stringify(data));
+        }
+
+        function checkAndUpdateStreak() {
+            const data = getStreakData();
+            const today = new Date().toISOString().split('T')[0];
+
+            if (data.lastDate === today) return data.streak;
+
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+            if (data.lastDate === yesterdayStr) {
+                data.streak++;
+            } else if (data.lastDate !== today) {
+                data.streak = 1;
+            }
+
+            data.lastDate = today;
+            if (!data.activeDays.includes(today)) {
+                data.activeDays.push(today);
+                if (data.activeDays.length > 30) data.activeDays.shift();
+            }
+
+            saveStreakData(data);
+            return data.streak;
+        }
+
+        function updateStreakDisplay() {
+            const data = getStreakData();
+            document.getElementById('streakNumber').textContent = data.streak;
+
+            // Generate calendar for last 14 days
+            const calendar = document.getElementById('streakCalendar');
+            calendar.innerHTML = '';
+            const today = new Date();
+
+            for (let i = 13; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const dayNum = date.getDate();
+
+                const dayEl = document.createElement('div');
+                dayEl.className = 'streak-day';
+                if (data.activeDays.includes(dateStr)) dayEl.classList.add('active');
+                if (i === 0) dayEl.classList.add('today');
+                dayEl.textContent = dayNum;
+                calendar.appendChild(dayEl);
+            }
+
+            // Update message based on streak
+            const messages = [
+                { min: 0, msg: 'Start studying to build your streak!' },
+                { min: 1, msg: 'Great start! Keep it going!' },
+                { min: 3, msg: '3 days strong! You\'re on fire!' },
+                { min: 7, msg: 'One week streak! Amazing dedication!' },
+                { min: 14, msg: '2 weeks! You\'re unstoppable!' },
+                { min: 30, msg: 'One month streak! Science champion!' }
+            ];
+
+            const message = messages.reverse().find(m => data.streak >= m.min);
+            document.getElementById('streakMessage').textContent = message.msg;
+        }
+
+        // Initialize streak on page load
+        checkAndUpdateStreak();
+        updateFormulaDisplay();
+
+        console.log('📖 Speed Reading, Formula Cards, and Daily Streak loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
