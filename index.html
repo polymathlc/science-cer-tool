@@ -32804,6 +32804,270 @@
             resize: none;
             box-sizing: border-box;
         }
+
+        /* Batch 90: Quiz History */
+        .quiz-history-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2950px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1976d2, #64b5f6);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-history-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.5);
+        }
+
+        .quiz-history-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quiz-history-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .history-score {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .history-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        /* Science Challenge */
+        .challenge-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2710px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e91e63, #f48fb1);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.5);
+        }
+
+        .challenge-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .challenge-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .challenge-timer {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #e91e63;
+            margin: 15px 0;
+        }
+
+        .challenge-question {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #880e4f;
+        }
+
+        .challenge-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #f48fb1;
+            border-radius: 10px;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        /* Learning Path */
+        .learning-path-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 2770px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00796b, #4db6ac);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 121, 107, 0.4);
+            z-index: 999;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .learning-path-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 121, 107, 0.5);
+        }
+
+        .learning-path-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .learning-path-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .path-topic {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #e0f2f1;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .path-topic:hover {
+            background: #b2dfdb;
+        }
+
+        .path-topic.completed {
+            background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+        }
+
+        .path-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #00796b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .path-topic.completed .path-number {
+            background: #4caf50;
+        }
+
+        .path-info {
+            flex: 1;
+        }
+
+        .path-title {
+            font-weight: bold;
+            color: #00695c;
+        }
+
+        .path-desc {
+            font-size: 0.85rem;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -80123,6 +80387,291 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('📖 Science Dictionary, Study Streak, and Quick Notes loaded!');
+
+        // ========== BATCH 90: Quiz History, Science Challenge, Learning Path ==========
+
+        // Quiz History Button
+        const quizHistoryBtn = document.createElement('button');
+        quizHistoryBtn.className = 'quiz-history-btn';
+        quizHistoryBtn.innerHTML = '📊';
+        quizHistoryBtn.title = 'Quiz History';
+        quizHistoryBtn.onclick = () => openQuizHistoryModal();
+        document.body.appendChild(quizHistoryBtn);
+
+        // Quiz History Modal
+        const quizHistoryModal = document.createElement('div');
+        quizHistoryModal.className = 'quiz-history-modal';
+        quizHistoryModal.id = 'quizHistoryModal';
+        quizHistoryModal.innerHTML = `
+            <div class="quiz-history-content">
+                <h3 style="color: #1976d2; margin-bottom: 15px;">📊 Quiz Performance</h3>
+                <div class="history-stats" id="quizStats"></div>
+                <h4 style="color: #1976d2; margin-bottom: 10px;">Recent Attempts</h4>
+                <div id="quizHistoryList"></div>
+                <button onclick="closeQuizHistoryModal()" style="margin-top: 15px; padding: 10px 25px; background: #1976d2; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(quizHistoryModal);
+
+        function getQuizHistory() {
+            return JSON.parse(localStorage.getItem('quizHistory') || '[]');
+        }
+
+        function saveQuizResult(score, total, topic) {
+            const history = getQuizHistory();
+            history.unshift({
+                score,
+                total,
+                topic: topic || 'General',
+                date: new Date().toLocaleString(),
+                percentage: Math.round((score / total) * 100)
+            });
+            localStorage.setItem('quizHistory', JSON.stringify(history.slice(0, 20)));
+        }
+
+        function openQuizHistoryModal() {
+            document.getElementById('quizHistoryModal').style.display = 'flex';
+            renderQuizHistory();
+        }
+
+        function closeQuizHistoryModal() {
+            document.getElementById('quizHistoryModal').style.display = 'none';
+        }
+
+        function renderQuizHistory() {
+            const history = getQuizHistory();
+
+            // Calculate stats
+            const totalQuizzes = history.length;
+            const avgScore = totalQuizzes > 0 ? Math.round(history.reduce((sum, h) => sum + h.percentage, 0) / totalQuizzes) : 0;
+            const bestScore = totalQuizzes > 0 ? Math.max(...history.map(h => h.percentage)) : 0;
+
+            document.getElementById('quizStats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${totalQuizzes}</div>
+                    <div class="stat-label">Total Quizzes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${avgScore}%</div>
+                    <div class="stat-label">Average</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${bestScore}%</div>
+                    <div class="stat-label">Best Score</div>
+                </div>
+            `;
+
+            if (history.length === 0) {
+                document.getElementById('quizHistoryList').innerHTML = '<p style="text-align: center; color: #999;">No quiz history yet. Take a quiz to see results!</p>';
+            } else {
+                document.getElementById('quizHistoryList').innerHTML = history.slice(0, 8).map(h => `
+                    <div class="history-item">
+                        <div>
+                            <strong>${h.topic}</strong>
+                            <div class="history-date">${h.date}</div>
+                        </div>
+                        <div class="history-score">${h.score}/${h.total} (${h.percentage}%)</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Science Challenge Button
+        const challengeBtn = document.createElement('button');
+        challengeBtn.className = 'challenge-btn';
+        challengeBtn.innerHTML = '⚡';
+        challengeBtn.title = 'Speed Challenge';
+        challengeBtn.onclick = () => openChallengeModal();
+        document.body.appendChild(challengeBtn);
+
+        // Science Challenge Modal
+        const challengeModal = document.createElement('div');
+        challengeModal.className = 'challenge-modal';
+        challengeModal.id = 'challengeModal';
+        challengeModal.innerHTML = `
+            <div class="challenge-content">
+                <h3 style="color: #e91e63; margin-bottom: 10px;">⚡ Speed Challenge</h3>
+                <p style="color: #666;">Answer as many as you can in 60 seconds!</p>
+                <div class="challenge-timer" id="challengeTimer">60</div>
+                <div class="challenge-question" id="challengeQuestion">Ready?</div>
+                <input type="text" class="challenge-input" id="challengeAnswer" placeholder="Type your answer..." onkeypress="if(event.key==='Enter')submitChallengeAnswer()">
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button id="challengeStartBtn" onclick="startChallenge()" style="padding: 12px 25px; background: #e91e63; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold;">Start!</button>
+                    <button onclick="closeChallengeModal()" style="padding: 12px 25px; background: #9e9e9e; color: white; border: none; border-radius: 25px; cursor: pointer;">Close</button>
+                </div>
+                <p id="challengeScore" style="margin-top: 15px; font-weight: bold; color: #e91e63;"></p>
+            </div>
+        `;
+        document.body.appendChild(challengeModal);
+
+        const challengeQuestions = [
+            { q: 'Chemical symbol for water?', a: ['h2o'] },
+            { q: 'How many planets in our solar system?', a: ['8', 'eight'] },
+            { q: 'What gas do we breathe in?', a: ['oxygen', 'o2'] },
+            { q: 'Powerhouse of the cell?', a: ['mitochondria'] },
+            { q: 'Speed of light in m/s? (just the number)', a: ['300000000', '3e8'] },
+            { q: 'Formula for force?', a: ['f=ma', 'ma', 'fma'] },
+            { q: 'Atomic number of carbon?', a: ['6', 'six'] },
+            { q: 'What organ pumps blood?', a: ['heart'] },
+            { q: 'Largest planet?', a: ['jupiter'] },
+            { q: 'Unit of electrical resistance?', a: ['ohm', 'ohms'] },
+            { q: 'Process plants make food?', a: ['photosynthesis'] },
+            { q: 'Number of bones in adult human?', a: ['206'] },
+            { q: 'Chemical formula for salt?', a: ['nacl'] },
+            { q: 'What planet is closest to the sun?', a: ['mercury'] },
+            { q: 'Unit of force?', a: ['newton', 'newtons', 'n'] }
+        ];
+
+        let challengeTime = 60;
+        let challengeInterval = null;
+        let currentChallengeQ = null;
+        let challengeCorrect = 0;
+
+        function openChallengeModal() {
+            document.getElementById('challengeModal').style.display = 'flex';
+            resetChallenge();
+        }
+
+        function closeChallengeModal() {
+            document.getElementById('challengeModal').style.display = 'none';
+            if (challengeInterval) clearInterval(challengeInterval);
+        }
+
+        function resetChallenge() {
+            challengeTime = 60;
+            challengeCorrect = 0;
+            document.getElementById('challengeTimer').textContent = '60';
+            document.getElementById('challengeQuestion').textContent = 'Ready?';
+            document.getElementById('challengeAnswer').value = '';
+            document.getElementById('challengeScore').textContent = '';
+            document.getElementById('challengeStartBtn').style.display = 'inline-block';
+            document.getElementById('challengeAnswer').disabled = true;
+        }
+
+        function startChallenge() {
+            document.getElementById('challengeStartBtn').style.display = 'none';
+            document.getElementById('challengeAnswer').disabled = false;
+            document.getElementById('challengeAnswer').focus();
+            nextChallengeQuestion();
+
+            challengeInterval = setInterval(() => {
+                challengeTime--;
+                document.getElementById('challengeTimer').textContent = challengeTime;
+
+                if (challengeTime <= 0) {
+                    endChallenge();
+                }
+            }, 1000);
+        }
+
+        function nextChallengeQuestion() {
+            currentChallengeQ = challengeQuestions[Math.floor(Math.random() * challengeQuestions.length)];
+            document.getElementById('challengeQuestion').textContent = currentChallengeQ.q;
+            document.getElementById('challengeAnswer').value = '';
+        }
+
+        function submitChallengeAnswer() {
+            if (!currentChallengeQ || challengeTime <= 0) return;
+
+            const answer = document.getElementById('challengeAnswer').value.toLowerCase().trim();
+            if (currentChallengeQ.a.includes(answer)) {
+                challengeCorrect++;
+                document.getElementById('challengeScore').textContent = `✓ Correct! Score: ${challengeCorrect}`;
+            } else {
+                document.getElementById('challengeScore').textContent = `✗ Try again! Score: ${challengeCorrect}`;
+            }
+            nextChallengeQuestion();
+        }
+
+        function endChallenge() {
+            clearInterval(challengeInterval);
+            document.getElementById('challengeAnswer').disabled = true;
+            document.getElementById('challengeQuestion').textContent = 'Time\'s up!';
+            document.getElementById('challengeScore').textContent = `Final Score: ${challengeCorrect} correct answers! +${challengeCorrect * 10} XP`;
+            document.getElementById('challengeStartBtn').textContent = 'Play Again';
+            document.getElementById('challengeStartBtn').style.display = 'inline-block';
+            document.getElementById('challengeStartBtn').onclick = resetChallenge;
+            addXP(challengeCorrect * 10);
+            saveQuizResult(challengeCorrect, 15, 'Speed Challenge');
+        }
+
+        // Learning Path Button
+        const learningPathBtn = document.createElement('button');
+        learningPathBtn.className = 'learning-path-btn';
+        learningPathBtn.innerHTML = '🛤️';
+        learningPathBtn.title = 'Learning Path';
+        learningPathBtn.onclick = () => openLearningPathModal();
+        document.body.appendChild(learningPathBtn);
+
+        // Learning Path Modal
+        const learningPathModal = document.createElement('div');
+        learningPathModal.className = 'learning-path-modal';
+        learningPathModal.id = 'learningPathModal';
+        learningPathModal.innerHTML = `
+            <div class="learning-path-content">
+                <h3 style="color: #00796b; margin-bottom: 15px;">🛤️ Your Learning Path</h3>
+                <p style="color: #666; margin-bottom: 15px;">Follow this suggested progression to master science!</p>
+                <div id="learningPathList"></div>
+                <button onclick="closeLearningPathModal()" style="margin-top: 15px; padding: 10px 25px; background: #00796b; color: white; border: none; border-radius: 20px; cursor: pointer; width: 100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(learningPathModal);
+
+        const learningTopics = [
+            { id: 1, title: 'Scientific Method', desc: 'Learn how scientists investigate and discover' },
+            { id: 2, title: 'Matter & States', desc: 'Understand solids, liquids, gases, and changes' },
+            { id: 3, title: 'Atomic Structure', desc: 'Explore atoms, protons, neutrons, electrons' },
+            { id: 4, title: 'Chemical Reactions', desc: 'Learn how substances combine and change' },
+            { id: 5, title: 'Forces & Motion', desc: 'Master Newton\'s laws and movement' },
+            { id: 6, title: 'Energy Forms', desc: 'Understand kinetic, potential, and other energies' },
+            { id: 7, title: 'Waves & Light', desc: 'Explore sound, light, and electromagnetic spectrum' },
+            { id: 8, title: 'Cell Biology', desc: 'Discover cell structure and function' },
+            { id: 9, title: 'Genetics & DNA', desc: 'Learn about heredity and genetic code' },
+            { id: 10, title: 'Ecosystems', desc: 'Understand food webs and environmental science' }
+        ];
+
+        function getCompletedTopics() {
+            return JSON.parse(localStorage.getItem('completedTopics') || '[]');
+        }
+
+        function toggleTopicComplete(id) {
+            let completed = getCompletedTopics();
+            if (completed.includes(id)) {
+                completed = completed.filter(x => x !== id);
+            } else {
+                completed.push(id);
+                addXP(30);
+            }
+            localStorage.setItem('completedTopics', JSON.stringify(completed));
+            renderLearningPath();
+        }
+
+        function openLearningPathModal() {
+            document.getElementById('learningPathModal').style.display = 'flex';
+            renderLearningPath();
+        }
+
+        function closeLearningPathModal() {
+            document.getElementById('learningPathModal').style.display = 'none';
+        }
+
+        function renderLearningPath() {
+            const completed = getCompletedTopics();
+            document.getElementById('learningPathList').innerHTML = learningTopics.map(topic => {
+                const isCompleted = completed.includes(topic.id);
+                return `
+                    <div class="path-topic ${isCompleted ? 'completed' : ''}" onclick="toggleTopicComplete(${topic.id})">
+                        <div class="path-number">${isCompleted ? '✓' : topic.id}</div>
+                        <div class="path-info">
+                            <div class="path-title">${topic.title}</div>
+                            <div class="path-desc">${topic.desc}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        console.log('📊 Quiz History, Science Challenge, and Learning Path loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
