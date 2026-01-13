@@ -20862,6 +20862,293 @@
         .floating-bookmark-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ========== Batch 52: Scoreboard, Question Timer, Motivation Quotes ========== */
+
+        /* Scoreboard Styles */
+        .scoreboard-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scoreboard-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .scoreboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .scoreboard-header h2 {
+            color: #ffd700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scoreboard-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .scoreboard-tab {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .scoreboard-tab.active {
+            background: linear-gradient(135deg, #ffd700 0%, #ffeb3b 100%);
+            color: #000;
+            font-weight: bold;
+        }
+
+        .score-entry {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .score-rank {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-right: 15px;
+        }
+
+        .score-rank.gold {
+            background: linear-gradient(135deg, #ffd700 0%, #ffeb3b 100%);
+            color: #000;
+        }
+
+        .score-rank.silver {
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            color: #000;
+        }
+
+        .score-rank.bronze {
+            background: linear-gradient(135deg, #cd7f32 0%, #dda15e 100%);
+            color: #fff;
+        }
+
+        .score-rank.normal {
+            background: rgba(255, 255, 255, 0.1);
+            color: #888;
+        }
+
+        .score-info {
+            flex: 1;
+        }
+
+        .score-name {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .score-date {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .score-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        /* Question Timer Styles */
+        .question-timer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4caf50;
+            border: 3px solid #4caf50;
+        }
+
+        .question-timer.warning {
+            color: #ff9800;
+            border-color: #ff9800;
+            animation: timer-pulse 0.5s ease-in-out infinite;
+        }
+
+        .question-timer.danger {
+            color: #f44336;
+            border-color: #f44336;
+            animation: timer-pulse 0.3s ease-in-out infinite;
+        }
+
+        @keyframes timer-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Motivation Quotes Styles */
+        .motivation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .motivation-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 95%;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .motivation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .motivation-header h2 {
+            color: #4caf50;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quote-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .quote-text {
+            font-size: 1.3rem;
+            color: #fff;
+            line-height: 1.6;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .quote-author {
+            color: #81c784;
+            font-size: 1rem;
+        }
+
+        .quote-category {
+            display: inline-block;
+            background: rgba(76, 175, 80, 0.2);
+            color: #81c784;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        .new-quote-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Floating Buttons for Batch 52 */
+        .floating-scoreboard-btn {
+            position: fixed;
+            bottom: 5080px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700 0%, #ffeb3b 100%);
+            color: #000;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-scoreboard-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-motivation-btn {
+            position: fixed;
+            bottom: 5140px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-motivation-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -56885,6 +57172,275 @@ Science Made Fun!
         }
 
         console.log('📅 Study Scheduler, Concept Map, and Bookmarks loaded!');
+    </script>
+
+    <!-- ========== Batch 52: Scoreboard, Question Timer, Motivation Quotes ========== -->
+
+    <!-- Scoreboard Floating Button -->
+    <button class="floating-scoreboard-btn" onclick="openScoreboard()" title="Scoreboard">🏆</button>
+
+    <!-- Motivation Quotes Floating Button -->
+    <button class="floating-motivation-btn" onclick="openMotivation()" title="Daily Motivation">💪</button>
+
+    <!-- Scoreboard Modal -->
+    <div class="scoreboard-modal" id="scoreboard-modal">
+        <div class="scoreboard-content">
+            <div class="scoreboard-header">
+                <h2>🏆 Scoreboard</h2>
+                <button onclick="closeScoreboard()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="scoreboard-tabs">
+                <button class="scoreboard-tab active" onclick="switchScoreTab('daily')">Today</button>
+                <button class="scoreboard-tab" onclick="switchScoreTab('weekly')">This Week</button>
+                <button class="scoreboard-tab" onclick="switchScoreTab('alltime')">All Time</button>
+            </div>
+            <div id="scoreboard-list"></div>
+        </div>
+    </div>
+
+    <!-- Motivation Quotes Modal -->
+    <div class="motivation-modal" id="motivation-modal">
+        <div class="motivation-content">
+            <div class="motivation-header">
+                <h2>💪 Daily Motivation</h2>
+                <button onclick="closeMotivation()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="quote-icon" id="quote-icon">🌟</div>
+            <div class="quote-text" id="quote-text"></div>
+            <div class="quote-author" id="quote-author"></div>
+            <div class="quote-category" id="quote-category"></div>
+            <button class="new-quote-btn" onclick="showRandomQuote()">🔄 New Quote</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== Scoreboard System ==========
+        let scoreHistory = JSON.parse(localStorage.getItem('scoreHistory') || '[]');
+        let currentScoreTab = 'daily';
+
+        function openScoreboard() {
+            document.getElementById('scoreboard-modal').style.display = 'flex';
+            renderScoreboard();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeScoreboard() {
+            document.getElementById('scoreboard-modal').style.display = 'none';
+        }
+
+        function recordScore(score, gameType) {
+            const entry = {
+                id: Date.now(),
+                score: score,
+                gameType: gameType || 'Quiz',
+                timestamp: new Date().toISOString(),
+                playerName: localStorage.getItem('playerName') || 'Student'
+            };
+            scoreHistory.push(entry);
+            // Keep only last 100 scores
+            if (scoreHistory.length > 100) {
+                scoreHistory = scoreHistory.slice(-100);
+            }
+            localStorage.setItem('scoreHistory', JSON.stringify(scoreHistory));
+        }
+
+        function switchScoreTab(tab) {
+            currentScoreTab = tab;
+            document.querySelectorAll('.scoreboard-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            renderScoreboard();
+        }
+
+        function renderScoreboard() {
+            const list = document.getElementById('scoreboard-list');
+            const now = new Date();
+            let filteredScores = [];
+
+            if (currentScoreTab === 'daily') {
+                const today = now.toDateString();
+                filteredScores = scoreHistory.filter(s => new Date(s.timestamp).toDateString() === today);
+            } else if (currentScoreTab === 'weekly') {
+                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                filteredScores = scoreHistory.filter(s => new Date(s.timestamp) >= weekAgo);
+            } else {
+                filteredScores = [...scoreHistory];
+            }
+
+            // Sort by score descending
+            filteredScores.sort((a, b) => b.score - a.score);
+            const topScores = filteredScores.slice(0, 10);
+
+            if (topScores.length === 0) {
+                list.innerHTML = '<p style="color:#888;text-align:center;padding:30px;">No scores recorded yet. Start playing to see your scores here!</p>';
+                return;
+            }
+
+            list.innerHTML = topScores.map((entry, i) => {
+                let rankClass = 'normal';
+                if (i === 0) rankClass = 'gold';
+                else if (i === 1) rankClass = 'silver';
+                else if (i === 2) rankClass = 'bronze';
+
+                const date = new Date(entry.timestamp);
+                const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                return `
+                    <div class="score-entry">
+                        <div class="score-rank ${rankClass}">${i + 1}</div>
+                        <div class="score-info">
+                            <div class="score-name">${entry.playerName}</div>
+                            <div class="score-date">${entry.gameType} • ${dateStr}</div>
+                        </div>
+                        <div class="score-value">${entry.score}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== Question Timer System ==========
+        let questionTimers = {};
+
+        function startQuestionTimer(questionId, seconds = 60) {
+            // Clear existing timer if any
+            if (questionTimers[questionId]) {
+                clearInterval(questionTimers[questionId].interval);
+            }
+
+            const timerData = {
+                timeLeft: seconds,
+                totalTime: seconds,
+                interval: null
+            };
+
+            // Create timer element if it doesn't exist
+            const question = document.getElementById(questionId);
+            if (!question) return;
+
+            let timerEl = question.querySelector('.question-timer');
+            if (!timerEl) {
+                timerEl = document.createElement('div');
+                timerEl.className = 'question-timer';
+                question.style.position = 'relative';
+                question.appendChild(timerEl);
+            }
+
+            timerEl.textContent = seconds;
+            timerEl.className = 'question-timer';
+
+            timerData.interval = setInterval(() => {
+                timerData.timeLeft--;
+                timerEl.textContent = timerData.timeLeft;
+
+                // Update color based on time remaining
+                const percentLeft = timerData.timeLeft / timerData.totalTime;
+                if (percentLeft <= 0.2) {
+                    timerEl.className = 'question-timer danger';
+                } else if (percentLeft <= 0.5) {
+                    timerEl.className = 'question-timer warning';
+                }
+
+                if (timerData.timeLeft <= 0) {
+                    clearInterval(timerData.interval);
+                    timerEl.textContent = '0';
+                    if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('error');
+                }
+            }, 1000);
+
+            questionTimers[questionId] = timerData;
+        }
+
+        function stopQuestionTimer(questionId) {
+            if (questionTimers[questionId]) {
+                clearInterval(questionTimers[questionId].interval);
+                const question = document.getElementById(questionId);
+                if (question) {
+                    const timerEl = question.querySelector('.question-timer');
+                    if (timerEl) timerEl.remove();
+                }
+                delete questionTimers[questionId];
+            }
+        }
+
+        function getQuestionTimeUsed(questionId) {
+            if (questionTimers[questionId]) {
+                return questionTimers[questionId].totalTime - questionTimers[questionId].timeLeft;
+            }
+            return 0;
+        }
+
+        // ========== Motivation Quotes System ==========
+        const motivationQuotes = [
+            { text: "The more that you read, the more things you will know. The more that you learn, the more places you'll go.", author: "Dr. Seuss", category: "Learning", icon: "📚" },
+            { text: "Science is not only a disciple of reason but also one of romance and passion.", author: "Stephen Hawking", category: "Science", icon: "🔬" },
+            { text: "Mistakes are proof that you are trying.", author: "Unknown", category: "Growth", icon: "🌱" },
+            { text: "The expert in anything was once a beginner.", author: "Helen Hayes", category: "Progress", icon: "⭐" },
+            { text: "Every accomplishment starts with the decision to try.", author: "John F. Kennedy", category: "Motivation", icon: "🚀" },
+            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs", category: "Passion", icon: "❤️" },
+            { text: "Curiosity is the wick in the candle of learning.", author: "William Arthur Ward", category: "Curiosity", icon: "🕯️" },
+            { text: "Education is the most powerful weapon which you can use to change the world.", author: "Nelson Mandela", category: "Education", icon: "🌍" },
+            { text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier", category: "Persistence", icon: "💪" },
+            { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson", category: "Perseverance", icon: "⏰" },
+            { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. King", category: "Learning", icon: "💎" },
+            { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius", category: "Progress", icon: "🐢" },
+            { text: "Science knows no country, because knowledge belongs to humanity.", author: "Louis Pasteur", category: "Science", icon: "🧪" },
+            { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt", category: "Belief", icon: "✨" },
+            { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins", category: "Action", icon: "🎯" }
+        ];
+
+        let currentQuoteIndex = 0;
+
+        function openMotivation() {
+            document.getElementById('motivation-modal').style.display = 'flex';
+            showDailyQuote();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeMotivation() {
+            document.getElementById('motivation-modal').style.display = 'none';
+        }
+
+        function showDailyQuote() {
+            // Use day of year to get consistent daily quote
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+            currentQuoteIndex = dayOfYear % motivationQuotes.length;
+            displayQuote(currentQuoteIndex);
+        }
+
+        function showRandomQuote() {
+            currentQuoteIndex = Math.floor(Math.random() * motivationQuotes.length);
+            displayQuote(currentQuoteIndex);
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function displayQuote(index) {
+            const quote = motivationQuotes[index];
+            document.getElementById('quote-icon').textContent = quote.icon;
+            document.getElementById('quote-text').textContent = `"${quote.text}"`;
+            document.getElementById('quote-author').textContent = `— ${quote.author}`;
+            document.getElementById('quote-category').textContent = quote.category;
+        }
+
+        // Show motivation quote on first visit of the day
+        function checkDailyMotivation() {
+            const lastVisit = localStorage.getItem('lastMotivationDate');
+            const today = new Date().toDateString();
+
+            if (lastVisit !== today) {
+                localStorage.setItem('lastMotivationDate', today);
+                // Show quote after a short delay
+                setTimeout(() => {
+                    openMotivation();
+                }, 2000);
+            }
+        }
+
+        // Check for daily motivation on page load
+        setTimeout(checkDailyMotivation, 3000);
+
+        console.log('🏆 Scoreboard, Question Timer, and Motivation Quotes loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
