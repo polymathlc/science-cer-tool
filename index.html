@@ -8521,7 +8521,7 @@
                 if (students.length > 1) {
                     studentSelector.style.display = 'block';
                     if (studentSelect.value) {
-                        selectedStudentIndex = parseInt(studentSelect.value);
+                        selectedStudentIndex = parseInt(studentSelect.value, 10);
                     }
                     // Populate selector if empty
                     if (studentSelect.options.length <= 1) {
@@ -10029,7 +10029,7 @@
                 // Handle admin test mode vs regular students
                 const isAdminMode = select.value === 'admin';
                 window.practiceState.currentStudent = {
-                    index: isAdminMode ? 0 : parseInt(select.value),
+                    index: isAdminMode ? 0 : parseInt(select.value, 10),
                     name: selectedOption.dataset.name,
                     level: selectedOption.dataset.level,
                     isAdminMode: isAdminMode
@@ -12400,7 +12400,7 @@
                         // Update students array
                         const updatedStudents = [...userData.students];
                         nameInputs.forEach(input => {
-                            const index = parseInt(input.dataset.index);
+                            const index = parseInt(input.dataset.index, 10);
                             if (updatedStudents[index]) {
                                 updatedStudents[index].name = input.value.trim();
                             }
@@ -13508,7 +13508,7 @@
                 if (btnColor.startsWith('rgb')) {
                     const rgb = btnColor.match(/\d+/g);
                     if (rgb) {
-                        hexColor = '#' + ((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1);
+                        hexColor = '#' + ((1 << 24) + (parseInt(rgb[0], 10) << 16) + (parseInt(rgb[1], 10) << 8) + parseInt(rgb[2], 10)).toString(16).slice(1);
                     }
                 }
                 const lighterColor = adjustColorBrightness(hexColor, 20);
@@ -14086,13 +14086,13 @@
         };
 
         function handleGridHover(e) {
-            const targetRow = parseInt(e.target.dataset.row);
-            const targetCol = parseInt(e.target.dataset.col);
+            const targetRow = parseInt(e.target.dataset.row, 10);
+            const targetCol = parseInt(e.target.dataset.col, 10);
             const cells = document.querySelectorAll('.table-grid-cell');
-            
+
             cells.forEach(cell => {
-                const cellRow = parseInt(cell.dataset.row);
-                const cellCol = parseInt(cell.dataset.col);
+                const cellRow = parseInt(cell.dataset.row, 10);
+                const cellCol = parseInt(cell.dataset.col, 10);
                 if (cellRow <= targetRow && cellCol <= targetCol) {
                     cell.classList.add('selected');
                 } else {
@@ -14104,8 +14104,8 @@
         }
 
         function handleGridClick(e) {
-            const rows = parseInt(e.target.dataset.row);
-            const cols = parseInt(e.target.dataset.col);
+            const rows = parseInt(e.target.dataset.row, 10);
+            const cols = parseInt(e.target.dataset.col, 10);
             createTableBlock(rows, cols);
             hideTableGridSelector();
         }
@@ -14404,9 +14404,9 @@
         window.colorPickerBlockId = null;
 
         window.selectTableCell = function(cell, event) {
-            const blockId = parseInt(cell.dataset.block);
-            const row = parseInt(cell.dataset.row);
-            const col = parseInt(cell.dataset.col);
+            const blockId = parseInt(cell.dataset.block, 10);
+            const row = parseInt(cell.dataset.row, 10);
+            const col = parseInt(cell.dataset.col, 10);
             
             // Check for Shift or Ctrl key for multi-selection
             if (event && (event.shiftKey || event.ctrlKey || event.metaKey)) {
@@ -14570,13 +14570,13 @@
             if (!block || block.type !== 'table' || !block.value.mergedCells) return;
             
             // Find which merge the selected cell belongs to
-            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
+            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block, 10) !== blockId) {
                 alert('Please click on a merged cell to unmerge it.');
                 return;
             }
-            
-            const row = parseInt(window.selectedTableCell.dataset.row);
-            const col = parseInt(window.selectedTableCell.dataset.col);
+
+            const row = parseInt(window.selectedTableCell.dataset.row, 10);
+            const col = parseInt(window.selectedTableCell.dataset.col, 10);
             
             // Find the merge that contains this cell
             const mergeIndex = block.value.mergedCells.findIndex(merge => 
@@ -14603,9 +14603,9 @@
         // ==================== END MERGE CELLS FUNCTIONS ====================
 
         window.updateTableCell = function(cell) {
-            const blockId = parseInt(cell.dataset.block);
-            const row = parseInt(cell.dataset.row);
-            const col = parseInt(cell.dataset.col);
+            const blockId = parseInt(cell.dataset.block, 10);
+            const row = parseInt(cell.dataset.row, 10);
+            const col = parseInt(cell.dataset.col, 10);
             
             const block = window.adminBlocks.find(b => b.id === blockId);
             if (block && block.type === 'table') {
@@ -14673,14 +14673,14 @@
             }
             
             // Fall back to single cell
-            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
+            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block, 10) !== blockId) {
                 alert('Please select a cell, row, column, or table first.');
                 return;
             }
-            
+
             const cell = window.selectedTableCell;
-            const row = parseInt(cell.dataset.row);
-            const col = parseInt(cell.dataset.col);
+            const row = parseInt(cell.dataset.row, 10);
+            const col = parseInt(cell.dataset.col, 10);
             
             cell.style.textAlign = alignment;
             block.value.cells[row][col].align = alignment;
@@ -14743,14 +14743,14 @@
             }
             
             // Fall back to single cell
-            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block) !== blockId) {
+            if (!window.selectedTableCell || parseInt(window.selectedTableCell.dataset.block, 10) !== blockId) {
                 alert('Please select a cell, row, column, or table first.');
                 return;
             }
-            
+
             const cell = window.selectedTableCell;
-            const row = parseInt(cell.dataset.row);
-            const col = parseInt(cell.dataset.col);
+            const row = parseInt(cell.dataset.row, 10);
+            const col = parseInt(cell.dataset.col, 10);
             
             cell.style.verticalAlign = vAlign;
             block.value.cells[row][col].vAlign = vAlign;
@@ -14763,7 +14763,7 @@
             // Check if we have a selection or selected cell
             const hasTableSelection = window.tableSelection.blockId === blockId && window.tableSelection.type;
             const hasMultiSelect = window.selectedCells.filter(c => c.blockId === blockId).length > 0;
-            const hasCell = window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId;
+            const hasCell = window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block, 10) === blockId;
             
             if (!hasTableSelection && !hasMultiSelect && !hasCell) {
                 alert('Please select a cell, row, column, or table first.');
@@ -14867,9 +14867,9 @@
                     });
                 }
                 // Fall back to single cell
-                else if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
-                    const row = parseInt(window.selectedTableCell.dataset.row);
-                    const col = parseInt(window.selectedTableCell.dataset.col);
+                else if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block, 10) === blockId) {
+                    const row = parseInt(window.selectedTableCell.dataset.row, 10);
+                    const col = parseInt(window.selectedTableCell.dataset.col, 10);
                     window.selectedTableCell.style.backgroundColor = color;
                     block.value.cells[row][col].bgColor = color;
                 }
@@ -14913,8 +14913,8 @@
             
             let rowToDelete = block.value.rows - 1; // Default to last row
             
-            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
-                rowToDelete = parseInt(window.selectedTableCell.dataset.row);
+            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block, 10) === blockId) {
+                rowToDelete = parseInt(window.selectedTableCell.dataset.row, 10);
             }
             
             block.value.cells.splice(rowToDelete, 1);
@@ -14961,8 +14961,8 @@
             
             let colToDelete = block.value.cols - 1; // Default to last column
             
-            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
-                colToDelete = parseInt(window.selectedTableCell.dataset.col);
+            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block, 10) === blockId) {
+                colToDelete = parseInt(window.selectedTableCell.dataset.col, 10);
             }
             
             for (let r = 0; r < block.value.rows; r++) {
@@ -14995,8 +14995,8 @@
             
             // Use currently selected cell's row, or default to first row
             let rowIndex = 0;
-            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
-                rowIndex = parseInt(window.selectedTableCell.dataset.row);
+            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block, 10) === blockId) {
+                rowIndex = parseInt(window.selectedTableCell.dataset.row, 10);
             }
             
             window.tableSelection = { blockId, type: 'row', row: rowIndex, col: null };
@@ -15022,8 +15022,8 @@
             
             // Use currently selected cell's column, or default to first column
             let colIndex = 0;
-            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block) === blockId) {
-                colIndex = parseInt(window.selectedTableCell.dataset.col);
+            if (window.selectedTableCell && parseInt(window.selectedTableCell.dataset.block, 10) === blockId) {
+                colIndex = parseInt(window.selectedTableCell.dataset.col, 10);
             }
             
             window.tableSelection = { blockId, type: 'col', row: null, col: colIndex };
@@ -15084,9 +15084,9 @@
             const isRightEdge = event.clientX >= rect.right - edgeThreshold;
             const isBottomEdge = event.clientY >= rect.bottom - edgeThreshold;
             
-            const blockId = parseInt(cell.dataset.block);
-            const col = parseInt(cell.dataset.col);
-            const row = parseInt(cell.dataset.row);
+            const blockId = parseInt(cell.dataset.block, 10);
+            const col = parseInt(cell.dataset.col, 10);
+            const row = parseInt(cell.dataset.row, 10);
             const block = window.adminBlocks?.find(b => b.id === blockId);
             
             if (!block) return;
@@ -16003,8 +16003,8 @@
                                 colIdx++;
                             }
                             
-                            const colspan = parseInt(cell.getAttribute('colspan')) || 1;
-                            const rowspan = parseInt(cell.getAttribute('rowspan')) || 1;
+                            const colspan = parseInt(cell.getAttribute('colspan'), 10) || 1;
+                            const rowspan = parseInt(cell.getAttribute('rowspan'), 10) || 1;
                             
                             // Mark cells as occupied
                             for (let r = 0; r < rowspan; r++) {
@@ -16078,7 +16078,7 @@
                         tableData.cells.push(rowData);
                         
                         // Extract row height
-                        const rowHeight = parseInt(rows[r].style.height) || null;
+                        const rowHeight = parseInt(rows[r].style.height, 10) || null;
                         if (rowHeight) {
                             tableData.rowHeights[r] = rowHeight;
                         }
@@ -16090,11 +16090,11 @@
                         while (occupiedGrid[`0-${colIdx}`] && !occupiedGrid[`0-${colIdx}`].isOrigin) {
                             colIdx++;
                         }
-                        const colWidth = parseInt(cell.style.width) || null;
+                        const colWidth = parseInt(cell.style.width, 10) || null;
                         if (colWidth) {
                             tableData.colWidths[colIdx] = colWidth;
                         }
-                        const colspan = parseInt(cell.getAttribute('colspan')) || 1;
+                        const colspan = parseInt(cell.getAttribute('colspan'), 10) || 1;
                         colIdx += colspan;
                     });
                     
