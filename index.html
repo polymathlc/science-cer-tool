@@ -29374,6 +29374,301 @@
             color: #e65100;
             font-weight: bold;
         }
+
+        /* Batch 78: Science Crossword */
+        .crossword-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1510px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #009688, #4db6ac);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .crossword-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .crossword-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .crossword-modal.active {
+            display: flex;
+        }
+
+        .crossword-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow: hidden;
+        }
+
+        .crossword-header {
+            background: linear-gradient(135deg, #009688, #4db6ac);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crossword-body {
+            padding: 20px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .crossword-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 40px);
+            gap: 2px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .crossword-cell {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #009688;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .crossword-cell:disabled {
+            background: #e0f2f1;
+            border-color: #b2dfdb;
+        }
+
+        .crossword-clues {
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .crossword-clue {
+            padding: 8px;
+            background: #e0f7fa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* Element Quiz */
+        .element-quiz-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2050px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #795548, #a1887f);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(121, 85, 72, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .element-quiz-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .element-quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .element-quiz-modal.active {
+            display: flex;
+        }
+
+        .element-quiz-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+            overflow: hidden;
+        }
+
+        .element-quiz-header {
+            background: linear-gradient(135deg, #795548, #a1887f);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .element-quiz-body {
+            padding: 20px;
+        }
+
+        .element-display {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #efebe9, #d7ccc8);
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .element-symbol {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #4e342e;
+        }
+
+        .element-number {
+            font-size: 1rem;
+            color: #795548;
+        }
+
+        .element-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .element-option {
+            padding: 12px;
+            border: 2px solid #795548;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .element-option:hover {
+            background: #efebe9;
+        }
+
+        .element-option.correct {
+            background: #c8e6c9;
+            border-color: #4caf50;
+        }
+
+        .element-option.wrong {
+            background: #ffcdd2;
+            border-color: #f44336;
+        }
+
+        .element-score {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #795548;
+        }
+
+        /* Study Mode */
+        .study-mode-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1570px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3f51b5, #7986cb);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(63, 81, 181, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .study-mode-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .study-mode-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 35, 126, 0.95);
+            z-index: 10002;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .study-mode-overlay.active {
+            display: flex;
+        }
+
+        .study-mode-container {
+            text-align: center;
+            color: white;
+            max-width: 600px;
+            padding: 40px;
+        }
+
+        .study-mode-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .study-mode-quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .study-mode-author {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+
+        .study-mode-timer {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .study-mode-btn-exit {
+            padding: 15px 40px;
+            background: white;
+            color: #3f51b5;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -73602,6 +73897,303 @@ This report was generated from the Science CER Practice App.
         updateFormulaDisplay();
 
         console.log('📖 Speed Reading, Formula Cards, and Daily Streak loaded!');
+    </script>
+
+    <!-- Batch 78: Science Crossword Button -->
+    <button class="crossword-btn" onclick="openCrossword()" title="Science Crossword">📝</button>
+
+    <!-- Science Crossword Modal -->
+    <div class="crossword-modal" id="crosswordModal">
+        <div class="crossword-content">
+            <div class="crossword-header">
+                <h3 style="margin:0;">📝 Science Crossword</h3>
+                <button onclick="closeCrossword()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="crossword-body">
+                <div class="crossword-grid" id="crosswordGrid"></div>
+                <div class="crossword-clues" id="crosswordClues"></div>
+                <button onclick="checkCrossword()" style="width:100%;padding:12px;background:#009688;color:white;border:none;border-radius:8px;font-weight:bold;margin-top:10px;cursor:pointer;">Check Answers</button>
+                <button onclick="newCrossword()" style="width:100%;padding:12px;background:#4db6ac;color:white;border:none;border-radius:8px;font-weight:bold;margin-top:8px;cursor:pointer;">New Puzzle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Element Quiz Button -->
+    <button class="element-quiz-btn" onclick="openElementQuiz()" title="Element Quiz">⚛</button>
+
+    <!-- Element Quiz Modal -->
+    <div class="element-quiz-modal" id="elementQuizModal">
+        <div class="element-quiz-content">
+            <div class="element-quiz-header">
+                <h3 style="margin:0;">⚛ Element Quiz</h3>
+                <button onclick="closeElementQuiz()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="element-quiz-body">
+                <div class="element-display">
+                    <div class="element-number" id="elementNumber">1</div>
+                    <div class="element-symbol" id="elementSymbol">H</div>
+                </div>
+                <p style="text-align:center;color:#666;margin-bottom:15px;">What is this element?</p>
+                <div class="element-options" id="elementOptions"></div>
+                <div class="element-score" id="elementScore">Score: 0 / 0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Study Mode Button -->
+    <button class="study-mode-btn" onclick="startStudyMode()" title="Study Mode">🎯</button>
+
+    <!-- Study Mode Overlay -->
+    <div class="study-mode-overlay" id="studyModeOverlay">
+        <div class="study-mode-container">
+            <div class="study-mode-title">🎯 Focus Mode</div>
+            <div class="study-mode-quote" id="studyModeQuote">"The important thing is not to stop questioning."</div>
+            <div class="study-mode-author" id="studyModeAuthor">- Albert Einstein</div>
+            <div class="study-mode-timer" id="studyModeTimer">00:00</div>
+            <button class="study-mode-btn-exit" onclick="exitStudyMode()">Exit Study Mode</button>
+        </div>
+    </div>
+
+    <script>
+        // Science Crossword System
+        const crosswordPuzzles = [
+            {
+                words: [
+                    { word: 'FORCE', row: 0, col: 0, dir: 'across', clue: '1 Across: Push or pull on an object' },
+                    { word: 'CELL', row: 0, col: 0, dir: 'down', clue: '1 Down: Basic unit of life' },
+                    { word: 'ATOM', row: 2, col: 1, dir: 'across', clue: '2 Across: Smallest particle of an element' }
+                ],
+                grid: [
+                    ['F','O','R','C','E'],
+                    ['','','','E',''],
+                    ['','A','T','O','M'],
+                    ['','','','L',''],
+                    ['','','','','']
+                ]
+            },
+            {
+                words: [
+                    { word: 'MASS', row: 0, col: 0, dir: 'across', clue: '1 Across: Amount of matter in an object' },
+                    { word: 'MOON', row: 0, col: 0, dir: 'down', clue: '1 Down: Earth\'s natural satellite' },
+                    { word: 'ENERGY', row: 2, col: 0, dir: 'across', clue: '2 Across: Ability to do work' }
+                ],
+                grid: [
+                    ['M','A','S','S',''],
+                    ['O','','','',''],
+                    ['O','N','E','R','G'],
+                    ['N','','','','Y'],
+                    ['','','','','']
+                ]
+            }
+        ];
+
+        let currentPuzzle = 0;
+        let userAnswers = [];
+
+        function openCrossword() {
+            document.getElementById('crosswordModal').classList.add('active');
+            renderCrossword();
+        }
+
+        function closeCrossword() {
+            document.getElementById('crosswordModal').classList.remove('active');
+        }
+
+        function renderCrossword() {
+            const puzzle = crosswordPuzzles[currentPuzzle];
+            const grid = document.getElementById('crosswordGrid');
+            grid.innerHTML = '';
+            userAnswers = [];
+
+            for (let r = 0; r < 5; r++) {
+                for (let c = 0; c < 5; c++) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 1;
+                    input.className = 'crossword-cell';
+                    input.dataset.row = r;
+                    input.dataset.col = c;
+
+                    if (puzzle.grid[r][c] === '') {
+                        input.disabled = true;
+                        input.value = '';
+                    }
+                    grid.appendChild(input);
+                }
+            }
+
+            const cluesDiv = document.getElementById('crosswordClues');
+            cluesDiv.innerHTML = puzzle.words.map(w => `<div class="crossword-clue">${w.clue}</div>`).join('');
+        }
+
+        function checkCrossword() {
+            const puzzle = crosswordPuzzles[currentPuzzle];
+            const inputs = document.querySelectorAll('.crossword-cell:not(:disabled)');
+            let correct = 0;
+            let total = 0;
+
+            inputs.forEach(input => {
+                const r = parseInt(input.dataset.row);
+                const c = parseInt(input.dataset.col);
+                const expected = puzzle.grid[r][c];
+
+                if (expected !== '') {
+                    total++;
+                    if (input.value.toUpperCase() === expected) {
+                        correct++;
+                        input.style.backgroundColor = '#c8e6c9';
+                    } else {
+                        input.style.backgroundColor = '#ffcdd2';
+                    }
+                }
+            });
+
+            if (correct === total) {
+                addXP(20);
+                alert('Perfect! All answers correct! +20 XP');
+            } else {
+                alert(`${correct} out of ${total} correct. Keep trying!`);
+            }
+        }
+
+        function newCrossword() {
+            currentPuzzle = (currentPuzzle + 1) % crosswordPuzzles.length;
+            renderCrossword();
+        }
+
+        // Element Quiz System
+        const elements = [
+            { symbol: 'H', number: 1, name: 'Hydrogen' },
+            { symbol: 'He', number: 2, name: 'Helium' },
+            { symbol: 'C', number: 6, name: 'Carbon' },
+            { symbol: 'N', number: 7, name: 'Nitrogen' },
+            { symbol: 'O', number: 8, name: 'Oxygen' },
+            { symbol: 'Na', number: 11, name: 'Sodium' },
+            { symbol: 'Mg', number: 12, name: 'Magnesium' },
+            { symbol: 'Al', number: 13, name: 'Aluminum' },
+            { symbol: 'Si', number: 14, name: 'Silicon' },
+            { symbol: 'Cl', number: 17, name: 'Chlorine' },
+            { symbol: 'K', number: 19, name: 'Potassium' },
+            { symbol: 'Ca', number: 20, name: 'Calcium' },
+            { symbol: 'Fe', number: 26, name: 'Iron' },
+            { symbol: 'Cu', number: 29, name: 'Copper' },
+            { symbol: 'Zn', number: 30, name: 'Zinc' },
+            { symbol: 'Ag', number: 47, name: 'Silver' },
+            { symbol: 'Au', number: 79, name: 'Gold' },
+            { symbol: 'Pb', number: 82, name: 'Lead' }
+        ];
+
+        let elementQuizScore = { correct: 0, total: 0 };
+        let currentElement = null;
+
+        function openElementQuiz() {
+            document.getElementById('elementQuizModal').classList.add('active');
+            elementQuizScore = { correct: 0, total: 0 };
+            nextElement();
+        }
+
+        function closeElementQuiz() {
+            document.getElementById('elementQuizModal').classList.remove('active');
+        }
+
+        function nextElement() {
+            currentElement = elements[Math.floor(Math.random() * elements.length)];
+            document.getElementById('elementSymbol').textContent = currentElement.symbol;
+            document.getElementById('elementNumber').textContent = currentElement.number;
+
+            // Generate options
+            const options = [currentElement.name];
+            while (options.length < 4) {
+                const rand = elements[Math.floor(Math.random() * elements.length)].name;
+                if (!options.includes(rand)) options.push(rand);
+            }
+
+            // Shuffle
+            options.sort(() => Math.random() - 0.5);
+
+            const optionsDiv = document.getElementById('elementOptions');
+            optionsDiv.innerHTML = options.map(opt =>
+                `<button class="element-option" onclick="checkElementAnswer('${opt}')">${opt}</button>`
+            ).join('');
+
+            updateElementScore();
+        }
+
+        function checkElementAnswer(answer) {
+            const buttons = document.querySelectorAll('.element-option');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === currentElement.name) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === answer && answer !== currentElement.name) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            elementQuizScore.total++;
+            if (answer === currentElement.name) {
+                elementQuizScore.correct++;
+                addXP(5);
+            }
+
+            updateElementScore();
+            setTimeout(nextElement, 1500);
+        }
+
+        function updateElementScore() {
+            document.getElementById('elementScore').textContent = `Score: ${elementQuizScore.correct} / ${elementQuizScore.total}`;
+        }
+
+        // Study Mode System
+        const studyQuotes = [
+            { quote: "The important thing is not to stop questioning.", author: "Albert Einstein" },
+            { quote: "Science is a way of thinking much more than it is a body of knowledge.", author: "Carl Sagan" },
+            { quote: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
+            { quote: "The good thing about science is that it's true whether or not you believe in it.", author: "Neil deGrasse Tyson" },
+            { quote: "Research is what I'm doing when I don't know what I'm doing.", author: "Wernher von Braun" },
+            { quote: "Science knows no country, because knowledge belongs to humanity.", author: "Louis Pasteur" }
+        ];
+
+        let studyModeInterval = null;
+        let studyModeSeconds = 0;
+
+        function startStudyMode() {
+            document.getElementById('studyModeOverlay').classList.add('active');
+            const q = studyQuotes[Math.floor(Math.random() * studyQuotes.length)];
+            document.getElementById('studyModeQuote').textContent = `"${q.quote}"`;
+            document.getElementById('studyModeAuthor').textContent = `- ${q.author}`;
+            studyModeSeconds = 0;
+            updateStudyModeTimer();
+
+            studyModeInterval = setInterval(() => {
+                studyModeSeconds++;
+                updateStudyModeTimer();
+                // Every 5 minutes, give XP
+                if (studyModeSeconds % 300 === 0) {
+                    addXP(25);
+                }
+            }, 1000);
+        }
+
+        function updateStudyModeTimer() {
+            const mins = Math.floor(studyModeSeconds / 60).toString().padStart(2, '0');
+            const secs = (studyModeSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('studyModeTimer').textContent = `${mins}:${secs}`;
+        }
+
+        function exitStudyMode() {
+            document.getElementById('studyModeOverlay').classList.remove('active');
+            if (studyModeInterval) {
+                clearInterval(studyModeInterval);
+                studyModeInterval = null;
+            }
+            const mins = Math.floor(studyModeSeconds / 60);
+            if (mins > 0) {
+                alert(`Great focus session! You studied for ${mins} minute${mins > 1 ? 's' : ''}.`);
+            }
+        }
+
+        console.log('📝 Science Crossword, Element Quiz, and Study Mode loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
