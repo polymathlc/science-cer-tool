@@ -5474,6 +5474,151 @@
             background: linear-gradient(90deg, #2a2a3e 25%, #353548 50%, #2a2a3e 75%);
             background-size: 200% 100%;
         }
+
+        /* Topic Mastery Progress Styles */
+        .topic-mastery-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .topic-mastery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--main-text);
+        }
+
+        .topic-mastery-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .topic-mastery-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .topic-mastery-name {
+            font-size: 0.8rem;
+            color: var(--light-text);
+            width: 80px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .topic-mastery-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .topic-mastery-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .topic-mastery-fill.low { background: linear-gradient(90deg, #f44336, #ff5722); }
+        .topic-mastery-fill.medium { background: linear-gradient(90deg, #ff9800, #ffc107); }
+        .topic-mastery-fill.high { background: linear-gradient(90deg, #8bc34a, #4caf50); }
+        .topic-mastery-fill.mastered { background: linear-gradient(90deg, #4caf50, #2e7d32); }
+
+        .topic-mastery-percent {
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 35px;
+            text-align: right;
+            color: var(--main-text);
+        }
+
+        .focus-practice-btn {
+            background: linear-gradient(135deg, #f44336, #e91e63);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .focus-practice-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+        }
+
+        /* Loading Optimization Styles */
+        .lazy-load-placeholder {
+            background: var(--card-bg);
+            border-radius: 12px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-text);
+        }
+
+        .content-loading-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            color: var(--light-text);
+        }
+
+        .loading-spinner-small {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Focused Practice Mode Banner */
+        .focus-mode-banner {
+            background: linear-gradient(135deg, #f44336, #e91e63);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .focus-mode-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .focus-mode-exit {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+        }
     </style>
 </head>
 
@@ -5829,6 +5974,24 @@
                         <div id="tip-content" style="font-size: 0.85rem; line-height: 1.4;">
                             Practice makes progress! Every question you answer brings you closer to mastery.
                         </div>
+                    </div>
+
+                    <!-- Topic Mastery Section -->
+                    <div class="topic-mastery-section" id="topic-mastery-section">
+                        <div class="topic-mastery-header">
+                            <span>📊 Topic Mastery</span>
+                            <span style="font-size: 0.75rem; color: var(--light-text);">Top 5</span>
+                        </div>
+                        <div id="topic-mastery-list">
+                            <!-- Topic mastery items populated by JS -->
+                            <div class="content-loading-indicator">
+                                <div class="loading-spinner-small"></div>
+                                <span>Loading progress...</span>
+                            </div>
+                        </div>
+                        <button class="focus-practice-btn" id="focus-practice-btn" onclick="startFocusPractice()" style="display: none;">
+                            🎯 Focus on Weak Topics
+                        </button>
                     </div>
 
                     <!-- Animated Practice Mode Button -->
@@ -22281,6 +22444,265 @@
         };
 
         console.log('📊 Progress milestones and weekly challenges loaded!');
+    </script>
+
+    <!-- =====================================================
+         TOPIC MASTERY & FOCUSED PRACTICE
+         ===================================================== -->
+    <script>
+        // =====================================================
+        // TOPIC MASTERY TRACKING
+        // =====================================================
+        window.topicMasteryState = {
+            topics: {},
+            focusMode: false,
+            focusTopic: null
+        };
+
+        window.updateTopicMastery = function(topic, isCorrect) {
+            if (!topic) return;
+
+            const topicKey = topic.toLowerCase().trim();
+            if (!window.topicMasteryState.topics[topicKey]) {
+                window.topicMasteryState.topics[topicKey] = {
+                    name: topic,
+                    attempts: 0,
+                    correct: 0
+                };
+            }
+
+            window.topicMasteryState.topics[topicKey].attempts++;
+            if (isCorrect) {
+                window.topicMasteryState.topics[topicKey].correct++;
+            }
+
+            saveTopicMastery();
+            renderTopicMasteryList();
+        };
+
+        window.getTopicMasteryPercent = function(topicKey) {
+            const topic = window.topicMasteryState.topics[topicKey];
+            if (!topic || topic.attempts === 0) return 0;
+            return Math.round((topic.correct / topic.attempts) * 100);
+        };
+
+        window.getMasteryClass = function(percent) {
+            if (percent >= 80) return 'mastered';
+            if (percent >= 60) return 'high';
+            if (percent >= 40) return 'medium';
+            return 'low';
+        };
+
+        window.renderTopicMasteryList = function() {
+            const container = document.getElementById('topic-mastery-list');
+            const focusBtn = document.getElementById('focus-practice-btn');
+            if (!container) return;
+
+            const topics = window.topicMasteryState.topics;
+            const topicEntries = Object.entries(topics)
+                .filter(([key, data]) => data.attempts >= 1)
+                .map(([key, data]) => ({
+                    key,
+                    name: data.name,
+                    percent: getTopicMasteryPercent(key),
+                    attempts: data.attempts,
+                    correct: data.correct
+                }))
+                .sort((a, b) => a.percent - b.percent); // Sort by weakest first
+
+            if (topicEntries.length === 0) {
+                container.innerHTML = '<div style="font-size: 0.85rem; color: var(--light-text); text-align: center; padding: 10px;">Start practicing to see your topic mastery!</div>';
+                if (focusBtn) focusBtn.style.display = 'none';
+                return;
+            }
+
+            // Show top 5 (weakest topics)
+            const displayTopics = topicEntries.slice(0, 5);
+
+            container.innerHTML = displayTopics.map(topic => `
+                <div class="topic-mastery-item" data-topic="${topic.key}">
+                    <span class="topic-mastery-name" title="${topic.name}">${topic.name}</span>
+                    <div class="topic-mastery-bar">
+                        <div class="topic-mastery-fill ${getMasteryClass(topic.percent)}" style="width: ${topic.percent}%;"></div>
+                    </div>
+                    <span class="topic-mastery-percent">${topic.percent}%</span>
+                </div>
+            `).join('');
+
+            // Show focus button if there are weak topics
+            const weakTopics = topicEntries.filter(t => t.percent < 60);
+            if (focusBtn) {
+                focusBtn.style.display = weakTopics.length > 0 ? 'block' : 'none';
+            }
+        };
+
+        window.saveTopicMastery = function() {
+            localStorage.setItem('topicMastery', JSON.stringify(window.topicMasteryState));
+        };
+
+        window.loadTopicMastery = function() {
+            const stored = localStorage.getItem('topicMastery');
+            if (stored) {
+                try {
+                    window.topicMasteryState = JSON.parse(stored);
+                } catch (e) { }
+            }
+            renderTopicMasteryList();
+        };
+
+        // =====================================================
+        // FOCUSED PRACTICE MODE
+        // =====================================================
+        window.startFocusPractice = function() {
+            // Find weakest topic
+            const topics = window.topicMasteryState.topics;
+            const weakestTopic = Object.entries(topics)
+                .filter(([key, data]) => data.attempts >= 1)
+                .map(([key, data]) => ({
+                    key,
+                    name: data.name,
+                    percent: getTopicMasteryPercent(key)
+                }))
+                .sort((a, b) => a.percent - b.percent)[0];
+
+            if (!weakestTopic) {
+                showToast('Start practicing to identify weak topics!', 'info');
+                return;
+            }
+
+            window.topicMasteryState.focusMode = true;
+            window.topicMasteryState.focusTopic = weakestTopic;
+
+            // Show focus mode banner
+            showFocusModeBanner(weakestTopic);
+
+            // Navigate to practice mode
+            const practiceBtn = document.getElementById('btn-sidebar-practice');
+            if (practiceBtn) {
+                switchTab('practice', practiceBtn);
+            }
+
+            showToast(`🎯 Focus Mode: Practicing "${weakestTopic.name}" questions`, 'success');
+        };
+
+        window.showFocusModeBanner = function(topic) {
+            // Remove existing banner if any
+            const existing = document.getElementById('focus-mode-banner');
+            if (existing) existing.remove();
+
+            const banner = document.createElement('div');
+            banner.id = 'focus-mode-banner';
+            banner.className = 'focus-mode-banner';
+            banner.innerHTML = `
+                <div class="focus-mode-text">
+                    <span>🎯</span>
+                    <span>Focus Mode: ${topic.name} (${topic.percent}% mastery)</span>
+                </div>
+                <button class="focus-mode-exit" onclick="exitFocusMode()">Exit Focus</button>
+            `;
+
+            // Insert at the top of main content
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.insertBefore(banner, mainContent.firstChild);
+            }
+        };
+
+        window.exitFocusMode = function() {
+            window.topicMasteryState.focusMode = false;
+            window.topicMasteryState.focusTopic = null;
+
+            const banner = document.getElementById('focus-mode-banner');
+            if (banner) banner.remove();
+
+            showToast('Focus mode ended', 'info');
+        };
+
+        // =====================================================
+        // LOADING OPTIMIZATION
+        // =====================================================
+        window.prefetchCriticalResources = function() {
+            // Prefetch Firebase modules
+            const modules = [
+                'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js',
+                'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js'
+            ];
+
+            modules.forEach(url => {
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = url;
+                document.head.appendChild(link);
+            });
+        };
+
+        window.deferNonCriticalLoad = function(callback, delay = 100) {
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(callback, { timeout: 2000 });
+            } else {
+                setTimeout(callback, delay);
+            }
+        };
+
+        // =====================================================
+        // PERFORMANCE HINTS
+        // =====================================================
+        window.showPerformanceTip = function() {
+            const tips = [
+                'Tip: Use keyboard shortcuts (Alt+P for Practice) for faster navigation!',
+                'Tip: Questions are cached locally for faster loading on return visits.',
+                'Tip: Your progress is saved automatically - no need to manually save!'
+            ];
+
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+
+            // Show briefly in console for debugging
+            console.log('💡 ' + randomTip);
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load topic mastery data
+            loadTopicMastery();
+
+            // Prefetch resources during idle time
+            deferNonCriticalLoad(prefetchCriticalResources, 3000);
+
+            // Show performance tip occasionally
+            if (Math.random() < 0.1) { // 10% chance
+                showPerformanceTip();
+            }
+        });
+
+        // Hook into answer handling for topic mastery tracking
+        const originalHandleAnswer3 = window.handleQuestionAnswer;
+        window.handleQuestionAnswer = function(isCorrect, questionElement, questionType) {
+            if (originalHandleAnswer3) {
+                originalHandleAnswer3(isCorrect, questionElement, questionType);
+            }
+
+            // Extract topic from question element
+            if (questionElement) {
+                const topicEl = questionElement.closest('[data-topic]');
+                if (topicEl) {
+                    const topic = topicEl.getAttribute('data-topic');
+                    updateTopicMastery(topic, isCorrect);
+                }
+
+                // Also check for topic container
+                const topicContainer = questionElement.closest('[id^="topic-"]');
+                if (topicContainer) {
+                    const topicName = topicContainer.querySelector('h2, h3');
+                    if (topicName) {
+                        updateTopicMastery(topicName.textContent.trim(), isCorrect);
+                    }
+                }
+            }
+        };
+
+        console.log('📈 Topic mastery and focused practice loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
