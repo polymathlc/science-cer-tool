@@ -7154,6 +7154,130 @@
         };
 
         // =====================================================
+        // COPY TO CLIPBOARD UTILITY
+        // =====================================================
+
+        window.copyToClipboard = async function(text, successMessage = 'Copied to clipboard!') {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                    showSuccessToast(successMessage, 'Copied');
+                    return true;
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-9999px';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showSuccessToast(successMessage, 'Copied');
+                    return true;
+                }
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                showErrorToast('Could not copy to clipboard', 'Copy Failed');
+                return false;
+            }
+        };
+
+        // Share URL function
+        window.shareUrl = async function(url, title = 'Check this out!') {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: title,
+                        url: url
+                    });
+                    showSuccessToast('Shared successfully!', 'Shared');
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        // Fallback to copy
+                        copyToClipboard(url, 'Link copied to clipboard!');
+                    }
+                }
+            } else {
+                // Fallback to copy
+                copyToClipboard(url, 'Link copied to clipboard!');
+            }
+        };
+
+        // =====================================================
+        // WORKSHEET UNDO FUNCTIONALITY
+        // =====================================================
+
+        // Show undo toast when item is removed from worksheet
+        window.showUndoToast = function(itemTitle) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            // Remove any existing undo toasts
+            container.querySelectorAll('.toast-undo').forEach(t => t.remove());
+
+            const toast = document.createElement('div');
+            toast.className = 'toast toast-info toast-undo';
+            toast.innerHTML = `
+                <span class="toast-icon">📋</span>
+                <div class="toast-content">
+                    <div class="toast-title">Removed from Worksheet</div>
+                    <div class="toast-message">"${itemTitle.substring(0, 30)}${itemTitle.length > 30 ? '...' : ''}"</div>
+                </div>
+                <button class="btn" style="background: #667eea; color: white; padding: 6px 12px; font-size: 0.85rem; margin-left: 8px; border-radius: 6px;" onclick="undoWorksheetRemove(); this.closest('.toast').remove();">
+                    Undo
+                </button>
+                <button class="toast-close" aria-label="Close notification">×</button>
+            `;
+
+            // Close button functionality
+            toast.querySelector('.toast-close').onclick = (e) => {
+                e.stopPropagation();
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            };
+
+            container.appendChild(toast);
+
+            // Auto-remove after 8 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.classList.add('hiding');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 8000);
+        };
+
+        // Undo last worksheet removal
+        window.undoWorksheetRemove = function() {
+            if (window.worksheetUndoStack.length === 0) {
+                showInfoToast('Nothing to undo', '');
+                return;
+            }
+
+            const lastAction = window.worksheetUndoStack.pop();
+
+            if (lastAction.action === 'remove') {
+                // Re-add the item to the worksheet
+                window.worksheetItems.push(lastAction.item);
+                saveWorksheetToStorage();
+                updateWorksheetUI();
+
+                // Update any visible worksheet buttons for this question
+                const container = document.getElementById(lastAction.item.id);
+                if (container) {
+                    const btn = container.querySelector('.worksheet-btn');
+                    if (btn) {
+                        btn.innerHTML = '✅ Added';
+                        btn.classList.add('added');
+                    }
+                }
+
+                showSuccessToast('Item restored to worksheet', 'Undo Successful');
+            }
+        };
+
+        // =====================================================
         // FORCE FRESH CONTENT - AGGRESSIVE CACHE BUSTING
         // =====================================================
         (function() {
@@ -7249,6 +7373,7 @@
         window.adminBlocks = [];
         window.isAdminUser = false;
         window.worksheetItems = [];
+        window.worksheetUndoStack = []; // Stack for undo functionality
         window.currentActiveTab = 'cer';
         window.currentMode = 'mcq'; // Default to MCQ mode
         window.currentMcqLevel = 'P6'; // Default MCQ level matches header
@@ -7541,10 +7666,25 @@
             const existingIndex = window.worksheetItems.findIndex(item => item.id === qId);
 
             if (existingIndex > -1) {
-                // Remove from worksheet
+                // Remove from worksheet and save to undo stack
+                const removedItem = window.worksheetItems[existingIndex];
+                window.worksheetUndoStack.push({
+                    action: 'remove',
+                    item: removedItem,
+                    timestamp: Date.now()
+                });
+
+                // Limit undo stack to last 10 items
+                if (window.worksheetUndoStack.length > 10) {
+                    window.worksheetUndoStack.shift();
+                }
+
                 window.worksheetItems.splice(existingIndex, 1);
                 btn.innerHTML = '➕ Worksheet';
                 btn.classList.remove('added');
+
+                // Show undo toast
+                showUndoToast(removedItem.title);
             } else {
                 // Add to worksheet - capture the full question content
                 const questionTitle = container.querySelector('h3')?.textContent || 'Question';
