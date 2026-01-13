@@ -5102,6 +5102,10 @@
                         🛠️ Admin Mode
                     </button>
 
+                    <button id="btn-sidebar-review" class="hidden sidebar-nav-btn review-btn tooltip-container" onclick="switchTab('review-questions', this)" data-tooltip="Review questions submitted by interns before making them available (Admin only)" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white;">
+                        📋 Review Questions <span id="pending-review-count" class="worksheet-badge" style="background: #f44336;">0</span>
+                    </button>
+
                     <button id="btn-sidebar-progress" class="hidden sidebar-nav-btn progress-btn tooltip-container" onclick="switchTab('student-progress', this)" data-tooltip="View detailed progress for all students (Admin only)">
                         📊 Student Progress
                     </button>
@@ -5932,8 +5936,10 @@
                                     style="background: #dc3545; color: white;">🗑️ Clear Form</button>
                                 <button id="admin-process-btn" class="btn" onclick="processAdminQuestion()"
                                     style="background: #28a745; color: white;">👁️ Preview & Select Blanks</button>
-                                <button id="save-question-btn" class="btn" onclick="saveAdminQuestion()"
+                                <button id="save-question-btn" class="btn" onclick="saveAdminQuestion('approved')"
                                     style="background: var(--primary-blue); color: white;">💾 Save Question</button>
+                                <button id="submit-review-btn" class="btn" onclick="saveAdminQuestion('pending')"
+                                    style="background: #ff9800; color: white;" title="Submit question for admin review before making it available to students">📤 Submit for Review</button>
                             </div>
                         </div>
                         <div id="admin-preview-section" class="hidden" style="margin-top: 4rem;">
@@ -5944,6 +5950,67 @@
                                 style="background: var(--blue-light); padding: 2rem; border-radius: 12px;"></div>
                         </div>
                     </main>
+                </div>
+
+                <!-- REVIEW QUESTIONS VIEW (Admin Only) -->
+                <div id="view-review-questions" class="view-content hidden" style="flex: 1;">
+                    <div style="max-width: 1000px; margin: 0 auto; padding: 2rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                            <h2 style="margin: 0;">📋 Review Pending Questions</h2>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn" style="background: #1976d2; color: white;" onclick="loadPendingQuestions()">🔄 Refresh</button>
+                            </div>
+                        </div>
+
+                        <p style="color: #666; margin-bottom: 1.5rem;">Questions submitted by interns for review. Approve to make them available to students, or reject to remove them.</p>
+
+                        <!-- Filter Controls -->
+                        <div style="background: #f5f5f5; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                            <div>
+                                <label style="font-weight: 600; margin-right: 8px;">Category:</label>
+                                <select id="review-category-filter" style="padding: 8px 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 0.9rem;" onchange="filterPendingQuestions()">
+                                    <option value="all">All Categories</option>
+                                    <option value="cer">CER</option>
+                                    <option value="mcq">MCQ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-weight: 600; margin-right: 8px;">Level:</label>
+                                <select id="review-level-filter" style="padding: 8px 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 0.9rem;" onchange="filterPendingQuestions()">
+                                    <option value="all">All Levels</option>
+                                    <option value="p3">P3</option>
+                                    <option value="p4">P4</option>
+                                    <option value="p5">P5</option>
+                                    <option value="p6">P6</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Summary Stats -->
+                        <div id="review-summary-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                            <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 1rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 1.8rem; font-weight: bold; color: #f57c00;" id="stat-pending-count">0</div>
+                                <div style="color: #666; font-size: 0.8rem;">Pending</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 1rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 1.8rem; font-weight: bold; color: #388e3c;" id="stat-approved-today">0</div>
+                                <div style="color: #666; font-size: 0.8rem;">Approved Today</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #ffebee, #ffcdd2); padding: 1rem; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 1.8rem; font-weight: bold; color: #d32f2f;" id="stat-rejected-today">0</div>
+                                <div style="color: #666; font-size: 0.8rem;">Rejected Today</div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Questions List -->
+                        <div id="pending-questions-container" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div style="text-align: center; padding: 3rem; color: #888;">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                                <p>No pending questions to review</p>
+                                <p style="font-size: 0.85rem; margin-top: 0.5rem;">Questions submitted by interns will appear here</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- WORKSHEET VIEW -->
@@ -13551,6 +13618,292 @@
             loadStudentProgress();
         };
 
+        // =====================================================
+        // PENDING QUESTIONS REVIEW SYSTEM
+        // =====================================================
+
+        window.pendingQuestionsData = [];
+        window.reviewStats = { approvedToday: 0, rejectedToday: 0 };
+
+        // Load pending questions for review
+        window.loadPendingQuestions = async function() {
+            try {
+                const { collection, getDocs, query, where } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+                const questionsRef = collection(window.db_fs, "custom_questions");
+                const snapshot = await getDocs(questionsRef);
+
+                window.pendingQuestionsData = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.status === 'pending') {
+                        window.pendingQuestionsData.push({
+                            id: doc.id,
+                            ...data
+                        });
+                    }
+                });
+
+                // Sort by creation date (newest first)
+                window.pendingQuestionsData.sort((a, b) => {
+                    const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+                    const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+                    return dateB - dateA;
+                });
+
+                // Update the count badge
+                updatePendingReviewCount();
+
+                // Render the questions
+                renderPendingQuestions();
+
+            } catch (e) {
+                console.error("Error loading pending questions:", e);
+                alert("Error loading pending questions: " + e.message);
+            }
+        };
+
+        // Update the pending review count badge
+        window.updatePendingReviewCount = function() {
+            const badge = document.getElementById('pending-review-count');
+            const statPending = document.getElementById('stat-pending-count');
+            const count = window.pendingQuestionsData ? window.pendingQuestionsData.length : 0;
+
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+            if (statPending) {
+                statPending.textContent = count;
+            }
+        };
+
+        // Render pending questions list
+        window.renderPendingQuestions = function() {
+            const container = document.getElementById('pending-questions-container');
+            if (!container) return;
+
+            const categoryFilter = document.getElementById('review-category-filter')?.value || 'all';
+            const levelFilter = document.getElementById('review-level-filter')?.value || 'all';
+
+            let filteredQuestions = window.pendingQuestionsData.filter(q => {
+                if (categoryFilter !== 'all' && q.category !== categoryFilter) return false;
+                if (levelFilter !== 'all' && q.level !== levelFilter) return false;
+                return true;
+            });
+
+            if (filteredQuestions.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #888;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                        <p>No pending questions to review</p>
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">Questions submitted by interns will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filteredQuestions.forEach(question => {
+                const createdDate = question.createdAt
+                    ? new Date(question.createdAt).toLocaleDateString()
+                    : 'Unknown';
+
+                html += `
+                    <div class="pending-question-card" data-id="${question.id}" style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; border-left: 4px solid #ff9800;">
+                        <div style="padding: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                                <div>
+                                    <h3 style="margin: 0 0 0.5rem 0; color: var(--primary-blue);">${question.title || 'Untitled Question'}</h3>
+                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                        <span style="font-size: 0.75rem; background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 4px;">${(question.category || 'N/A').toUpperCase()}</span>
+                                        <span style="font-size: 0.75rem; background: #f3e5f5; color: #7b1fa2; padding: 2px 8px; border-radius: 4px;">${(question.level || 'N/A').toUpperCase()}</span>
+                                        <span style="font-size: 0.75rem; background: #fff8e1; color: #f57c00; padding: 2px 8px; border-radius: 4px;">${question.topic || 'General'}</span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right; font-size: 0.8rem; color: #888;">
+                                    <div>Submitted by: ${question.createdBy || 'Unknown'}</div>
+                                    <div>${createdDate}</div>
+                                </div>
+                            </div>
+
+                            <!-- Question Preview -->
+                            <div style="background: #f9f9f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; max-height: 200px; overflow-y: auto;">
+                                <div class="question-preview">${question.html || '<em>No content</em>'}</div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+                                <button class="btn" onclick="previewPendingQuestion('${question.id}')" style="background: #666; color: white;">👁️ Full Preview</button>
+                                <button class="btn" onclick="editPendingQuestion('${question.id}')" style="background: #1976d2; color: white;">✏️ Edit</button>
+                                <button class="btn" onclick="rejectQuestion('${question.id}')" style="background: #dc3545; color: white;">❌ Reject</button>
+                                <button class="btn" onclick="approveQuestion('${question.id}')" style="background: #28a745; color: white;">✅ Approve</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        };
+
+        // Filter pending questions
+        window.filterPendingQuestions = function() {
+            renderPendingQuestions();
+        };
+
+        // Approve a pending question
+        window.approveQuestion = async function(questionId) {
+            if (!confirm("Approve this question? It will become available to students.")) return;
+
+            try {
+                const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+                await updateDoc(doc(window.db_fs, "custom_questions", questionId), {
+                    status: 'approved',
+                    approvedBy: window.auth.currentUser.email,
+                    approvedAt: new Date().toISOString()
+                });
+
+                // Update stats
+                window.reviewStats.approvedToday++;
+                document.getElementById('stat-approved-today').textContent = window.reviewStats.approvedToday;
+
+                // Remove from local data and re-render
+                window.pendingQuestionsData = window.pendingQuestionsData.filter(q => q.id !== questionId);
+                renderPendingQuestions();
+                updatePendingReviewCount();
+
+                // Reload custom questions so the approved question appears
+                window.customQuestionsLoaded = false;
+                document.querySelectorAll('.custom-question').forEach(el => el.remove());
+                if (window.loadCustomQuestions) {
+                    await window.loadCustomQuestions();
+                }
+
+                alert("Question approved and is now available to students!");
+
+            } catch (e) {
+                console.error("Error approving question:", e);
+                alert("Error approving question: " + e.message);
+            }
+        };
+
+        // Reject a pending question
+        window.rejectQuestion = async function(questionId) {
+            const reason = prompt("Optional: Provide a reason for rejection (or leave empty):");
+            if (reason === null) return; // User cancelled
+
+            try {
+                const { doc, deleteDoc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+                // Find the question data before deleting
+                const questionData = window.pendingQuestionsData.find(q => q.id === questionId);
+
+                // Store in rejected_questions collection for record keeping
+                if (questionData) {
+                    await setDoc(doc(window.db_fs, "rejected_questions", questionId), {
+                        ...questionData,
+                        rejectedBy: window.auth.currentUser.email,
+                        rejectedAt: new Date().toISOString(),
+                        rejectionReason: reason || 'No reason provided'
+                    });
+                }
+
+                // Delete from custom_questions
+                await deleteDoc(doc(window.db_fs, "custom_questions", questionId));
+
+                // Update stats
+                window.reviewStats.rejectedToday++;
+                document.getElementById('stat-rejected-today').textContent = window.reviewStats.rejectedToday;
+
+                // Remove from local data and re-render
+                window.pendingQuestionsData = window.pendingQuestionsData.filter(q => q.id !== questionId);
+                renderPendingQuestions();
+                updatePendingReviewCount();
+
+                alert("Question rejected and removed.");
+
+            } catch (e) {
+                console.error("Error rejecting question:", e);
+                alert("Error rejecting question: " + e.message);
+            }
+        };
+
+        // Preview a pending question in full
+        window.previewPendingQuestion = function(questionId) {
+            const question = window.pendingQuestionsData.find(q => q.id === questionId);
+            if (!question) return;
+
+            // Create a modal for preview
+            let modal = document.getElementById('preview-question-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'preview-question-modal';
+                modal.className = 'modal-overlay';
+                modal.innerHTML = `
+                    <div class="modal-box" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 1rem;">
+                            <h3 style="margin: 0; color: #1976d2;">📝 Question Preview</h3>
+                            <button class="btn" style="background: #666; color: white;" onclick="document.getElementById('preview-question-modal').classList.remove('visible')">✕ Close</button>
+                        </div>
+                        <div id="preview-question-content"></div>
+                        <div style="margin-top: 1.5rem; display: flex; gap: 10px; justify-content: flex-end;">
+                            <button class="btn" onclick="document.getElementById('preview-question-modal').classList.remove('visible')" style="background: #666; color: white;">Close</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+
+            const contentDiv = document.getElementById('preview-question-content');
+            contentDiv.innerHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <h4 style="margin: 0 0 0.5rem 0;">${question.title || 'Untitled'}</h4>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="font-size: 0.75rem; background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 4px;">${(question.category || 'N/A').toUpperCase()}</span>
+                        <span style="font-size: 0.75rem; background: #f3e5f5; color: #7b1fa2; padding: 2px 8px; border-radius: 4px;">${(question.level || 'N/A').toUpperCase()}</span>
+                        <span style="font-size: 0.75rem; background: #fff8e1; color: #f57c00; padding: 2px 8px; border-radius: 4px;">${question.topic || 'General'}</span>
+                    </div>
+                </div>
+                <div class="answer-template" style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px;">
+                    ${question.html || '<em>No content</em>'}
+                </div>
+            `;
+
+            modal.classList.add('visible');
+        };
+
+        // Edit a pending question
+        window.editPendingQuestion = function(questionId) {
+            const question = window.pendingQuestionsData.find(q => q.id === questionId);
+            if (!question) return;
+
+            // Switch to admin tab and load the question for editing
+            switchTab('admin');
+
+            // Set up for editing
+            window.editingQuestionId = 'q-' + questionId;
+
+            // Populate form fields
+            document.getElementById('admin-title').value = question.title || '';
+            document.getElementById('admin-category').value = question.category || 'cer';
+            if (document.getElementById('admin-level')) {
+                document.getElementById('admin-level').value = question.level || 'p3';
+            }
+            document.getElementById('admin-topic').value = question.topic || 'general';
+
+            // Trigger category change to show appropriate fields
+            if (window.handleCategoryChange) {
+                handleCategoryChange(question.category || 'cer');
+            }
+
+            // Note: The HTML content parsing is complex, so we'll just show a message
+            alert("Question loaded for editing. Please review and update the content, then click 'Save Question' to approve with changes, or go back to Review Questions to approve as-is.");
+
+            updateEditingIndicator();
+        };
+
         window.viewProgressDetail = async function(attemptId) {
             const attempt = window.allProgressData.find(a => a.id === attemptId);
             if (!attempt) {
@@ -14988,7 +15341,7 @@
             });
             
             // List of special tabs (admin, worksheet, etc) - these need topic containers hidden
-            const specialTabs = ['admin', 'worksheet', 'saved-worksheets', 'practice', 'inbox', 'lessons', 'lesson-detail', 'student-progress', 'my-progress', 'flagged', 'leaderboard', 'question-list'];
+            const specialTabs = ['admin', 'worksheet', 'saved-worksheets', 'practice', 'inbox', 'lessons', 'lesson-detail', 'student-progress', 'my-progress', 'flagged', 'leaderboard', 'question-list', 'review-questions'];
             
             // Hide all topic containers for special tabs (practice mode should be a full-page view)
             if (specialTabs.includes(type)) {
@@ -15092,6 +15445,11 @@
             // Load flagged questions when switching to flagged tab
             if (type === 'flagged') {
                 loadFlaggedQuestions();
+            }
+
+            // Load pending questions when switching to review-questions tab
+            if (type === 'review-questions') {
+                loadPendingQuestions();
             }
         };
         
@@ -17177,7 +17535,7 @@
             previewSection.scrollIntoView({ behavior: 'smooth' });
         };
 
-        window.saveAdminQuestion = async function () {
+        window.saveAdminQuestion = async function (status = 'approved') {
             // Set flag to prevent any auto-refresh during save
             window.isSavingQuestion = true;
             
@@ -17393,18 +17751,27 @@
                     category: category,
                     level: level,
                     topic: topic,
-                    type: 'custom'
+                    type: 'custom',
+                    status: status
                 };
-                
+
                 if (!isEditing) {
                     questionData.createdBy = window.auth.currentUser.email;
                     questionData.createdAt = new Date().toISOString();
+                    questionData.status = status; // Set initial status for new questions
                 }
                 
                 await setDoc(doc(window.db_fs, "custom_questions", questionId), questionData, { merge: true });
                 
-                const actionText = isEditing ? "updated" : "added";
-                alert(`Question successfully ${actionText}!`);
+                let actionText;
+                if (isEditing) {
+                    actionText = "updated";
+                } else if (status === 'pending') {
+                    actionText = "submitted for review! An admin will review it before it becomes available to students.";
+                } else {
+                    actionText = "added and is now available to students!";
+                }
+                alert(`Question successfully ${actionText}`);
                 
                 // Clear the form but preserve category/level/topic settings
                 window.editingQuestionId = null;
@@ -18730,6 +19097,13 @@
                         const qSnapshot = await getDocs(query(collection(db_fs, "custom_questions")));
                         qSnapshot.forEach((docSnap) => {
                             const data = docSnap.data();
+
+                            // Skip pending questions for non-admin users
+                            // Questions with status='pending' are only visible to admins for review
+                            if (data.status === 'pending' && !window.isAdminUser) {
+                                return; // Skip this question
+                            }
+
                             const category = data.category;
                             const topic = data.topic || 'general';
                             const topicId = topic.toLowerCase().replace(/\s+/g, '-');
@@ -18920,18 +19294,27 @@
                     window.isAdminUser = true;
                     document.getElementById('btn-sidebar-admin').classList.remove('hidden');
                     document.getElementById('btn-sidebar-progress').classList.remove('hidden');
+                    document.getElementById('btn-sidebar-review').classList.remove('hidden');
                     document.getElementById('header-flagged-btn').classList.remove('hidden');
-                    
+
                     // Load flagged questions count for admin
                     if (window.loadFlaggedQuestionsFromFirebase) {
                         window.loadFlaggedQuestionsFromFirebase().then(() => {
                             window.updateFlaggedCount();
                         });
                     }
+
+                    // Load pending questions count for admin
+                    if (window.loadPendingQuestions) {
+                        window.loadPendingQuestions().then(() => {
+                            window.updatePendingReviewCount();
+                        });
+                    }
                 } else {
                     window.isAdminUser = false;
                     document.getElementById('btn-sidebar-admin').classList.add('hidden');
                     document.getElementById('btn-sidebar-progress').classList.add('hidden');
+                    document.getElementById('btn-sidebar-review').classList.add('hidden');
                     document.getElementById('header-flagged-btn').classList.add('hidden');
                 }
 
