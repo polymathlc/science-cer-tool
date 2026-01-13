@@ -23541,6 +23541,469 @@
             color: #4caf50;
             font-weight: bold;
         }
+
+        /* ===== BATCH 59: Memory Game, Experiment Lab, Quiz Battle ===== */
+
+        /* Memory Game Button */
+        .memory-game-btn {
+            position: fixed;
+            bottom: 850px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(142, 36, 170, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .memory-game-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Experiment Lab Button */
+        .experiment-lab-btn {
+            position: fixed;
+            bottom: 910px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1565c0, #1e88e5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(30, 136, 229, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .experiment-lab-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Quiz Battle Button */
+        .quiz-battle-btn {
+            position: fixed;
+            bottom: 250px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #d84315, #ff5722);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 87, 34, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-battle-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Memory Game Modal */
+        .memory-game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .memory-game-modal.active {
+            display: flex;
+        }
+
+        .memory-game-content {
+            background: white;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .memory-game-header {
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .memory-game-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .close-memory-game {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .memory-body {
+            padding: 20px;
+        }
+
+        .memory-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f3e5f5;
+            border-radius: 10px;
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #7b1fa2, #9c27b0);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .memory-card.flipped {
+            background: #f3e5f5;
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background: #c8e6c9;
+            cursor: default;
+        }
+
+        .memory-card-back {
+            font-size: 2rem;
+        }
+
+        /* Experiment Lab Modal */
+        .experiment-lab-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .experiment-lab-modal.active {
+            display: flex;
+        }
+
+        .experiment-lab-content {
+            background: white;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .experiment-lab-header {
+            background: linear-gradient(135deg, #1565c0, #1e88e5);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .experiment-lab-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .close-experiment-lab {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .experiment-body {
+            padding: 20px;
+        }
+
+        .experiment-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .experiment-card {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .experiment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 136, 229, 0.2);
+        }
+
+        .experiment-card h4 {
+            margin: 0 0 10px 0;
+            color: #1565c0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .experiment-card p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .experiment-detail {
+            display: none;
+        }
+
+        .experiment-detail.active {
+            display: block;
+        }
+
+        .experiment-steps {
+            background: #e8f5e9;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .experiment-steps h5 {
+            margin: 0 0 10px 0;
+            color: #2e7d32;
+        }
+
+        .experiment-steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .experiment-steps li {
+            margin-bottom: 8px;
+        }
+
+        .experiment-result {
+            background: #fff3e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .back-to-experiments {
+            padding: 10px 20px;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        /* Quiz Battle Modal */
+        .quiz-battle-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quiz-battle-modal.active {
+            display: flex;
+        }
+
+        .quiz-battle-content {
+            background: white;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .quiz-battle-header {
+            background: linear-gradient(135deg, #d84315, #ff5722);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-battle-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .close-quiz-battle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .battle-body {
+            padding: 20px;
+        }
+
+        .battle-scoreboard {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fbe9e7;
+            border-radius: 10px;
+        }
+
+        .battle-player {
+            text-align: center;
+        }
+
+        .battle-player-icon {
+            font-size: 2.5rem;
+        }
+
+        .battle-player-score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d84315;
+        }
+
+        .battle-vs {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff5722;
+            display: flex;
+            align-items: center;
+        }
+
+        .battle-question {
+            background: linear-gradient(135deg, #fbe9e7, #ffccbc);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .battle-question-text {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .battle-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .battle-option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #ffccbc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .battle-option:hover {
+            border-color: #ff5722;
+            background: #fff3e0;
+        }
+
+        .battle-option.correct {
+            background: #c8e6c9;
+            border-color: #4caf50;
+        }
+
+        .battle-option.wrong {
+            background: #ffcdd2;
+            border-color: #f44336;
+        }
+
+        .battle-result {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .battle-result-icon {
+            font-size: 4rem;
+        }
+
+        .start-battle-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #d84315, #ff5722);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .start-battle-btn:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 
@@ -62474,6 +62937,468 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('⏰ Fill-in-Blank, Topic Summary, and Study Timer loaded!');
+    </script>
+
+    <!-- Batch 59: Memory Game, Experiment Lab, Quiz Battle -->
+    <div id="memory-game-btn" class="memory-game-btn" onclick="openMemoryGame()" title="Memory Game">
+        🧠
+    </div>
+
+    <div id="experiment-lab-btn" class="experiment-lab-btn" onclick="openExperimentLab()" title="Experiment Lab">
+        🔬
+    </div>
+
+    <div id="quiz-battle-btn" class="quiz-battle-btn" onclick="openQuizBattle()" title="Quiz Battle">
+        ⚔️
+    </div>
+
+    <!-- Memory Game Modal -->
+    <div id="memory-game-modal" class="memory-game-modal">
+        <div class="memory-game-content">
+            <div class="memory-game-header">
+                <h2>🧠 Memory Match</h2>
+                <button class="close-memory-game" onclick="closeMemoryGame()">×</button>
+            </div>
+            <div class="memory-body">
+                <div class="memory-stats">
+                    <div class="score-item">
+                        <div class="score-value" id="memory-moves">0</div>
+                        <div class="score-label">Moves</div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-value" id="memory-pairs">0/8</div>
+                        <div class="score-label">Pairs</div>
+                    </div>
+                </div>
+                <div class="memory-grid" id="memory-grid"></div>
+                <button class="start-battle-btn" style="margin-top: 15px; width: 100%;" onclick="startMemoryGame()">🔄 New Game</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experiment Lab Modal -->
+    <div id="experiment-lab-modal" class="experiment-lab-modal">
+        <div class="experiment-lab-content">
+            <div class="experiment-lab-header">
+                <h2>🔬 Experiment Lab</h2>
+                <button class="close-experiment-lab" onclick="closeExperimentLab()">×</button>
+            </div>
+            <div class="experiment-body">
+                <div id="experiment-list" class="experiment-list"></div>
+                <div id="experiment-detail" class="experiment-detail"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Battle Modal -->
+    <div id="quiz-battle-modal" class="quiz-battle-modal">
+        <div class="quiz-battle-content">
+            <div class="quiz-battle-header">
+                <h2>⚔️ Quiz Battle</h2>
+                <button class="close-quiz-battle" onclick="closeQuizBattle()">×</button>
+            </div>
+            <div class="battle-body">
+                <div id="battle-setup" class="battle-setup" style="text-align: center; padding: 30px;">
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">Battle against the Science Bot! Answer quickly and correctly to win!</p>
+                    <button class="start-battle-btn" onclick="startQuizBattle()">⚔️ Start Battle!</button>
+                </div>
+                <div id="battle-game" style="display: none;">
+                    <div class="battle-scoreboard">
+                        <div class="battle-player">
+                            <div class="battle-player-icon">🧑</div>
+                            <div>You</div>
+                            <div class="battle-player-score" id="player-score">0</div>
+                        </div>
+                        <div class="battle-vs">VS</div>
+                        <div class="battle-player">
+                            <div class="battle-player-icon">🤖</div>
+                            <div>Bot</div>
+                            <div class="battle-player-score" id="bot-score">0</div>
+                        </div>
+                    </div>
+                    <div class="battle-question" id="battle-question-area"></div>
+                </div>
+                <div id="battle-result" class="battle-result" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== BATCH 59: Memory Game, Experiment Lab, Quiz Battle =====
+
+        // Memory Game Pairs (science concepts)
+        const memoryPairs = [
+            { id: 1, content: '🧊', match: 'Solid' },
+            { id: 2, content: '💧', match: 'Liquid' },
+            { id: 3, content: '💨', match: 'Gas' },
+            { id: 4, content: '☀️', match: 'Light' },
+            { id: 5, content: '🔥', match: 'Heat' },
+            { id: 6, content: '🌱', match: 'Plant' },
+            { id: 7, content: '🌍', match: 'Gravity' },
+            { id: 8, content: '✋', match: 'Friction' }
+        ];
+
+        let memoryState = {
+            cards: [],
+            flipped: [],
+            matched: [],
+            moves: 0
+        };
+
+        // Experiments Data
+        const experiments = [
+            {
+                id: 1,
+                title: 'Rainbow in a Glass',
+                icon: '🌈',
+                desc: 'Create a colorful density tower',
+                materials: ['Honey', 'Corn syrup', 'Dish soap', 'Water', 'Oil'],
+                steps: ['Pour honey into the glass first', 'Slowly add corn syrup', 'Add dish soap carefully', 'Pour water down the side', 'Finally add oil on top'],
+                result: 'The liquids stack because they have different densities! Heavier liquids sink to the bottom.'
+            },
+            {
+                id: 2,
+                title: 'Dancing Raisins',
+                icon: '🕺',
+                desc: 'Watch raisins dance up and down',
+                materials: ['Clear soda', 'Raisins', 'Tall glass'],
+                steps: ['Fill the glass with soda', 'Drop 5-6 raisins into the glass', 'Wait and watch what happens'],
+                result: 'CO2 bubbles attach to raisins and lift them up. At the surface, bubbles pop and raisins sink!'
+            },
+            {
+                id: 3,
+                title: 'Invisible Ink',
+                icon: '🔍',
+                desc: 'Write secret messages',
+                materials: ['Lemon juice', 'Water', 'Cotton swab', 'Paper', 'Lamp or iron'],
+                steps: ['Mix lemon juice with a little water', 'Dip cotton swab in the mixture', 'Write a message on paper', 'Let it dry completely', 'Hold near a warm lamp to reveal'],
+                result: 'Heat causes the lemon juice to oxidize and turn brown, making your message visible!'
+            },
+            {
+                id: 4,
+                title: 'Balloon Rocket',
+                icon: '🎈',
+                desc: 'Launch a balloon across the room',
+                materials: ['Balloon', 'String', 'Straw', 'Tape'],
+                steps: ['Thread string through the straw', 'Tie string across the room', 'Blow up balloon (don\'t tie it)', 'Tape balloon to straw', 'Let go and watch it fly!'],
+                result: 'Air rushing out pushes the balloon forward - this is Newton\'s Third Law of Motion!'
+            },
+            {
+                id: 5,
+                title: 'Grow Crystals',
+                icon: '💎',
+                desc: 'Make your own crystals',
+                materials: ['Hot water', 'Sugar or salt', 'String', 'Pencil', 'Jar'],
+                steps: ['Dissolve lots of sugar in hot water', 'Tie string to pencil', 'Lower string into solution', 'Place in a safe spot', 'Wait several days'],
+                result: 'As water evaporates, sugar molecules join together to form beautiful crystals!'
+            }
+        ];
+
+        // Quiz Battle Questions
+        const battleQuestions = [
+            { q: "What state of matter has no fixed shape or volume?", options: ["Solid", "Liquid", "Gas", "Plasma"], answer: 2 },
+            { q: "What do plants need for photosynthesis?", options: ["Darkness", "Cold", "Sunlight", "Ice"], answer: 2 },
+            { q: "What force keeps us on the ground?", options: ["Friction", "Magnetism", "Gravity", "Wind"], answer: 2 },
+            { q: "What transfers heat through direct contact?", options: ["Radiation", "Conduction", "Convection", "Reflection"], answer: 1 },
+            { q: "What material lets light pass through?", options: ["Opaque", "Transparent", "Black", "Wood"], answer: 1 },
+            { q: "What is the boiling point of water?", options: ["50°C", "0°C", "100°C", "200°C"], answer: 2 },
+            { q: "What part of a plant absorbs water?", options: ["Leaves", "Flowers", "Roots", "Stems"], answer: 2 },
+            { q: "What slows down moving objects?", options: ["Gravity", "Friction", "Light", "Sound"], answer: 1 },
+            { q: "What is ice?", options: ["Liquid water", "Gas water", "Solid water", "Plasma"], answer: 2 },
+            { q: "What do shadows need to form?", options: ["Wind", "Water", "Light blocked", "Heat"], answer: 2 }
+        ];
+
+        let battleState = {
+            playerScore: 0,
+            botScore: 0,
+            currentQuestion: 0,
+            questions: [],
+            answered: false
+        };
+
+        // Memory Game Functions
+        function openMemoryGame() {
+            document.getElementById('memory-game-modal').classList.add('active');
+            startMemoryGame();
+        }
+
+        function closeMemoryGame() {
+            document.getElementById('memory-game-modal').classList.remove('active');
+        }
+
+        function startMemoryGame() {
+            memoryState = { cards: [], flipped: [], matched: [], moves: 0 };
+
+            // Create card pairs
+            const cards = [];
+            memoryPairs.forEach(pair => {
+                cards.push({ id: pair.id, type: 'icon', content: pair.content, pairId: pair.id });
+                cards.push({ id: pair.id + 100, type: 'text', content: pair.match, pairId: pair.id });
+            });
+
+            // Shuffle
+            memoryState.cards = cards.sort(() => Math.random() - 0.5);
+
+            renderMemoryGrid();
+            updateMemoryStats();
+        }
+
+        function renderMemoryGrid() {
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = memoryState.cards.map((card, i) => `
+                <div class="memory-card ${memoryState.matched.includes(card.pairId) ? 'matched' : ''}"
+                     data-index="${i}" onclick="flipMemoryCard(${i})">
+                    <span class="memory-card-back">${memoryState.flipped.includes(i) || memoryState.matched.includes(card.pairId) ? card.content : '?'}</span>
+                </div>
+            `).join('');
+        }
+
+        function flipMemoryCard(index) {
+            if (memoryState.flipped.length >= 2) return;
+            if (memoryState.flipped.includes(index)) return;
+            if (memoryState.matched.includes(memoryState.cards[index].pairId)) return;
+
+            memoryState.flipped.push(index);
+            renderMemoryGrid();
+
+            if (memoryState.flipped.length === 2) {
+                memoryState.moves++;
+                updateMemoryStats();
+
+                const card1 = memoryState.cards[memoryState.flipped[0]];
+                const card2 = memoryState.cards[memoryState.flipped[1]];
+
+                if (card1.pairId === card2.pairId) {
+                    memoryState.matched.push(card1.pairId);
+
+                    if (memoryState.matched.length === memoryPairs.length) {
+                        // Game won!
+                        let xp = parseInt(localStorage.getItem('scienceXP') || '0');
+                        xp += 30;
+                        localStorage.setItem('scienceXP', xp);
+                        setTimeout(() => alert('🎉 You won in ' + memoryState.moves + ' moves! +30 XP'), 500);
+                    }
+
+                    memoryState.flipped = [];
+                    renderMemoryGrid();
+                } else {
+                    setTimeout(() => {
+                        memoryState.flipped = [];
+                        renderMemoryGrid();
+                    }, 1000);
+                }
+            }
+        }
+
+        function updateMemoryStats() {
+            document.getElementById('memory-moves').textContent = memoryState.moves;
+            document.getElementById('memory-pairs').textContent = memoryState.matched.length + '/' + memoryPairs.length;
+        }
+
+        // Experiment Lab Functions
+        function openExperimentLab() {
+            document.getElementById('experiment-lab-modal').classList.add('active');
+            showExperimentList();
+        }
+
+        function closeExperimentLab() {
+            document.getElementById('experiment-lab-modal').classList.remove('active');
+        }
+
+        function showExperimentList() {
+            const list = document.getElementById('experiment-list');
+            const detail = document.getElementById('experiment-detail');
+
+            list.style.display = 'grid';
+            detail.style.display = 'none';
+
+            list.innerHTML = experiments.map(exp => `
+                <div class="experiment-card" onclick="showExperiment(${exp.id})">
+                    <h4><span>${exp.icon}</span> ${exp.title}</h4>
+                    <p>${exp.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function showExperiment(id) {
+            const exp = experiments.find(e => e.id === id);
+            const list = document.getElementById('experiment-list');
+            const detail = document.getElementById('experiment-detail');
+
+            list.style.display = 'none';
+            detail.style.display = 'block';
+
+            detail.innerHTML = `
+                <button class="back-to-experiments" onclick="showExperimentList()">← Back to Experiments</button>
+                <h3>${exp.icon} ${exp.title}</h3>
+                <p style="color: #666; margin-bottom: 15px;">${exp.desc}</p>
+
+                <div style="background: #e3f2fd; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                    <h5 style="margin: 0 0 10px 0; color: #1565c0;">📦 Materials Needed:</h5>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        ${exp.materials.map(m => `<li>${m}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="experiment-steps">
+                    <h5>📝 Steps:</h5>
+                    <ol>
+                        ${exp.steps.map(s => `<li>${s}</li>`).join('')}
+                    </ol>
+                </div>
+
+                <div class="experiment-result">
+                    <h5 style="margin: 0 0 10px 0; color: #e65100;">🔍 What Happens:</h5>
+                    <p style="margin: 0;">${exp.result}</p>
+                </div>
+
+                <button class="start-battle-btn" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #1565c0, #1e88e5);"
+                        onclick="completeExperiment(${exp.id})">
+                    ✅ I Did This Experiment! (+20 XP)
+                </button>
+            `;
+        }
+
+        function completeExperiment(id) {
+            const completed = JSON.parse(localStorage.getItem('completedExperiments') || '[]');
+            if (!completed.includes(id)) {
+                completed.push(id);
+                localStorage.setItem('completedExperiments', JSON.stringify(completed));
+
+                let xp = parseInt(localStorage.getItem('scienceXP') || '0');
+                xp += 20;
+                localStorage.setItem('scienceXP', xp);
+
+                alert('🎉 Experiment completed! +20 XP');
+            } else {
+                alert('You already completed this experiment!');
+            }
+        }
+
+        // Quiz Battle Functions
+        function openQuizBattle() {
+            document.getElementById('quiz-battle-modal').classList.add('active');
+            showBattleSetup();
+        }
+
+        function closeQuizBattle() {
+            document.getElementById('quiz-battle-modal').classList.remove('active');
+        }
+
+        function showBattleSetup() {
+            document.getElementById('battle-setup').style.display = 'block';
+            document.getElementById('battle-game').style.display = 'none';
+            document.getElementById('battle-result').style.display = 'none';
+        }
+
+        function startQuizBattle() {
+            battleState = {
+                playerScore: 0,
+                botScore: 0,
+                currentQuestion: 0,
+                questions: [...battleQuestions].sort(() => Math.random() - 0.5).slice(0, 5),
+                answered: false
+            };
+
+            document.getElementById('battle-setup').style.display = 'none';
+            document.getElementById('battle-game').style.display = 'block';
+            document.getElementById('battle-result').style.display = 'none';
+
+            updateBattleScores();
+            showBattleQuestion();
+        }
+
+        function showBattleQuestion() {
+            if (battleState.currentQuestion >= battleState.questions.length) {
+                endBattle();
+                return;
+            }
+
+            const q = battleState.questions[battleState.currentQuestion];
+            battleState.answered = false;
+
+            document.getElementById('battle-question-area').innerHTML = `
+                <div class="battle-question-text">${q.q}</div>
+                <div class="battle-options">
+                    ${q.options.map((opt, i) => `
+                        <div class="battle-option" onclick="answerBattle(${i})">${opt}</div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Bot answers after random delay (simulating thinking)
+            setTimeout(() => {
+                if (!battleState.answered) {
+                    // Bot has 70% chance of getting it right
+                    const botCorrect = Math.random() < 0.7;
+                    if (botCorrect) {
+                        battleState.botScore++;
+                        updateBattleScores();
+                    }
+                }
+            }, Math.random() * 2000 + 1500);
+        }
+
+        function answerBattle(index) {
+            if (battleState.answered) return;
+            battleState.answered = true;
+
+            const q = battleState.questions[battleState.currentQuestion];
+            const options = document.querySelectorAll('.battle-option');
+
+            options.forEach((opt, i) => {
+                if (i === q.answer) {
+                    opt.classList.add('correct');
+                } else if (i === index && index !== q.answer) {
+                    opt.classList.add('wrong');
+                }
+                opt.style.pointerEvents = 'none';
+            });
+
+            if (index === q.answer) {
+                battleState.playerScore++;
+            }
+
+            updateBattleScores();
+            battleState.currentQuestion++;
+
+            setTimeout(showBattleQuestion, 1500);
+        }
+
+        function updateBattleScores() {
+            document.getElementById('player-score').textContent = battleState.playerScore;
+            document.getElementById('bot-score').textContent = battleState.botScore;
+        }
+
+        function endBattle() {
+            document.getElementById('battle-game').style.display = 'none';
+            document.getElementById('battle-result').style.display = 'block';
+
+            let resultHtml, xpAward;
+
+            if (battleState.playerScore > battleState.botScore) {
+                resultHtml = '<div class="battle-result-icon">🏆</div><h3>You Win!</h3>';
+                xpAward = 50;
+            } else if (battleState.playerScore < battleState.botScore) {
+                resultHtml = '<div class="battle-result-icon">😢</div><h3>Bot Wins!</h3>';
+                xpAward = 10;
+            } else {
+                resultHtml = '<div class="battle-result-icon">🤝</div><h3>It\'s a Tie!</h3>';
+                xpAward = 25;
+            }
+
+            resultHtml += `<p>Your Score: ${battleState.playerScore} | Bot Score: ${battleState.botScore}</p>`;
+            resultHtml += `<p style="color: #4caf50; font-weight: bold;">+${xpAward} XP</p>`;
+            resultHtml += `<button class="start-battle-btn" onclick="startQuizBattle()">⚔️ Battle Again</button>`;
+
+            document.getElementById('battle-result').innerHTML = resultHtml;
+
+            let xp = parseInt(localStorage.getItem('scienceXP') || '0');
+            xp += xpAward;
+            localStorage.setItem('scienceXP', xp);
+        }
+
+        console.log('🎮 Memory Game, Experiment Lab, and Quiz Battle loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
