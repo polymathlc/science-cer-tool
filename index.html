@@ -4850,12 +4850,12 @@
                     <!-- iOS-style OEQ/MCQ Toggle -->
                     <div class="ios-toggle-container">
                         <span class="ios-toggle-label">OEQ</span>
-                        <div class="ios-toggle tooltip-container" id="mode-toggle" onclick="toggleMode()" data-tooltip="Switch between OEQ (Open-Ended Questions) and MCQ (Multiple Choice Questions) modes">
+                        <div class="ios-toggle tooltip-container mcq-active" id="mode-toggle" onclick="toggleMode()" data-tooltip="Switch between OEQ (Open-Ended Questions) and MCQ (Multiple Choice Questions) modes">
                             <div class="ios-toggle-track">
                                 <div class="ios-toggle-thumb" id="toggle-thumb"></div>
                             </div>
                         </div>
-                        <span class="ios-toggle-label">MCQ</span>
+                        <span class="ios-toggle-label active">MCQ</span>
                     </div>
                     
                     <!-- Exam Mode Toggle (Monochrome) -->
@@ -6455,8 +6455,8 @@
         window.isAdminUser = false;
         window.worksheetItems = [];
         window.currentActiveTab = 'cer';
-        window.currentMode = 'oeq';
-        window.currentMcqLevel = 'P3';
+        window.currentMode = 'mcq'; // Default to MCQ mode
+        window.currentMcqLevel = 'P6'; // Default MCQ level matches header
         window.currentOeqLevel = 'P6';
         window.currentMcqTopic = '';
         window.editingQuestionId = null;
@@ -13605,7 +13605,7 @@
         // MODE SWITCHING (OEQ/MCQ)
         // =====================================================
 
-        window.currentMode = 'oeq';
+        // Note: currentMode is already set to 'mcq' in global state above
         window.examModeEnabled = false;
 
         // Toggle mode using iOS-style switch
@@ -16907,8 +16907,8 @@
             // Initialize Exam Mode (Colour/Monochrome)
             initExamMode();
 
-            // Initialize header tabs with question counts
-            renderOeqHeaderTabs('cer');
+            // Initialize with MCQ mode as default
+            switchMode('mcq');
 
             // Update worksheet UI
             updateWorksheetUI();
