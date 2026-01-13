@@ -8140,6 +8140,193 @@
         .toggle-switch.on::after {
             left: 25px;
         }
+
+        /* Batch 19: Session Summary, Performance Insights, Recommendations */
+
+        /* Session Summary */
+        .session-summary-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 450px;
+            width: 95%;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .session-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .session-stat-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .session-stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .session-stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Performance Insights */
+        .insights-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 500px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .insight-card {
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .insight-card.positive {
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            border-left: 4px solid #4CAF50;
+        }
+
+        .insight-card.suggestion {
+            background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+            border-left: 4px solid #2196F3;
+        }
+
+        .insight-card.warning {
+            background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+            border-left: 4px solid #FF9800;
+        }
+
+        .insight-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .insight-content {
+            flex: 1;
+        }
+
+        .insight-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .insight-text {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Recommendations */
+        .recommendations-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 500px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .recommendation-card {
+            display: flex;
+            gap: 15px;
+            padding: 18px;
+            background: #f8f9fa;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+
+        .recommendation-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .recommendation-info {
+            flex: 1;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .recommendation-reason {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .recommendation-priority {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .priority-high {
+            background: #FFEBEE;
+            color: #D32F2F;
+        }
+
+        .priority-medium {
+            background: #FFF3E0;
+            color: #EF6C00;
+        }
+
+        .priority-low {
+            background: #E8F5E9;
+            color: #388E3C;
+        }
     </style>
 </head>
 
@@ -31690,6 +31877,508 @@
         }
 
         console.log('❓ Help Center, Theme Customization, and Notification Settings loaded!');
+    </script>
+
+    <!-- BATCH 19: Session Summary, Performance Insights, Recommendations -->
+    <script>
+        // =====================================================
+        // SESSION SUMMARY
+        // =====================================================
+        window.currentSessionStats = {
+            startTime: Date.now(),
+            questions: 0,
+            correct: 0,
+            xpEarned: 0,
+            streakMax: 0
+        };
+
+        window.updateSessionStats = function(isCorrect, xp = 0) {
+            window.currentSessionStats.questions++;
+            if (isCorrect) {
+                window.currentSessionStats.correct++;
+            }
+            window.currentSessionStats.xpEarned += xp;
+        };
+
+        window.showSessionSummary = function() {
+            // Remove existing
+            document.querySelectorAll('.session-summary-modal, .session-summary-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'session-summary-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'session-summary-modal';
+
+            // Calculate session duration
+            const durationMs = Date.now() - window.currentSessionStats.startTime;
+            const durationMins = Math.round(durationMs / 60000);
+
+            // Calculate accuracy
+            const accuracy = window.currentSessionStats.questions > 0
+                ? Math.round((window.currentSessionStats.correct / window.currentSessionStats.questions) * 100)
+                : 0;
+
+            // Determine performance message
+            let performanceIcon, performanceMessage;
+            if (accuracy >= 90) {
+                performanceIcon = '🌟';
+                performanceMessage = 'Outstanding performance!';
+            } else if (accuracy >= 70) {
+                performanceIcon = '👍';
+                performanceMessage = 'Great job!';
+            } else if (accuracy >= 50) {
+                performanceIcon = '💪';
+                performanceMessage = 'Keep practicing!';
+            } else {
+                performanceIcon = '🎯';
+                performanceMessage = 'Room for improvement!';
+            }
+
+            modal.innerHTML = `
+                <h2 style="margin: 0 0 10px 0; text-align: center;">📊 Session Summary</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Here's how you did this session</p>
+
+                <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border-radius: 16px; margin-bottom: 20px;">
+                    <div style="font-size: 3rem;">${performanceIcon}</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: #333;">${performanceMessage}</div>
+                </div>
+
+                <div class="session-stats-grid">
+                    <div class="session-stat-box">
+                        <div class="session-stat-value">${window.currentSessionStats.questions}</div>
+                        <div class="session-stat-label">Questions</div>
+                    </div>
+                    <div class="session-stat-box">
+                        <div class="session-stat-value">${accuracy}%</div>
+                        <div class="session-stat-label">Accuracy</div>
+                    </div>
+                    <div class="session-stat-box">
+                        <div class="session-stat-value">+${window.currentSessionStats.xpEarned}</div>
+                        <div class="session-stat-label">XP Earned</div>
+                    </div>
+                    <div class="session-stat-box">
+                        <div class="session-stat-value">${durationMins}m</div>
+                        <div class="session-stat-label">Duration</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button onclick="document.querySelectorAll('.session-summary-modal, .session-summary-backdrop').forEach(el => el.remove()); resetSession();"
+                            style="flex: 1; padding: 12px; border-radius: 25px; border: none; background: #e0e0e0; color: #666; font-weight: 600; cursor: pointer;">
+                        New Session
+                    </button>
+                    <button onclick="document.querySelectorAll('.session-summary-modal, .session-summary-backdrop').forEach(el => el.remove());"
+                            style="flex: 1; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                        Continue
+                    </button>
+                </div>
+            `;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.resetSession = function() {
+            window.currentSessionStats = {
+                startTime: Date.now(),
+                questions: 0,
+                correct: 0,
+                xpEarned: 0,
+                streakMax: 0
+            };
+        };
+
+        // =====================================================
+        // PERFORMANCE INSIGHTS
+        // =====================================================
+        window.generateInsights = function() {
+            const insights = [];
+
+            const stats = window.gamificationState || {};
+            const totalQuestions = stats.totalAttempts || parseInt(localStorage.getItem('science_total_questions') || '0');
+            const totalCorrect = stats.totalCorrect || 0;
+            const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+            const streakDays = Object.keys(window.streakData || {}).length;
+
+            // Positive insights
+            if (accuracy >= 80) {
+                insights.push({
+                    type: 'positive',
+                    icon: '⭐',
+                    title: 'Excellent Accuracy!',
+                    text: `Your ${accuracy}% accuracy rate is impressive! You're mastering the material well.`
+                });
+            }
+
+            if (streakDays >= 7) {
+                insights.push({
+                    type: 'positive',
+                    icon: '🔥',
+                    title: 'Strong Consistency',
+                    text: `You've been active for ${streakDays} days! Consistent practice is key to success.`
+                });
+            }
+
+            if (totalQuestions >= 100) {
+                insights.push({
+                    type: 'positive',
+                    icon: '💯',
+                    title: 'Dedicated Learner',
+                    text: `You've answered ${totalQuestions} questions! Your dedication is paying off.`
+                });
+            }
+
+            // Suggestions
+            if (accuracy < 70 && totalQuestions > 10) {
+                insights.push({
+                    type: 'suggestion',
+                    icon: '💡',
+                    title: 'Focus on Understanding',
+                    text: 'Try reviewing the explanations after each question. Understanding why an answer is correct helps retention.'
+                });
+            }
+
+            if (streakDays < 3) {
+                insights.push({
+                    type: 'suggestion',
+                    icon: '📅',
+                    title: 'Build a Routine',
+                    text: 'Try practicing a little bit every day. Even 10 minutes daily is more effective than long, infrequent sessions.'
+                });
+            }
+
+            // Subject-specific insights
+            let weakestSubject = null;
+            let lowestAccuracy = 100;
+            window.SUBJECTS?.forEach(subject => {
+                const data = window.subjectMastery?.[subject.id];
+                if (data && data.total >= 5) {
+                    const subjectAcc = Math.round((data.correct / data.total) * 100);
+                    if (subjectAcc < lowestAccuracy) {
+                        lowestAccuracy = subjectAcc;
+                        weakestSubject = subject;
+                    }
+                }
+            });
+
+            if (weakestSubject && lowestAccuracy < 60) {
+                insights.push({
+                    type: 'suggestion',
+                    icon: weakestSubject.icon,
+                    title: `Focus on ${weakestSubject.name}`,
+                    text: `Your ${weakestSubject.name} accuracy is ${lowestAccuracy}%. Try some extra practice in this area.`
+                });
+            }
+
+            // Warnings
+            const lastActivity = localStorage.getItem('science_daily_goal_date');
+            if (lastActivity && new Date(lastActivity) < new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)) {
+                insights.push({
+                    type: 'warning',
+                    icon: '⏰',
+                    title: 'Time to Return!',
+                    text: 'It\'s been a few days since your last session. Jump back in to maintain your progress!'
+                });
+            }
+
+            // Add default if no insights
+            if (insights.length === 0) {
+                insights.push({
+                    type: 'positive',
+                    icon: '🚀',
+                    title: 'Getting Started',
+                    text: 'Keep answering questions and we\'ll provide personalized insights based on your performance!'
+                });
+            }
+
+            return insights;
+        };
+
+        window.showPerformanceInsights = function() {
+            // Remove existing
+            document.querySelectorAll('.insights-modal, .insights-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'insights-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'insights-modal';
+
+            const insights = generateInsights();
+
+            let insightsHTML = `
+                <h2 style="margin: 0 0 10px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>💡</span> Performance Insights
+                </h2>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Personalized feedback based on your learning patterns</p>
+            `;
+
+            insights.forEach(insight => {
+                insightsHTML += `
+                    <div class="insight-card ${insight.type}">
+                        <div class="insight-icon">${insight.icon}</div>
+                        <div class="insight-content">
+                            <div class="insight-title">${insight.title}</div>
+                            <div class="insight-text">${insight.text}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            insightsHTML += `
+                <button onclick="document.querySelectorAll('.insights-modal, .insights-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 15px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; cursor: pointer;">
+                    Got it! 👍
+                </button>
+            `;
+
+            modal.innerHTML = insightsHTML;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        // =====================================================
+        // STUDY RECOMMENDATIONS
+        // =====================================================
+        window.generateRecommendations = function() {
+            const recommendations = [];
+
+            // Check subject mastery for weak areas
+            window.SUBJECTS?.forEach(subject => {
+                const data = window.subjectMastery?.[subject.id];
+                if (data && data.total >= 5) {
+                    const acc = Math.round((data.correct / data.total) * 100);
+                    if (acc < 50) {
+                        recommendations.push({
+                            icon: subject.icon,
+                            title: `Practice ${subject.name}`,
+                            reason: `Your accuracy is ${acc}%. More practice needed.`,
+                            priority: 'high',
+                            action: () => { /* Navigate to subject */ }
+                        });
+                    } else if (acc < 70) {
+                        recommendations.push({
+                            icon: subject.icon,
+                            title: `Review ${subject.name}`,
+                            reason: `Your ${acc}% accuracy can improve.`,
+                            priority: 'medium',
+                            action: () => { /* Navigate to subject */ }
+                        });
+                    }
+                }
+            });
+
+            // Check for incomplete challenges
+            if (window.weeklyChallenges) {
+                const incomplete = window.weeklyChallenges.challenges.filter(
+                    c => !window.weeklyChallenges.claimed.includes(c.id)
+                );
+                if (incomplete.length > 0) {
+                    const challenge = incomplete[0];
+                    recommendations.push({
+                        icon: '🎯',
+                        title: `Complete: ${challenge.title}`,
+                        reason: `${challenge.current}/${challenge.target} - ${challenge.reward} XP reward`,
+                        priority: 'medium',
+                        action: () => { if (window.showWeeklyChallenges) showWeeklyChallenges(); }
+                    });
+                }
+            }
+
+            // Check daily goal
+            if (window.dailyGoals && !window.dailyGoals.completed) {
+                const remaining = window.dailyGoals.questions - window.dailyGoals.current;
+                if (remaining > 0) {
+                    recommendations.push({
+                        icon: '📝',
+                        title: `Complete Daily Goal`,
+                        reason: `${remaining} more questions for 100 XP bonus!`,
+                        priority: remaining <= 3 ? 'high' : 'medium',
+                        action: () => { /* Start questions */ }
+                    });
+                }
+            }
+
+            // Suggest flashcards if not used recently
+            const lastFlashcard = localStorage.getItem('science_flashcard_last');
+            if (!lastFlashcard || Date.now() - parseInt(lastFlashcard) > 24 * 60 * 60 * 1000) {
+                recommendations.push({
+                    icon: '📚',
+                    title: 'Review Flashcards',
+                    reason: 'Quick review sessions boost retention!',
+                    priority: 'low',
+                    action: () => { if (window.startFlashcardMode) startFlashcardMode(); }
+                });
+            }
+
+            // Suggest focus mode
+            const lastFocus = localStorage.getItem('science_focus_last');
+            if (!lastFocus || Date.now() - parseInt(lastFocus) > 24 * 60 * 60 * 1000) {
+                recommendations.push({
+                    icon: '🎯',
+                    title: 'Try Focus Mode',
+                    reason: 'Distraction-free study with XP bonus',
+                    priority: 'low',
+                    action: () => { if (window.toggleFocusMode) toggleFocusMode(); }
+                });
+            }
+
+            // Sort by priority
+            const priorityOrder = { high: 0, medium: 1, low: 2 };
+            recommendations.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+
+            return recommendations.slice(0, 5); // Return top 5
+        };
+
+        window.showRecommendations = function() {
+            // Remove existing
+            document.querySelectorAll('.recommendations-modal, .recommendations-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'recommendations-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'recommendations-modal';
+
+            const recommendations = generateRecommendations();
+
+            let recHTML = `
+                <h2 style="margin: 0 0 10px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>🎯</span> Study Recommendations
+                </h2>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Personalized suggestions to maximize your learning</p>
+            `;
+
+            if (recommendations.length === 0) {
+                recHTML += `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">🌟</div>
+                        <p>Great work! Keep practicing and we'll suggest areas to focus on.</p>
+                    </div>
+                `;
+            } else {
+                recommendations.forEach((rec, index) => {
+                    recHTML += `
+                        <div class="recommendation-card" onclick="handleRecommendation(${index})">
+                            <div class="recommendation-icon">${rec.icon}</div>
+                            <div class="recommendation-info">
+                                <div class="recommendation-title">${rec.title}</div>
+                                <div class="recommendation-reason">${rec.reason}</div>
+                            </div>
+                            <span class="recommendation-priority priority-${rec.priority}">${rec.priority}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            recHTML += `
+                <button onclick="document.querySelectorAll('.recommendations-modal, .recommendations-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 15px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                    Start Learning! 🚀
+                </button>
+            `;
+
+            modal.innerHTML = recHTML;
+
+            // Store recommendations for action handling
+            window.currentRecommendations = recommendations;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.handleRecommendation = function(index) {
+            const rec = window.currentRecommendations?.[index];
+            if (rec && rec.action) {
+                document.querySelectorAll('.recommendations-modal, .recommendations-backdrop').forEach(el => el.remove());
+                rec.action();
+            }
+        };
+
+        // =====================================================
+        // ADD BUTTONS
+        // =====================================================
+        window.createBatch19Buttons = function() {
+            // Session Summary button
+            let btn1 = document.querySelector('.session-summary-btn');
+            if (!btn1) {
+                btn1 = document.createElement('button');
+                btn1.className = 'session-summary-btn';
+                btn1.style.cssText = `
+                    position: fixed;
+                    bottom: 710px;
+                    left: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: none;
+                    background: linear-gradient(135deg, #E91E63, #9C27B0);
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+                    z-index: 999;
+                    transition: all 0.3s ease;
+                `;
+                btn1.innerHTML = '📋';
+                btn1.title = 'Session Summary';
+                btn1.onclick = showSessionSummary;
+                btn1.onmouseenter = () => btn1.style.transform = 'scale(1.1)';
+                btn1.onmouseleave = () => btn1.style.transform = 'scale(1)';
+                document.body.appendChild(btn1);
+            }
+
+            // Insights button
+            let btn2 = document.querySelector('.insights-btn');
+            if (!btn2) {
+                btn2 = document.createElement('button');
+                btn2.className = 'insights-btn';
+                btn2.style.cssText = `
+                    position: fixed;
+                    bottom: 770px;
+                    left: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: none;
+                    background: linear-gradient(135deg, #3F51B5, #2196F3);
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(63, 81, 181, 0.4);
+                    z-index: 999;
+                    transition: all 0.3s ease;
+                `;
+                btn2.innerHTML = '💡';
+                btn2.title = 'Performance Insights';
+                btn2.onclick = showPerformanceInsights;
+                btn2.onmouseenter = () => btn2.style.transform = 'scale(1.1)';
+                btn2.onmouseleave = () => btn2.style.transform = 'scale(1)';
+                document.body.appendChild(btn2);
+            }
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            createBatch19Buttons();
+        });
+
+        // Also init if DOM already loaded
+        if (document.readyState !== 'loading') {
+            createBatch19Buttons();
+        }
+
+        console.log('📊 Session Summary, Performance Insights, and Recommendations loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
