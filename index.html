@@ -18753,6 +18753,438 @@
         .floating-summaries-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ===== Batch 47 Styles: Achievement Badges, Word Search, Topic Quizzes ===== */
+
+        /* Achievement Badges Modal */
+        .badges-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .badges-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #ffd700;
+        }
+
+        .badges-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .badges-header h2 {
+            color: #ffd700;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .badges-progress {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .badges-count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .badge-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .badge-item.unlocked {
+            background: rgba(255, 215, 0, 0.15);
+            border: 2px solid #ffd700;
+        }
+
+        .badge-item.locked {
+            opacity: 0.5;
+            filter: grayscale(100%);
+        }
+
+        .badge-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .badge-name {
+            color: #ffd700;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .badge-desc {
+            color: #aaa;
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .badge-lock-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1rem;
+        }
+
+        /* Word Search Modal */
+        .wordsearch-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wordsearch-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            border: 2px solid #26a69a;
+        }
+
+        .wordsearch-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .wordsearch-header h2 {
+            color: #26a69a;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .wordsearch-grid {
+            display: grid;
+            gap: 3px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .wordsearch-cell {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(38, 166, 154, 0.2);
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .wordsearch-cell:hover {
+            background: rgba(38, 166, 154, 0.4);
+        }
+
+        .wordsearch-cell.selected {
+            background: #26a69a;
+            color: white;
+        }
+
+        .wordsearch-cell.found {
+            background: #4caf50;
+            color: white;
+        }
+
+        .wordsearch-words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .wordsearch-word {
+            padding: 5px 12px;
+            background: rgba(38, 166, 154, 0.2);
+            border-radius: 15px;
+            color: #80cbc4;
+            font-size: 0.85rem;
+        }
+
+        .wordsearch-word.found {
+            background: #4caf50;
+            color: white;
+            text-decoration: line-through;
+        }
+
+        .wordsearch-score {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .wordsearch-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #26a69a 0%, #4db6ac 100%);
+            color: white;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            display: block;
+            margin: 15px auto 0;
+            transition: all 0.3s ease;
+        }
+
+        .wordsearch-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Topic Quiz Modal */
+        .topicquiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topicquiz-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #5c6bc0;
+        }
+
+        .topicquiz-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .topicquiz-header h2 {
+            color: #5c6bc0;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .topic-select-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .topic-select-btn {
+            padding: 20px 15px;
+            border-radius: 12px;
+            background: rgba(92, 107, 192, 0.15);
+            color: #9fa8da;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .topic-select-btn:hover {
+            border-color: #5c6bc0;
+            background: rgba(92, 107, 192, 0.25);
+        }
+
+        .topic-select-btn.selected {
+            border-color: #5c6bc0;
+            background: rgba(92, 107, 192, 0.3);
+        }
+
+        .topic-select-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .topicquiz-question {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .topicquiz-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .topicquiz-question-text {
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .topicquiz-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .topicquiz-option {
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(92, 107, 192, 0.1);
+            color: #9fa8da;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .topicquiz-option:hover {
+            border-color: #5c6bc0;
+            background: rgba(92, 107, 192, 0.2);
+        }
+
+        .topicquiz-result {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .topicquiz-result-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .topicquiz-result-score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #5c6bc0;
+            margin-bottom: 10px;
+        }
+
+        .topicquiz-start-btn {
+            padding: 15px 35px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #5c6bc0 0%, #7986cb 100%);
+            color: white;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        .topicquiz-start-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Floating Buttons for Batch 47 */
+        .floating-badges-btn {
+            position: fixed;
+            bottom: 4240px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700 0%, #ffeb3b 100%);
+            color: #333;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-badges-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-wordsearch-btn {
+            position: fixed;
+            bottom: 4300px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #26a69a 0%, #4db6ac 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(38, 166, 154, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-wordsearch-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-topicquiz-btn {
+            position: fixed;
+            bottom: 4360px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5c6bc0 0%, #7986cb 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(92, 107, 192, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-topicquiz-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -52896,6 +53328,425 @@ Science Made Fun!
         }
 
         console.log('💡 Daily Facts, Quiz Battle, and Topic Summaries loaded!');
+    </script>
+
+    <!-- ===== Batch 47: Achievement Badges, Word Search, Topic Quizzes ===== -->
+    <button class="floating-badges-btn" onclick="openBadgesModal()" title="Achievement Badges">🏅</button>
+    <button class="floating-wordsearch-btn" onclick="openWordsearchModal()" title="Word Search">🔤</button>
+    <button class="floating-topicquiz-btn" onclick="openTopicQuizModal()" title="Topic Quiz">📝</button>
+
+    <!-- Achievement Badges Modal -->
+    <div class="badges-modal" id="badges-modal">
+        <div class="badges-content">
+            <button class="modal-close-btn" onclick="closeBadgesModal()">&times;</button>
+            <div class="badges-header">
+                <h2>🏅 Achievement Badges</h2>
+                <p style="color: #aaa;">Collect badges for your accomplishments!</p>
+            </div>
+            <div class="badges-progress" id="badges-progress"></div>
+            <div class="badges-grid" id="badges-grid"></div>
+        </div>
+    </div>
+
+    <!-- Word Search Modal -->
+    <div class="wordsearch-modal" id="wordsearch-modal">
+        <div class="wordsearch-content">
+            <button class="modal-close-btn" onclick="closeWordsearchModal()">&times;</button>
+            <div class="wordsearch-header">
+                <h2>🔤 Science Word Search</h2>
+                <p style="color: #aaa;">Find the hidden science words!</p>
+            </div>
+            <div class="wordsearch-words" id="wordsearch-words"></div>
+            <div class="wordsearch-grid" id="wordsearch-grid"></div>
+            <div class="wordsearch-score" id="wordsearch-score"></div>
+            <button class="wordsearch-btn" onclick="generateWordsearch()">New Puzzle</button>
+        </div>
+    </div>
+
+    <!-- Topic Quiz Modal -->
+    <div class="topicquiz-modal" id="topicquiz-modal">
+        <div class="topicquiz-content">
+            <button class="modal-close-btn" onclick="closeTopicQuizModal()">&times;</button>
+            <div class="topicquiz-header">
+                <h2>📝 Topic Quiz</h2>
+                <p style="color: #aaa;">Test your knowledge on specific topics!</p>
+            </div>
+            <div id="topicquiz-area"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Batch 47: Achievement Badges, Word Search, Topic Quizzes =====
+
+        // Achievement Badges Data
+        const achievementBadges = [
+            { id: 'first_question', icon: '🌟', name: 'First Steps', desc: 'Answer your first question', condition: () => (parseInt(localStorage.getItem('totalQuestionsAnswered')) || 0) >= 1 },
+            { id: 'ten_questions', icon: '🎯', name: 'Getting Started', desc: 'Answer 10 questions', condition: () => (parseInt(localStorage.getItem('totalQuestionsAnswered')) || 0) >= 10 },
+            { id: 'fifty_questions', icon: '🏆', name: 'Quiz Master', desc: 'Answer 50 questions', condition: () => (parseInt(localStorage.getItem('totalQuestionsAnswered')) || 0) >= 50 },
+            { id: 'streak_5', icon: '🔥', name: 'On Fire', desc: 'Get a 5-answer streak', condition: () => (parseInt(localStorage.getItem('answerStreak')) || 0) >= 5 },
+            { id: 'streak_10', icon: '💥', name: 'Unstoppable', desc: 'Get a 10-answer streak', condition: () => (parseInt(localStorage.getItem('answerStreak')) || 0) >= 10 },
+            { id: 'vocab_5', icon: '📚', name: 'Word Learner', desc: 'Learn 5 vocabulary terms', condition: () => Object.values(JSON.parse(localStorage.getItem('learnedVocab')) || {}).filter(v => v).length >= 5 },
+            { id: 'experiment_1', icon: '🔬', name: 'Junior Scientist', desc: 'Complete 1 experiment', condition: () => (JSON.parse(localStorage.getItem('completedExperiments')) || []).length >= 1 },
+            { id: 'daily_3', icon: '📅', name: 'Consistent', desc: 'Check facts 3 days in a row', condition: () => (parseInt(localStorage.getItem('factsStreak')) || 0) >= 3 },
+            { id: 'battle_win', icon: '⚔️', name: 'Champion', desc: 'Win a quiz battle', condition: () => (parseInt(localStorage.getItem('battlesWon')) || 0) >= 1 }
+        ];
+
+        let unlockedBadges = JSON.parse(localStorage.getItem('unlockedBadges')) || [];
+
+        function openBadgesModal() {
+            document.getElementById('badges-modal').style.display = 'flex';
+            checkAndUnlockBadges();
+            displayBadges();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeBadgesModal() {
+            document.getElementById('badges-modal').style.display = 'none';
+        }
+
+        function checkAndUnlockBadges() {
+            let newUnlocks = false;
+            achievementBadges.forEach(badge => {
+                if (!unlockedBadges.includes(badge.id) && badge.condition()) {
+                    unlockedBadges.push(badge.id);
+                    newUnlocks = true;
+                }
+            });
+
+            if (newUnlocks) {
+                localStorage.setItem('unlockedBadges', JSON.stringify(unlockedBadges));
+            }
+        }
+
+        function displayBadges() {
+            const progress = document.getElementById('badges-progress');
+            const grid = document.getElementById('badges-grid');
+
+            progress.innerHTML = `
+                <div class="badges-count">${unlockedBadges.length} / ${achievementBadges.length}</div>
+                <div style="color: #aaa; font-size: 0.9rem;">Badges Unlocked</div>
+            `;
+
+            grid.innerHTML = achievementBadges.map(badge => {
+                const isUnlocked = unlockedBadges.includes(badge.id);
+                return `
+                    <div class="badge-item ${isUnlocked ? 'unlocked' : 'locked'}">
+                        ${!isUnlocked ? '<span class="badge-lock-icon">🔒</span>' : ''}
+                        <div class="badge-icon">${badge.icon}</div>
+                        <div class="badge-name">${badge.name}</div>
+                        <div class="badge-desc">${badge.desc}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Word Search Game
+        const wordsearchWordSets = [
+            ['ATOM', 'CELL', 'HEAT', 'MASS', 'WAVE'],
+            ['LIGHT', 'FORCE', 'PLANT', 'SOLID', 'GAS'],
+            ['ENERGY', 'MATTER', 'LIQUID', 'MOTION', 'SOUND']
+        ];
+
+        let currentWordsearch = {
+            grid: [],
+            words: [],
+            found: [],
+            selectedCells: []
+        };
+
+        function openWordsearchModal() {
+            document.getElementById('wordsearch-modal').style.display = 'flex';
+            generateWordsearch();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeWordsearchModal() {
+            document.getElementById('wordsearch-modal').style.display = 'none';
+        }
+
+        function generateWordsearch() {
+            const size = 8;
+            const wordSet = wordsearchWordSets[Math.floor(Math.random() * wordsearchWordSets.length)];
+            currentWordsearch.words = wordSet;
+            currentWordsearch.found = [];
+            currentWordsearch.selectedCells = [];
+
+            // Create empty grid
+            currentWordsearch.grid = Array(size).fill(null).map(() => Array(size).fill(''));
+
+            // Place words
+            wordSet.forEach(word => {
+                placeWord(word, size);
+            });
+
+            // Fill remaining cells with random letters
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size; j++) {
+                    if (currentWordsearch.grid[i][j] === '') {
+                        currentWordsearch.grid[i][j] = letters[Math.floor(Math.random() * letters.length)];
+                    }
+                }
+            }
+
+            renderWordsearch();
+        }
+
+        function placeWord(word, size) {
+            const directions = [
+                [0, 1],  // horizontal
+                [1, 0],  // vertical
+                [1, 1]   // diagonal
+            ];
+
+            for (let attempts = 0; attempts < 50; attempts++) {
+                const dir = directions[Math.floor(Math.random() * directions.length)];
+                const startRow = Math.floor(Math.random() * (size - word.length * Math.abs(dir[0])));
+                const startCol = Math.floor(Math.random() * (size - word.length * Math.abs(dir[1])));
+
+                if (canPlaceWord(word, startRow, startCol, dir)) {
+                    for (let i = 0; i < word.length; i++) {
+                        currentWordsearch.grid[startRow + i * dir[0]][startCol + i * dir[1]] = word[i];
+                    }
+                    return;
+                }
+            }
+        }
+
+        function canPlaceWord(word, row, col, dir) {
+            for (let i = 0; i < word.length; i++) {
+                const r = row + i * dir[0];
+                const c = col + i * dir[1];
+                if (r < 0 || r >= 8 || c < 0 || c >= 8) return false;
+                const cell = currentWordsearch.grid[r][c];
+                if (cell !== '' && cell !== word[i]) return false;
+            }
+            return true;
+        }
+
+        function renderWordsearch() {
+            const gridEl = document.getElementById('wordsearch-grid');
+            const wordsEl = document.getElementById('wordsearch-words');
+            const scoreEl = document.getElementById('wordsearch-score');
+
+            gridEl.style.gridTemplateColumns = `repeat(8, 35px)`;
+            gridEl.innerHTML = currentWordsearch.grid.map((row, i) =>
+                row.map((cell, j) => {
+                    const isFound = currentWordsearch.found.some(f =>
+                        f.cells.some(c => c.row === i && c.col === j)
+                    );
+                    return `<div class="wordsearch-cell ${isFound ? 'found' : ''}" data-row="${i}" data-col="${j}" onclick="selectWordsearchCell(${i}, ${j})">${cell}</div>`;
+                }).join('')
+            ).join('');
+
+            wordsEl.innerHTML = currentWordsearch.words.map(word =>
+                `<span class="wordsearch-word ${currentWordsearch.found.some(f => f.word === word) ? 'found' : ''}">${word}</span>`
+            ).join('');
+
+            scoreEl.textContent = `Found: ${currentWordsearch.found.length} / ${currentWordsearch.words.length}`;
+
+            if (currentWordsearch.found.length === currentWordsearch.words.length) {
+                if (typeof addXP === 'function') addXP(20);
+                showToast('🎉 All words found! +20 XP', 'success');
+            }
+        }
+
+        function selectWordsearchCell(row, col) {
+            const cell = { row, col };
+            const existingIndex = currentWordsearch.selectedCells.findIndex(c => c.row === row && c.col === col);
+
+            if (existingIndex >= 0) {
+                currentWordsearch.selectedCells.splice(existingIndex, 1);
+            } else {
+                currentWordsearch.selectedCells.push(cell);
+            }
+
+            // Check if selection forms a word
+            const selectedWord = currentWordsearch.selectedCells.map(c => currentWordsearch.grid[c.row][c.col]).join('');
+
+            if (currentWordsearch.words.includes(selectedWord) && !currentWordsearch.found.some(f => f.word === selectedWord)) {
+                currentWordsearch.found.push({ word: selectedWord, cells: [...currentWordsearch.selectedCells] });
+                currentWordsearch.selectedCells = [];
+                if (typeof playCorrectSound === 'function') playCorrectSound();
+            }
+
+            // Also check reversed
+            const reversedWord = selectedWord.split('').reverse().join('');
+            if (currentWordsearch.words.includes(reversedWord) && !currentWordsearch.found.some(f => f.word === reversedWord)) {
+                currentWordsearch.found.push({ word: reversedWord, cells: [...currentWordsearch.selectedCells] });
+                currentWordsearch.selectedCells = [];
+                if (typeof playCorrectSound === 'function') playCorrectSound();
+            }
+
+            renderWordsearch();
+
+            // Highlight selected cells
+            currentWordsearch.selectedCells.forEach(c => {
+                const cellEl = document.querySelector(`[data-row="${c.row}"][data-col="${c.col}"]`);
+                if (cellEl) cellEl.classList.add('selected');
+            });
+        }
+
+        // Topic Quiz System
+        const topicQuizData = {
+            'Matter': {
+                icon: '🧪',
+                questions: [
+                    { q: 'What state of matter has a definite shape and volume?', options: ['Solid', 'Liquid', 'Gas', 'Plasma'], answer: 0 },
+                    { q: 'What happens to water when heated to 100°C?', options: ['Freezes', 'Stays liquid', 'Evaporates', 'Condenses'], answer: 2 },
+                    { q: 'Which of these is NOT a state of matter?', options: ['Solid', 'Liquid', 'Energy', 'Gas'], answer: 2 },
+                    { q: 'What do we call the change from liquid to gas?', options: ['Melting', 'Freezing', 'Evaporation', 'Condensation'], answer: 2 },
+                    { q: 'What is everything made of?', options: ['Energy', 'Matter', 'Light', 'Air'], answer: 1 }
+                ]
+            },
+            'Energy': {
+                icon: '⚡',
+                questions: [
+                    { q: 'What type of energy does a moving car have?', options: ['Potential', 'Kinetic', 'Chemical', 'Nuclear'], answer: 1 },
+                    { q: 'What is the main source of energy for Earth?', options: ['Moon', 'Wind', 'Sun', 'Ocean'], answer: 2 },
+                    { q: 'What type of energy is stored in food?', options: ['Kinetic', 'Chemical', 'Nuclear', 'Electrical'], answer: 1 },
+                    { q: 'What happens to energy when it is used?', options: ['It disappears', 'It is destroyed', 'It transforms', 'It multiplies'], answer: 2 },
+                    { q: 'Which uses electrical energy?', options: ['Candle', 'Campfire', 'Light bulb', 'Sunlight'], answer: 2 }
+                ]
+            },
+            'Light': {
+                icon: '💡',
+                questions: [
+                    { q: 'What happens when light hits a mirror?', options: ['Absorbed', 'Reflected', 'Refracted', 'Destroyed'], answer: 1 },
+                    { q: 'What are the primary colors of light?', options: ['Red, Yellow, Blue', 'Red, Green, Blue', 'Cyan, Magenta, Yellow', 'Orange, Green, Purple'], answer: 1 },
+                    { q: 'How does light travel?', options: ['In circles', 'In waves', 'In straight lines', 'In random patterns'], answer: 2 },
+                    { q: 'What splits white light into colors?', options: ['Mirror', 'Prism', 'Lens', 'Paper'], answer: 1 },
+                    { q: 'What do we see when all colors of light combine?', options: ['Black', 'White', 'Rainbow', 'Nothing'], answer: 1 }
+                ]
+            },
+            'Plants': {
+                icon: '🌱',
+                questions: [
+                    { q: 'What process do plants use to make food?', options: ['Respiration', 'Photosynthesis', 'Digestion', 'Absorption'], answer: 1 },
+                    { q: 'What gas do plants release during photosynthesis?', options: ['Carbon dioxide', 'Nitrogen', 'Oxygen', 'Hydrogen'], answer: 2 },
+                    { q: 'What part of the plant absorbs water?', options: ['Leaves', 'Stem', 'Roots', 'Flower'], answer: 2 },
+                    { q: 'What do plants need for photosynthesis?', options: ['Darkness', 'Sunlight', 'Cold', 'Wind'], answer: 1 },
+                    { q: 'Where does photosynthesis mainly occur?', options: ['Roots', 'Stem', 'Leaves', 'Flower'], answer: 2 }
+                ]
+            }
+        };
+
+        let topicQuizState = {
+            selectedTopic: null,
+            currentQuestion: 0,
+            score: 0,
+            questions: []
+        };
+
+        function openTopicQuizModal() {
+            document.getElementById('topicquiz-modal').style.display = 'flex';
+            showTopicSelection();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeTopicQuizModal() {
+            document.getElementById('topicquiz-modal').style.display = 'none';
+        }
+
+        function showTopicSelection() {
+            const area = document.getElementById('topicquiz-area');
+            const topics = Object.keys(topicQuizData);
+
+            area.innerHTML = `
+                <p style="text-align: center; color: #aaa; margin-bottom: 20px;">Choose a topic to test your knowledge:</p>
+                <div class="topic-select-grid">
+                    ${topics.map(topic => `
+                        <button class="topic-select-btn ${topicQuizState.selectedTopic === topic ? 'selected' : ''}" onclick="selectQuizTopic('${topic}')">
+                            <div class="topic-select-icon">${topicQuizData[topic].icon}</div>
+                            <div>${topic}</div>
+                        </button>
+                    `).join('')}
+                </div>
+                <button class="topicquiz-start-btn" onclick="startTopicQuiz()" ${!topicQuizState.selectedTopic ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                    Start Quiz
+                </button>
+            `;
+        }
+
+        function selectQuizTopic(topic) {
+            topicQuizState.selectedTopic = topic;
+            showTopicSelection();
+        }
+
+        function startTopicQuiz() {
+            if (!topicQuizState.selectedTopic) return;
+
+            topicQuizState.currentQuestion = 0;
+            topicQuizState.score = 0;
+            topicQuizState.questions = [...topicQuizData[topicQuizState.selectedTopic].questions].sort(() => Math.random() - 0.5);
+
+            displayTopicQuizQuestion();
+        }
+
+        function displayTopicQuizQuestion() {
+            const area = document.getElementById('topicquiz-area');
+            const q = topicQuizState.questions[topicQuizState.currentQuestion];
+
+            area.innerHTML = `
+                <div class="topicquiz-question">
+                    <div class="topicquiz-progress">
+                        <span>${topicQuizData[topicQuizState.selectedTopic].icon} ${topicQuizState.selectedTopic}</span>
+                        <span>Question ${topicQuizState.currentQuestion + 1} / ${topicQuizState.questions.length}</span>
+                    </div>
+                    <div class="topicquiz-question-text">${q.q}</div>
+                </div>
+                <div class="topicquiz-options">
+                    ${q.options.map((opt, i) => `
+                        <button class="topicquiz-option" onclick="answerTopicQuiz(${i})">${opt}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function answerTopicQuiz(selectedIndex) {
+            const q = topicQuizState.questions[topicQuizState.currentQuestion];
+            if (selectedIndex === q.answer) {
+                topicQuizState.score++;
+            }
+
+            topicQuizState.currentQuestion++;
+
+            if (topicQuizState.currentQuestion >= topicQuizState.questions.length) {
+                showTopicQuizResults();
+            } else {
+                displayTopicQuizQuestion();
+            }
+        }
+
+        function showTopicQuizResults() {
+            const area = document.getElementById('topicquiz-area');
+            const percentage = Math.round((topicQuizState.score / topicQuizState.questions.length) * 100);
+            const xpEarned = topicQuizState.score * 10;
+
+            if (typeof addXP === 'function') addXP(xpEarned);
+
+            let resultIcon = '🎉';
+            let message = 'Excellent!';
+            if (percentage < 40) {
+                resultIcon = '📚';
+                message = 'Keep practicing!';
+            } else if (percentage < 70) {
+                resultIcon = '👍';
+                message = 'Good job!';
+            }
+
+            area.innerHTML = `
+                <div class="topicquiz-result">
+                    <div class="topicquiz-result-icon">${resultIcon}</div>
+                    <div class="topicquiz-result-score">${topicQuizState.score} / ${topicQuizState.questions.length}</div>
+                    <p style="color: #9fa8da; font-size: 1.2rem;">${message}</p>
+                    <p style="color: #aaa;">+${xpEarned} XP earned</p>
+                    <button class="topicquiz-start-btn" onclick="showTopicSelection()">Try Another Topic</button>
+                </div>
+            `;
+        }
+
+        console.log('🏅 Achievement Badges, Word Search, and Topic Quizzes loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
