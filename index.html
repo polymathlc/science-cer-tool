@@ -15190,6 +15190,386 @@
         .floating-quotes-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ========== BATCH 38: Power-ups, Daily Login Reward, Quick Review ========== */
+
+        /* Power-ups System */
+        .powerups-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .powerups-container {
+            background: linear-gradient(135deg, #880e4f 0%, #ad1457 100%);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .powerups-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .powerups-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .powerups-body {
+            padding: 20px;
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+
+        .powerup-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .powerup-card:hover {
+            border-color: #ffd700;
+            transform: translateY(-3px);
+        }
+
+        .powerup-card.owned {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+        }
+
+        .powerup-icon {
+            font-size: 2.5rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .powerup-info {
+            flex: 1;
+        }
+
+        .powerup-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .powerup-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .powerup-count {
+            font-size: 0.85rem;
+            color: #ffd700;
+        }
+
+        .powerup-action {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .powerup-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+            color: #880e4f;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .powerup-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .powerup-btn:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .powerup-cost {
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Daily Login Reward */
+        .daily-reward-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .daily-reward-container {
+            background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            animation: rewardBounce 0.5s ease;
+        }
+
+        @keyframes rewardBounce {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .daily-reward-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            color: white;
+        }
+
+        .daily-reward-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .daily-reward-body {
+            padding: 30px;
+            color: white;
+        }
+
+        .daily-streak-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .daily-streak-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .daily-reward-box {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .reward-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .reward-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .daily-reward-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+            color: #1565c0;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .daily-reward-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Quick Review Mode */
+        .quick-review-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quick-review-container {
+            background: white;
+            border-radius: 20px;
+            width: 95%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .quick-review-header {
+            background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quick-review-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .quick-review-body {
+            padding: 20px;
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+
+        .review-card {
+            background: #fff3f3;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f44336;
+        }
+
+        .review-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .review-topic {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .review-question {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .review-answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .review-answer {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .review-answer.wrong {
+            background: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        .review-answer.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .review-empty {
+            text-align: center;
+            padding: 40px;
+            color: #4CAF50;
+        }
+
+        .review-empty-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        /* Floating buttons */
+        .floating-powerups-btn {
+            position: fixed;
+            bottom: 2860px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #880e4f 0%, #ad1457 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(136, 14, 79, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-powerups-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-review-btn {
+            position: fixed;
+            bottom: 2920px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(211, 47, 47, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-review-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -46304,6 +46684,304 @@ Science Made Fun!
         }
 
         console.log('💭 Motivational Messages, Topic Mastery, and Science Quotes loaded!');
+    </script>
+
+    <!-- ========== BATCH 38: Power-ups, Daily Login Reward, Quick Review ========== -->
+
+    <!-- Power-ups Modal -->
+    <div class="powerups-modal" id="powerups-modal">
+        <div class="powerups-container">
+            <div class="powerups-header">
+                <h2>⚡ Power-ups Shop</h2>
+                <button onclick="closePowerups()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <div class="powerups-body" id="powerups-body">
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Login Reward Modal -->
+    <div class="daily-reward-modal" id="daily-reward-modal">
+        <div class="daily-reward-container">
+            <div class="daily-reward-header">
+                <h2>🎁 Daily Reward!</h2>
+            </div>
+            <div class="daily-reward-body">
+                <div class="daily-streak-display" id="daily-streak-num">1</div>
+                <div class="daily-streak-label">Day Streak</div>
+                <div class="daily-reward-box">
+                    <span class="reward-icon" id="reward-icon">🎁</span>
+                    <span class="reward-amount" id="reward-amount">+10 XP</span>
+                </div>
+                <button class="daily-reward-btn" onclick="claimDailyReward()">Claim Reward!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Review Modal -->
+    <div class="quick-review-modal" id="quick-review-modal">
+        <div class="quick-review-container">
+            <div class="quick-review-header">
+                <h2>📝 Quick Review</h2>
+                <button onclick="closeQuickReview()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <div class="quick-review-body" id="quick-review-body">
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Buttons -->
+    <button class="floating-powerups-btn" onclick="openPowerups()" title="Power-ups">⚡</button>
+    <button class="floating-review-btn" onclick="openQuickReview()" title="Quick Review">📝</button>
+
+    <script>
+        // ========== BATCH 38: Power-ups, Daily Login Reward, Quick Review ==========
+
+        // Power-ups System
+        const powerupDefinitions = [
+            { id: 'double-xp', name: 'Double XP', icon: '2️⃣', desc: 'Double XP for your next 5 questions!', cost: 50, duration: 5 },
+            { id: 'hint-pack', name: 'Hint Pack', icon: '💡', desc: 'Get 5 extra hints to use on tough questions.', cost: 30, amount: 5 },
+            { id: 'streak-shield', name: 'Streak Shield', icon: '🛡️', desc: 'Protect your streak from one wrong answer!', cost: 75, amount: 1 },
+            { id: 'time-freeze', name: 'Time Freeze', icon: '❄️', desc: 'Freeze the timer in Challenge Mode for 10 seconds!', cost: 40, amount: 1 },
+            { id: 'bonus-spin', name: 'Bonus Spin', icon: '🎰', desc: 'Spin for a random bonus (10-100 XP)!', cost: 25, amount: 1 }
+        ];
+
+        function getPowerups() {
+            return JSON.parse(localStorage.getItem('sciencePowerups')) || {};
+        }
+
+        function savePowerups(powerups) {
+            localStorage.setItem('sciencePowerups', JSON.stringify(powerups));
+        }
+
+        function openPowerups() {
+            document.getElementById('powerups-modal').style.display = 'flex';
+            renderPowerups();
+        }
+
+        function closePowerups() {
+            document.getElementById('powerups-modal').style.display = 'none';
+        }
+
+        function renderPowerups() {
+            const container = document.getElementById('powerups-body');
+            const owned = getPowerups();
+            const xp = parseInt(localStorage.getItem('scienceXP')) || 0;
+
+            container.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px; color: #ffd700; font-size: 1.2rem;">
+                    Your XP: <strong>${xp}</strong>
+                </div>
+                ${powerupDefinitions.map(powerup => {
+                    const count = owned[powerup.id] || 0;
+                    const canAfford = xp >= powerup.cost;
+                    return `
+                        <div class="powerup-card ${count > 0 ? 'owned' : ''}">
+                            <div class="powerup-icon">${powerup.icon}</div>
+                            <div class="powerup-info">
+                                <div class="powerup-name">${powerup.name}</div>
+                                <div class="powerup-desc">${powerup.desc}</div>
+                                <div class="powerup-count">Owned: ${count}</div>
+                            </div>
+                            <div class="powerup-action">
+                                <button class="powerup-btn" onclick="buyPowerup('${powerup.id}')" ${!canAfford ? 'disabled' : ''}>
+                                    Buy
+                                </button>
+                                <div class="powerup-cost">${powerup.cost} XP</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+        }
+
+        function buyPowerup(powerupId) {
+            const powerup = powerupDefinitions.find(p => p.id === powerupId);
+            const xp = parseInt(localStorage.getItem('scienceXP')) || 0;
+
+            if (xp < powerup.cost) {
+                alert('Not enough XP!');
+                return;
+            }
+
+            // Deduct XP
+            localStorage.setItem('scienceXP', xp - powerup.cost);
+
+            // Add powerup
+            const owned = getPowerups();
+            owned[powerupId] = (owned[powerupId] || 0) + (powerup.amount || 1);
+            savePowerups(owned);
+
+            // Special handling for bonus spin
+            if (powerupId === 'bonus-spin') {
+                const bonus = Math.floor(Math.random() * 91) + 10; // 10-100
+                localStorage.setItem('scienceXP', parseInt(localStorage.getItem('scienceXP')) + bonus);
+                owned[powerupId]--;
+                savePowerups(owned);
+                alert(`🎰 You won ${bonus} XP!`);
+            }
+
+            renderPowerups();
+            if (typeof playSound === 'function') playSound('correct');
+        }
+
+        function usePowerup(powerupId) {
+            const owned = getPowerups();
+            if (!owned[powerupId] || owned[powerupId] <= 0) return false;
+            owned[powerupId]--;
+            savePowerups(owned);
+            return true;
+        }
+
+        // Daily Login Reward System
+        function checkDailyReward() {
+            const lastLogin = localStorage.getItem('lastLoginDate');
+            const today = new Date().toISOString().split('T')[0];
+
+            if (lastLogin !== today) {
+                // Calculate streak
+                const lastDate = lastLogin ? new Date(lastLogin) : null;
+                const todayDate = new Date(today);
+                let streak = parseInt(localStorage.getItem('loginStreak')) || 0;
+
+                if (lastDate) {
+                    const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                    if (diffDays === 1) {
+                        streak++;
+                    } else if (diffDays > 1) {
+                        streak = 1;
+                    }
+                } else {
+                    streak = 1;
+                }
+
+                localStorage.setItem('loginStreak', streak);
+                localStorage.setItem('pendingDailyReward', 'true');
+
+                // Show reward modal
+                showDailyReward(streak);
+            }
+        }
+
+        function showDailyReward(streak) {
+            document.getElementById('daily-streak-num').textContent = streak;
+
+            // Calculate reward based on streak
+            let reward = 10 + (streak * 5);
+            if (streak >= 7) reward += 20; // Weekly bonus
+            if (streak >= 30) reward += 50; // Monthly bonus
+
+            let icon = '🎁';
+            if (streak >= 7) icon = '🏆';
+            if (streak >= 30) icon = '👑';
+
+            document.getElementById('reward-icon').textContent = icon;
+            document.getElementById('reward-amount').textContent = `+${reward} XP`;
+            document.getElementById('daily-reward-modal').dataset.reward = reward;
+
+            document.getElementById('daily-reward-modal').style.display = 'flex';
+        }
+
+        function claimDailyReward() {
+            const reward = parseInt(document.getElementById('daily-reward-modal').dataset.reward) || 10;
+            const today = new Date().toISOString().split('T')[0];
+
+            localStorage.setItem('lastLoginDate', today);
+            localStorage.removeItem('pendingDailyReward');
+
+            // Add XP
+            if (typeof addXP === 'function') {
+                addXP(reward);
+            } else {
+                const currentXP = parseInt(localStorage.getItem('scienceXP')) || 0;
+                localStorage.setItem('scienceXP', currentXP + reward);
+            }
+
+            document.getElementById('daily-reward-modal').style.display = 'none';
+
+            if (typeof playSound === 'function') playSound('levelup');
+            if (typeof showMotivation === 'function') showMotivation(`Welcome back! +${reward} XP!`);
+        }
+
+        // Quick Review System
+        function openQuickReview() {
+            document.getElementById('quick-review-modal').style.display = 'flex';
+            renderQuickReview();
+        }
+
+        function closeQuickReview() {
+            document.getElementById('quick-review-modal').style.display = 'none';
+        }
+
+        function getWrongAnswers() {
+            return JSON.parse(localStorage.getItem('wrongAnswersLog')) || [];
+        }
+
+        function logWrongAnswer(topic, question, yourAnswer, correctAnswer) {
+            const log = getWrongAnswers();
+            log.unshift({
+                topic: topic,
+                question: question,
+                yourAnswer: yourAnswer,
+                correctAnswer: correctAnswer,
+                date: new Date().toLocaleDateString()
+            });
+            // Keep only last 50
+            if (log.length > 50) log.pop();
+            localStorage.setItem('wrongAnswersLog', JSON.stringify(log));
+        }
+
+        function clearWrongAnswer(index) {
+            const log = getWrongAnswers();
+            log.splice(index, 1);
+            localStorage.setItem('wrongAnswersLog', JSON.stringify(log));
+            renderQuickReview();
+        }
+
+        function renderQuickReview() {
+            const container = document.getElementById('quick-review-body');
+            const wrongAnswers = getWrongAnswers();
+
+            if (wrongAnswers.length === 0) {
+                container.innerHTML = `
+                    <div class="review-empty">
+                        <div class="review-empty-icon">🎉</div>
+                        <h3>No Wrong Answers!</h3>
+                        <p>Great job! You haven't made any mistakes yet.<br>Keep up the excellent work!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <p style="color: #666; margin-bottom: 15px;">Review your mistakes to learn from them. Click the ✕ to mark as mastered.</p>
+                ${wrongAnswers.map((item, index) => `
+                    <div class="review-card">
+                        <div class="review-card-header">
+                            <span class="review-topic">${item.topic}</span>
+                            <span class="review-date">${item.date}</span>
+                        </div>
+                        <div class="review-question">${item.question}</div>
+                        <div class="review-answers">
+                            <div class="review-answer wrong">
+                                <strong>Your Answer:</strong><br>${item.yourAnswer}
+                            </div>
+                            <div class="review-answer correct">
+                                <strong>Correct Answer:</strong><br>${item.correctAnswer}
+                            </div>
+                        </div>
+                        <button onclick="clearWrongAnswer(${index})" style="margin-top: 10px; background: #4CAF50; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                            ✓ I've learned this
+                        </button>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        // Check for daily reward on load
+        setTimeout(checkDailyReward, 1000);
+
+        console.log('⚡ Power-ups, Daily Login Reward, and Quick Review loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
