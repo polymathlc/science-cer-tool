@@ -378,6 +378,16 @@
             animation: liquidGlassAppearBottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
+        .tooltip-right.show {
+            transform: translateY(-50%) scale(1) translateX(0) !important;
+            animation: liquidGlassAppearRight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .tooltip-left.show {
+            transform: translateY(-50%) scale(1) translateX(0) !important;
+            animation: liquidGlassAppearLeft 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
         @keyframes liquidGlassAppear {
             0% {
                 transform: translateX(-50%) scale(0.85) translateY(-12px);
@@ -404,6 +414,38 @@
             }
             100% {
                 transform: translateX(-50%) scale(1) translateY(0);
+                opacity: 1;
+                backdrop-filter: blur(20px);
+            }
+        }
+
+        @keyframes liquidGlassAppearRight {
+            0% {
+                transform: translateY(-50%) scale(0.85) translateX(12px);
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            50% {
+                transform: translateY(-50%) scale(1.02) translateX(-2px);
+            }
+            100% {
+                transform: translateY(-50%) scale(1) translateX(0);
+                opacity: 1;
+                backdrop-filter: blur(20px);
+            }
+        }
+
+        @keyframes liquidGlassAppearLeft {
+            0% {
+                transform: translateY(-50%) scale(0.85) translateX(-12px);
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            50% {
+                transform: translateY(-50%) scale(1.02) translateX(2px);
+            }
+            100% {
+                transform: translateY(-50%) scale(1) translateX(0);
                 opacity: 1;
                 backdrop-filter: blur(20px);
             }
@@ -17924,32 +17966,69 @@
             tooltip.textContent = text;
             tooltip.style.visibility = 'hidden';
             tooltip.style.opacity = '0';
-            
+
             document.body.appendChild(tooltip);
-            
+
             // Position tooltip
             const rect = element.getBoundingClientRect();
             const tooltipRect = tooltip.getBoundingClientRect();
-            
-            // Determine position (prefer top, but use bottom if not enough space)
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Check if element is in sidebar (left side of screen, less than 300px from left)
+            const isInSidebar = rect.left < 300;
+            // Check if element is in the main content area with limited horizontal space
+            const hasLimitedHorizontalSpace = rect.left < 100 || rect.right > viewportWidth - 100;
+
             let position = 'top';
-            if (rect.top < tooltipRect.height + 30) {
+
+            // For sidebar elements, prefer right positioning
+            if (isInSidebar && rect.right + tooltipRect.width + 20 < viewportWidth) {
+                position = 'right';
+                tooltip.className = 'tooltip tooltip-right';
+            }
+            // If not enough space on top, try bottom
+            else if (rect.top < tooltipRect.height + 30) {
                 position = 'bottom';
                 tooltip.className = 'tooltip tooltip-bottom';
             }
-            
-            // Adjust horizontal position
-            const left = rect.left + (rect.width / 2);
-            tooltip.style.left = left + 'px';
-            
-            if (position === 'top') {
-                tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
-            } else {
-                tooltip.style.top = (rect.bottom + 10) + 'px';
+            // If tooltip would overflow right edge, use left positioning
+            else if (rect.left + (rect.width / 2) + (tooltipRect.width / 2) > viewportWidth - 20) {
+                position = 'left';
+                tooltip.className = 'tooltip tooltip-left';
             }
-            
+
+            // Position based on determined position
+            if (position === 'right') {
+                tooltip.style.left = (rect.right + 14) + 'px';
+                tooltip.style.top = (rect.top + (rect.height / 2)) + 'px';
+                tooltip.style.transform = 'translateY(-50%)';
+            } else if (position === 'left') {
+                tooltip.style.left = (rect.left - tooltipRect.width - 14) + 'px';
+                tooltip.style.top = (rect.top + (rect.height / 2)) + 'px';
+                tooltip.style.transform = 'translateY(-50%)';
+            } else if (position === 'bottom') {
+                tooltip.style.left = (rect.left + (rect.width / 2)) + 'px';
+                tooltip.style.top = (rect.bottom + 14) + 'px';
+            } else {
+                // Top position (default)
+                tooltip.style.left = (rect.left + (rect.width / 2)) + 'px';
+                tooltip.style.top = (rect.top - tooltipRect.height - 14) + 'px';
+            }
+
+            // Ensure tooltip doesn't overflow viewport edges
+            const finalRect = tooltip.getBoundingClientRect();
+            if (finalRect.left < 10) {
+                tooltip.style.left = '10px';
+                tooltip.style.transform = position === 'right' || position === 'left' ? 'translateY(-50%)' : 'translateX(0)';
+            }
+            if (finalRect.right > viewportWidth - 10) {
+                tooltip.style.left = (viewportWidth - finalRect.width - 10) + 'px';
+                tooltip.style.transform = position === 'right' || position === 'left' ? 'translateY(-50%)' : 'translateX(0)';
+            }
+
             tooltip.style.visibility = 'visible';
-            
+
             // Show with animation after a brief delay
             setTimeout(() => {
                 tooltip.classList.add('show');
