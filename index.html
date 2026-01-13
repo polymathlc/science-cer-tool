@@ -14,7 +14,7 @@
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <!-- APP VERSION - Update this when making changes -->
-    <meta name="app-version" content="2025.01.05.1">
+    <meta name="app-version" content="2026.01.13.1">
     <title>CER Interactive Questions</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +34,40 @@
             --secondary-blue: #6c757d;
             --disabled-grey: #b0b8c0;
             --label-color: #aab5c0;
+        }
+
+        /* Skip link for accessibility - shows on focus */
+        .skip-link:focus {
+            top: 0 !important;
+            outline: 3px solid #FFD700;
+            outline-offset: 2px;
+        }
+
+        /* Focus visible improvements for accessibility */
+        *:focus-visible {
+            outline: 3px solid var(--primary-blue);
+            outline-offset: 2px;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 3px solid var(--primary-blue);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+        }
+
+        /* Reduce motion for users who prefer it */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
 
         * {
@@ -4704,8 +4738,11 @@
         </div>
     </div>
 
-    <div class="app-container">
-        <header class="app-header">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content-area" class="skip-link" style="position: absolute; top: -40px; left: 0; background: var(--primary-blue); color: white; padding: 8px 16px; z-index: 10002; text-decoration: none; font-weight: 600; border-radius: 0 0 8px 0; transition: top 0.3s;">Skip to main content</a>
+
+    <div class="app-container" role="application" aria-label="CER Interactive Questions Application">
+        <header class="app-header" role="banner">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
                 <div style="display: flex; align-items: center; gap: 0.8rem;">
                     <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
@@ -4731,13 +4768,13 @@
             </div>
             
             <!-- Horizontal Tab Groups - Practice, Progress, Learn -->
-            <div class="main-nav-groups" style="display: flex; align-items: center; gap: 32px; padding: 8px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
+            <nav class="main-nav-groups" role="navigation" aria-label="Main navigation" style="display: flex; align-items: center; gap: 32px; padding: 8px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
                 <div class="nav-group" data-group="practice" style="position: relative;">
-                    <button class="nav-group-btn" style="background: none; border: none; font-size: 14px; font-weight: 600; color: var(--main-text); cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px;">
+                    <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true" aria-controls="practice-dropdown" style="background: none; border: none; font-size: 14px; font-weight: 600; color: var(--main-text); cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px;">
                         Practice
-                        <span class="nav-arrow" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
+                        <span class="nav-arrow" aria-hidden="true" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
                     </button>
-                    <div class="nav-dropdown" id="practice-dropdown" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 220px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
+                    <div class="nav-dropdown" id="practice-dropdown" role="menu" aria-label="Practice menu" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 220px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
                         <button class="nav-dropdown-item tooltip-container" onclick="switchTab('practice', this)" data-tooltip="Practice mode - work through questions at your own pace" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>🎯</span> Practice Mode
                         </button>
@@ -4755,11 +4792,11 @@
                 </div>
                 
                 <div class="nav-group" data-group="progress" style="position: relative;">
-                    <button class="nav-group-btn" style="background: none; border: none; font-size: 14px; font-weight: 600; color: var(--main-text); cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px;">
+                    <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true" aria-controls="progress-dropdown" style="background: none; border: none; font-size: 14px; font-weight: 600; color: var(--main-text); cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px;">
                         Progress
-                        <span class="nav-arrow" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
+                        <span class="nav-arrow" aria-hidden="true" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
                     </button>
-                    <div class="nav-dropdown" id="progress-dropdown" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 200px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
+                    <div class="nav-dropdown" id="progress-dropdown" role="menu" aria-label="Progress menu" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 200px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
                         <button class="nav-dropdown-item tooltip-container" onclick="switchTab('my-progress', this)" data-tooltip="View your learning progress and mastery statistics" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>📈</span> My Progress
                         </button>
@@ -4770,37 +4807,37 @@
                 </div>
                 
                 <div class="nav-group" data-group="learn" style="position: relative;">
-                    <button class="nav-group-btn" style="background: none; border: none; font-size: 14px; font-weight: 600; color: var(--main-text); cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px;">
+                    <button class="nav-group-btn" aria-expanded="false" aria-haspopup="true" aria-controls="learn-dropdown" style="background: none; border: none; font-size: 14px; font-weight: 600; color: var(--main-text); cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 6px;">
                         Learn
-                        <span class="nav-arrow" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
+                        <span class="nav-arrow" aria-hidden="true" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
                     </button>
-                    <div class="nav-dropdown" id="learn-dropdown" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 180px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
+                    <div class="nav-dropdown" id="learn-dropdown" role="menu" aria-label="Learn menu" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 180px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
                         <button class="nav-dropdown-item tooltip-container" onclick="switchTab('lessons', this)" data-tooltip="Watch video lessons and complete practice questions" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>🎓</span> Lessons
                         </button>
                     </div>
                 </div>
-            </div>
-            
+            </nav>
+
             <div class="header-tabs-row">
                 <div class="level-selector-container tooltip-container" id="header-level-selector" data-tooltip="Select your grade level to see questions appropriate for your class">
-                    <span class="level-selector-label">🎓 Level</span>
-                    <select id="header-level-select" class="level-select" onchange="changeLevel(this.value)">
+                    <label for="header-level-select" class="level-selector-label">🎓 Level</label>
+                    <select id="header-level-select" class="level-select" onchange="changeLevel(this.value)" aria-label="Select grade level">
                         <option value="P3">P3</option>
                         <option value="P4">P4</option>
                         <option value="P5">P5</option>
                         <option value="P6" selected>P6</option>
                     </select>
-                    <span class="level-selector-badge">Grade</span>
+                    <span class="level-selector-badge" aria-hidden="true">Grade</span>
                 </div>
-                <div id="header-tabs-container">
-                    <button class="tab-btn active" data-type="cer" onclick="switchTab('cer', this)">CER</button><button class="tab-btn" data-type="definition"
-                        onclick="switchTab('definition', this)">Definition</button><button class="tab-btn" data-type="single-relationship"
-                        onclick="switchTab('single-relationship', this)">Single Relationship</button><button class="tab-btn" data-type="double-relationship"
-                        onclick="switchTab('double-relationship', this)">Double Relationship</button><button class="tab-btn" data-type="fairness" onclick="switchTab('fairness', this)">Fairness</button><button class="tab-btn" data-type="reliability"
-                        onclick="switchTab('reliability', this)">Reliability</button><button class="tab-btn" data-type="accuracy" onclick="switchTab('accuracy', this)">Accuracy</button><button class="tab-btn" data-type="constant-variable"
-                        onclick="switchTab('constant-variable', this)">Constant Variable</button><button class="tab-btn" data-type="explanation"
-                        onclick="switchTab('explanation', this)">Explanation</button><button class="tab-btn" data-type="control-setup" onclick="switchTab('control-setup', this)">Control Set-up</button>
+                <div id="header-tabs-container" role="tablist" aria-label="Question type tabs">
+                    <button class="tab-btn active" data-type="cer" onclick="switchTab('cer', this)" role="tab" aria-selected="true" aria-controls="view-cer">CER</button><button class="tab-btn" data-type="definition"
+                        onclick="switchTab('definition', this)" role="tab" aria-selected="false" aria-controls="view-definition">Definition</button><button class="tab-btn" data-type="single-relationship"
+                        onclick="switchTab('single-relationship', this)" role="tab" aria-selected="false" aria-controls="view-single-relationship">Single Relationship</button><button class="tab-btn" data-type="double-relationship"
+                        onclick="switchTab('double-relationship', this)" role="tab" aria-selected="false" aria-controls="view-double-relationship">Double Relationship</button><button class="tab-btn" data-type="fairness" onclick="switchTab('fairness', this)" role="tab" aria-selected="false" aria-controls="view-fairness">Fairness</button><button class="tab-btn" data-type="reliability"
+                        onclick="switchTab('reliability', this)" role="tab" aria-selected="false" aria-controls="view-reliability">Reliability</button><button class="tab-btn" data-type="accuracy" onclick="switchTab('accuracy', this)" role="tab" aria-selected="false" aria-controls="view-accuracy">Accuracy</button><button class="tab-btn" data-type="constant-variable"
+                        onclick="switchTab('constant-variable', this)" role="tab" aria-selected="false" aria-controls="view-constant-variable">Constant Variable</button><button class="tab-btn" data-type="explanation"
+                        onclick="switchTab('explanation', this)" role="tab" aria-selected="false" aria-controls="view-explanation">Explanation</button><button class="tab-btn" data-type="control-setup" onclick="switchTab('control-setup', this)" role="tab" aria-selected="false" aria-controls="view-control-setup">Control Set-up</button>
                 </div>
             </div>
         </header>
@@ -4809,12 +4846,13 @@
         <div class="header-color-line" id="header-color-line" style="background: linear-gradient(90deg, #AEC6CF 0%, #c4d6dd 50%, #AEC6CF 100%);"></div>
 
         <!-- Save Worksheet Modal -->
-        <div id="save-worksheet-modal" class="modal-overlay">
+        <div id="save-worksheet-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="save-worksheet-modal-title" aria-describedby="save-worksheet-modal-desc">
             <div class="modal-box">
                 <h3 id="save-worksheet-modal-title">💾 Save Worksheet</h3>
+                <p id="save-worksheet-modal-desc" class="visually-hidden" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Save your current worksheet with a name and optional description</p>
                 <div class="form-group">
                     <label for="worksheet-name-input">Worksheet Name *</label>
-                    <input type="text" id="worksheet-name-input" placeholder="e.g., Heat Chapter Review">
+                    <input type="text" id="worksheet-name-input" placeholder="e.g., Heat Chapter Review" required aria-required="true">
                 </div>
                 <div class="form-group">
                     <label for="worksheet-description-input">Description (optional)</label>
@@ -4823,8 +4861,8 @@
                 <div id="admin-lesson-fields" class="hidden">
                     <div class="form-group">
                         <label for="lesson-video-input">📹 Video Link (Dropbox)</label>
-                        <input type="text" id="lesson-video-input" placeholder="https://www.dropbox.com/...">
-                        <small style="color: #888; font-size: 0.8rem;">Optional: Dropbox video link for this lesson</small>
+                        <input type="text" id="lesson-video-input" placeholder="https://www.dropbox.com/..." aria-describedby="lesson-video-hint">
+                        <small id="lesson-video-hint" style="color: #888; font-size: 0.8rem;">Optional: Dropbox video link for this lesson</small>
                     </div>
                     <div class="form-group" style="background: #fff3e0; padding: 10px; border-radius: 8px; border-left: 4px solid #f57c00;">
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
@@ -4834,15 +4872,15 @@
                     </div>
                 </div>
                 <div class="modal-buttons">
-                    <button class="btn-cancel" onclick="hideSaveWorksheetModal()">Cancel</button>
-                    <button class="btn-save" onclick="saveWorksheet()">Save</button>
+                    <button class="btn-cancel" onclick="hideSaveWorksheetModal()" type="button">Cancel</button>
+                    <button class="btn-save" onclick="saveWorksheet()" type="button">Save</button>
                 </div>
             </div>
         </div>
 
         <div class="app-body active" style="display: flex;">
-            <aside class="sidebar">
-                <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" style="display: none; position: absolute; top: 10px; right: 10px; background: #f44336; color: white; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1.2rem; cursor: pointer; z-index: 10;">✕</button>
+            <aside class="sidebar" role="complementary" aria-label="Sidebar navigation">
+                <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" aria-label="Close sidebar" style="display: none; position: absolute; top: 10px; right: 10px; background: #f44336; color: white; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 1.2rem; cursor: pointer; z-index: 10;">✕</button>
                 
                 <!-- TOP SECTION: Streak, Practice, Toggle -->
                 <div class="sidebar-top-section">
@@ -4856,25 +4894,26 @@
                     </button>
                     
                     <!-- iOS-style OEQ/MCQ Toggle -->
-                    <div class="ios-toggle-container">
-                        <span class="ios-toggle-label">OEQ</span>
-                        <div class="ios-toggle tooltip-container mcq-active" id="mode-toggle" onclick="toggleMode()" data-tooltip="Switch between OEQ (Open-Ended Questions) and MCQ (Multiple Choice Questions) modes">
-                            <div class="ios-toggle-track">
+                    <div class="ios-toggle-container" role="group" aria-label="Question type toggle">
+                        <span class="ios-toggle-label" id="oeq-label">OEQ</span>
+                        <button class="ios-toggle tooltip-container mcq-active" id="mode-toggle" onclick="toggleMode()" data-tooltip="Switch between OEQ (Open-Ended Questions) and MCQ (Multiple Choice Questions) modes" role="switch" aria-checked="true" aria-labelledby="oeq-label mcq-label" tabindex="0">
+                            <div class="ios-toggle-track" aria-hidden="true">
                                 <div class="ios-toggle-thumb" id="toggle-thumb"></div>
                             </div>
-                        </div>
-                        <span class="ios-toggle-label active">MCQ</span>
+                        </button>
+                        <span class="ios-toggle-label active" id="mcq-label">MCQ</span>
                     </div>
                     
                     <!-- Exam Mode Toggle (Monochrome) -->
-                    <div class="exam-mode-toggle-container" title="Exam Mode: Shows questions in black & white like actual exams">
-                        <span class="exam-mode-label">🎨 Colour</span>
-                        <div class="exam-mode-toggle" id="exam-mode-toggle" onclick="toggleExamMode()">
-                            <div class="exam-mode-track">
+                    <div class="exam-mode-toggle-container" role="group" aria-label="Display mode toggle">
+                        <span class="exam-mode-label" id="colour-label">🎨 Colour</span>
+                        <button class="exam-mode-toggle" id="exam-mode-toggle" onclick="toggleExamMode()" role="switch" aria-checked="false" aria-labelledby="colour-label exam-label" tabindex="0" aria-describedby="exam-mode-description">
+                            <div class="exam-mode-track" aria-hidden="true">
                                 <div class="exam-mode-thumb"></div>
                             </div>
-                        </div>
-                        <span class="exam-mode-label">📄 Exam</span>
+                        </button>
+                        <span class="exam-mode-label" id="exam-label">📄 Exam</span>
+                        <span id="exam-mode-description" class="visually-hidden" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Shows questions in black and white like actual exams</span>
                     </div>
                 </div>
                 
@@ -4944,7 +4983,7 @@
                 </div>
             </aside>
 
-            <main id="main-content-area" style="flex: 1; overflow-y: auto;">
+            <main id="main-content-area" role="main" aria-label="Main content" style="flex: 1; overflow-y: auto;">
 
                 <!-- View: CER (Existing - Part of OEQ) -->
                 <div id="view-cer" class="view-content active">
@@ -6004,7 +6043,7 @@
                             </div>
                             <div style="flex: 1; min-width: 200px;">
                                 <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Search:</label>
-                                <input type="text" id="question-list-search" class="auth-input" style="width: 100%; padding: 10px; border-radius: 8px;" placeholder="Search questions..." onkeyup="filterQuestionList()">
+                                <input type="text" id="question-list-search" class="auth-input" style="width: 100%; padding: 10px; border-radius: 8px;" placeholder="Search questions..." oninput="debouncedFilterQuestionList()" aria-label="Search questions">
                             </div>
                         </div>
 
@@ -6583,6 +6622,210 @@
         window.currentOeqLevel = 'P6';
         window.currentMcqTopic = '';
         window.editingQuestionId = null;
+
+        // =====================================================
+        // UTILITY FUNCTIONS
+        // =====================================================
+
+        /**
+         * Debounce function - limits how often a function can be called
+         * @param {Function} func - Function to debounce
+         * @param {number} wait - Milliseconds to wait before calling
+         * @returns {Function} Debounced function
+         */
+        window.debounce = function(func, wait = 300) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        };
+
+        /**
+         * Throttle function - ensures function is called at most once per interval
+         * @param {Function} func - Function to throttle
+         * @param {number} limit - Minimum milliseconds between calls
+         * @returns {Function} Throttled function
+         */
+        window.throttle = function(func, limit = 100) {
+            let inThrottle;
+            return function(...args) {
+                if (!inThrottle) {
+                    func.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        };
+
+        /**
+         * Sanitize HTML to prevent XSS attacks
+         * @param {string} str - String to sanitize
+         * @returns {string} Sanitized string
+         */
+        window.sanitizeHTML = function(str) {
+            if (!str) return '';
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        };
+
+        /**
+         * Escape special characters for use in HTML attributes
+         * @param {string} str - String to escape
+         * @returns {string} Escaped string
+         */
+        window.escapeAttr = function(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(match) {
+                const escape = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                };
+                return escape[match];
+            });
+        };
+
+        /**
+         * Show a toast notification
+         * @param {string} message - Message to display
+         * @param {string} type - Type: 'success', 'error', 'info', 'warning'
+         * @param {number} duration - Duration in ms (default 3000)
+         */
+        window.showToast = function(message, type = 'info', duration = 3000) {
+            // Remove existing toast if any
+            const existingToast = document.getElementById('toast-notification');
+            if (existingToast) existingToast.remove();
+
+            const colors = {
+                success: { bg: '#d4edda', border: '#28a745', text: '#155724', icon: '✅' },
+                error: { bg: '#f8d7da', border: '#dc3545', text: '#721c24', icon: '❌' },
+                warning: { bg: '#fff3cd', border: '#ffc107', text: '#856404', icon: '⚠️' },
+                info: { bg: '#d1ecf1', border: '#17a2b8', text: '#0c5460', icon: 'ℹ️' }
+            };
+            const color = colors[type] || colors.info;
+
+            const toast = document.createElement('div');
+            toast.id = 'toast-notification';
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'polite');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: ${color.bg};
+                border: 1px solid ${color.border};
+                color: ${color.text};
+                padding: 16px 24px;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                z-index: 10003;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-weight: 500;
+                animation: slideInToast 0.3s ease;
+                max-width: 400px;
+            `;
+            toast.innerHTML = `<span>${color.icon}</span><span>${window.sanitizeHTML(message)}</span>`;
+
+            document.body.appendChild(toast);
+
+            // Auto remove after duration
+            setTimeout(() => {
+                toast.style.animation = 'slideOutToast 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        };
+
+        // Add toast animation CSS
+        if (!document.getElementById('toast-styles')) {
+            const style = document.createElement('style');
+            style.id = 'toast-styles';
+            style.textContent = `
+                @keyframes slideInToast {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOutToast {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        /**
+         * Show a loading spinner overlay
+         * @param {string} message - Optional message to display
+         * @returns {Function} Function to hide the spinner
+         */
+        window.showLoadingSpinner = function(message = 'Loading...') {
+            // Remove existing spinner if any
+            const existingSpinner = document.getElementById('loading-spinner-overlay');
+            if (existingSpinner) existingSpinner.remove();
+
+            const overlay = document.createElement('div');
+            overlay.id = 'loading-spinner-overlay';
+            overlay.setAttribute('role', 'alert');
+            overlay.setAttribute('aria-busy', 'true');
+            overlay.setAttribute('aria-live', 'polite');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 10004;
+            `;
+            overlay.innerHTML = `
+                <div style="background: white; padding: 30px 50px; border-radius: 16px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+                    <div style="width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-blue); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
+                    <p style="margin: 0; color: #333; font-weight: 500;">${window.sanitizeHTML(message)}</p>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            // Add spinner animation if not exists
+            if (!document.getElementById('spinner-styles')) {
+                const style = document.createElement('style');
+                style.id = 'spinner-styles';
+                style.textContent = `
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Return function to hide spinner
+            return function hideSpinner() {
+                const spinner = document.getElementById('loading-spinner-overlay');
+                if (spinner) spinner.remove();
+            };
+        };
+
+        /**
+         * Hide the loading spinner
+         */
+        window.hideLoadingSpinner = function() {
+            const spinner = document.getElementById('loading-spinner-overlay');
+            if (spinner) spinner.remove();
+        };
 
         // Change level (works for both OEQ and MCQ modes)
         window.changeLevel = function(level) {
@@ -7598,7 +7841,7 @@
                 
             } catch (e) {
                 console.error("Save worksheet error:", e);
-                alert("Error saving worksheet: " + e.message);
+                window.showToast("Failed to save worksheet. Please try again.", "error");
             }
         };
 
@@ -7710,12 +7953,12 @@
                 saveWorksheetToStorage();
                 updateWorksheetUI();
                 
-                alert(`Loaded "${data.name}" with ${data.questions.length} questions!`);
+                window.showToast(`Loaded "${window.sanitizeHTML(data.name)}" with ${data.questions.length} questions!`, "success");
                 switchTab('worksheet');
-                
+
             } catch (e) {
                 console.error("Load worksheet error:", e);
-                alert("Error loading worksheet: " + e.message);
+                window.showToast("Failed to load worksheet. Please try again.", "error");
             }
         };
 
@@ -7786,13 +8029,13 @@
                 const { doc, deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 
                 await deleteDoc(doc(window.db_fs, "user_worksheets", worksheetId));
-                
-                alert("Worksheet deleted.");
+
+                window.showToast("Worksheet deleted successfully.", "success");
                 loadSavedWorksheets();
-                
+
             } catch (e) {
                 console.error("Delete worksheet error:", e);
-                alert("Error deleting worksheet: " + e.message);
+                window.showToast("Failed to delete worksheet. Please try again.", "error");
             }
         };
 
@@ -8245,10 +8488,10 @@
                 }, 100);
                 
                 switchTab('lesson-detail');
-                
+
             } catch (e) {
                 console.error("Open lesson error:", e);
-                alert("Error opening lesson: " + e.message);
+                window.showToast("Failed to open lesson. Please try again.", "error");
             }
         };
 
@@ -8256,18 +8499,18 @@
             if (!confirm("Are you sure you want to delete this lesson? This will remove it for all students.")) {
                 return;
             }
-            
+
             try {
                 const { doc, deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
-                
+
                 await deleteDoc(doc(window.db_fs, "shared_lessons", lessonId));
-                
-                alert("Lesson deleted.");
+
+                window.showToast("Lesson deleted successfully.", "success");
                 loadSharedLessons();
-                
+
             } catch (e) {
                 console.error("Delete lesson error:", e);
-                alert("Error deleting lesson: " + e.message);
+                window.showToast("Failed to delete lesson. Please try again.", "error");
             }
         };
 
@@ -10354,7 +10597,7 @@
             window.filteredQuestionsList = window.allQuestionsList.filter(question => {
                 const matchesTopic = !topicFilter || question.topic === topicFilter;
                 const matchesLevel = !levelFilter || question.level === levelFilter;
-                const matchesSearch = !searchInput || 
+                const matchesSearch = !searchInput ||
                     question.title.toLowerCase().includes(searchInput) ||
                     question.topic.toLowerCase().includes(searchInput);
 
@@ -10364,6 +10607,9 @@
             // Apply current sort
             performSort();
         };
+
+        // Debounced version of filterQuestionList for search input
+        window.debouncedFilterQuestionList = window.debounce(window.filterQuestionList, 300);
 
         // Show question popup
         window.showQuestionPopup = function(questionId, listIndex) {
