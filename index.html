@@ -20415,6 +20415,453 @@
         .floating-sound-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ========== Batch 51: Study Scheduler, Concept Map, Bookmarks ========== */
+
+        /* Study Scheduler Styles */
+        .scheduler-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scheduler-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 550px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+
+        .scheduler-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .scheduler-header h2 {
+            color: #00bcd4;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scheduler-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .scheduler-form label {
+            display: block;
+            color: #00bcd4;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .scheduler-form input,
+        .scheduler-form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .scheduler-form input:focus,
+        .scheduler-form select:focus {
+            outline: none;
+            border-color: #00bcd4;
+        }
+
+        .add-schedule-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00bcd4 0%, #4dd0e1 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .schedule-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .schedule-item {
+            background: rgba(0, 188, 212, 0.1);
+            border: 1px solid rgba(0, 188, 212, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .schedule-info {
+            flex: 1;
+        }
+
+        .schedule-topic {
+            color: #4dd0e1;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .schedule-time {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .schedule-delete {
+            background: rgba(244, 67, 54, 0.2);
+            border: none;
+            color: #ef5350;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Concept Map Styles */
+        .concept-map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .concept-map-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 800px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(233, 30, 99, 0.3);
+        }
+
+        .concept-map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .concept-map-header h2 {
+            color: #e91e63;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .concept-topic-select {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .concept-topic-btn {
+            padding: 8px 16px;
+            border: 1px solid rgba(233, 30, 99, 0.3);
+            border-radius: 20px;
+            background: rgba(233, 30, 99, 0.1);
+            color: #f48fb1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .concept-topic-btn.active {
+            background: linear-gradient(135deg, #e91e63 0%, #f48fb1 100%);
+            color: white;
+        }
+
+        .concept-map-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 350px;
+            position: relative;
+        }
+
+        .concept-node {
+            display: inline-block;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #e91e63 0%, #f48fb1 100%);
+            color: white;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .concept-node:hover {
+            transform: scale(1.1);
+        }
+
+        .concept-node.main {
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);
+            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
+        }
+
+        .concept-node.sub {
+            font-size: 0.9rem;
+            background: linear-gradient(135deg, #ff9800 0%, #ffb74d 100%);
+        }
+
+        .concept-details {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(233, 30, 99, 0.1);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .concept-details.show {
+            display: block;
+        }
+
+        .concept-details h4 {
+            color: #f48fb1;
+            margin-bottom: 10px;
+        }
+
+        .concept-details p {
+            color: #ddd;
+            line-height: 1.6;
+        }
+
+        /* Bookmark System Styles */
+        .bookmark-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bookmark-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 550px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .bookmark-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .bookmark-header h2 {
+            color: #ffc107;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bookmark-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .bookmark-stat {
+            flex: 1;
+            background: rgba(255, 193, 7, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .bookmark-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffc107;
+        }
+
+        .bookmark-stat-label {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .bookmark-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .bookmark-item {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .bookmark-question {
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .bookmark-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bookmark-topic {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .bookmark-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .bookmark-action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .bookmark-goto {
+            background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+            color: white;
+        }
+
+        .bookmark-remove {
+            background: rgba(244, 67, 54, 0.3);
+            color: #ef5350;
+        }
+
+        .no-bookmarks {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .no-bookmarks-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        /* Floating Buttons for Batch 51 */
+        .floating-scheduler-btn {
+            position: fixed;
+            bottom: 4900px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bcd4 0%, #4dd0e1 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 188, 212, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-scheduler-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-concept-btn {
+            position: fixed;
+            bottom: 4960px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e91e63 0%, #f48fb1 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(233, 30, 99, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-concept-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-bookmark-btn {
+            position: fixed;
+            bottom: 5020px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffc107 0%, #ffca28 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-bookmark-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -56052,6 +56499,392 @@ Science Made Fun!
         };
 
         console.log('✏️ Crossword Puzzle, Mistake Review, and Sound Settings loaded!');
+    </script>
+
+    <!-- ========== Batch 51: Study Scheduler, Concept Map, Bookmarks ========== -->
+
+    <!-- Study Scheduler Floating Button -->
+    <button class="floating-scheduler-btn" onclick="openScheduler()" title="Study Scheduler">📅</button>
+
+    <!-- Concept Map Floating Button -->
+    <button class="floating-concept-btn" onclick="openConceptMap()" title="Concept Map">🗺️</button>
+
+    <!-- Bookmarks Floating Button -->
+    <button class="floating-bookmark-btn" onclick="openBookmarks()" title="Bookmarks">🔖</button>
+
+    <!-- Study Scheduler Modal -->
+    <div class="scheduler-modal" id="scheduler-modal">
+        <div class="scheduler-content">
+            <div class="scheduler-header">
+                <h2>📅 Study Scheduler</h2>
+                <button onclick="closeScheduler()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="scheduler-form">
+                <label>Topic</label>
+                <select id="schedule-topic">
+                    <option value="Matter">Matter</option>
+                    <option value="Heat">Heat</option>
+                    <option value="Light">Light</option>
+                    <option value="Energy">Energy</option>
+                    <option value="Forces">Forces</option>
+                    <option value="Life Science">Life Science</option>
+                    <option value="Plants">Plants</option>
+                </select>
+                <label>Date</label>
+                <input type="date" id="schedule-date">
+                <label>Time</label>
+                <input type="time" id="schedule-time" value="16:00">
+                <label>Duration (minutes)</label>
+                <input type="number" id="schedule-duration" value="30" min="10" max="120">
+                <button class="add-schedule-btn" onclick="addSchedule()">Add to Schedule</button>
+            </div>
+            <h3 style="color:#4dd0e1;margin-bottom:10px;">Upcoming Sessions</h3>
+            <div class="schedule-list" id="schedule-list"></div>
+        </div>
+    </div>
+
+    <!-- Concept Map Modal -->
+    <div class="concept-map-modal" id="concept-map-modal">
+        <div class="concept-map-content">
+            <div class="concept-map-header">
+                <h2>🗺️ Concept Map</h2>
+                <button onclick="closeConceptMap()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="concept-topic-select" id="concept-topics"></div>
+            <div class="concept-map-container" id="concept-map-container"></div>
+            <div class="concept-details" id="concept-details"></div>
+        </div>
+    </div>
+
+    <!-- Bookmarks Modal -->
+    <div class="bookmark-modal" id="bookmark-modal">
+        <div class="bookmark-content">
+            <div class="bookmark-header">
+                <h2>🔖 Bookmarks</h2>
+                <button onclick="closeBookmarks()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="bookmark-stats" id="bookmark-stats"></div>
+            <div class="bookmark-list" id="bookmark-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========== Study Scheduler System ==========
+        let studySchedule = JSON.parse(localStorage.getItem('studySchedule') || '[]');
+
+        function openScheduler() {
+            document.getElementById('scheduler-modal').style.display = 'flex';
+            // Set default date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('schedule-date').value = tomorrow.toISOString().split('T')[0];
+            renderSchedule();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeScheduler() {
+            document.getElementById('scheduler-modal').style.display = 'none';
+        }
+
+        function addSchedule() {
+            const topic = document.getElementById('schedule-topic').value;
+            const date = document.getElementById('schedule-date').value;
+            const time = document.getElementById('schedule-time').value;
+            const duration = document.getElementById('schedule-duration').value;
+
+            if (!date) {
+                alert('Please select a date');
+                return;
+            }
+
+            const session = {
+                id: Date.now(),
+                topic: topic,
+                date: date,
+                time: time,
+                duration: parseInt(duration),
+                completed: false
+            };
+
+            studySchedule.push(session);
+            studySchedule.sort((a, b) => new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time));
+            localStorage.setItem('studySchedule', JSON.stringify(studySchedule));
+            renderSchedule();
+
+            if (typeof playSound === 'function' && getSoundSetting('correct')) playSound('success');
+        }
+
+        function renderSchedule() {
+            const list = document.getElementById('schedule-list');
+            const now = new Date();
+
+            // Filter out past sessions
+            studySchedule = studySchedule.filter(s => new Date(s.date + 'T' + s.time) >= now || s.completed);
+            localStorage.setItem('studySchedule', JSON.stringify(studySchedule));
+
+            if (studySchedule.length === 0) {
+                list.innerHTML = '<p style="color:#888;text-align:center;padding:20px;">No scheduled sessions. Add one above!</p>';
+                return;
+            }
+
+            list.innerHTML = studySchedule.map(session => {
+                const sessionDate = new Date(session.date + 'T' + session.time);
+                const formattedDate = sessionDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                const formattedTime = sessionDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+                return `
+                    <div class="schedule-item">
+                        <div class="schedule-info">
+                            <div class="schedule-topic">${session.topic}</div>
+                            <div class="schedule-time">${formattedDate} at ${formattedTime} (${session.duration} min)</div>
+                        </div>
+                        <button class="schedule-delete" onclick="deleteSchedule(${session.id})">×</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteSchedule(id) {
+            studySchedule = studySchedule.filter(s => s.id !== id);
+            localStorage.setItem('studySchedule', JSON.stringify(studySchedule));
+            renderSchedule();
+        }
+
+        // Check for upcoming study sessions
+        function checkScheduleReminders() {
+            const now = new Date();
+            studySchedule.forEach(session => {
+                const sessionTime = new Date(session.date + 'T' + session.time);
+                const timeDiff = sessionTime - now;
+
+                // Remind 5 minutes before
+                if (timeDiff > 0 && timeDiff <= 5 * 60 * 1000 && !session.reminded) {
+                    session.reminded = true;
+                    localStorage.setItem('studySchedule', JSON.stringify(studySchedule));
+
+                    if (Notification.permission === 'granted') {
+                        new Notification('Study Time Soon!', {
+                            body: `Your ${session.topic} study session starts in 5 minutes!`,
+                            icon: '📚'
+                        });
+                    }
+                }
+            });
+        }
+
+        // Check reminders every minute
+        setInterval(checkScheduleReminders, 60000);
+
+        // ========== Concept Map System ==========
+        const conceptMaps = {
+            'Matter': {
+                main: 'Matter',
+                description: 'Matter is anything that has mass and takes up space.',
+                nodes: [
+                    { name: 'Solid', type: 'sub', desc: 'Has fixed shape and volume. Particles are closely packed.' },
+                    { name: 'Liquid', type: 'sub', desc: 'Has fixed volume but takes shape of container. Particles are loosely packed.' },
+                    { name: 'Gas', type: 'sub', desc: 'No fixed shape or volume. Particles are far apart and move freely.' },
+                    { name: 'Properties', type: 'normal', desc: 'Mass, volume, density, and state are properties of matter.' },
+                    { name: 'Changes', type: 'normal', desc: 'Matter can change state through heating or cooling.' }
+                ]
+            },
+            'Energy': {
+                main: 'Energy',
+                description: 'Energy is the ability to do work or cause change.',
+                nodes: [
+                    { name: 'Light', type: 'sub', desc: 'Energy that allows us to see. Travels in straight lines.' },
+                    { name: 'Heat', type: 'sub', desc: 'Energy that flows from hot to cold objects.' },
+                    { name: 'Sound', type: 'sub', desc: 'Energy that travels through vibrations.' },
+                    { name: 'Electrical', type: 'normal', desc: 'Energy from moving electrons in a circuit.' },
+                    { name: 'Kinetic', type: 'normal', desc: 'Energy of moving objects.' }
+                ]
+            },
+            'Forces': {
+                main: 'Forces',
+                description: 'A force is a push or pull that can change motion.',
+                nodes: [
+                    { name: 'Gravity', type: 'sub', desc: 'Force that pulls objects toward Earth.' },
+                    { name: 'Friction', type: 'sub', desc: 'Force that opposes motion between surfaces.' },
+                    { name: 'Magnetic', type: 'sub', desc: 'Force between magnets or magnetic materials.' },
+                    { name: 'Balanced', type: 'normal', desc: 'Equal forces in opposite directions - no change in motion.' },
+                    { name: 'Unbalanced', type: 'normal', desc: 'Unequal forces cause change in motion.' }
+                ]
+            },
+            'Life Science': {
+                main: 'Living Things',
+                description: 'Living things grow, reproduce, and respond to their environment.',
+                nodes: [
+                    { name: 'Plants', type: 'sub', desc: 'Make their own food through photosynthesis.' },
+                    { name: 'Animals', type: 'sub', desc: 'Get energy by eating other organisms.' },
+                    { name: 'Cells', type: 'normal', desc: 'Basic unit of life. All living things have cells.' },
+                    { name: 'Habitats', type: 'normal', desc: 'Places where organisms live and get what they need.' },
+                    { name: 'Food Chains', type: 'normal', desc: 'Shows how energy flows from one organism to another.' }
+                ]
+            }
+        };
+
+        let currentConceptTopic = 'Matter';
+
+        function openConceptMap() {
+            document.getElementById('concept-map-modal').style.display = 'flex';
+            renderConceptTopics();
+            renderConceptMap();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeConceptMap() {
+            document.getElementById('concept-map-modal').style.display = 'none';
+        }
+
+        function renderConceptTopics() {
+            const container = document.getElementById('concept-topics');
+            container.innerHTML = Object.keys(conceptMaps).map(topic =>
+                `<button class="concept-topic-btn ${topic === currentConceptTopic ? 'active' : ''}" onclick="selectConceptTopic('${topic}')">${topic}</button>`
+            ).join('');
+        }
+
+        function selectConceptTopic(topic) {
+            currentConceptTopic = topic;
+            renderConceptTopics();
+            renderConceptMap();
+            document.getElementById('concept-details').classList.remove('show');
+        }
+
+        function renderConceptMap() {
+            const container = document.getElementById('concept-map-container');
+            const map = conceptMaps[currentConceptTopic];
+
+            container.innerHTML = `
+                <div style="text-align:center;margin-bottom:20px;">
+                    <div class="concept-node main" onclick="showConceptDetails('main')">${map.main}</div>
+                </div>
+                <div style="text-align:center;display:flex;flex-wrap:wrap;justify-content:center;">
+                    ${map.nodes.map((node, i) =>
+                        `<div class="concept-node ${node.type}" onclick="showConceptDetails(${i})">${node.name}</div>`
+                    ).join('')}
+                </div>
+            `;
+        }
+
+        function showConceptDetails(index) {
+            const details = document.getElementById('concept-details');
+            const map = conceptMaps[currentConceptTopic];
+
+            if (index === 'main') {
+                details.innerHTML = `<h4>${map.main}</h4><p>${map.description}</p>`;
+            } else {
+                const node = map.nodes[index];
+                details.innerHTML = `<h4>${node.name}</h4><p>${node.desc}</p>`;
+            }
+
+            details.classList.add('show');
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        // ========== Bookmark System ==========
+        let bookmarks = JSON.parse(localStorage.getItem('questionBookmarks') || '[]');
+
+        function openBookmarks() {
+            document.getElementById('bookmark-modal').style.display = 'flex';
+            renderBookmarks();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeBookmarks() {
+            document.getElementById('bookmark-modal').style.display = 'none';
+        }
+
+        function addBookmark(question, topic, questionId) {
+            const existing = bookmarks.find(b => b.questionId === questionId);
+            if (existing) {
+                alert('This question is already bookmarked!');
+                return;
+            }
+
+            const bookmark = {
+                id: Date.now(),
+                question: question,
+                topic: topic || 'General',
+                questionId: questionId,
+                timestamp: new Date().toISOString()
+            };
+
+            bookmarks.push(bookmark);
+            localStorage.setItem('questionBookmarks', JSON.stringify(bookmarks));
+
+            if (typeof playSound === 'function' && getSoundSetting('correct')) playSound('success');
+            alert('Question bookmarked!');
+        }
+
+        function removeBookmark(id) {
+            bookmarks = bookmarks.filter(b => b.id !== id);
+            localStorage.setItem('questionBookmarks', JSON.stringify(bookmarks));
+            renderBookmarks();
+        }
+
+        function renderBookmarks() {
+            const statsDiv = document.getElementById('bookmark-stats');
+            const listDiv = document.getElementById('bookmark-list');
+
+            const topicCounts = {};
+            bookmarks.forEach(b => {
+                topicCounts[b.topic] = (topicCounts[b.topic] || 0) + 1;
+            });
+            const topTopic = Object.entries(topicCounts).sort((a, b) => b[1] - a[1])[0];
+
+            statsDiv.innerHTML = `
+                <div class="bookmark-stat">
+                    <div class="bookmark-stat-value">${bookmarks.length}</div>
+                    <div class="bookmark-stat-label">Bookmarks</div>
+                </div>
+                <div class="bookmark-stat">
+                    <div class="bookmark-stat-value">${Object.keys(topicCounts).length}</div>
+                    <div class="bookmark-stat-label">Topics</div>
+                </div>
+                <div class="bookmark-stat">
+                    <div class="bookmark-stat-value">${topTopic ? topTopic[0].substring(0, 8) : 'N/A'}</div>
+                    <div class="bookmark-stat-label">Most Saved</div>
+                </div>
+            `;
+
+            if (bookmarks.length === 0) {
+                listDiv.innerHTML = `
+                    <div class="no-bookmarks">
+                        <div class="no-bookmarks-icon">🔖</div>
+                        <h3>No bookmarks yet!</h3>
+                        <p>Bookmark questions you want to revisit later.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listDiv.innerHTML = bookmarks.slice().reverse().map(bookmark => `
+                <div class="bookmark-item">
+                    <div class="bookmark-question">${bookmark.question.substring(0, 100)}${bookmark.question.length > 100 ? '...' : ''}</div>
+                    <div class="bookmark-meta">
+                        <span class="bookmark-topic">${bookmark.topic}</span>
+                        <div class="bookmark-actions">
+                            <button class="bookmark-action-btn bookmark-goto" onclick="goToBookmark('${bookmark.questionId}')">Go to</button>
+                            <button class="bookmark-action-btn bookmark-remove" onclick="removeBookmark(${bookmark.id})">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function goToBookmark(questionId) {
+            closeBookmarks();
+            const element = document.getElementById(questionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.style.boxShadow = '0 0 20px rgba(255, 193, 7, 0.5)';
+                setTimeout(() => {
+                    element.style.boxShadow = '';
+                }, 2000);
+            }
+        }
+
+        console.log('📅 Study Scheduler, Concept Map, and Bookmarks loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
