@@ -8327,6 +8327,204 @@
             background: #E8F5E9;
             color: #388E3C;
         }
+
+        /* Batch 20: Accessibility, Break Reminders, Question Review */
+
+        /* Accessibility Settings */
+        .accessibility-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 450px;
+            width: 95%;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .font-size-preview {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+            transition: font-size 0.3s ease;
+        }
+
+        .font-size-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .font-size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.4);
+        }
+
+        .contrast-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 10px;
+        }
+
+        .contrast-option:hover {
+            background: #f5f5f5;
+        }
+
+        .contrast-option.selected {
+            background: #E8F5E9;
+            border: 2px solid #4CAF50;
+        }
+
+        .contrast-preview {
+            width: 50px;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Break Reminder */
+        .break-reminder {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+            z-index: 10020;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .break-timer {
+            font-size: 4rem;
+            font-weight: 700;
+            font-family: monospace;
+            margin: 30px 0;
+        }
+
+        .break-activity {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .break-activity-item {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .break-activity-item:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        /* Question Review */
+        .review-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 550px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .review-question {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .review-question:hover {
+            transform: translateX(5px);
+        }
+
+        .review-question.correct {
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            border-left: 4px solid #4CAF50;
+        }
+
+        .review-question.incorrect {
+            background: linear-gradient(135deg, #FFEBEE, #FFCDD2);
+            border-left: 4px solid #F44336;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .review-status {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .review-text {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* High contrast mode styles */
+        body.high-contrast {
+            background: #000 !important;
+            color: #fff !important;
+        }
+
+        body.high-contrast .main-content,
+        body.high-contrast .sidebar {
+            background: #000 !important;
+            color: #fff !important;
+        }
+
+        body.high-contrast input,
+        body.high-contrast textarea,
+        body.high-contrast button {
+            border: 2px solid #fff !important;
+        }
     </style>
 </head>
 
@@ -32379,6 +32577,432 @@
         }
 
         console.log('📊 Session Summary, Performance Insights, and Recommendations loaded!');
+    </script>
+
+    <!-- BATCH 20: Accessibility, Break Reminders, Question Review -->
+    <script>
+        // =====================================================
+        // ACCESSIBILITY SETTINGS
+        // =====================================================
+        window.accessibilitySettings = JSON.parse(localStorage.getItem('science_accessibility') || JSON.stringify({
+            fontSize: 100,
+            contrast: 'normal',
+            reducedMotion: false
+        }));
+
+        window.showAccessibilitySettings = function() {
+            // Remove existing
+            document.querySelectorAll('.accessibility-modal, .accessibility-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'accessibility-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'accessibility-modal';
+
+            modal.innerHTML = `
+                <h2 style="margin: 0 0 20px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>♿</span> Accessibility
+                </h2>
+
+                <div style="margin-bottom: 25px;">
+                    <div style="font-weight: 600; margin-bottom: 10px;">Font Size</div>
+                    <div class="font-size-preview" id="font-preview" style="font-size: ${window.accessibilitySettings.fontSize}%;">
+                        Preview Text - The quick brown fox
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span style="font-size: 0.8rem;">A</span>
+                        <input type="range" class="font-size-slider" min="80" max="150" value="${window.accessibilitySettings.fontSize}"
+                               oninput="updateFontSize(this.value)">
+                        <span style="font-size: 1.2rem;">A</span>
+                    </div>
+                    <div style="text-align: center; font-size: 0.85rem; color: #666; margin-top: 5px;">${window.accessibilitySettings.fontSize}%</div>
+                </div>
+
+                <div style="margin-bottom: 25px;">
+                    <div style="font-weight: 600; margin-bottom: 10px;">Contrast</div>
+                    <div class="contrast-option ${window.accessibilitySettings.contrast === 'normal' ? 'selected' : ''}" onclick="setContrast('normal')">
+                        <div class="contrast-preview" style="background: #f8f9fa; color: #333;">Aa</div>
+                        <div>
+                            <div style="font-weight: 500;">Normal</div>
+                            <div style="font-size: 0.8rem; color: #666;">Default appearance</div>
+                        </div>
+                    </div>
+                    <div class="contrast-option ${window.accessibilitySettings.contrast === 'high' ? 'selected' : ''}" onclick="setContrast('high')">
+                        <div class="contrast-preview" style="background: #000; color: #fff;">Aa</div>
+                        <div>
+                            <div style="font-weight: 500;">High Contrast</div>
+                            <div style="font-size: 0.8rem; color: #666;">Black background, white text</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div class="setting-item" style="border-bottom: none; padding: 0;">
+                        <div class="setting-info">
+                            <div class="setting-label">Reduce Motion</div>
+                            <div class="setting-desc">Minimize animations</div>
+                        </div>
+                        <div class="toggle-switch ${window.accessibilitySettings.reducedMotion ? 'on' : ''}" onclick="toggleReducedMotion(this)"></div>
+                    </div>
+                </div>
+
+                <button onclick="saveAccessibility(); document.querySelectorAll('.accessibility-modal, .accessibility-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                    Save Settings
+                </button>
+            `;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.updateFontSize = function(size) {
+            window.accessibilitySettings.fontSize = parseInt(size);
+            const preview = document.getElementById('font-preview');
+            if (preview) {
+                preview.style.fontSize = size + '%';
+                preview.nextElementSibling.nextElementSibling.textContent = size + '%';
+            }
+        };
+
+        window.setContrast = function(mode) {
+            window.accessibilitySettings.contrast = mode;
+            showAccessibilitySettings(); // Refresh to show selection
+        };
+
+        window.toggleReducedMotion = function(element) {
+            window.accessibilitySettings.reducedMotion = !window.accessibilitySettings.reducedMotion;
+            element.classList.toggle('on');
+        };
+
+        window.saveAccessibility = function() {
+            localStorage.setItem('science_accessibility', JSON.stringify(window.accessibilitySettings));
+            applyAccessibility();
+        };
+
+        window.applyAccessibility = function() {
+            // Apply font size
+            document.documentElement.style.fontSize = window.accessibilitySettings.fontSize + '%';
+
+            // Apply contrast
+            if (window.accessibilitySettings.contrast === 'high') {
+                document.body.classList.add('high-contrast');
+            } else {
+                document.body.classList.remove('high-contrast');
+            }
+
+            // Apply reduced motion
+            if (window.accessibilitySettings.reducedMotion) {
+                document.documentElement.style.setProperty('--animation-duration', '0s');
+            } else {
+                document.documentElement.style.removeProperty('--animation-duration');
+            }
+        };
+
+        // =====================================================
+        // STUDY BREAK REMINDERS
+        // =====================================================
+        window.breakState = {
+            studyStartTime: Date.now(),
+            breakInterval: 30, // minutes
+            breakDuration: 5, // minutes
+            breakTimer: null,
+            isOnBreak: false
+        };
+
+        window.initBreakReminder = function() {
+            // Check every minute
+            setInterval(checkForBreak, 60000);
+        };
+
+        window.checkForBreak = function() {
+            if (window.breakState.isOnBreak) return;
+
+            const studyMinutes = (Date.now() - window.breakState.studyStartTime) / 60000;
+
+            if (studyMinutes >= window.breakState.breakInterval) {
+                showBreakReminder();
+            }
+        };
+
+        window.showBreakReminder = function() {
+            // Remove existing
+            document.querySelectorAll('.break-reminder').forEach(el => el.remove());
+
+            window.breakState.isOnBreak = true;
+            let breakSeconds = window.breakState.breakDuration * 60;
+
+            const reminder = document.createElement('div');
+            reminder.className = 'break-reminder';
+            reminder.innerHTML = `
+                <div style="font-size: 4rem; margin-bottom: 20px;">☕</div>
+                <h2 style="margin: 0; font-size: 2rem;">Time for a Break!</h2>
+                <p style="opacity: 0.9; max-width: 400px;">You've been studying for ${window.breakState.breakInterval} minutes. Take a short break to refresh your mind.</p>
+
+                <div class="break-timer" id="break-timer">${formatBreakTime(breakSeconds)}</div>
+
+                <div class="break-activity">
+                    <div class="break-activity-item">
+                        <div style="font-size: 2rem;">🚶</div>
+                        <div>Stretch</div>
+                    </div>
+                    <div class="break-activity-item">
+                        <div style="font-size: 2rem;">💧</div>
+                        <div>Drink Water</div>
+                    </div>
+                    <div class="break-activity-item">
+                        <div style="font-size: 2rem;">👀</div>
+                        <div>Rest Eyes</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button onclick="skipBreak()" style="padding: 12px 30px; border-radius: 25px; border: 2px solid rgba(255,255,255,0.5); background: transparent; color: white; font-weight: 600; cursor: pointer;">
+                        Skip Break
+                    </button>
+                    <button onclick="extendBreak()" style="padding: 12px 30px; border-radius: 25px; border: none; background: rgba(255,255,255,0.2); color: white; font-weight: 600; cursor: pointer;">
+                        +2 Minutes
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(reminder);
+
+            // Start break countdown
+            window.breakState.breakTimer = setInterval(() => {
+                breakSeconds--;
+                const timerEl = document.getElementById('break-timer');
+                if (timerEl) {
+                    timerEl.textContent = formatBreakTime(breakSeconds);
+                }
+
+                if (breakSeconds <= 0) {
+                    endBreak();
+                }
+            }, 1000);
+        };
+
+        window.formatBreakTime = function(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        };
+
+        window.skipBreak = function() {
+            endBreak();
+        };
+
+        window.extendBreak = function() {
+            window.breakState.breakDuration += 2;
+        };
+
+        window.endBreak = function() {
+            if (window.breakState.breakTimer) {
+                clearInterval(window.breakState.breakTimer);
+            }
+            window.breakState.isOnBreak = false;
+            window.breakState.studyStartTime = Date.now();
+            document.querySelectorAll('.break-reminder').forEach(el => el.remove());
+
+            // Log achievement
+            if (window.logAchievement) {
+                logAchievement('goal', 'Took a Break', 'Healthy study habits!');
+            }
+        };
+
+        // =====================================================
+        // QUESTION REVIEW MODE
+        // =====================================================
+        window.questionHistory = JSON.parse(localStorage.getItem('science_question_history') || '[]');
+
+        window.addToQuestionHistory = function(question, userAnswer, correctAnswer, isCorrect) {
+            const entry = {
+                id: Date.now(),
+                question: question,
+                userAnswer: userAnswer,
+                correctAnswer: correctAnswer,
+                isCorrect: isCorrect,
+                timestamp: new Date().toISOString()
+            };
+
+            window.questionHistory.unshift(entry);
+
+            // Keep only last 100 questions
+            if (window.questionHistory.length > 100) {
+                window.questionHistory = window.questionHistory.slice(0, 100);
+            }
+
+            localStorage.setItem('science_question_history', JSON.stringify(window.questionHistory));
+        };
+
+        window.showQuestionReview = function(filter = 'all') {
+            // Remove existing
+            document.querySelectorAll('.review-modal, .review-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'review-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'review-modal';
+
+            // Filter questions
+            let filteredQuestions = window.questionHistory;
+            if (filter === 'incorrect') {
+                filteredQuestions = window.questionHistory.filter(q => !q.isCorrect);
+            } else if (filter === 'correct') {
+                filteredQuestions = window.questionHistory.filter(q => q.isCorrect);
+            }
+
+            const correctCount = window.questionHistory.filter(q => q.isCorrect).length;
+            const incorrectCount = window.questionHistory.filter(q => !q.isCorrect).length;
+
+            let reviewHTML = `
+                <h2 style="margin: 0 0 15px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>📖</span> Question Review
+                </h2>
+
+                <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button onclick="showQuestionReview('all')" style="padding: 8px 20px; border-radius: 20px; border: none; background: ${filter === 'all' ? '#4CAF50' : '#e0e0e0'}; color: ${filter === 'all' ? 'white' : '#666'}; font-weight: 600; cursor: pointer;">
+                        All (${window.questionHistory.length})
+                    </button>
+                    <button onclick="showQuestionReview('incorrect')" style="padding: 8px 20px; border-radius: 20px; border: none; background: ${filter === 'incorrect' ? '#F44336' : '#e0e0e0'}; color: ${filter === 'incorrect' ? 'white' : '#666'}; font-weight: 600; cursor: pointer;">
+                        ✗ Incorrect (${incorrectCount})
+                    </button>
+                    <button onclick="showQuestionReview('correct')" style="padding: 8px 20px; border-radius: 20px; border: none; background: ${filter === 'correct' ? '#4CAF50' : '#e0e0e0'}; color: ${filter === 'correct' ? 'white' : '#666'}; font-weight: 600; cursor: pointer;">
+                        ✓ Correct (${correctCount})
+                    </button>
+                </div>
+            `;
+
+            if (filteredQuestions.length === 0) {
+                reviewHTML += `
+                    <div style="text-align: center; padding: 40px; color: #888;">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">📝</div>
+                        <p>No questions to review yet. Start answering questions!</p>
+                    </div>
+                `;
+            } else {
+                filteredQuestions.slice(0, 20).forEach((q, index) => {
+                    const questionText = q.question?.substring(0, 100) + (q.question?.length > 100 ? '...' : '') || 'Question ' + (index + 1);
+                    reviewHTML += `
+                        <div class="review-question ${q.isCorrect ? 'correct' : 'incorrect'}" onclick="showQuestionDetail(${index})">
+                            <div class="review-header">
+                                <span style="font-weight: 600;">#${index + 1}</span>
+                                <span class="review-status" style="background: ${q.isCorrect ? '#E8F5E9' : '#FFEBEE'}; color: ${q.isCorrect ? '#388E3C' : '#D32F2F'};">
+                                    ${q.isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                                </span>
+                            </div>
+                            <div class="review-text">${questionText}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            reviewHTML += `
+                <button onclick="document.querySelectorAll('.review-modal, .review-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 15px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; cursor: pointer;">
+                    Close Review
+                </button>
+            `;
+
+            modal.innerHTML = reviewHTML;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.showQuestionDetail = function(index) {
+            const q = window.questionHistory[index];
+            if (!q) return;
+
+            alert(`Question: ${q.question}\n\nYour Answer: ${q.userAnswer}\n\nCorrect Answer: ${q.correctAnswer}`);
+        };
+
+        // =====================================================
+        // ADD BUTTONS
+        // =====================================================
+        window.createBatch20Buttons = function() {
+            // Accessibility button
+            let btn1 = document.querySelector('.accessibility-btn');
+            if (!btn1) {
+                btn1 = document.createElement('button');
+                btn1.className = 'accessibility-btn';
+                btn1.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: none;
+                    background: linear-gradient(135deg, #607D8B, #455A64);
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(96, 125, 139, 0.4);
+                    z-index: 999;
+                    transition: all 0.3s ease;
+                `;
+                btn1.innerHTML = '♿';
+                btn1.title = 'Accessibility Settings';
+                btn1.onclick = showAccessibilitySettings;
+                btn1.onmouseenter = () => btn1.style.transform = 'scale(1.1)';
+                btn1.onmouseleave = () => btn1.style.transform = 'scale(1)';
+                document.body.appendChild(btn1);
+            }
+
+            // Review button
+            let btn2 = document.querySelector('.review-btn');
+            if (!btn2) {
+                btn2 = document.createElement('button');
+                btn2.className = 'review-btn';
+                btn2.style.cssText = `
+                    position: fixed;
+                    bottom: 80px;
+                    right: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: none;
+                    background: linear-gradient(135deg, #FF5722, #E64A19);
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+                    z-index: 999;
+                    transition: all 0.3s ease;
+                `;
+                btn2.innerHTML = '📖';
+                btn2.title = 'Review Questions';
+                btn2.onclick = () => showQuestionReview('all');
+                btn2.onmouseenter = () => btn2.style.transform = 'scale(1.1)';
+                btn2.onmouseleave = () => btn2.style.transform = 'scale(1)';
+                document.body.appendChild(btn2);
+            }
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            applyAccessibility();
+            createBatch20Buttons();
+            initBreakReminder();
+        });
+
+        // Also init if DOM already loaded
+        if (document.readyState !== 'loading') {
+            applyAccessibility();
+            createBatch20Buttons();
+            initBreakReminder();
+        }
+
+        console.log('♿ Accessibility, Break Reminders, and Question Review loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
