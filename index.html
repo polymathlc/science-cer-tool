@@ -7934,6 +7934,212 @@
             padding-bottom: 5px;
             border-bottom: 1px solid #eee;
         }
+
+        /* Batch 18: Help Center, Theme Customization, Notifications */
+
+        /* Help Center Modal */
+        .help-center-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 600px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            transition: background 0.2s ease;
+        }
+
+        .faq-question:hover {
+            background: #f0f0f0;
+        }
+
+        .faq-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.open .faq-arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .faq-item.open .faq-answer {
+            padding: 15px;
+            max-height: 500px;
+        }
+
+        .faq-answer-text {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Theme Customization */
+        .theme-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 450px;
+            width: 95%;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .theme-option {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-option:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .theme-preview {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .theme-preview-header {
+            height: 40%;
+        }
+
+        .theme-preview-body {
+            flex: 1;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Notification Settings */
+        .settings-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 400px;
+            width: 95%;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .setting-desc {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: #e0e0e0;
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.on {
+            background: #4CAF50;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: left 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.on::after {
+            left: 25px;
+        }
     </style>
 </head>
 
@@ -31118,6 +31324,372 @@
         }
 
         console.log('⌨️ Keyboard Shortcuts, Focus Mode, and Quick Navigation loaded!');
+    </script>
+
+    <!-- BATCH 18: Help Center, Theme Customization, Notifications -->
+    <script>
+        // =====================================================
+        // HELP CENTER / FAQ
+        // =====================================================
+        window.FAQ_ITEMS = [
+            {
+                question: 'How do I earn XP?',
+                answer: 'You earn XP by answering questions (10-20 XP per correct answer), completing daily goals (+100 XP), finishing weekly challenges, playing mini-games, completing flashcard reviews, and focus sessions. Streak multipliers and difficulty settings can boost your XP earnings!'
+            },
+            {
+                question: 'What are the different difficulty levels?',
+                answer: 'We have 4 difficulty levels: Easy (0.8x XP), Medium (1x XP), Hard (1.5x XP), and Expert (2x XP). Higher difficulties give more XP per question but may be more challenging. You can change difficulty anytime from the settings.'
+            },
+            {
+                question: 'How does the streak system work?',
+                answer: 'Your streak increases each day you practice. The longer your streak, the higher your XP multiplier! A 3-day streak gives 1.25x, 7 days gives 1.5x, and 14+ days gives 2x XP. Miss a day and your streak resets, but comeback bonuses help you recover!'
+            },
+            {
+                question: 'What is Focus Mode?',
+                answer: 'Focus Mode is a distraction-free study environment. Set a duration (15-60 minutes), and the app will hide notifications and track your study session. Complete a focus session to earn bonus XP based on duration and questions answered!'
+            },
+            {
+                question: 'How do I unlock badges?',
+                answer: 'Badges are earned by reaching milestones: answer questions, maintain streaks, complete challenges, and reach certain levels. Check your badges collection to see what you\'ve earned and what\'s still available!'
+            },
+            {
+                question: 'What are Weekly Challenges?',
+                answer: 'Weekly Challenges reset every Sunday and give you goals like "Answer 50 questions" or "Maintain a 5-day streak". Complete them for bonus XP rewards. Check your progress in the Weekly Challenges panel!'
+            },
+            {
+                question: 'How do I use Flashcards?',
+                answer: 'Click the flashcard button (📝) or use the Quick Navigation panel. Tap cards to flip between question and answer. Use keyboard arrows or buttons to navigate. Complete a full deck for bonus XP!'
+            },
+            {
+                question: 'What keyboard shortcuts are available?',
+                answer: 'Press ? or Alt+K to see all shortcuts. Key ones: Alt+F for Focus Mode, Alt+S for Statistics, Alt+M for Mastery, Alt+N/P for next/previous question, Space to flip flashcards, and Escape to close modals.'
+            },
+            {
+                question: 'How do I track my progress?',
+                answer: 'Use the Statistics Dashboard (📈) for overall stats, Subject Mastery (📊) for per-subject progress, Learning Roadmap (🗺️) for milestone tracking, and Streak Calendar (📅) for daily activity history.'
+            },
+            {
+                question: 'Can I change the app theme?',
+                answer: 'Yes! Click the Settings button and choose from different color themes. Your preference is saved automatically and persists across sessions.'
+            }
+        ];
+
+        window.showHelpCenter = function() {
+            // Remove existing
+            document.querySelectorAll('.help-center-modal, .help-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'help-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'help-center-modal';
+
+            let helpHTML = `
+                <h2 style="margin: 0 0 10px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>❓</span> Help Center
+                </h2>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Frequently asked questions about the Science Learning App</p>
+            `;
+
+            window.FAQ_ITEMS.forEach((item, index) => {
+                helpHTML += `
+                    <div class="faq-item" id="faq-${index}">
+                        <div class="faq-question" onclick="toggleFAQ(${index})">
+                            <span>${item.question}</span>
+                            <span class="faq-arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-text">${item.answer}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            helpHTML += `
+                <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #E3F2FD, #BBDEFB); border-radius: 12px;">
+                    <div style="font-weight: 600; color: #1976D2; margin-bottom: 5px;">💡 Quick Tip</div>
+                    <div style="font-size: 0.9rem; color: #555;">Press ? anywhere in the app to see keyboard shortcuts!</div>
+                </div>
+                <button onclick="document.querySelectorAll('.help-center-modal, .help-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 20px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                    Got it! 👍
+                </button>
+            `;
+
+            modal.innerHTML = helpHTML;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.toggleFAQ = function(index) {
+            const faqItem = document.getElementById(`faq-${index}`);
+            if (faqItem) {
+                faqItem.classList.toggle('open');
+            }
+        };
+
+        // =====================================================
+        // THEME CUSTOMIZATION
+        // =====================================================
+        window.THEMES = [
+            { id: 'default', name: 'Default Green', primary: '#4CAF50', secondary: '#8BC34A', icon: '🌿' },
+            { id: 'ocean', name: 'Ocean Blue', primary: '#2196F3', secondary: '#03A9F4', icon: '🌊' },
+            { id: 'sunset', name: 'Sunset Orange', primary: '#FF9800', secondary: '#FFC107', icon: '🌅' },
+            { id: 'berry', name: 'Berry Purple', primary: '#9C27B0', secondary: '#E91E63', icon: '🫐' },
+            { id: 'midnight', name: 'Midnight', primary: '#3F51B5', secondary: '#673AB7', icon: '🌙' },
+            { id: 'forest', name: 'Forest', primary: '#009688', secondary: '#4CAF50', icon: '🌲' },
+            { id: 'coral', name: 'Coral Reef', primary: '#FF6B6B', secondary: '#FF8E53', icon: '🪸' },
+            { id: 'lavender', name: 'Lavender', primary: '#667eea', secondary: '#764ba2', icon: '💜' },
+            { id: 'mint', name: 'Fresh Mint', primary: '#4ECDC4', secondary: '#44A08D', icon: '🌱' }
+        ];
+
+        window.currentTheme = localStorage.getItem('science_app_theme') || 'default';
+
+        window.showThemeCustomizer = function() {
+            // Remove existing
+            document.querySelectorAll('.theme-modal, .theme-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'theme-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'theme-modal';
+
+            let themeHTML = `
+                <h2 style="margin: 0 0 10px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>🎨</span> Choose Theme
+                </h2>
+                <p style="text-align: center; color: #666; margin-bottom: 15px;">Personalize your learning experience</p>
+                <div class="theme-grid">
+            `;
+
+            window.THEMES.forEach(theme => {
+                const isSelected = window.currentTheme === theme.id;
+                themeHTML += `
+                    <div class="theme-option ${isSelected ? 'selected' : ''}"
+                         onclick="selectTheme('${theme.id}')"
+                         title="${theme.name}"
+                         style="background: linear-gradient(135deg, ${theme.primary}, ${theme.secondary});">
+                        <div class="theme-preview">
+                            <div class="theme-preview-header" style="background: linear-gradient(135deg, ${theme.primary}, ${theme.secondary});"></div>
+                            <div class="theme-preview-body">${theme.icon}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            themeHTML += `
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 12px; text-align: center;">
+                    <div style="font-weight: 600; color: #333;">Current: ${window.THEMES.find(t => t.id === window.currentTheme)?.name || 'Default'}</div>
+                </div>
+                <button onclick="document.querySelectorAll('.theme-modal, .theme-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 15px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; cursor: pointer;">
+                    Done
+                </button>
+            `;
+
+            modal.innerHTML = themeHTML;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.selectTheme = function(themeId) {
+            window.currentTheme = themeId;
+            localStorage.setItem('science_app_theme', themeId);
+            applyTheme(themeId);
+            showThemeCustomizer(); // Refresh to show selection
+        };
+
+        window.applyTheme = function(themeId) {
+            const theme = window.THEMES.find(t => t.id === themeId);
+            if (!theme) return;
+
+            document.documentElement.style.setProperty('--theme-primary', theme.primary);
+            document.documentElement.style.setProperty('--theme-secondary', theme.secondary);
+
+            // Apply to various elements (simplified, targeting key elements)
+            const styleEl = document.getElementById('theme-override') || document.createElement('style');
+            styleEl.id = 'theme-override';
+            styleEl.textContent = `
+                .sidebar-top-section { background: linear-gradient(135deg, ${theme.primary}, ${theme.secondary}) !important; }
+                .submit-btn, .primary-btn { background: linear-gradient(135deg, ${theme.primary}, ${theme.secondary}) !important; }
+            `;
+
+            if (!document.getElementById('theme-override')) {
+                document.head.appendChild(styleEl);
+            }
+        };
+
+        // =====================================================
+        // NOTIFICATION SETTINGS
+        // =====================================================
+        window.notificationSettings = JSON.parse(localStorage.getItem('science_notification_settings') || JSON.stringify({
+            tips: true,
+            reminders: true,
+            celebrations: true,
+            sounds: true,
+            encouragement: true
+        }));
+
+        window.showNotificationSettings = function() {
+            // Remove existing
+            document.querySelectorAll('.settings-modal, .settings-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'settings-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'settings-modal';
+
+            const settings = [
+                { id: 'tips', label: 'Daily Tips', desc: 'Show tip of the day' },
+                { id: 'reminders', label: 'Practice Reminders', desc: 'Remind me to practice' },
+                { id: 'celebrations', label: 'Celebrations', desc: 'Show confetti and celebrations' },
+                { id: 'sounds', label: 'Sound Effects', desc: 'Play sound effects' },
+                { id: 'encouragement', label: 'Encouragement', desc: 'Show encouraging messages' }
+            ];
+
+            let settingsHTML = `
+                <h2 style="margin: 0 0 20px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>⚙️</span> Settings
+                </h2>
+            `;
+
+            settings.forEach(setting => {
+                const isOn = window.notificationSettings[setting.id];
+                settingsHTML += `
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">${setting.label}</div>
+                            <div class="setting-desc">${setting.desc}</div>
+                        </div>
+                        <div class="toggle-switch ${isOn ? 'on' : ''}" onclick="toggleSetting('${setting.id}', this)"></div>
+                    </div>
+                `;
+            });
+
+            settingsHTML += `
+                <div style="border-top: 2px solid #eee; margin-top: 20px; padding-top: 15px;">
+                    <div class="setting-item" style="border-bottom: none;">
+                        <div class="setting-info">
+                            <div class="setting-label">🎨 Theme</div>
+                            <div class="setting-desc">Customize app colors</div>
+                        </div>
+                        <button onclick="document.querySelectorAll('.settings-modal, .settings-backdrop').forEach(el => el.remove()); showThemeCustomizer();"
+                                style="padding: 8px 15px; border-radius: 20px; border: 1px solid #e0e0e0; background: white; cursor: pointer; font-weight: 500;">
+                            Change →
+                        </button>
+                    </div>
+                </div>
+                <button onclick="document.querySelectorAll('.settings-modal, .settings-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 20px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                    Save Settings
+                </button>
+            `;
+
+            modal.innerHTML = settingsHTML;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.toggleSetting = function(settingId, element) {
+            window.notificationSettings[settingId] = !window.notificationSettings[settingId];
+            element.classList.toggle('on');
+            localStorage.setItem('science_notification_settings', JSON.stringify(window.notificationSettings));
+        };
+
+        // =====================================================
+        // ADD SETTINGS BUTTON
+        // =====================================================
+        window.createSettingsButton = function() {
+            // Remove existing
+            document.querySelectorAll('.settings-fab').forEach(el => el.remove());
+
+            const btn = document.createElement('button');
+            btn.className = 'settings-fab';
+            btn.style.cssText = `
+                position: fixed;
+                bottom: 590px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border: none;
+                background: linear-gradient(135deg, #607D8B, #455A64);
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(96, 125, 139, 0.4);
+                z-index: 999;
+                transition: all 0.3s ease;
+            `;
+            btn.innerHTML = '⚙️';
+            btn.title = 'Settings';
+            btn.onclick = showNotificationSettings;
+            btn.onmouseenter = () => btn.style.transform = 'scale(1.1)';
+            btn.onmouseleave = () => btn.style.transform = 'scale(1)';
+
+            document.body.appendChild(btn);
+        };
+
+        // Add help button
+        window.createHelpButton = function() {
+            document.querySelectorAll('.help-fab').forEach(el => el.remove());
+
+            const btn = document.createElement('button');
+            btn.className = 'help-fab';
+            btn.style.cssText = `
+                position: fixed;
+                bottom: 650px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border: none;
+                background: linear-gradient(135deg, #FF9800, #F57C00);
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+                z-index: 999;
+                transition: all 0.3s ease;
+            `;
+            btn.innerHTML = '❓';
+            btn.title = 'Help Center';
+            btn.onclick = showHelpCenter;
+            btn.onmouseenter = () => btn.style.transform = 'scale(1.1)';
+            btn.onmouseleave = () => btn.style.transform = 'scale(1)';
+
+            document.body.appendChild(btn);
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            createSettingsButton();
+            createHelpButton();
+            applyTheme(window.currentTheme);
+        });
+
+        // Also init if DOM already loaded
+        if (document.readyState !== 'loading') {
+            createSettingsButton();
+            createHelpButton();
+            applyTheme(window.currentTheme);
+        }
+
+        console.log('❓ Help Center, Theme Customization, and Notification Settings loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
