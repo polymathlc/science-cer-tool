@@ -17595,39 +17595,42 @@
             // Create tutorial box
             const tutorialBox = document.createElement('div');
             tutorialBox.style.cssText = `
-                background: white;
+                background: rgba(255, 255, 255, 0.85);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
                 border-radius: 16px;
                 padding: 1.5rem;
                 width: 100%;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                box-shadow: 0 10px 40px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.3) inset;
                 position: relative;
                 pointer-events: all;
-                border: 2px solid var(--primary-blue);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;
             `;
             tutorialBox.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h2 style="margin: 0; color: var(--primary-blue); font-size: 1.2rem; font-weight: 600;">${step.title}</h2>
-                    <button onclick="closeTutorial()" style="background: #f5f5f5; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: 1rem; color: #666; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#f5f5f5'">✕</button>
+                    <h2 style="margin: 0; color: #000000; font-size: 1.2rem; font-weight: 600; font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;">${step.title}</h2>
+                    <button onclick="closeTutorial()" style="background: rgba(0, 0, 0, 0.1); border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: 1rem; color: #000000; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;" onmouseover="this.style.background='rgba(0, 0, 0, 0.2)'" onmouseout="this.style.background='rgba(0, 0, 0, 0.1)'">✕</button>
                 </div>
-                <div style="font-size: 0.9rem; line-height: 1.6; color: #333; margin-bottom: 1.5rem; max-height: 200px; overflow-y: auto;">
+                <div style="font-size: 0.9rem; line-height: 1.6; color: #000000; margin-bottom: 1.5rem; max-height: 200px; overflow-y: auto; font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;">
                     ${step.content}
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 0.8rem; color: #666;">
+                    <div style="font-size: 0.8rem; color: #000000; font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;">
                         Step ${stepIndex + 1} of ${tutorialStepsList.length}
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
                         <button onclick="previousTutorialStep()" 
-                                style="padding: 0.5rem 1rem; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: #333; font-size: 0.85rem; transition: all 0.2s; ${stepIndex === 0 ? 'opacity: 0.5; cursor: not-allowed;' : ''}"
+                                style="padding: 0.5rem 1rem; background: rgba(0, 0, 0, 0.1); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: #000000; font-size: 0.85rem; transition: all 0.2s; font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif; ${stepIndex === 0 ? 'opacity: 0.5; cursor: not-allowed;' : ''}"
                                 ${stepIndex === 0 ? 'disabled' : ''}
-                                onmouseover="if(!this.disabled) this.style.background='#e0e0e0'"
-                                onmouseout="if(!this.disabled) this.style.background='#f5f5f5'">
+                                onmouseover="if(!this.disabled) this.style.background='rgba(0, 0, 0, 0.2)'"
+                                onmouseout="if(!this.disabled) this.style.background='rgba(0, 0, 0, 0.1)'">
                             ←
                         </button>
                         <button onclick="nextTutorialStep()" 
-                                style="padding: 0.5rem 1rem; background: var(--primary-blue); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: white; font-size: 0.85rem; transition: all 0.2s;"
-                                onmouseover="this.style.background='#0056b3'"
-                                onmouseout="this.style.background='var(--primary-blue)'">
+                                style="padding: 0.5rem 1rem; background: rgba(0, 0, 0, 0.8); border: none; border-radius: 8px; cursor: pointer; font-weight: 600; color: #ffffff; font-size: 0.85rem; transition: all 0.2s; font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;"
+                                onmouseover="this.style.background='rgba(0, 0, 0, 0.95)'"
+                                onmouseout="this.style.background='rgba(0, 0, 0, 0.8)'">
                             ${stepIndex === tutorialStepsList.length - 1 ? 'Done' : '→'}
                         </button>
                     </div>
