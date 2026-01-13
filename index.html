@@ -29992,6 +29992,323 @@
             font-size: 0.85rem;
             color: #666;
         }
+
+        /* Batch 80: Science Timer Challenge */
+        .timer-challenge-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1690px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d32f2f, #ef5350);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .timer-challenge-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .timer-challenge-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .timer-challenge-modal.active {
+            display: flex;
+        }
+
+        .timer-challenge-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+
+        .timer-challenge-header {
+            background: linear-gradient(135deg, #d32f2f, #ef5350);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .timer-challenge-body {
+            padding: 20px;
+        }
+
+        .timer-display {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 15px;
+        }
+
+        .timer-display.warning {
+            color: #ff9800;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .timer-question {
+            padding: 20px;
+            background: #ffebee;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .timer-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .timer-option {
+            padding: 15px;
+            border: 2px solid #d32f2f;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .timer-option:hover {
+            background: #ffebee;
+        }
+
+        .timer-score {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        /* Keyword Search */
+        .keyword-search-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2230px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7b1fa2, #ba68c8);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(123, 31, 162, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .keyword-search-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .keyword-search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .keyword-search-modal.active {
+            display: flex;
+        }
+
+        .keyword-search-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .keyword-search-header {
+            background: linear-gradient(135deg, #7b1fa2, #ba68c8);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .keyword-search-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .keyword-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #7b1fa2;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .keyword-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .keyword-item {
+            padding: 15px;
+            background: #f3e5f5;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .keyword-term {
+            font-weight: bold;
+            color: #7b1fa2;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .keyword-definition {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Note Taker */
+        .note-taker-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1750px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffa000, #ffca28);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 160, 0, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .note-taker-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .note-taker-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .note-taker-modal.active {
+            display: flex;
+        }
+
+        .note-taker-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .note-taker-header {
+            background: linear-gradient(135deg, #ffa000, #ffca28);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-taker-body {
+            padding: 20px;
+        }
+
+        .note-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #ffa000;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: none;
+            margin-bottom: 15px;
+        }
+
+        .note-list {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            padding: 12px;
+            background: #fff8e1;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .note-item-text {
+            font-size: 0.9rem;
+            color: #333;
+            padding-right: 30px;
+        }
+
+        .note-item-date {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .note-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #f44336;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 
@@ -74799,6 +75116,264 @@ This report was generated from the Science CER Practice App.
         renderConceptMap();
 
         console.log('🎱 Science Bingo, Concept Map, and Progress Graph loaded!');
+    </script>
+
+    <!-- Batch 80: Timer Challenge Button -->
+    <button class="timer-challenge-btn" onclick="openTimerChallenge()" title="Timer Challenge">⏱</button>
+
+    <!-- Timer Challenge Modal -->
+    <div class="timer-challenge-modal" id="timerChallengeModal">
+        <div class="timer-challenge-content">
+            <div class="timer-challenge-header">
+                <h3 style="margin:0;">⏱ Timer Challenge</h3>
+                <button onclick="closeTimerChallenge()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="timer-challenge-body">
+                <div class="timer-display" id="timerDisplay">10</div>
+                <div class="timer-question" id="timerQuestion">Click Start to begin!</div>
+                <div class="timer-options" id="timerOptions"></div>
+                <button onclick="startTimerChallenge()" id="timerStartBtn" style="width:100%;padding:15px;background:#d32f2f;color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:15px;">Start Challenge</button>
+                <div class="timer-score" id="timerScore">Best Streak: 0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyword Search Button -->
+    <button class="keyword-search-btn" onclick="openKeywordSearch()" title="Keyword Search">🔍</button>
+
+    <!-- Keyword Search Modal -->
+    <div class="keyword-search-modal" id="keywordSearchModal">
+        <div class="keyword-search-content">
+            <div class="keyword-search-header">
+                <h3 style="margin:0;">🔍 Keyword Search</h3>
+                <button onclick="closeKeywordSearch()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="keyword-search-body">
+                <input type="text" class="keyword-input" id="keywordInput" placeholder="Search science terms..." oninput="searchKeywords()">
+                <div class="keyword-results" id="keywordResults"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Note Taker Button -->
+    <button class="note-taker-btn" onclick="openNoteTaker()" title="Note Taker">📝</button>
+
+    <!-- Note Taker Modal -->
+    <div class="note-taker-modal" id="noteTakerModal">
+        <div class="note-taker-content">
+            <div class="note-taker-header">
+                <h3 style="margin:0;">📝 Note Taker</h3>
+                <button onclick="closeNoteTaker()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="note-taker-body">
+                <textarea class="note-textarea" id="noteTextarea" placeholder="Write your science notes here..."></textarea>
+                <button onclick="saveNote()" style="width:100%;padding:12px;background:#ffa000;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-bottom:15px;">Save Note</button>
+                <h4 style="margin:0 0 10px 0;color:#ffa000;">Saved Notes</h4>
+                <div class="note-list" id="noteList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Timer Challenge System
+        const timerQuestions = [
+            { q: 'What is the chemical symbol for water?', a: 'H2O', options: ['H2O', 'CO2', 'NaCl', 'O2'] },
+            { q: 'What force keeps us on Earth?', a: 'Gravity', options: ['Gravity', 'Friction', 'Magnetism', 'Tension'] },
+            { q: 'What is the powerhouse of the cell?', a: 'Mitochondria', options: ['Nucleus', 'Mitochondria', 'Ribosome', 'Membrane'] },
+            { q: 'What gas do plants release?', a: 'Oxygen', options: ['Carbon dioxide', 'Nitrogen', 'Oxygen', 'Hydrogen'] },
+            { q: 'What is the unit of force?', a: 'Newton', options: ['Joule', 'Watt', 'Newton', 'Pascal'] },
+            { q: 'How many planets are in our solar system?', a: '8', options: ['7', '8', '9', '10'] },
+            { q: 'What is the hardest natural substance?', a: 'Diamond', options: ['Gold', 'Iron', 'Diamond', 'Quartz'] },
+            { q: 'What is the speed of light?', a: '300,000 km/s', options: ['150,000 km/s', '300,000 km/s', '500,000 km/s', '1,000,000 km/s'] },
+            { q: 'What type of energy does food contain?', a: 'Chemical', options: ['Kinetic', 'Thermal', 'Chemical', 'Nuclear'] },
+            { q: 'What is the formula for force?', a: 'F = ma', options: ['F = ma', 'E = mc²', 'V = IR', 'P = IV'] }
+        ];
+
+        let timerInterval = null;
+        let timerSeconds = 10;
+        let timerStreak = 0;
+        let timerBestStreak = parseInt(localStorage.getItem('timerBestStreak')) || 0;
+        let currentTimerQuestion = null;
+
+        function openTimerChallenge() {
+            document.getElementById('timerChallengeModal').classList.add('active');
+            document.getElementById('timerScore').textContent = `Best Streak: ${timerBestStreak}`;
+        }
+
+        function closeTimerChallenge() {
+            document.getElementById('timerChallengeModal').classList.remove('active');
+            stopTimerChallenge();
+        }
+
+        function startTimerChallenge() {
+            timerStreak = 0;
+            document.getElementById('timerStartBtn').style.display = 'none';
+            nextTimerQuestion();
+        }
+
+        function nextTimerQuestion() {
+            currentTimerQuestion = timerQuestions[Math.floor(Math.random() * timerQuestions.length)];
+            document.getElementById('timerQuestion').textContent = currentTimerQuestion.q;
+
+            const shuffled = [...currentTimerQuestion.options].sort(() => Math.random() - 0.5);
+            document.getElementById('timerOptions').innerHTML = shuffled.map(opt =>
+                `<button class="timer-option" onclick="checkTimerAnswer('${opt}')">${opt}</button>`
+            ).join('');
+
+            timerSeconds = Math.max(5, 10 - Math.floor(timerStreak / 2)); // Gets faster
+            updateTimerDisplay();
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                if (timerSeconds <= 0) {
+                    endTimerChallenge('Time\'s up!');
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const display = document.getElementById('timerDisplay');
+            display.textContent = timerSeconds;
+            display.classList.toggle('warning', timerSeconds <= 3);
+        }
+
+        function checkTimerAnswer(answer) {
+            if (answer === currentTimerQuestion.a) {
+                timerStreak++;
+                addXP(5);
+                nextTimerQuestion();
+            } else {
+                endTimerChallenge('Wrong answer!');
+            }
+        }
+
+        function endTimerChallenge(reason) {
+            stopTimerChallenge();
+            if (timerStreak > timerBestStreak) {
+                timerBestStreak = timerStreak;
+                localStorage.setItem('timerBestStreak', timerBestStreak);
+            }
+            document.getElementById('timerQuestion').textContent = `${reason} Streak: ${timerStreak}`;
+            document.getElementById('timerOptions').innerHTML = '';
+            document.getElementById('timerStartBtn').style.display = 'block';
+            document.getElementById('timerScore').textContent = `Best Streak: ${timerBestStreak}`;
+        }
+
+        function stopTimerChallenge() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // Keyword Search System
+        const scienceKeywords = [
+            { term: 'Atom', definition: 'The smallest unit of an element that retains its chemical properties' },
+            { term: 'Cell', definition: 'The basic structural and functional unit of all living organisms' },
+            { term: 'DNA', definition: 'Deoxyribonucleic acid - carries genetic information' },
+            { term: 'Energy', definition: 'The capacity to do work or cause change' },
+            { term: 'Force', definition: 'A push or pull that can change an object\'s motion' },
+            { term: 'Gravity', definition: 'The force that attracts objects with mass toward each other' },
+            { term: 'Habitat', definition: 'The natural environment where an organism lives' },
+            { term: 'Ion', definition: 'An atom or molecule with an electric charge' },
+            { term: 'Kinetic', definition: 'Energy of motion' },
+            { term: 'Light', definition: 'Electromagnetic radiation visible to the human eye' },
+            { term: 'Mass', definition: 'The amount of matter in an object' },
+            { term: 'Neutron', definition: 'A subatomic particle with no charge' },
+            { term: 'Organism', definition: 'Any living thing' },
+            { term: 'Photosynthesis', definition: 'Process by which plants convert light to chemical energy' },
+            { term: 'Quantum', definition: 'The smallest discrete unit of a physical property' },
+            { term: 'Respiration', definition: 'Process of breaking down food to release energy' },
+            { term: 'Species', definition: 'A group of organisms that can reproduce together' },
+            { term: 'Temperature', definition: 'A measure of the average kinetic energy of particles' },
+            { term: 'Ultraviolet', definition: 'Electromagnetic radiation with wavelength shorter than visible light' },
+            { term: 'Velocity', definition: 'Speed in a given direction' },
+            { term: 'Wave', definition: 'A disturbance that transfers energy through matter or space' },
+            { term: 'Xenon', definition: 'A noble gas element used in lighting' },
+            { term: 'Yield', definition: 'The amount of product obtained in a chemical reaction' },
+            { term: 'Zero', definition: 'Absolute zero is the lowest possible temperature (-273.15°C)' }
+        ];
+
+        function openKeywordSearch() {
+            document.getElementById('keywordSearchModal').classList.add('active');
+            document.getElementById('keywordInput').value = '';
+            searchKeywords();
+        }
+
+        function closeKeywordSearch() {
+            document.getElementById('keywordSearchModal').classList.remove('active');
+        }
+
+        function searchKeywords() {
+            const query = document.getElementById('keywordInput').value.toLowerCase();
+            const filtered = scienceKeywords.filter(k =>
+                k.term.toLowerCase().includes(query) ||
+                k.definition.toLowerCase().includes(query)
+            );
+
+            document.getElementById('keywordResults').innerHTML = filtered.map(k => `
+                <div class="keyword-item">
+                    <div class="keyword-term">${k.term}</div>
+                    <div class="keyword-definition">${k.definition}</div>
+                </div>
+            `).join('') || '<p style="text-align:center;color:#999;">No results found</p>';
+        }
+
+        // Note Taker System
+        function openNoteTaker() {
+            document.getElementById('noteTakerModal').classList.add('active');
+            renderNotes();
+        }
+
+        function closeNoteTaker() {
+            document.getElementById('noteTakerModal').classList.remove('active');
+        }
+
+        function getNotes() {
+            return JSON.parse(localStorage.getItem('scienceNotes') || '[]');
+        }
+
+        function saveNote() {
+            const text = document.getElementById('noteTextarea').value.trim();
+            if (!text) return;
+
+            const notes = getNotes();
+            notes.unshift({
+                text: text,
+                date: new Date().toLocaleString()
+            });
+
+            if (notes.length > 50) notes.pop();
+            localStorage.setItem('scienceNotes', JSON.stringify(notes));
+
+            document.getElementById('noteTextarea').value = '';
+            renderNotes();
+            addXP(2);
+        }
+
+        function deleteNote(index) {
+            const notes = getNotes();
+            notes.splice(index, 1);
+            localStorage.setItem('scienceNotes', JSON.stringify(notes));
+            renderNotes();
+        }
+
+        function renderNotes() {
+            const notes = getNotes();
+            document.getElementById('noteList').innerHTML = notes.length > 0 ?
+                notes.map((n, i) => `
+                    <div class="note-item">
+                        <button class="note-delete" onclick="deleteNote(${i})">×</button>
+                        <div class="note-item-text">${n.text}</div>
+                        <div class="note-item-date">${n.date}</div>
+                    </div>
+                `).join('') :
+                '<p style="text-align:center;color:#999;">No notes yet. Start writing!</p>';
+        }
+
+        console.log('⏱ Timer Challenge, Keyword Search, and Note Taker loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
