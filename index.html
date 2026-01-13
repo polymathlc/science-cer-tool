@@ -9786,6 +9786,479 @@
         .floating-powerups-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ========== BATCH 24: Learning Quests, Virtual Pet, Science Lab ========== */
+
+        /* Learning Quests */
+        .quests-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .quests-content {
+            background: white;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .quests-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .quests-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .quests-tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .quest-tab {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .quest-tab.active {
+            color: #ee5a24;
+            border-bottom: 3px solid #ee5a24;
+        }
+
+        .quests-list {
+            padding: 20px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .quest-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quest-card.active {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 4px solid #ee5a24;
+        }
+
+        .quest-card.completed {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 4px solid #4CAF50;
+        }
+
+        .quest-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+
+        .quest-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .quest-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .quest-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .quest-progress-bar {
+            flex: 1;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .quest-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b 0%, #ee5a24 100%);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .quest-progress-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .quest-reward {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ee5a24;
+        }
+
+        /* Virtual Pet */
+        .virtual-pet {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9000;
+            display: none;
+        }
+
+        .virtual-pet.active {
+            display: block;
+        }
+
+        .pet-container {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 150px;
+        }
+
+        .pet-avatar {
+            font-size: 4rem;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pet-avatar:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .pet-avatar.happy {
+            animation: petHappy 0.5s ease;
+        }
+
+        .pet-avatar.sad {
+            animation: petSad 0.5s ease;
+        }
+
+        @keyframes petHappy {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2) rotate(-10deg); }
+            50% { transform: scale(1.3) rotate(10deg); }
+            75% { transform: scale(1.2) rotate(-5deg); }
+        }
+
+        @keyframes petSad {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.9) translateY(5px); }
+        }
+
+        .pet-name {
+            font-weight: 600;
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .pet-mood {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .pet-stats {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .pet-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pet-stat-icon {
+            font-size: 1.2rem;
+        }
+
+        .pet-stat-bar {
+            width: 30px;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 3px;
+            overflow: hidden;
+        }
+
+        .pet-stat-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 3px;
+        }
+
+        .pet-message {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            white-space: nowrap;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .pet-message.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .pet-message::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: white;
+        }
+
+        /* Science Lab */
+        .lab-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .lab-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 25px;
+            width: 90%;
+            max-width: 700px;
+            padding: 30px;
+            color: white;
+        }
+
+        .lab-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .lab-header h2 {
+            margin: 0;
+            color: #00d4ff;
+            font-size: 1.5rem;
+        }
+
+        .lab-experiment {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .experiment-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+
+        .experiment-desc {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .experiment-animation {
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .beaker {
+            font-size: 5rem;
+            animation: beakerBubble 2s infinite;
+        }
+
+        @keyframes beakerBubble {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .bubbles {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .bubble {
+            width: 15px;
+            height: 15px;
+            background: rgba(0, 212, 255, 0.5);
+            border-radius: 50%;
+            animation: bubbleRise 2s infinite;
+        }
+
+        .bubble:nth-child(2) { animation-delay: 0.3s; }
+        .bubble:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes bubbleRise {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-150px); opacity: 0; }
+        }
+
+        .experiment-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .experiment-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .experiment-btn.start {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: white;
+        }
+
+        .experiment-btn.reset {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .experiment-result {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .experiment-result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Floating buttons for Batch 24 */
+        .floating-quests-btn {
+            position: fixed;
+            bottom: 820px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(238, 90, 36, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-quests-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-pet-btn {
+            position: fixed;
+            bottom: 880px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #333;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 154, 158, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-pet-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-lab-btn {
+            position: fixed;
+            bottom: 940px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #00d4ff;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-lab-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -35527,6 +36000,383 @@ Science Made Fun!
         document.head.appendChild(slideDownStyle);
 
         console.log('⚡ Quiz Timer, Power-ups, and Daily Login loaded!');
+    </script>
+
+    <!-- ========== BATCH 24: Learning Quests, Virtual Pet, Science Lab ========== -->
+
+    <!-- Quests Modal -->
+    <div class="quests-modal" id="quests-modal">
+        <div class="quests-content">
+            <div class="quests-header">
+                <h2>🗺️ Learning Quests</h2>
+                <p style="margin: 5px 0 0 0; opacity: 0.9;">Complete quests to earn bonus rewards!</p>
+            </div>
+            <div class="quests-tabs">
+                <button class="quest-tab active" onclick="switchQuestTab('daily')">Daily</button>
+                <button class="quest-tab" onclick="switchQuestTab('weekly')">Weekly</button>
+                <button class="quest-tab" onclick="switchQuestTab('special')">Special</button>
+            </div>
+            <div class="quests-list" id="quests-list">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div style="padding: 15px; text-align: center;">
+                <button onclick="closeQuestsModal()" style="padding: 10px 30px; border: none; background: #f0f0f0; border-radius: 20px; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Virtual Pet -->
+    <div class="virtual-pet" id="virtual-pet">
+        <div class="pet-message" id="pet-message">Hello! Let's learn together!</div>
+        <div class="pet-container">
+            <div class="pet-avatar" id="pet-avatar" onclick="petPet()">🐱</div>
+            <div class="pet-name" id="pet-name">Sciency</div>
+            <div class="pet-mood" id="pet-mood">Feeling happy!</div>
+            <div class="pet-stats">
+                <div class="pet-stat">
+                    <span class="pet-stat-icon">❤️</span>
+                    <div class="pet-stat-bar"><div class="pet-stat-fill" id="pet-happiness" style="width: 100%"></div></div>
+                </div>
+                <div class="pet-stat">
+                    <span class="pet-stat-icon">⚡</span>
+                    <div class="pet-stat-bar"><div class="pet-stat-fill" id="pet-energy" style="width: 80%"></div></div>
+                </div>
+                <div class="pet-stat">
+                    <span class="pet-stat-icon">🧠</span>
+                    <div class="pet-stat-bar"><div class="pet-stat-fill" id="pet-knowledge" style="width: 50%"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Science Lab Modal -->
+    <div class="lab-modal" id="lab-modal">
+        <div class="lab-content">
+            <div class="lab-header">
+                <h2>🔬 Science Lab</h2>
+                <p style="color: #aaa; margin: 5px 0 0 0;">Conduct virtual experiments!</p>
+            </div>
+            <div class="lab-experiment" id="current-experiment">
+                <div class="experiment-title" id="exp-title">States of Matter</div>
+                <div class="experiment-desc" id="exp-desc">Watch what happens when we heat water!</div>
+                <div class="experiment-animation" id="exp-animation">
+                    <span class="beaker">🧪</span>
+                    <div class="bubbles">
+                        <div class="bubble"></div>
+                        <div class="bubble"></div>
+                        <div class="bubble"></div>
+                    </div>
+                </div>
+                <div class="experiment-controls">
+                    <button class="experiment-btn start" onclick="startExperiment()">Start Experiment</button>
+                    <button class="experiment-btn reset" onclick="resetExperiment()">Reset</button>
+                </div>
+                <div class="experiment-result" id="exp-result">
+                    <h3 style="color: #00d4ff; margin: 0 0 10px 0;">🎉 Experiment Complete!</h3>
+                    <p id="exp-result-text"></p>
+                    <p style="color: #4CAF50; font-weight: 600;">+25 XP Earned!</p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="loadExperiment(0)" class="experiment-btn" style="background: rgba(255,255,255,0.1);">💧 Water</button>
+                <button onclick="loadExperiment(1)" class="experiment-btn" style="background: rgba(255,255,255,0.1);">🧲 Magnets</button>
+                <button onclick="loadExperiment(2)" class="experiment-btn" style="background: rgba(255,255,255,0.1);">🌱 Plants</button>
+                <button onclick="loadExperiment(3)" class="experiment-btn" style="background: rgba(255,255,255,0.1);">⚡ Electricity</button>
+            </div>
+            <button onclick="closeLabModal()" style="margin-top: 20px; padding: 10px 30px; border: none; background: rgba(255,255,255,0.2); border-radius: 20px; color: white; cursor: pointer; display: block; margin-left: auto; margin-right: auto;">Close Lab</button>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons for Batch 24 -->
+    <button class="floating-quests-btn" onclick="openQuestsModal()" title="Learning Quests">🗺️</button>
+    <button class="floating-pet-btn" onclick="toggleVirtualPet()" title="Virtual Pet">🐱</button>
+    <button class="floating-lab-btn" onclick="openLabModal()" title="Science Lab">🔬</button>
+
+    <script>
+        // ========== BATCH 24: Learning Quests, Virtual Pet, Science Lab ==========
+
+        // Learning Quests
+        const questsData = {
+            daily: [
+                { id: 'd1', title: 'Early Bird', desc: 'Answer 5 questions before noon', target: 5, icon: '🌅', reward: 100 },
+                { id: 'd2', title: 'Perfect Score', desc: 'Get 3 questions correct in a row', target: 3, icon: '✨', reward: 75 },
+                { id: 'd3', title: 'Explorer', desc: 'Try questions from 2 different topics', target: 2, icon: '🗺️', reward: 50 },
+                { id: 'd4', title: 'Quick Learner', desc: 'Complete 10 questions today', target: 10, icon: '⚡', reward: 150 }
+            ],
+            weekly: [
+                { id: 'w1', title: 'Marathon Runner', desc: 'Answer 50 questions this week', target: 50, icon: '🏃', reward: 500 },
+                { id: 'w2', title: 'Science Master', desc: 'Achieve 80% accuracy on 30 questions', target: 30, icon: '🧬', reward: 400 },
+                { id: 'w3', title: 'Streak Champion', desc: 'Maintain a 5-day streak', target: 5, icon: '🔥', reward: 300 },
+                { id: 'w4', title: 'All-Rounder', desc: 'Answer questions from all topics', target: 6, icon: '🌟', reward: 600 }
+            ],
+            special: [
+                { id: 's1', title: 'First Steps', desc: 'Answer your first question!', target: 1, icon: '👶', reward: 50 },
+                { id: 's2', title: 'Level 5 Hero', desc: 'Reach level 5', target: 500, icon: '🦸', reward: 200 },
+                { id: 's3', title: 'Note Taker', desc: 'Create 5 study notes', target: 5, icon: '📝', reward: 150 },
+                { id: 's4', title: 'Social Butterfly', desc: 'Share an achievement', target: 1, icon: '🦋', reward: 100 }
+            ]
+        };
+
+        let questProgress = JSON.parse(localStorage.getItem('questProgress')) || {};
+
+        function openQuestsModal() {
+            renderQuests('daily');
+            document.getElementById('quests-modal').style.display = 'flex';
+        }
+
+        function closeQuestsModal() {
+            document.getElementById('quests-modal').style.display = 'none';
+        }
+
+        function switchQuestTab(type) {
+            document.querySelectorAll('.quest-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            renderQuests(type);
+        }
+
+        function renderQuests(type) {
+            const container = document.getElementById('quests-list');
+            const quests = questsData[type];
+
+            container.innerHTML = quests.map(quest => {
+                const progress = questProgress[quest.id] || 0;
+                const percentage = Math.min((progress / quest.target) * 100, 100);
+                const isCompleted = progress >= quest.target;
+                const statusClass = isCompleted ? 'completed' : (progress > 0 ? 'active' : '');
+
+                return `
+                    <div class="quest-card ${statusClass}">
+                        <div class="quest-icon">${quest.icon}</div>
+                        <div class="quest-title">${quest.title}</div>
+                        <div class="quest-description">${quest.desc}</div>
+                        <div class="quest-progress">
+                            <div class="quest-progress-bar">
+                                <div class="quest-progress-fill" style="width: ${percentage}%"></div>
+                            </div>
+                            <span class="quest-progress-text">${progress}/${quest.target}</span>
+                        </div>
+                        <span class="quest-reward">🎁 ${quest.reward} XP</span>
+                        ${isCompleted ? '<span style="margin-left: 10px; color: #4CAF50;">✓ Complete!</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateQuestProgress(questId, amount = 1) {
+            questProgress[questId] = (questProgress[questId] || 0) + amount;
+            localStorage.setItem('questProgress', JSON.stringify(questProgress));
+
+            // Check for completion and award XP
+            Object.values(questsData).flat().forEach(quest => {
+                if (quest.id === questId && questProgress[questId] >= quest.target) {
+                    const rewarded = localStorage.getItem('quest_rewarded_' + questId);
+                    if (!rewarded) {
+                        const currentXP = parseInt(localStorage.getItem('scienceXP')) || 0;
+                        localStorage.setItem('scienceXP', currentXP + quest.reward);
+                        localStorage.setItem('quest_rewarded_' + questId, 'true');
+                        showQuestComplete(quest);
+                    }
+                }
+            });
+        }
+
+        function showQuestComplete(quest) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+                color: white;
+                padding: 30px 40px;
+                border-radius: 20px;
+                text-align: center;
+                z-index: 99999;
+                animation: questPop 0.5s ease;
+            `;
+            toast.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 10px;">${quest.icon}</div>
+                <h3 style="margin: 0;">Quest Complete!</h3>
+                <p style="margin: 10px 0;">${quest.title}</p>
+                <p style="font-weight: 600;">+${quest.reward} XP</p>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Virtual Pet
+        let petState = JSON.parse(localStorage.getItem('virtualPet')) || {
+            name: 'Sciency',
+            avatar: '🐱',
+            happiness: 100,
+            energy: 80,
+            knowledge: 50,
+            lastInteraction: Date.now()
+        };
+
+        const petAvatars = ['🐱', '🐶', '🐰', '🐼', '🦊', '🐨', '🐯', '🦁'];
+        const petMessages = {
+            happy: ['Great job! Keep learning!', 'You\'re doing amazing!', 'I\'m so proud of you!', 'Science is fun!'],
+            neutral: ['Let\'s learn something new!', 'Ready to study?', 'Time for science!'],
+            sad: ['I miss you! Let\'s study!', 'Come play with me!', 'Don\'t forget about science!'],
+            correct: ['Woohoo! You got it right!', 'Smart thinking!', 'Excellent answer!'],
+            incorrect: ['Don\'t worry, try again!', 'Keep trying, you\'ll get it!', 'Learning from mistakes!']
+        };
+
+        function toggleVirtualPet() {
+            const pet = document.getElementById('virtual-pet');
+            pet.classList.toggle('active');
+            if (pet.classList.contains('active')) {
+                updatePetDisplay();
+                petSayRandom('happy');
+            }
+        }
+
+        function updatePetDisplay() {
+            document.getElementById('pet-avatar').textContent = petState.avatar;
+            document.getElementById('pet-name').textContent = petState.name;
+            document.getElementById('pet-happiness').style.width = petState.happiness + '%';
+            document.getElementById('pet-energy').style.width = petState.energy + '%';
+            document.getElementById('pet-knowledge').style.width = petState.knowledge + '%';
+
+            const mood = petState.happiness > 70 ? 'Feeling happy!' : petState.happiness > 40 ? 'Feeling okay' : 'Feeling sad...';
+            document.getElementById('pet-mood').textContent = mood;
+        }
+
+        function petSayRandom(type) {
+            const messages = petMessages[type];
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            showPetMessage(message);
+        }
+
+        function showPetMessage(message) {
+            const msgEl = document.getElementById('pet-message');
+            msgEl.textContent = message;
+            msgEl.classList.add('show');
+            setTimeout(() => msgEl.classList.remove('show'), 3000);
+        }
+
+        function petPet() {
+            petState.happiness = Math.min(petState.happiness + 10, 100);
+            localStorage.setItem('virtualPet', JSON.stringify(petState));
+            updatePetDisplay();
+
+            const avatar = document.getElementById('pet-avatar');
+            avatar.classList.add('happy');
+            setTimeout(() => avatar.classList.remove('happy'), 500);
+
+            petSayRandom('happy');
+        }
+
+        function feedPetKnowledge(amount = 5) {
+            petState.knowledge = Math.min(petState.knowledge + amount, 100);
+            petState.happiness = Math.min(petState.happiness + 5, 100);
+            localStorage.setItem('virtualPet', JSON.stringify(petState));
+            updatePetDisplay();
+        }
+
+        // Science Lab
+        const experiments = [
+            {
+                title: 'States of Matter',
+                desc: 'Watch what happens when we heat water!',
+                animation: '🧪',
+                result: 'Water changes from liquid to gas (steam) when heated! This is called evaporation.',
+                xp: 25
+            },
+            {
+                title: 'Magnetic Forces',
+                desc: 'See how magnets attract and repel!',
+                animation: '🧲',
+                result: 'Opposite poles attract (N-S) and same poles repel (N-N or S-S). Magnets create invisible force fields!',
+                xp: 25
+            },
+            {
+                title: 'Plant Growth',
+                desc: 'Observe photosynthesis in action!',
+                animation: '🌱',
+                result: 'Plants use sunlight, water, and CO2 to make food (glucose) and release oxygen. This is photosynthesis!',
+                xp: 25
+            },
+            {
+                title: 'Electric Circuits',
+                desc: 'Build a simple circuit!',
+                animation: '⚡',
+                result: 'Electricity flows through a closed circuit from battery → wire → bulb → back to battery. Open circuits don\'t work!',
+                xp: 25
+            }
+        ];
+
+        let currentExpIndex = 0;
+
+        function openLabModal() {
+            loadExperiment(0);
+            document.getElementById('lab-modal').style.display = 'flex';
+        }
+
+        function closeLabModal() {
+            document.getElementById('lab-modal').style.display = 'none';
+        }
+
+        function loadExperiment(index) {
+            currentExpIndex = index;
+            const exp = experiments[index];
+
+            document.getElementById('exp-title').textContent = exp.title;
+            document.getElementById('exp-desc').textContent = exp.desc;
+            document.getElementById('exp-animation').innerHTML = `
+                <span class="beaker">${exp.animation}</span>
+                <div class="bubbles">
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                </div>
+            `;
+            document.getElementById('exp-result').classList.remove('show');
+        }
+
+        function startExperiment() {
+            const exp = experiments[currentExpIndex];
+            const animation = document.getElementById('exp-animation');
+
+            animation.innerHTML = '<div style="font-size: 2rem; color: #00d4ff;">Running experiment...</div>';
+
+            setTimeout(() => {
+                animation.innerHTML = `<span style="font-size: 5rem; animation: pulse 1s infinite;">✨</span>`;
+
+                setTimeout(() => {
+                    document.getElementById('exp-result-text').textContent = exp.result;
+                    document.getElementById('exp-result').classList.add('show');
+
+                    // Award XP
+                    const expCompleted = localStorage.getItem('exp_completed_' + currentExpIndex);
+                    if (!expCompleted) {
+                        const currentXP = parseInt(localStorage.getItem('scienceXP')) || 0;
+                        localStorage.setItem('scienceXP', currentXP + exp.xp);
+                        localStorage.setItem('exp_completed_' + currentExpIndex, 'true');
+                        feedPetKnowledge(10);
+                    }
+                }, 2000);
+            }, 2000);
+        }
+
+        function resetExperiment() {
+            loadExperiment(currentExpIndex);
+        }
+
+        // Add quest popup animation
+        const questStyle = document.createElement('style');
+        questStyle.textContent = `
+            @keyframes questPop {
+                0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+                50% { transform: translate(-50%, -50%) scale(1.1); }
+                100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(questStyle);
+
+        console.log('🗺️ Learning Quests, Virtual Pet, and Science Lab loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
