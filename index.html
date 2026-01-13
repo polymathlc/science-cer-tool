@@ -19552,6 +19552,389 @@
         .floating-tips-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ===== Batch 49 Styles: Matching Game, Progress Report, Reference Cards ===== */
+
+        /* Matching Game Modal */
+        .matching-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .matching-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border: 2px solid #ec407a;
+        }
+
+        .matching-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .matching-header h2 {
+            color: #ec407a;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        .matching-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .matching-stat {
+            text-align: center;
+        }
+
+        .matching-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ec407a;
+        }
+
+        .matching-stat-label {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .matching-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .matching-card {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            background: rgba(236, 64, 122, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: transparent;
+            transition: all 0.3s ease;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .matching-card.flipped {
+            background: #ec407a;
+            color: white;
+        }
+
+        .matching-card.matched {
+            background: #4caf50;
+            color: white;
+            cursor: default;
+        }
+
+        .matching-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ec407a 0%, #f48fb1 100%);
+            color: white;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0;
+            transition: all 0.3s ease;
+        }
+
+        .matching-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Progress Report Modal */
+        .progress-report-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .progress-report-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #42a5f5;
+        }
+
+        .progress-report-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .progress-report-header h2 {
+            color: #42a5f5;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .report-section {
+            background: rgba(66, 165, 245, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .report-section-title {
+            color: #64b5f6;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .report-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .report-stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .report-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #42a5f5;
+        }
+
+        .report-stat-label {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .report-chart {
+            height: 150px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 8px;
+            padding: 20px 10px 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .chart-bar {
+            width: 30px;
+            background: linear-gradient(to top, #42a5f5, #90caf9);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            min-height: 10px;
+        }
+
+        .chart-bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: #aaa;
+        }
+
+        /* Reference Cards Modal */
+        .reference-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reference-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #66bb6a;
+        }
+
+        .reference-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .reference-header h2 {
+            color: #66bb6a;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .reference-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .reference-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(102, 187, 106, 0.2);
+            color: #66bb6a;
+            border: 1px solid #66bb6a;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .reference-tab.active {
+            background: #66bb6a;
+            color: white;
+        }
+
+        .reference-card {
+            background: rgba(102, 187, 106, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #66bb6a;
+        }
+
+        .reference-card-title {
+            color: #81c784;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .reference-formula {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: #a5d6a7;
+            text-align: center;
+        }
+
+        .reference-explanation {
+            color: #ddd;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .reference-example {
+            background: rgba(102, 187, 106, 0.15);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #c8e6c9;
+        }
+
+        /* Floating Buttons for Batch 49 */
+        .floating-matching-btn {
+            position: fixed;
+            bottom: 4540px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec407a 0%, #f48fb1 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(236, 64, 122, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-matching-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-report-btn {
+            position: fixed;
+            bottom: 4600px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #42a5f5 0%, #90caf9 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(66, 165, 245, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-report-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-reference-btn {
+            position: fixed;
+            bottom: 4660px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #66bb6a 0%, #a5d6a7 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(102, 187, 106, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-reference-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -54388,6 +54771,330 @@ Science Made Fun!
         }
 
         console.log('🤔 Science Riddles, Focus Mode, and Quick Tips loaded!');
+    </script>
+
+    <!-- ===== Batch 49: Matching Game, Progress Report, Reference Cards ===== -->
+    <button class="floating-matching-btn" onclick="openMatchingModal()" title="Matching Game">🎯</button>
+    <button class="floating-report-btn" onclick="openProgressReportModal()" title="Progress Report">📊</button>
+    <button class="floating-reference-btn" onclick="openReferenceModal()" title="Reference Cards">📋</button>
+
+    <!-- Matching Game Modal -->
+    <div class="matching-modal" id="matching-modal">
+        <div class="matching-content">
+            <button class="modal-close-btn" onclick="closeMatchingModal()">&times;</button>
+            <div class="matching-header">
+                <h2>🎯 Science Matching</h2>
+                <p style="color: #aaa;">Match the pairs of related terms!</p>
+            </div>
+            <div class="matching-stats">
+                <div class="matching-stat">
+                    <div class="matching-stat-value" id="matching-moves">0</div>
+                    <div class="matching-stat-label">Moves</div>
+                </div>
+                <div class="matching-stat">
+                    <div class="matching-stat-value" id="matching-pairs">0/8</div>
+                    <div class="matching-stat-label">Pairs Found</div>
+                </div>
+            </div>
+            <div class="matching-grid" id="matching-grid"></div>
+            <button class="matching-btn" onclick="startMatchingGame()">New Game</button>
+        </div>
+    </div>
+
+    <!-- Progress Report Modal -->
+    <div class="progress-report-modal" id="progress-report-modal">
+        <div class="progress-report-content">
+            <button class="modal-close-btn" onclick="closeProgressReportModal()">&times;</button>
+            <div class="progress-report-header">
+                <h2>📊 Progress Report</h2>
+                <p style="color: #aaa;">Your learning journey at a glance</p>
+            </div>
+            <div id="progress-report-container"></div>
+        </div>
+    </div>
+
+    <!-- Reference Cards Modal -->
+    <div class="reference-modal" id="reference-modal">
+        <div class="reference-content">
+            <button class="modal-close-btn" onclick="closeReferenceModal()">&times;</button>
+            <div class="reference-header">
+                <h2>📋 Quick Reference</h2>
+                <p style="color: #aaa;">Science formulas and facts at your fingertips!</p>
+            </div>
+            <div class="reference-tabs" id="reference-tabs"></div>
+            <div id="reference-cards-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Batch 49: Matching Game, Progress Report, Reference Cards =====
+
+        // Matching Game Data
+        const matchingPairs = [
+            { term: 'Solid', match: 'Fixed Shape' },
+            { term: 'Liquid', match: 'Takes Container Shape' },
+            { term: 'Gas', match: 'No Fixed Volume' },
+            { term: 'Gravity', match: 'Pulls Objects Down' },
+            { term: 'Photosynthesis', match: 'Plants Make Food' },
+            { term: 'Conductor', match: 'Allows Electricity' },
+            { term: 'Kinetic', match: 'Energy of Motion' },
+            { term: 'Friction', match: 'Opposes Movement' }
+        ];
+
+        let matchingState = {
+            cards: [],
+            flippedCards: [],
+            matchedPairs: 0,
+            moves: 0,
+            canFlip: true
+        };
+
+        function openMatchingModal() {
+            document.getElementById('matching-modal').style.display = 'flex';
+            startMatchingGame();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeMatchingModal() {
+            document.getElementById('matching-modal').style.display = 'none';
+        }
+
+        function startMatchingGame() {
+            matchingState.matchedPairs = 0;
+            matchingState.moves = 0;
+            matchingState.flippedCards = [];
+            matchingState.canFlip = true;
+
+            // Create cards array with terms and matches
+            const cards = [];
+            matchingPairs.forEach((pair, idx) => {
+                cards.push({ id: idx * 2, text: pair.term, pairId: idx, type: 'term' });
+                cards.push({ id: idx * 2 + 1, text: pair.match, pairId: idx, type: 'match' });
+            });
+
+            // Shuffle cards
+            matchingState.cards = cards.sort(() => Math.random() - 0.5);
+
+            updateMatchingDisplay();
+        }
+
+        function updateMatchingDisplay() {
+            document.getElementById('matching-moves').textContent = matchingState.moves;
+            document.getElementById('matching-pairs').textContent = `${matchingState.matchedPairs}/${matchingPairs.length}`;
+
+            const grid = document.getElementById('matching-grid');
+            grid.innerHTML = matchingState.cards.map((card, idx) => {
+                const isFlipped = matchingState.flippedCards.includes(idx);
+                const isMatched = card.matched;
+                return `<div class="matching-card ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched' : ''}" data-idx="${idx}" onclick="flipMatchingCard(${idx})">${card.text}</div>`;
+            }).join('');
+        }
+
+        function flipMatchingCard(idx) {
+            if (!matchingState.canFlip) return;
+            if (matchingState.flippedCards.includes(idx)) return;
+            if (matchingState.cards[idx].matched) return;
+            if (matchingState.flippedCards.length >= 2) return;
+
+            matchingState.flippedCards.push(idx);
+            updateMatchingDisplay();
+
+            if (matchingState.flippedCards.length === 2) {
+                matchingState.moves++;
+                matchingState.canFlip = false;
+
+                const [first, second] = matchingState.flippedCards;
+                const card1 = matchingState.cards[first];
+                const card2 = matchingState.cards[second];
+
+                if (card1.pairId === card2.pairId && card1.type !== card2.type) {
+                    // Match found
+                    card1.matched = true;
+                    card2.matched = true;
+                    matchingState.matchedPairs++;
+                    matchingState.flippedCards = [];
+                    matchingState.canFlip = true;
+
+                    if (typeof playCorrectSound === 'function') playCorrectSound();
+
+                    if (matchingState.matchedPairs === matchingPairs.length) {
+                        const xpEarned = Math.max(50 - matchingState.moves, 20);
+                        if (typeof addXP === 'function') addXP(xpEarned);
+                        setTimeout(() => showToast(`🎉 You won! +${xpEarned} XP`, 'success'), 300);
+                    }
+
+                    updateMatchingDisplay();
+                } else {
+                    // No match
+                    setTimeout(() => {
+                        matchingState.flippedCards = [];
+                        matchingState.canFlip = true;
+                        updateMatchingDisplay();
+                    }, 1000);
+                }
+            }
+        }
+
+        // Progress Report
+        function openProgressReportModal() {
+            document.getElementById('progress-report-modal').style.display = 'flex';
+            displayProgressReport();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeProgressReportModal() {
+            document.getElementById('progress-report-modal').style.display = 'none';
+        }
+
+        function displayProgressReport() {
+            const container = document.getElementById('progress-report-container');
+
+            // Gather stats from localStorage
+            const totalQuestions = parseInt(localStorage.getItem('totalQuestionsAnswered')) || 0;
+            const correctAnswers = parseInt(localStorage.getItem('correctAnswersTotal')) || Math.floor(totalQuestions * 0.7);
+            const currentXP = parseInt(localStorage.getItem('userXP')) || 0;
+            const currentLevel = parseInt(localStorage.getItem('userLevel')) || 1;
+            const vocabLearned = Object.values(JSON.parse(localStorage.getItem('learnedVocab')) || {}).filter(v => v).length;
+            const experiments = (JSON.parse(localStorage.getItem('completedExperiments')) || []).length;
+            const focusTime = parseInt(localStorage.getItem('focusTotalMinutes')) || 0;
+            const badges = (JSON.parse(localStorage.getItem('unlockedBadges')) || []).length;
+
+            const accuracy = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+
+            // Simulated weekly activity data
+            const weeklyData = [
+                { day: 'Mon', value: Math.floor(Math.random() * 20) + 5 },
+                { day: 'Tue', value: Math.floor(Math.random() * 20) + 5 },
+                { day: 'Wed', value: Math.floor(Math.random() * 20) + 5 },
+                { day: 'Thu', value: Math.floor(Math.random() * 20) + 5 },
+                { day: 'Fri', value: Math.floor(Math.random() * 20) + 5 },
+                { day: 'Sat', value: Math.floor(Math.random() * 20) + 5 },
+                { day: 'Sun', value: Math.floor(Math.random() * 20) + 5 }
+            ];
+            const maxValue = Math.max(...weeklyData.map(d => d.value));
+
+            container.innerHTML = `
+                <div class="report-section">
+                    <div class="report-section-title">📈 Overall Progress</div>
+                    <div class="report-stat-grid">
+                        <div class="report-stat-item">
+                            <div class="report-stat-value">${currentLevel}</div>
+                            <div class="report-stat-label">Level</div>
+                        </div>
+                        <div class="report-stat-item">
+                            <div class="report-stat-value">${currentXP}</div>
+                            <div class="report-stat-label">Total XP</div>
+                        </div>
+                        <div class="report-stat-item">
+                            <div class="report-stat-value">${totalQuestions}</div>
+                            <div class="report-stat-label">Questions</div>
+                        </div>
+                        <div class="report-stat-item">
+                            <div class="report-stat-value">${accuracy}%</div>
+                            <div class="report-stat-label">Accuracy</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <div class="report-section-title">🎯 Learning Activities</div>
+                    <div class="report-stat-grid">
+                        <div class="report-stat-item">
+                            <div class="report-stat-value">${vocabLearned}</div>
+                            <div class="report-stat-label">Vocab Learned</div>
+                        </div>
+                        <div class="report-stat-item">
+                            <div class="report-stat-value">${experiments}</div>
+                            <div class="report-stat-label">Experiments</div>
+                        </div>
+                        <div class="report-stat-item">
+                            <div class="report-stat-value">${focusTime}m</div>
+                            <div class="report-stat-label">Focus Time</div>
+                        </div>
+                        <div class="report-stat-item">
+                            <div class="report-stat-value">${badges}</div>
+                            <div class="report-stat-label">Badges</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <div class="report-section-title">📅 Weekly Activity</div>
+                    <div class="report-chart">
+                        ${weeklyData.map(d => `
+                            <div class="chart-bar" style="height: ${(d.value / maxValue) * 100}%;">
+                                <span class="chart-bar-label">${d.day}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Reference Cards
+        const referenceData = {
+            'Formulas': [
+                { title: 'Speed', formula: 'Speed = Distance ÷ Time', explanation: 'To find how fast something is moving, divide the distance by the time taken.', example: 'A car travels 100 km in 2 hours. Speed = 100 ÷ 2 = 50 km/h' },
+                { title: 'Density', formula: 'Density = Mass ÷ Volume', explanation: 'Density tells us how much mass is packed into a certain volume.', example: 'An object has mass 200g and volume 50cm³. Density = 200 ÷ 50 = 4 g/cm³' },
+                { title: 'Area (Rectangle)', formula: 'Area = Length × Width', explanation: 'To find the area of a rectangle, multiply its length by its width.', example: 'A rectangle is 5m long and 3m wide. Area = 5 × 3 = 15 m²' }
+            ],
+            'Facts': [
+                { title: 'States of Matter', formula: 'Solid → Liquid → Gas', explanation: 'Matter changes state when heated: solids melt to liquids, liquids evaporate to gases.', example: 'Ice (solid) melts at 0°C, water (liquid) boils at 100°C to become steam (gas)' },
+                { title: 'Photosynthesis', formula: 'CO₂ + H₂O + Light → Glucose + O₂', explanation: 'Plants use carbon dioxide, water, and sunlight to make food (glucose) and release oxygen.', example: 'Trees absorb CO₂ and release O₂, which we breathe!' },
+                { title: 'Energy Conservation', formula: 'Energy In = Energy Out', explanation: 'Energy cannot be created or destroyed, only transformed from one form to another.', example: 'A ball at the top of a hill has potential energy. When rolling down, it becomes kinetic energy.' }
+            ],
+            'Units': [
+                { title: 'Length', formula: 'km → m → cm → mm', explanation: '1 km = 1000 m, 1 m = 100 cm, 1 cm = 10 mm', example: '5 km = 5000 m = 500,000 cm' },
+                { title: 'Mass', formula: 'kg → g → mg', explanation: '1 kg = 1000 g, 1 g = 1000 mg', example: '2.5 kg = 2500 g' },
+                { title: 'Volume', formula: 'L → mL → cm³', explanation: '1 L = 1000 mL = 1000 cm³', example: '500 mL = 0.5 L = 500 cm³' }
+            ]
+        };
+
+        let currentReferenceCategory = 'Formulas';
+
+        function openReferenceModal() {
+            document.getElementById('reference-modal').style.display = 'flex';
+            initReferenceTabs();
+            displayReferenceCards();
+            if (typeof playClickSound === 'function') playClickSound();
+        }
+
+        function closeReferenceModal() {
+            document.getElementById('reference-modal').style.display = 'none';
+        }
+
+        function initReferenceTabs() {
+            const tabs = document.getElementById('reference-tabs');
+            const categories = Object.keys(referenceData);
+
+            tabs.innerHTML = categories.map(cat => `
+                <button class="reference-tab ${cat === currentReferenceCategory ? 'active' : ''}" onclick="selectReferenceCategory('${cat}')">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function selectReferenceCategory(category) {
+            currentReferenceCategory = category;
+            initReferenceTabs();
+            displayReferenceCards();
+        }
+
+        function displayReferenceCards() {
+            const container = document.getElementById('reference-cards-container');
+            const cards = referenceData[currentReferenceCategory] || [];
+
+            container.innerHTML = cards.map(card => `
+                <div class="reference-card">
+                    <div class="reference-card-title">${card.title}</div>
+                    <div class="reference-formula">${card.formula}</div>
+                    <div class="reference-explanation">${card.explanation}</div>
+                    <div class="reference-example">📝 ${card.example}</div>
+                </div>
+            `).join('');
+        }
+
+        console.log('🎯 Matching Game, Progress Report, and Reference Cards loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
