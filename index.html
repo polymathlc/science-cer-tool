@@ -3126,6 +3126,175 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Toast Notification System */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        .toast {
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: toastSlideIn 0.3s ease;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .toast:hover {
+            transform: translateX(-5px);
+        }
+
+        .toast.hiding {
+            animation: toastSlideOut 0.3s ease forwards;
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        .toast-error {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+
+        .toast-warning {
+            background: linear-gradient(135deg, #fff3cd, #ffeeba);
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        .toast-info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            border-left: 4px solid #17a2b8;
+            color: #0c5460;
+        }
+
+        .toast-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            padding: 0;
+            margin-left: 8px;
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastSlideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .toast-container {
+                left: 10px;
+                right: 10px;
+                max-width: none;
+            }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .back-to-top:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+        }
+
         /* Lazy Loading Images */
         .lazy-image {
             opacity: 0;
@@ -6652,6 +6821,14 @@
         <div class="loading-message" id="loading-message">Loading...</div>
     </div>
 
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" role="alert" aria-live="polite"></div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top" title="Back to top">
+        ↑
+    </button>
+
     <script>
         // =====================================================
         // GLOBAL LOADING INDICATOR FUNCTIONS
@@ -6680,6 +6857,144 @@
                 hideLoading();
             }, timeout);
         };
+
+        // =====================================================
+        // TOAST NOTIFICATION SYSTEM
+        // =====================================================
+
+        const toastIcons = {
+            success: '✅',
+            error: '❌',
+            warning: '⚠️',
+            info: 'ℹ️'
+        };
+
+        window.showToast = function(message, type = 'info', title = '', duration = 4000) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+
+            const icon = toastIcons[type] || toastIcons.info;
+            const titleHtml = title ? `<div class="toast-title">${title}</div>` : '';
+
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <div class="toast-content">
+                    ${titleHtml}
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" aria-label="Close notification">×</button>
+            `;
+
+            // Close button functionality
+            const closeBtn = toast.querySelector('.toast-close');
+            closeBtn.onclick = (e) => {
+                e.stopPropagation();
+                removeToast(toast);
+            };
+
+            // Click to dismiss
+            toast.onclick = () => removeToast(toast);
+
+            container.appendChild(toast);
+
+            // Auto-remove after duration
+            if (duration > 0) {
+                setTimeout(() => removeToast(toast), duration);
+            }
+
+            return toast;
+        };
+
+        function removeToast(toast) {
+            if (!toast || toast.classList.contains('hiding')) return;
+            toast.classList.add('hiding');
+            setTimeout(() => toast.remove(), 300);
+        }
+
+        // Convenience methods
+        window.showSuccessToast = function(message, title = 'Success') {
+            return showToast(message, 'success', title);
+        };
+
+        window.showErrorToast = function(message, title = 'Error') {
+            return showToast(message, 'error', title, 6000);
+        };
+
+        window.showWarningToast = function(message, title = 'Warning') {
+            return showToast(message, 'warning', title);
+        };
+
+        window.showInfoToast = function(message, title = '') {
+            return showToast(message, 'info', title);
+        };
+
+        // =====================================================
+        // BACK TO TOP BUTTON
+        // =====================================================
+
+        (function() {
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (!backToTopBtn) return;
+
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            // Scroll to top on click
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        })();
+
+        // =====================================================
+        // OFFLINE DETECTION
+        // =====================================================
+
+        (function() {
+            let offlineToast = null;
+
+            function handleOffline() {
+                if (!offlineToast) {
+                    offlineToast = showToast(
+                        'You are currently offline. Some features may not work.',
+                        'warning',
+                        'No Internet Connection',
+                        0 // Don't auto-dismiss
+                    );
+                }
+            }
+
+            function handleOnline() {
+                if (offlineToast) {
+                    offlineToast.classList.add('hiding');
+                    setTimeout(() => {
+                        offlineToast.remove();
+                        offlineToast = null;
+                    }, 300);
+                }
+                showSuccessToast('Connection restored!', 'Back Online');
+            }
+
+            // Check initial state
+            if (!navigator.onLine) {
+                handleOffline();
+            }
+
+            // Listen for online/offline events
+            window.addEventListener('online', handleOnline);
+            window.addEventListener('offline', handleOffline);
+        })();
 
         // =====================================================
         // FORCE FRESH CONTENT - AGGRESSIVE CACHE BUSTING
@@ -7769,9 +8084,9 @@
                         createdAt: new Date().toISOString(),
                         type: 'lesson'
                     };
-                    
+
                     await setDoc(doc(window.db_fs, "shared_lessons", worksheetId), lessonData);
-                    alert("Lesson created and shared with all students! 🎓");
+                    showSuccessToast("Lesson created and shared with all students!", "Lesson Shared");
                 } else {
                     // Save as personal worksheet
                     const worksheetData = {
@@ -7784,9 +8099,9 @@
                         createdAt: new Date().toISOString(),
                         type: 'worksheet'
                     };
-                    
+
                     await setDoc(doc(window.db_fs, "user_worksheets", worksheetId), worksheetData);
-                    alert("Worksheet saved successfully! 📚");
+                    showSuccessToast("Your worksheet has been saved.", "Worksheet Saved");
                 }
                 
                 hideLoading();
@@ -7802,7 +8117,7 @@
             } catch (e) {
                 console.error("Save worksheet error:", e);
                 hideLoading();
-                alert("Error saving worksheet: " + e.message);
+                showErrorToast("Could not save worksheet: " + e.message, "Save Failed");
             }
         };
 
@@ -7991,7 +8306,7 @@
                 
                 await deleteDoc(doc(window.db_fs, "user_worksheets", worksheetId));
                 
-                alert("Worksheet deleted.");
+                showSuccessToast("Worksheet has been deleted.", "Deleted");
                 loadSavedWorksheets();
                 
             } catch (e) {
@@ -8466,7 +8781,7 @@
                 
                 await deleteDoc(doc(window.db_fs, "shared_lessons", lessonId));
                 
-                alert("Lesson deleted.");
+                showSuccessToast("Lesson has been deleted.", "Deleted");
                 loadSharedLessons();
                 
             } catch (e) {
@@ -13155,7 +13470,7 @@
                     [`deletedAt.${user.uid}`]: new Date()
                 });
                 
-                alert("Message moved to deleted folder.");
+                showInfoToast("Message moved to deleted folder.", "Message Deleted");
                 hideViewMessageModal();
                 
             } catch (e) {
@@ -13288,7 +13603,7 @@
                         await updateDoc(userRef, { studentName: nameInputs[0].value.trim() });
                     }
                     
-                    alert("Settings saved successfully!");
+                    showSuccessToast("Your settings have been updated.", "Settings Saved");
                     hideAccountSettings();
                 }
             } catch (e) {
@@ -13327,7 +13642,7 @@
                 
                 await updatePassword(user, newPassword);
                 
-                alert("Password updated successfully!");
+                showSuccessToast("Your password has been updated.", "Password Changed");
                 document.getElementById('settings-new-password').value = '';
                 document.getElementById('settings-confirm-password').value = '';
                 
@@ -14109,6 +14424,12 @@
 
         window.switchTab = function (type, btn) {
             window.currentActiveTab = type;
+
+            // Smooth scroll to top when changing views
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
 
             // Close mobile sidebar if open
             if (window.innerWidth <= 768) {
@@ -17386,7 +17707,7 @@
                 const { doc, deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 await deleteDoc(doc(window.db_fs, "custom_questions", questionId));
                 
-                alert("Question deleted successfully!");
+                showSuccessToast("Question has been deleted.", "Deleted");
                 container.remove();
             } catch (e) {
                 console.error("Delete Error:", e);
@@ -17868,13 +18189,69 @@
             document.getElementById('auth-error').innerText = "";
         };
 
+        // Form validation utility
+        window.validateEmail = function(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        };
+
+        window.showFieldError = function(inputId, message) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.style.borderColor = '#dc3545';
+                input.style.boxShadow = '0 0 0 3px rgba(220, 53, 69, 0.2)';
+                // Add error message below input if not exists
+                let errorSpan = input.nextElementSibling;
+                if (!errorSpan || !errorSpan.classList.contains('field-error')) {
+                    errorSpan = document.createElement('span');
+                    errorSpan.className = 'field-error';
+                    errorSpan.style.cssText = 'display: block; color: #dc3545; font-size: 0.8rem; margin-top: 4px;';
+                    input.parentNode.insertBefore(errorSpan, input.nextSibling);
+                }
+                errorSpan.textContent = message;
+            }
+        };
+
+        window.clearFieldError = function(inputId) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.style.borderColor = '';
+                input.style.boxShadow = '';
+                const errorSpan = input.nextElementSibling;
+                if (errorSpan && errorSpan.classList.contains('field-error')) {
+                    errorSpan.remove();
+                }
+            }
+        };
+
         window.handleLogin = async () => {
-            const email = document.getElementById('auth-email').value;
+            const email = document.getElementById('auth-email').value.trim();
             const pass = document.getElementById('auth-pass').value;
             const errorMsg = document.getElementById('auth-error');
             errorMsg.style.color = "#dc3545";
-            
-            if (!email || !pass) { errorMsg.innerText = "Fields cannot be empty."; return; }
+
+            // Clear previous errors
+            clearFieldError('auth-email');
+            clearFieldError('auth-pass');
+            errorMsg.innerText = "";
+
+            // Validate fields
+            let hasError = false;
+
+            if (!email) {
+                showFieldError('auth-email', 'Email is required');
+                hasError = true;
+            } else if (!validateEmail(email)) {
+                showFieldError('auth-email', 'Please enter a valid email address');
+                hasError = true;
+            }
+
+            if (!pass) {
+                showFieldError('auth-pass', 'Password is required');
+                hasError = true;
+            }
+
+            if (hasError) return;
 
             try {
                 if (isSignUpMode) {
