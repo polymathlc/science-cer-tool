@@ -7524,6 +7524,228 @@
             font-weight: 600;
             color: #FF6B6B;
         }
+
+        /* Batch 16: Subject Mastery, Stats Dashboard, Tips */
+
+        /* Subject Mastery Cards */
+        .mastery-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 500px;
+            width: 95%;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .mastery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .mastery-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .mastery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .mastery-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .mastery-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .mastery-level {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .mastery-ring {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .mastery-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .mastery-ring-bg {
+            fill: none;
+            stroke: #e0e0e0;
+            stroke-width: 6;
+        }
+
+        .mastery-ring-progress {
+            fill: none;
+            stroke-width: 6;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .mastery-percentage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Stats Dashboard */
+        .stats-dashboard-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 550px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .stats-chart {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+        }
+
+        .chart-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chart-label {
+            width: 60px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .chart-bar-wrapper {
+            flex: 1;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .chart-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .chart-value {
+            width: 40px;
+            text-align: right;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Tip of the Day */
+        .tip-of-day {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            padding: 15px 20px;
+            max-width: 300px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            z-index: 998;
+            transform: translateY(150%);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-left: 4px solid #4CAF50;
+        }
+
+        .tip-of-day.show {
+            transform: translateY(0);
+        }
+
+        .tip-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #4CAF50;
+        }
+
+        .tip-text {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .tip-dismiss {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 
@@ -29786,6 +30008,403 @@
         }
 
         console.log('🏆 Achievements Timeline, Learning Roadmap, and Weekly Challenges loaded!');
+    </script>
+
+    <!-- BATCH 16: Subject Mastery, Stats Dashboard, Tips -->
+    <script>
+        // =====================================================
+        // SUBJECT MASTERY TRACKER
+        // =====================================================
+        window.SUBJECTS = [
+            { id: 'physics', name: 'Physics', icon: '⚡', color: '#3F51B5' },
+            { id: 'chemistry', name: 'Chemistry', icon: '🧪', color: '#9C27B0' },
+            { id: 'biology', name: 'Biology', icon: '🧬', color: '#4CAF50' },
+            { id: 'earth', name: 'Earth Science', icon: '🌍', color: '#009688' },
+            { id: 'space', name: 'Space', icon: '🚀', color: '#673AB7' },
+            { id: 'general', name: 'General', icon: '🔬', color: '#FF9800' }
+        ];
+
+        window.MASTERY_LEVELS = [
+            { name: 'Novice', minPercent: 0, color: '#9E9E9E' },
+            { name: 'Apprentice', minPercent: 20, color: '#8BC34A' },
+            { name: 'Journeyman', minPercent: 40, color: '#4CAF50' },
+            { name: 'Expert', minPercent: 60, color: '#2196F3' },
+            { name: 'Master', minPercent: 80, color: '#9C27B0' },
+            { name: 'Grandmaster', minPercent: 95, color: '#FFD700' }
+        ];
+
+        window.subjectMastery = JSON.parse(localStorage.getItem('science_subject_mastery') || '{}');
+
+        // Initialize subjects
+        window.SUBJECTS.forEach(subject => {
+            if (!window.subjectMastery[subject.id]) {
+                window.subjectMastery[subject.id] = { total: 0, correct: 0 };
+            }
+        });
+
+        window.getMasteryLevel = function(percentage) {
+            let level = window.MASTERY_LEVELS[0];
+            for (let i = window.MASTERY_LEVELS.length - 1; i >= 0; i--) {
+                if (percentage >= window.MASTERY_LEVELS[i].minPercent) {
+                    level = window.MASTERY_LEVELS[i];
+                    break;
+                }
+            }
+            return level;
+        };
+
+        window.updateSubjectMastery = function(subjectId, isCorrect) {
+            if (!window.subjectMastery[subjectId]) {
+                window.subjectMastery[subjectId] = { total: 0, correct: 0 };
+            }
+
+            window.subjectMastery[subjectId].total++;
+            if (isCorrect) {
+                window.subjectMastery[subjectId].correct++;
+            }
+
+            localStorage.setItem('science_subject_mastery', JSON.stringify(window.subjectMastery));
+        };
+
+        window.showSubjectMastery = function() {
+            // Remove existing
+            document.querySelectorAll('.mastery-modal, .mastery-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'mastery-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'mastery-modal';
+
+            let masteryHTML = `
+                <h2 style="margin: 0 0 10px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>📊</span> Subject Mastery
+                </h2>
+                <p style="text-align: center; color: #666; margin-bottom: 15px;">Track your progress across different science topics</p>
+                <div class="mastery-grid">
+            `;
+
+            window.SUBJECTS.forEach(subject => {
+                const data = window.subjectMastery[subject.id] || { total: 0, correct: 0 };
+                const percentage = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
+                const level = getMasteryLevel(percentage);
+
+                // SVG ring calculation
+                const radius = 28;
+                const circumference = 2 * Math.PI * radius;
+                const offset = circumference - (percentage / 100) * circumference;
+
+                masteryHTML += `
+                    <div class="mastery-card">
+                        <div class="mastery-icon">${subject.icon}</div>
+                        <div class="mastery-title">${subject.name}</div>
+                        <div class="mastery-level" style="color: ${level.color};">${level.name}</div>
+                        <div class="mastery-ring">
+                            <svg width="70" height="70">
+                                <circle class="mastery-ring-bg" cx="35" cy="35" r="${radius}"/>
+                                <circle class="mastery-ring-progress" cx="35" cy="35" r="${radius}"
+                                        style="stroke: ${subject.color}; stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset}"/>
+                            </svg>
+                            <span class="mastery-percentage" style="color: ${subject.color};">${percentage}%</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: #888; margin-top: 8px;">${data.total} questions</div>
+                    </div>
+                `;
+            });
+
+            masteryHTML += `
+                </div>
+                <button onclick="document.querySelectorAll('.mastery-modal, .mastery-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 20px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                    Keep Mastering! 🎓
+                </button>
+            `;
+
+            modal.innerHTML = masteryHTML;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        // =====================================================
+        // STATS DASHBOARD
+        // =====================================================
+        window.showStatsDashboard = function() {
+            // Remove existing
+            document.querySelectorAll('.stats-dashboard-modal, .stats-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'stats-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'stats-dashboard-modal';
+
+            // Gather stats
+            const stats = window.gamificationState || {};
+            const totalQuestions = stats.totalAttempts || parseInt(localStorage.getItem('science_total_questions') || '0');
+            const totalCorrect = stats.totalCorrect || 0;
+            const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+            const totalXP = stats.xp || 0;
+            const level = stats.level || 1;
+            const streakDays = Object.keys(window.streakData || {}).length;
+            const badges = window.collectedBadges?.length || 0;
+            const studySessions = parseInt(localStorage.getItem('science_study_sessions') || '1');
+
+            // Calculate subject stats
+            let subjectStats = [];
+            window.SUBJECTS.forEach(subject => {
+                const data = window.subjectMastery[subject.id] || { total: 0, correct: 0 };
+                if (data.total > 0) {
+                    subjectStats.push({
+                        ...subject,
+                        total: data.total,
+                        accuracy: Math.round((data.correct / data.total) * 100)
+                    });
+                }
+            });
+
+            let statsHTML = `
+                <h2 style="margin: 0 0 20px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>📈</span> Study Statistics
+                </h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-value">${totalQuestions}</div>
+                        <div class="stat-label">Questions Answered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">${accuracy}%</div>
+                        <div class="stat-label">Accuracy Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">${totalXP.toLocaleString()}</div>
+                        <div class="stat-label">Total XP Earned</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎓</div>
+                        <div class="stat-value">${level}</div>
+                        <div class="stat-label">Current Level</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-value">${streakDays}</div>
+                        <div class="stat-label">Active Days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏅</div>
+                        <div class="stat-value">${badges}</div>
+                        <div class="stat-label">Badges Earned</div>
+                    </div>
+                </div>
+            `;
+
+            // Add subject breakdown if data exists
+            if (subjectStats.length > 0) {
+                const maxQuestions = Math.max(...subjectStats.map(s => s.total));
+
+                statsHTML += `
+                    <div class="stats-chart">
+                        <h3 style="margin: 0 0 15px 0; font-size: 1rem; color: #333;">Questions by Subject</h3>
+                `;
+
+                subjectStats.sort((a, b) => b.total - a.total).forEach(subject => {
+                    const widthPercent = (subject.total / maxQuestions) * 100;
+
+                    statsHTML += `
+                        <div class="chart-bar-container">
+                            <span class="chart-label">${subject.icon}</span>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar" style="width: ${widthPercent}%; background: ${subject.color};"></div>
+                            </div>
+                            <span class="chart-value">${subject.total}</span>
+                        </div>
+                    `;
+                });
+
+                statsHTML += '</div>';
+            }
+
+            statsHTML += `
+                <button onclick="document.querySelectorAll('.stats-dashboard-modal, .stats-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 20px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; cursor: pointer;">
+                    Keep Studying! 📚
+                </button>
+            `;
+
+            modal.innerHTML = statsHTML;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        // =====================================================
+        // TIP OF THE DAY
+        // =====================================================
+        window.STUDY_TIPS = [
+            { tip: 'Space out your learning! Studies show spaced repetition helps you remember better than cramming.', icon: '📅' },
+            { tip: 'Take short breaks every 25-30 minutes. Your brain consolidates learning during rest.', icon: '☕' },
+            { tip: 'Try explaining concepts out loud as if teaching someone else. This reveals gaps in understanding.', icon: '🗣️' },
+            { tip: 'Connect new information to things you already know. Building mental links improves recall.', icon: '🔗' },
+            { tip: 'Get enough sleep! Your brain processes and stores memories while you sleep.', icon: '😴' },
+            { tip: 'Quiz yourself instead of just re-reading. Active recall is more effective than passive review.', icon: '❓' },
+            { tip: 'Use diagrams and mind maps to visualize complex concepts and relationships.', icon: '🗺️' },
+            { tip: 'Stay hydrated! Your brain is 75% water and functions best when properly hydrated.', icon: '💧' },
+            { tip: 'Mix up your study topics. Interleaved practice improves long-term retention.', icon: '🔀' },
+            { tip: 'Set specific, achievable goals for each study session to stay motivated.', icon: '🎯' },
+            { tip: 'Minimize distractions. Put your phone on silent and find a quiet study space.', icon: '🔕' },
+            { tip: 'Review mistakes carefully. Errors are valuable learning opportunities!', icon: '📝' },
+            { tip: 'Exercise before studying. Physical activity boosts brain function and memory.', icon: '🏃' },
+            { tip: 'Use mnemonic devices like acronyms or rhymes to remember lists and sequences.', icon: '🧠' },
+            { tip: 'Study your most challenging subjects when your energy is highest.', icon: '⚡' }
+        ];
+
+        window.tipState = {
+            lastShownDate: localStorage.getItem('science_tip_last_date') || '',
+            shownToday: localStorage.getItem('science_tip_shown_today') === 'true'
+        };
+
+        window.showTipOfDay = function() {
+            const today = new Date().toDateString();
+
+            // Reset if new day
+            if (window.tipState.lastShownDate !== today) {
+                window.tipState.lastShownDate = today;
+                window.tipState.shownToday = false;
+                localStorage.setItem('science_tip_last_date', today);
+                localStorage.setItem('science_tip_shown_today', 'false');
+            }
+
+            // Don't show if already shown today
+            if (window.tipState.shownToday) return;
+
+            // Remove existing
+            document.querySelectorAll('.tip-of-day').forEach(el => el.remove());
+
+            // Pick random tip
+            const tip = window.STUDY_TIPS[Math.floor(Math.random() * window.STUDY_TIPS.length)];
+
+            const tipEl = document.createElement('div');
+            tipEl.className = 'tip-of-day';
+            tipEl.innerHTML = `
+                <button class="tip-dismiss" onclick="dismissTip()">×</button>
+                <div class="tip-header">
+                    <span>${tip.icon}</span>
+                    <span>Tip of the Day</span>
+                </div>
+                <div class="tip-text">${tip.tip}</div>
+            `;
+
+            document.body.appendChild(tipEl);
+
+            // Animate in after delay
+            setTimeout(() => {
+                tipEl.classList.add('show');
+            }, 2000);
+
+            // Mark as shown
+            window.tipState.shownToday = true;
+            localStorage.setItem('science_tip_shown_today', 'true');
+        };
+
+        window.dismissTip = function() {
+            const tip = document.querySelector('.tip-of-day');
+            if (tip) {
+                tip.classList.remove('show');
+                setTimeout(() => tip.remove(), 500);
+            }
+        };
+
+        // =====================================================
+        // CREATE BUTTONS
+        // =====================================================
+        window.createBatch16Buttons = function() {
+            // Subject Mastery button
+            let btn1 = document.querySelector('.mastery-btn');
+            if (!btn1) {
+                btn1 = document.createElement('button');
+                btn1.className = 'mastery-btn';
+                btn1.style.cssText = `
+                    position: fixed;
+                    bottom: 470px;
+                    left: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: none;
+                    background: linear-gradient(135deg, #9C27B0, #673AB7);
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
+                    z-index: 999;
+                    transition: all 0.3s ease;
+                `;
+                btn1.innerHTML = '📊';
+                btn1.title = 'Subject Mastery';
+                btn1.onclick = showSubjectMastery;
+                btn1.onmouseenter = () => btn1.style.transform = 'scale(1.1)';
+                btn1.onmouseleave = () => btn1.style.transform = 'scale(1)';
+                document.body.appendChild(btn1);
+            }
+
+            // Stats Dashboard button
+            let btn2 = document.querySelector('.stats-btn');
+            if (!btn2) {
+                btn2 = document.createElement('button');
+                btn2.className = 'stats-btn';
+                btn2.style.cssText = `
+                    position: fixed;
+                    bottom: 530px;
+                    left: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    border: none;
+                    background: linear-gradient(135deg, #00BCD4, #0097A7);
+                    color: white;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+                    z-index: 999;
+                    transition: all 0.3s ease;
+                `;
+                btn2.innerHTML = '📈';
+                btn2.title = 'Statistics Dashboard';
+                btn2.onclick = showStatsDashboard;
+                btn2.onmouseenter = () => btn2.style.transform = 'scale(1.1)';
+                btn2.onmouseleave = () => btn2.style.transform = 'scale(1)';
+                document.body.appendChild(btn2);
+            }
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            createBatch16Buttons();
+
+            // Show tip of day after a delay
+            setTimeout(showTipOfDay, 5000);
+
+            // Increment study sessions
+            const sessions = parseInt(localStorage.getItem('science_study_sessions') || '0') + 1;
+            localStorage.setItem('science_study_sessions', sessions);
+        });
+
+        // Also init if DOM already loaded
+        if (document.readyState !== 'loading') {
+            createBatch16Buttons();
+            setTimeout(showTipOfDay, 5000);
+        }
+
+        console.log('📊 Subject Mastery, Stats Dashboard, and Tips loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
