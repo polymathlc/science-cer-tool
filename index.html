@@ -10259,6 +10259,411 @@
         .floating-lab-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ========== BATCH 25: Badges Gallery, Custom Avatar, Sound Effects ========== */
+
+        /* Badges Gallery */
+        .badges-gallery-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .badges-gallery-content {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%);
+            border-radius: 25px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow: hidden;
+            color: white;
+        }
+
+        .badges-gallery-header {
+            background: linear-gradient(135deg, #f5af19 0%, #f12711 100%);
+            padding: 25px;
+            text-align: center;
+        }
+
+        .badges-gallery-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .badges-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .badge-stat {
+            text-align: center;
+        }
+
+        .badge-stat-num {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .badge-stat-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 25px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .badge-item {
+            text-align: center;
+            padding: 15px 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .badge-item:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+        }
+
+        .badge-item.locked {
+            opacity: 0.4;
+            filter: grayscale(1);
+        }
+
+        .badge-item.earned {
+            background: linear-gradient(135deg, rgba(245, 175, 25, 0.3) 0%, rgba(241, 39, 17, 0.3) 100%);
+            border: 2px solid #f5af19;
+        }
+
+        .badge-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .badge-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-requirement {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* Custom Avatar */
+        .avatar-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+        }
+
+        .avatar-content {
+            background: white;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 4px solid #f5af19;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .avatar-section {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .avatar-section h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .avatar-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .avatar-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: #f0f0f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.15);
+            background: #e0e0e0;
+        }
+
+        .avatar-option.selected {
+            border-color: #667eea;
+            background: #e3f2fd;
+        }
+
+        .color-option {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+
+        .color-option.selected {
+            border-color: #333;
+        }
+
+        .avatar-name-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .avatar-save-btn {
+            margin-top: 20px;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Sound Effects */
+        .sound-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 80px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 9000;
+            width: 280px;
+            display: none;
+        }
+
+        .sound-panel.open {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sound-panel h3 {
+            margin: 0 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sound-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sound-option:last-child {
+            border-bottom: none;
+        }
+
+        .sound-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sound-toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #e0e0e0;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .sound-toggle.on {
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+        }
+
+        .sound-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: left 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .sound-toggle.on::after {
+            left: 27px;
+        }
+
+        .volume-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 0;
+        }
+
+        .sound-volume-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #e0e0e0;
+            border-radius: 3px;
+        }
+
+        .sound-volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .sound-preview-btn {
+            padding: 8px 15px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .sound-preview-btn:hover {
+            background: #e0e0e0;
+        }
+
+        /* Floating buttons for Batch 25 */
+        .floating-badges-btn {
+            position: fixed;
+            bottom: 1000px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f5af19 0%, #f12711 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(245, 175, 25, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-badges-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-avatar-btn {
+            position: fixed;
+            bottom: 1060px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-avatar-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-sound-btn {
+            position: fixed;
+            bottom: 1120px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-sound-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -36377,6 +36782,371 @@ Science Made Fun!
         document.head.appendChild(questStyle);
 
         console.log('🗺️ Learning Quests, Virtual Pet, and Science Lab loaded!');
+    </script>
+
+    <!-- ========== BATCH 25: Badges Gallery, Custom Avatar, Sound Effects ========== -->
+
+    <!-- Badges Gallery Modal -->
+    <div class="badges-gallery-modal" id="badges-gallery-modal">
+        <div class="badges-gallery-content">
+            <div class="badges-gallery-header">
+                <h2>🏅 My Badges</h2>
+                <div class="badges-stats">
+                    <div class="badge-stat">
+                        <div class="badge-stat-num" id="earned-badges-count">0</div>
+                        <div class="badge-stat-label">Earned</div>
+                    </div>
+                    <div class="badge-stat">
+                        <div class="badge-stat-num" id="total-badges-count">20</div>
+                        <div class="badge-stat-label">Total</div>
+                    </div>
+                </div>
+            </div>
+            <div class="badges-grid" id="badges-grid">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div style="padding: 15px; text-align: center;">
+                <button onclick="closeBadgesGallery()" style="padding: 10px 30px; border: none; background: rgba(255,255,255,0.2); border-radius: 20px; color: white; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Avatar Modal -->
+    <div class="avatar-modal" id="avatar-modal">
+        <div class="avatar-content">
+            <h2 style="margin: 0 0 20px 0;">🎨 Customize Your Avatar</h2>
+            <div class="avatar-preview" id="avatar-preview">😊</div>
+
+            <div class="avatar-section">
+                <h4>Choose Your Face</h4>
+                <div class="avatar-options" id="face-options">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="avatar-section">
+                <h4>Background Color</h4>
+                <div class="avatar-options" id="color-options">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="avatar-section">
+                <h4>Your Name</h4>
+                <input type="text" class="avatar-name-input" id="avatar-name-input" placeholder="Enter your name..." maxlength="20">
+            </div>
+
+            <button class="avatar-save-btn" onclick="saveAvatar()">Save Avatar</button>
+            <button onclick="closeAvatarModal()" style="margin-top: 10px; padding: 10px 20px; border: none; background: transparent; color: #666; cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Sound Effects Panel -->
+    <div class="sound-panel" id="sound-panel">
+        <h3>🔊 Sound Settings</h3>
+        <div class="sound-option">
+            <span class="sound-label">✅ Correct Answer</span>
+            <div class="sound-toggle on" id="sound-correct" onclick="toggleSound('correct')"></div>
+        </div>
+        <div class="sound-option">
+            <span class="sound-label">❌ Wrong Answer</span>
+            <div class="sound-toggle on" id="sound-wrong" onclick="toggleSound('wrong')"></div>
+        </div>
+        <div class="sound-option">
+            <span class="sound-label">⬆️ Level Up</span>
+            <div class="sound-toggle on" id="sound-levelup" onclick="toggleSound('levelup')"></div>
+        </div>
+        <div class="sound-option">
+            <span class="sound-label">🏆 Achievement</span>
+            <div class="sound-toggle on" id="sound-achievement" onclick="toggleSound('achievement')"></div>
+        </div>
+        <div class="sound-option">
+            <span class="sound-label">🖱️ Click Sounds</span>
+            <div class="sound-toggle" id="sound-click" onclick="toggleSound('click')"></div>
+        </div>
+        <div class="volume-row">
+            <span>🔈</span>
+            <input type="range" class="sound-volume-slider" id="master-volume" min="0" max="100" value="70" onchange="updateMasterVolume(this.value)">
+            <span>🔊</span>
+        </div>
+        <button class="sound-preview-btn" onclick="previewSounds()">🎵 Preview Sounds</button>
+    </div>
+
+    <!-- Floating Action Buttons for Batch 25 -->
+    <button class="floating-badges-btn" onclick="openBadgesGallery()" title="Badges Gallery">🏅</button>
+    <button class="floating-avatar-btn" onclick="openAvatarModal()" title="Customize Avatar">🎨</button>
+    <button class="floating-sound-btn" onclick="toggleSoundPanel()" title="Sound Settings">🔊</button>
+
+    <script>
+        // ========== BATCH 25: Badges Gallery, Custom Avatar, Sound Effects ==========
+
+        // Badges Gallery
+        const allBadges = [
+            { id: 'b1', icon: '🌟', name: 'First Star', requirement: 'Complete first question', check: () => (parseInt(localStorage.getItem('totalQuestionsAnswered')) || 0) >= 1 },
+            { id: 'b2', icon: '🔥', name: 'On Fire', requirement: '5-day streak', check: () => (parseInt(localStorage.getItem('currentStreak')) || 0) >= 5 },
+            { id: 'b3', icon: '🎯', name: 'Sharpshooter', requirement: '80% accuracy', check: () => calculateAccuracy() >= 80 },
+            { id: 'b4', icon: '🚀', name: 'Rocket Starter', requirement: 'Reach Level 3', check: () => calculateLevel() >= 3 },
+            { id: 'b5', icon: '🧠', name: 'Brain Power', requirement: '100 correct answers', check: () => (parseInt(localStorage.getItem('correctAnswers')) || 0) >= 100 },
+            { id: 'b6', icon: '📚', name: 'Bookworm', requirement: '5 study notes', check: () => (JSON.parse(localStorage.getItem('studyNotes')) || []).length >= 5 },
+            { id: 'b7', icon: '⚡', name: 'Speed Demon', requirement: '10 quick answers', check: () => (parseInt(localStorage.getItem('quickAnswers')) || 0) >= 10 },
+            { id: 'b8', icon: '🏆', name: 'Champion', requirement: 'Reach Level 5', check: () => calculateLevel() >= 5 },
+            { id: 'b9', icon: '💎', name: 'Diamond', requirement: 'Reach Level 10', check: () => calculateLevel() >= 10 },
+            { id: 'b10', icon: '👑', name: 'Royalty', requirement: 'Reach Level 15', check: () => calculateLevel() >= 15 },
+            { id: 'b11', icon: '🌈', name: 'Rainbow', requirement: 'All topic badges', check: () => checkAllTopics() },
+            { id: 'b12', icon: '🎪', name: 'Explorer', requirement: 'Try all topics', check: () => checkAllTopics() },
+            { id: 'b13', icon: '🔬', name: 'Scientist', requirement: 'Complete all experiments', check: () => checkExperiments() },
+            { id: 'b14', icon: '🐾', name: 'Pet Friend', requirement: 'Max pet happiness', check: () => (JSON.parse(localStorage.getItem('virtualPet')) || {}).happiness >= 100 },
+            { id: 'b15', icon: '📅', name: 'Consistent', requirement: '7-day streak', check: () => (parseInt(localStorage.getItem('currentStreak')) || 0) >= 7 },
+            { id: 'b16', icon: '🎁', name: 'Gift Grabber', requirement: 'Claim 7 daily rewards', check: () => (parseInt(localStorage.getItem('totalRewardsClaimed')) || 0) >= 7 },
+            { id: 'b17', icon: '💪', name: 'Strong', requirement: '500 XP', check: () => (parseInt(localStorage.getItem('scienceXP')) || 0) >= 500 },
+            { id: 'b18', icon: '🌙', name: 'Night Owl', requirement: 'Study at night', check: () => localStorage.getItem('nightStudy') === 'true' },
+            { id: 'b19', icon: '☀️', name: 'Early Bird', requirement: 'Study in morning', check: () => localStorage.getItem('morningStudy') === 'true' },
+            { id: 'b20', icon: '🎓', name: 'Graduate', requirement: 'Complete all quests', check: () => checkAllQuests() }
+        ];
+
+        function calculateAccuracy() {
+            const total = parseInt(localStorage.getItem('totalQuestionsAnswered')) || 0;
+            const correct = parseInt(localStorage.getItem('correctAnswers')) || 0;
+            return total > 0 ? Math.round((correct / total) * 100) : 0;
+        }
+
+        function calculateLevel() {
+            const xp = parseInt(localStorage.getItem('scienceXP')) || 0;
+            return Math.floor(xp / 100) + 1;
+        }
+
+        function checkAllTopics() {
+            const topicsVisited = JSON.parse(localStorage.getItem('topicsVisited')) || [];
+            return topicsVisited.length >= 6;
+        }
+
+        function checkExperiments() {
+            return [0, 1, 2, 3].every(i => localStorage.getItem('exp_completed_' + i) === 'true');
+        }
+
+        function checkAllQuests() {
+            const questProgress = JSON.parse(localStorage.getItem('questProgress')) || {};
+            return Object.keys(questProgress).length >= 12;
+        }
+
+        function openBadgesGallery() {
+            renderBadgesGallery();
+            document.getElementById('badges-gallery-modal').style.display = 'flex';
+        }
+
+        function closeBadgesGallery() {
+            document.getElementById('badges-gallery-modal').style.display = 'none';
+        }
+
+        function renderBadgesGallery() {
+            const grid = document.getElementById('badges-grid');
+            let earnedCount = 0;
+
+            grid.innerHTML = allBadges.map(badge => {
+                const isEarned = badge.check();
+                if (isEarned) earnedCount++;
+
+                return `
+                    <div class="badge-item ${isEarned ? 'earned' : 'locked'}">
+                        <div class="badge-icon">${badge.icon}</div>
+                        <div class="badge-name">${badge.name}</div>
+                        <div class="badge-requirement">${badge.requirement}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('earned-badges-count').textContent = earnedCount;
+            document.getElementById('total-badges-count').textContent = allBadges.length;
+        }
+
+        // Custom Avatar
+        const avatarFaces = ['😊', '😎', '🤓', '😇', '🥳', '🤩', '😺', '🐱', '🦊', '🐼', '🐨', '🦁'];
+        const avatarColors = [
+            'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+            'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+            'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+            'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+            'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+        ];
+
+        let selectedFace = '😊';
+        let selectedColor = avatarColors[0];
+
+        function openAvatarModal() {
+            // Load saved avatar
+            const savedAvatar = JSON.parse(localStorage.getItem('userAvatar')) || {};
+            selectedFace = savedAvatar.face || '😊';
+            selectedColor = savedAvatar.color || avatarColors[0];
+            document.getElementById('avatar-name-input').value = savedAvatar.name || '';
+
+            renderAvatarOptions();
+            updateAvatarPreview();
+            document.getElementById('avatar-modal').style.display = 'flex';
+        }
+
+        function closeAvatarModal() {
+            document.getElementById('avatar-modal').style.display = 'none';
+        }
+
+        function renderAvatarOptions() {
+            const faceContainer = document.getElementById('face-options');
+            faceContainer.innerHTML = avatarFaces.map(face => `
+                <div class="avatar-option ${face === selectedFace ? 'selected' : ''}" onclick="selectFace('${face}')">${face}</div>
+            `).join('');
+
+            const colorContainer = document.getElementById('color-options');
+            colorContainer.innerHTML = avatarColors.map((color, index) => `
+                <div class="color-option ${color === selectedColor ? 'selected' : ''}" style="background: ${color}" onclick="selectColor(${index})"></div>
+            `).join('');
+        }
+
+        function selectFace(face) {
+            selectedFace = face;
+            renderAvatarOptions();
+            updateAvatarPreview();
+        }
+
+        function selectColor(index) {
+            selectedColor = avatarColors[index];
+            renderAvatarOptions();
+            updateAvatarPreview();
+        }
+
+        function updateAvatarPreview() {
+            const preview = document.getElementById('avatar-preview');
+            preview.textContent = selectedFace;
+            preview.style.background = selectedColor;
+        }
+
+        function saveAvatar() {
+            const name = document.getElementById('avatar-name-input').value.trim() || 'Student';
+            const avatarData = {
+                face: selectedFace,
+                color: selectedColor,
+                name: name
+            };
+            localStorage.setItem('userAvatar', JSON.stringify(avatarData));
+
+            closeAvatarModal();
+            showAvatarSavedToast();
+        }
+
+        function showAvatarSavedToast() {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 30px;
+                font-weight: 600;
+                z-index: 99999;
+            `;
+            toast.textContent = '✅ Avatar saved!';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        // Sound Effects
+        let soundSettings = JSON.parse(localStorage.getItem('soundSettings')) || {
+            correct: true,
+            wrong: true,
+            levelup: true,
+            achievement: true,
+            click: false,
+            volume: 70
+        };
+
+        function toggleSoundPanel() {
+            const panel = document.getElementById('sound-panel');
+            panel.classList.toggle('open');
+            if (panel.classList.contains('open')) {
+                updateSoundToggles();
+            }
+        }
+
+        function updateSoundToggles() {
+            Object.keys(soundSettings).forEach(key => {
+                if (key !== 'volume') {
+                    const toggle = document.getElementById('sound-' + key);
+                    if (toggle) {
+                        toggle.classList.toggle('on', soundSettings[key]);
+                    }
+                }
+            });
+            document.getElementById('master-volume').value = soundSettings.volume;
+        }
+
+        function toggleSound(type) {
+            soundSettings[type] = !soundSettings[type];
+            localStorage.setItem('soundSettings', JSON.stringify(soundSettings));
+            updateSoundToggles();
+        }
+
+        function updateMasterVolume(value) {
+            soundSettings.volume = parseInt(value);
+            localStorage.setItem('soundSettings', JSON.stringify(soundSettings));
+        }
+
+        function playSound(type) {
+            if (!soundSettings[type]) return;
+
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            gain.gain.value = soundSettings.volume / 100 * 0.3;
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            switch (type) {
+                case 'correct':
+                    osc.frequency.value = 523.25; // C5
+                    osc.type = 'sine';
+                    break;
+                case 'wrong':
+                    osc.frequency.value = 200;
+                    osc.type = 'sawtooth';
+                    break;
+                case 'levelup':
+                    osc.frequency.value = 659.25; // E5
+                    osc.type = 'triangle';
+                    break;
+                case 'achievement':
+                    osc.frequency.value = 783.99; // G5
+                    osc.type = 'sine';
+                    break;
+                case 'click':
+                    osc.frequency.value = 1000;
+                    osc.type = 'square';
+                    gain.gain.value = soundSettings.volume / 100 * 0.1;
+                    break;
+            }
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.15);
+        }
+
+        function previewSounds() {
+            let delay = 0;
+            ['correct', 'wrong', 'levelup', 'achievement'].forEach(type => {
+                setTimeout(() => playSound(type), delay);
+                delay += 300;
+            });
+        }
+
+        // Initialize sound toggles
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSoundToggles();
+        });
+
+        console.log('🏅 Badges Gallery, Custom Avatar, and Sound Effects loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
