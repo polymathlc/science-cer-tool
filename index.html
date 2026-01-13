@@ -14924,6 +14924,272 @@
             0%, 100% { box-shadow: 0 5px 20px rgba(0, 105, 92, 0.4); }
             50% { box-shadow: 0 5px 30px rgba(0, 105, 92, 0.8); }
         }
+
+        /* ========== BATCH 37: Motivational Messages, Topic Mastery, Science Quotes ========== */
+
+        /* Motivational Messages */
+        .motivation-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(255, 111, 0, 0.4);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .motivation-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .motivation-toast .motivation-icon {
+            font-size: 1.3rem;
+            margin-right: 10px;
+        }
+
+        /* Topic Mastery System */
+        .mastery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mastery-container {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .mastery-header {
+            background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mastery-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .mastery-body {
+            padding: 25px;
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+
+        .mastery-topic {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #9c27b0;
+        }
+
+        .mastery-topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .mastery-topic-name {
+            font-weight: bold;
+            color: #4a148c;
+            font-size: 1.1rem;
+        }
+
+        .mastery-level {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mastery-stars {
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+
+        .mastery-percentage {
+            background: #9c27b0;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .mastery-progress-bar {
+            background: rgba(156, 39, 176, 0.2);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .mastery-progress-fill {
+            background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .mastery-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #7b1fa2;
+        }
+
+        /* Science Quotes */
+        .quotes-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quotes-container {
+            background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .quotes-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            color: white;
+        }
+
+        .quotes-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .quotes-body {
+            padding: 40px 30px;
+        }
+
+        .quote-text {
+            color: white;
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .quote-author {
+            color: #b39ddb;
+            font-size: 1.1rem;
+        }
+
+        .quote-author::before {
+            content: "— ";
+        }
+
+        .quotes-controls {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .quote-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quote-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .quote-btn.primary {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+            color: #1a237e;
+            border: none;
+            font-weight: bold;
+        }
+
+        /* Floating buttons */
+        .floating-mastery-btn {
+            position: fixed;
+            bottom: 2740px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(123, 31, 162, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-mastery-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-quotes-btn {
+            position: fixed;
+            bottom: 2800px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(26, 35, 126, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-quotes-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -45802,6 +46068,242 @@ Science Made Fun!
         }
 
         console.log('🔊 Sound Effects, Parent Dashboard, and Study Timer loaded!');
+    </script>
+
+    <!-- ========== BATCH 37: Motivational Messages, Topic Mastery, Science Quotes ========== -->
+
+    <!-- Motivation Toast -->
+    <div class="motivation-toast" id="motivation-toast">
+        <span class="motivation-icon">💪</span>
+        <span id="motivation-text">You're doing great!</span>
+    </div>
+
+    <!-- Topic Mastery Modal -->
+    <div class="mastery-modal" id="mastery-modal">
+        <div class="mastery-container">
+            <div class="mastery-header">
+                <h2>🎯 Topic Mastery</h2>
+                <button onclick="closeMastery()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <div class="mastery-body" id="mastery-body">
+            </div>
+        </div>
+    </div>
+
+    <!-- Science Quotes Modal -->
+    <div class="quotes-modal" id="quotes-modal">
+        <div class="quotes-container">
+            <div class="quotes-header">
+                <h2>💭 Science Wisdom</h2>
+            </div>
+            <div class="quotes-body">
+                <div class="quote-text" id="quote-text">"The important thing is not to stop questioning."</div>
+                <div class="quote-author" id="quote-author">Albert Einstein</div>
+            </div>
+            <div class="quotes-controls">
+                <button class="quote-btn primary" onclick="nextQuote()">Next Quote</button>
+                <button class="quote-btn" onclick="closeQuotes()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Buttons -->
+    <button class="floating-mastery-btn" onclick="openMastery()" title="Topic Mastery">🎯</button>
+    <button class="floating-quotes-btn" onclick="openQuotes()" title="Science Quotes">💭</button>
+
+    <script>
+        // ========== BATCH 37: Motivational Messages, Topic Mastery, Science Quotes ==========
+
+        // Motivational Messages System
+        const motivationalMessages = [
+            { icon: '💪', text: "You're doing great! Keep it up!" },
+            { icon: '🌟', text: "Every question makes you smarter!" },
+            { icon: '🚀', text: "You're on fire today!" },
+            { icon: '🎯', text: "Practice makes perfect!" },
+            { icon: '💡', text: "Your brain is getting stronger!" },
+            { icon: '🏆', text: "Champions never give up!" },
+            { icon: '✨', text: "You're becoming a science expert!" },
+            { icon: '🔥', text: "What an amazing streak!" },
+            { icon: '🎉', text: "Fantastic work! You're crushing it!" },
+            { icon: '🌈', text: "Mistakes help us learn. Keep going!" },
+            { icon: '💎', text: "Hard work pays off!" },
+            { icon: '🦸', text: "You're a science superhero!" },
+            { icon: '🎓', text: "Future scientist in the making!" },
+            { icon: '🧠', text: "Your knowledge is growing!" },
+            { icon: '⭐', text: "You're a star student!" }
+        ];
+
+        let motivationTimeout = null;
+
+        function showMotivation(customMessage = null) {
+            const toast = document.getElementById('motivation-toast');
+            const textEl = document.getElementById('motivation-text');
+            const iconEl = toast.querySelector('.motivation-icon');
+
+            let message;
+            if (customMessage) {
+                message = { icon: '🌟', text: customMessage };
+            } else {
+                message = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+            }
+
+            iconEl.textContent = message.icon;
+            textEl.textContent = message.text;
+
+            toast.classList.add('show');
+
+            if (motivationTimeout) clearTimeout(motivationTimeout);
+            motivationTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Show motivation on certain events
+        let questionsAnsweredForMotivation = 0;
+
+        function triggerMotivationCheck() {
+            questionsAnsweredForMotivation++;
+            // Show motivation every 3 questions
+            if (questionsAnsweredForMotivation % 3 === 0) {
+                setTimeout(() => showMotivation(), 500);
+            }
+        }
+
+        // Topic Mastery System
+        const scienceTopics = [
+            { id: 'heat', name: 'Heat & Temperature', icon: '🔥' },
+            { id: 'light', name: 'Light & Shadows', icon: '💡' },
+            { id: 'electricity', name: 'Electricity & Circuits', icon: '⚡' },
+            { id: 'forces', name: 'Forces & Motion', icon: '🎢' },
+            { id: 'plants', name: 'Plants & Photosynthesis', icon: '🌱' },
+            { id: 'animals', name: 'Animals & Classification', icon: '🦋' },
+            { id: 'human-body', name: 'Human Body Systems', icon: '🫀' },
+            { id: 'matter', name: 'Matter & Materials', icon: '⚗️' },
+            { id: 'water-cycle', name: 'Water Cycle', icon: '💧' },
+            { id: 'earth', name: 'Earth & Space', icon: '🌍' }
+        ];
+
+        function openMastery() {
+            document.getElementById('mastery-modal').style.display = 'flex';
+            renderMasteryTopics();
+        }
+
+        function closeMastery() {
+            document.getElementById('mastery-modal').style.display = 'none';
+        }
+
+        function getMasteryData() {
+            return JSON.parse(localStorage.getItem('topicMastery')) || {};
+        }
+
+        function updateTopicMastery(topicId, correct) {
+            const mastery = getMasteryData();
+            if (!mastery[topicId]) {
+                mastery[topicId] = { correct: 0, total: 0 };
+            }
+            mastery[topicId].total++;
+            if (correct) mastery[topicId].correct++;
+            localStorage.setItem('topicMastery', JSON.stringify(mastery));
+        }
+
+        function getStars(percentage) {
+            if (percentage >= 90) return '⭐⭐⭐⭐⭐';
+            if (percentage >= 75) return '⭐⭐⭐⭐';
+            if (percentage >= 60) return '⭐⭐⭐';
+            if (percentage >= 40) return '⭐⭐';
+            if (percentage >= 20) return '⭐';
+            return '☆';
+        }
+
+        function renderMasteryTopics() {
+            const container = document.getElementById('mastery-body');
+            const mastery = getMasteryData();
+
+            container.innerHTML = scienceTopics.map(topic => {
+                const data = mastery[topic.id] || { correct: 0, total: 0 };
+                const percentage = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
+                const stars = getStars(percentage);
+
+                return `
+                    <div class="mastery-topic">
+                        <div class="mastery-topic-header">
+                            <span class="mastery-topic-name">${topic.icon} ${topic.name}</span>
+                            <div class="mastery-level">
+                                <span class="mastery-stars">${stars}</span>
+                                <span class="mastery-percentage">${percentage}%</span>
+                            </div>
+                        </div>
+                        <div class="mastery-progress-bar">
+                            <div class="mastery-progress-fill" style="width: ${percentage}%;"></div>
+                        </div>
+                        <div class="mastery-stats">
+                            <span>${data.correct} correct</span>
+                            <span>${data.total} attempted</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Science Quotes System
+        const scienceQuotes = [
+            { text: "The important thing is not to stop questioning.", author: "Albert Einstein" },
+            { text: "Science is a way of thinking much more than it is a body of knowledge.", author: "Carl Sagan" },
+            { text: "Somewhere, something incredible is waiting to be known.", author: "Carl Sagan" },
+            { text: "The good thing about science is that it's true whether or not you believe in it.", author: "Neil deGrasse Tyson" },
+            { text: "Research is what I'm doing when I don't know what I'm doing.", author: "Wernher von Braun" },
+            { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
+            { text: "Equipped with his five senses, man explores the universe around him.", author: "Edwin Hubble" },
+            { text: "I have not failed. I've just found 10,000 ways that won't work.", author: "Thomas Edison" },
+            { text: "In science there is only physics; all the rest is stamp collecting.", author: "Lord Kelvin" },
+            { text: "Science is magic that works.", author: "Kurt Vonnegut" },
+            { text: "The universe is made of stories, not of atoms.", author: "Muriel Rukeyser" },
+            { text: "The scientist is not a person who gives the right answers, but one who asks the right questions.", author: "Claude Lévi-Strauss" },
+            { text: "An experiment is a question which science poses to Nature.", author: "Max Planck" },
+            { text: "Every great advance in science has issued from a new audacity of imagination.", author: "John Dewey" },
+            { text: "Be curious. Read widely. Try new things.", author: "Neil Gaiman" },
+            { text: "The only true wisdom is in knowing you know nothing.", author: "Socrates" },
+            { text: "Science knows no country, because knowledge belongs to humanity.", author: "Louis Pasteur" },
+            { text: "I think, at a child's birth, if a mother could ask a fairy godmother to endow it with the most useful gift, that gift should be curiosity.", author: "Eleanor Roosevelt" },
+            { text: "Logic will get you from A to B. Imagination will take you everywhere.", author: "Albert Einstein" },
+            { text: "The important thing is to never stop questioning.", author: "Albert Einstein" }
+        ];
+
+        let currentQuoteIndex = 0;
+
+        function openQuotes() {
+            document.getElementById('quotes-modal').style.display = 'flex';
+            showRandomQuote();
+        }
+
+        function closeQuotes() {
+            document.getElementById('quotes-modal').style.display = 'none';
+        }
+
+        function showRandomQuote() {
+            currentQuoteIndex = Math.floor(Math.random() * scienceQuotes.length);
+            displayQuote();
+        }
+
+        function nextQuote() {
+            currentQuoteIndex = (currentQuoteIndex + 1) % scienceQuotes.length;
+            displayQuote();
+        }
+
+        function displayQuote() {
+            const quote = scienceQuotes[currentQuoteIndex];
+            document.getElementById('quote-text').textContent = `"${quote.text}"`;
+            document.getElementById('quote-author').textContent = quote.author;
+        }
+
+        // Show a random quote on page load sometimes
+        if (Math.random() < 0.2) { // 20% chance
+            setTimeout(() => {
+                showMotivation(scienceQuotes[Math.floor(Math.random() * scienceQuotes.length)].text);
+            }, 3000);
+        }
+
+        console.log('💭 Motivational Messages, Topic Mastery, and Science Quotes loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
