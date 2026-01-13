@@ -5619,6 +5619,331 @@
             cursor: pointer;
             font-weight: 600;
         }
+
+        /* Avatar/Profile Customization Styles */
+        .avatar-selector-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .avatar-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.1);
+            border-color: #667eea;
+        }
+
+        .avatar-option.selected {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .profile-title {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Social Sharing Styles */
+        .share-achievement-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            z-index: 10007;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .share-preview-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .share-btn.copy {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .share-btn.download {
+            background: #2196F3;
+            color: white;
+        }
+
+        /* Quest/Storyline Styles */
+        .quest-card {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quest-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.4);
+        }
+
+        .quest-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .quest-title {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quest-chapter {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .quest-description {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .quest-objectives {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .quest-objective {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.85rem;
+        }
+
+        .quest-objective.completed {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .quest-objective-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .quest-objective.completed .quest-objective-check {
+            background: #4CAF50;
+        }
+
+        /* Keyboard Shortcuts Guide */
+        .shortcuts-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .shortcut-list {
+            margin: 20px 0;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .shortcut-item:last-child {
+            border-bottom: none;
+        }
+
+        .shortcut-action {
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .shortcut-keys {
+            display: flex;
+            gap: 6px;
+        }
+
+        .key {
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 0 0 #fff inset;
+            border: 1px solid #ccc;
+        }
+
+        /* Enhanced Confetti */
+        @keyframes confettiBurst {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) rotate(720deg) scale(0.5);
+            }
+        }
+
+        .confetti-burst {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10010;
+            font-size: 1.5rem;
+            animation: confettiBurst 1.5s ease-out forwards;
+        }
+
+        .epic-achievement-burst {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10011;
+            overflow: hidden;
+        }
     </style>
 </head>
 
@@ -5905,6 +6230,16 @@
                 
                 <!-- TOP SECTION: Streak, Practice, Toggle -->
                 <div class="sidebar-top-section">
+                    <!-- Profile Card with Avatar -->
+                    <div class="profile-card" id="profile-card" onclick="showAvatarSelector()">
+                        <div class="user-avatar" id="user-avatar">🧑‍🎓</div>
+                        <div class="profile-info">
+                            <div class="profile-name" id="profile-name">Student</div>
+                            <div class="profile-title" id="profile-title">Science Explorer</div>
+                        </div>
+                        <span style="opacity: 0.7; font-size: 0.9rem;">✏️</span>
+                    </div>
+
                     <div id="login-days-display">📅 Loading Streak...</div>
 
                     <!-- XP Progress Bar -->
@@ -5944,6 +6279,29 @@
                     <button class="achievements-btn" onclick="showAchievementsModal()">
                         <span>🏅</span> Achievements <span id="achievements-unlocked-count">(0/12)</span>
                     </button>
+
+                    <!-- Active Quest Card -->
+                    <div class="quest-card" id="active-quest-card" onclick="showQuestDetails()">
+                        <div class="quest-header">
+                            <div class="quest-title">
+                                <span>📜</span> <span id="quest-name">Science Explorer</span>
+                            </div>
+                            <span class="quest-chapter" id="quest-chapter">Ch. 1</span>
+                        </div>
+                        <div class="quest-description" id="quest-description">
+                            Begin your journey to become a science master!
+                        </div>
+                        <div class="quest-objectives" id="quest-objectives">
+                            <div class="quest-objective" id="quest-obj-1">
+                                <div class="quest-objective-check">○</div>
+                                <span>Answer 5 questions correctly</span>
+                            </div>
+                            <div class="quest-objective" id="quest-obj-2">
+                                <div class="quest-objective-check">○</div>
+                                <span>Try 2 different topics</span>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Streak Bonus Card (shown when streak >= 3) -->
                     <div class="streak-bonus-card" id="streak-bonus-card" style="display: none;">
@@ -23566,6 +23924,626 @@
         });
 
         console.log('📅 Streak calendar, bonus events, and fun facts loaded!');
+    </script>
+
+    <!-- Avatar, Quest, Shortcuts, and Enhanced Confetti System -->
+    <script>
+        // =====================================================
+        // AVATAR/PROFILE CUSTOMIZATION SYSTEM
+        // =====================================================
+        window.AVATAR_OPTIONS = [
+            '🧑‍🎓', '👨‍🔬', '👩‍🔬', '🧑‍🏫', '🦸',
+            '🦹', '🧙', '🧚', '🧛', '🧜',
+            '🦊', '🐼', '🦁', '🐯', '🐺',
+            '🦄', '🐉', '🦅', '🦋', '🐬',
+            '🚀', '🌟', '💎', '🔬', '⚗️'
+        ];
+
+        window.TITLE_LEVELS = [
+            { level: 1, title: 'Science Beginner' },
+            { level: 2, title: 'Curious Explorer' },
+            { level: 3, title: 'Knowledge Seeker' },
+            { level: 4, title: 'Science Scholar' },
+            { level: 5, title: 'Research Expert' },
+            { level: 6, title: 'Lab Master' },
+            { level: 7, title: 'Science Champion' },
+            { level: 8, title: 'Quantum Genius' },
+            { level: 9, title: 'Nobel Candidate' },
+            { level: 10, title: 'Science Legend' }
+        ];
+
+        window.userProfile = {
+            avatar: '🧑‍🎓',
+            name: 'Student',
+            title: 'Science Explorer'
+        };
+
+        window.loadUserProfile = function() {
+            const stored = localStorage.getItem('userProfile');
+            if (stored) {
+                try {
+                    window.userProfile = JSON.parse(stored);
+                    updateProfileDisplay();
+                } catch (e) {}
+            }
+            // Get student name from auth if available
+            if (typeof currentUser !== 'undefined' && currentUser) {
+                const studentName = currentUser.displayName || currentUser.email?.split('@')[0] || 'Student';
+                window.userProfile.name = studentName;
+                updateProfileDisplay();
+            }
+        };
+
+        window.saveUserProfile = function() {
+            localStorage.setItem('userProfile', JSON.stringify(window.userProfile));
+        };
+
+        window.updateProfileDisplay = function() {
+            const avatarEl = document.getElementById('user-avatar');
+            const nameEl = document.getElementById('profile-name');
+            const titleEl = document.getElementById('profile-title');
+
+            if (avatarEl) avatarEl.textContent = window.userProfile.avatar;
+            if (nameEl) nameEl.textContent = window.userProfile.name;
+            if (titleEl) titleEl.textContent = window.userProfile.title;
+
+            // Update title based on level
+            if (window.gamificationState) {
+                const levelData = window.TITLE_LEVELS.find(t => t.level === window.gamificationState.level);
+                if (levelData) {
+                    window.userProfile.title = levelData.title;
+                    if (titleEl) titleEl.textContent = levelData.title;
+                }
+            }
+        };
+
+        window.showAvatarSelector = function() {
+            // Remove existing
+            document.querySelectorAll('.avatar-selector-modal, .modal-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+
+            const modal = document.createElement('div');
+            modal.className = 'avatar-selector-modal';
+            modal.innerHTML = `
+                <h2 style="margin: 0 0 10px 0; font-size: 1.5rem; text-align: center;">🎭 Choose Your Avatar</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Select an avatar to represent you on your science journey!</p>
+                <div class="avatar-grid">
+                    ${window.AVATAR_OPTIONS.map(avatar => `
+                        <div class="avatar-option ${avatar === window.userProfile.avatar ? 'selected' : ''}"
+                             onclick="selectAvatar('${avatar}')">${avatar}</div>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="document.querySelectorAll('.avatar-selector-modal, .modal-backdrop').forEach(el => el.remove());"
+                            style="padding: 12px 30px; border-radius: 25px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; cursor: pointer;">
+                        Done
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.selectAvatar = function(avatar) {
+            window.userProfile.avatar = avatar;
+            saveUserProfile();
+            updateProfileDisplay();
+
+            // Update selected state in modal
+            document.querySelectorAll('.avatar-option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.textContent === avatar) opt.classList.add('selected');
+            });
+
+            // Show confirmation
+            if (window.showToast) showToast('Avatar updated!', 'success');
+        };
+
+        // =====================================================
+        // QUEST/STORYLINE PROGRESSION SYSTEM
+        // =====================================================
+        window.QUEST_CHAPTERS = [
+            {
+                id: 1, name: 'The Beginning',
+                description: 'Every scientist starts somewhere. Begin your journey!',
+                objectives: [
+                    { id: 'q1_obj1', text: 'Answer 5 questions correctly', target: 5, type: 'correct' },
+                    { id: 'q1_obj2', text: 'Try 2 different topics', target: 2, type: 'topics' }
+                ],
+                reward: { xp: 100, badge: '🌟' }
+            },
+            {
+                id: 2, name: 'Building Foundations',
+                description: 'Strengthen your scientific knowledge base.',
+                objectives: [
+                    { id: 'q2_obj1', text: 'Complete 15 questions', target: 15, type: 'total' },
+                    { id: 'q2_obj2', text: 'Achieve 70% accuracy', target: 70, type: 'accuracy' },
+                    { id: 'q2_obj3', text: 'Build a 3-day streak', target: 3, type: 'streak' }
+                ],
+                reward: { xp: 200, badge: '📚' }
+            },
+            {
+                id: 3, name: 'The Experimenter',
+                description: 'A true scientist experiments with many topics!',
+                objectives: [
+                    { id: 'q3_obj1', text: 'Try 5 different topics', target: 5, type: 'topics' },
+                    { id: 'q3_obj2', text: 'Answer 30 questions', target: 30, type: 'total' },
+                    { id: 'q3_obj3', text: 'Get 5 questions right in a row', target: 5, type: 'streak_correct' }
+                ],
+                reward: { xp: 300, badge: '🔬' }
+            },
+            {
+                id: 4, name: 'Rising Star',
+                description: 'You\'re becoming a science star!',
+                objectives: [
+                    { id: 'q4_obj1', text: 'Complete 50 questions', target: 50, type: 'total' },
+                    { id: 'q4_obj2', text: 'Achieve 80% accuracy', target: 80, type: 'accuracy' },
+                    { id: 'q4_obj3', text: 'Unlock 5 achievements', target: 5, type: 'achievements' }
+                ],
+                reward: { xp: 500, badge: '⭐' }
+            },
+            {
+                id: 5, name: 'Science Master',
+                description: 'The ultimate test of your scientific prowess!',
+                objectives: [
+                    { id: 'q5_obj1', text: 'Answer 100 questions', target: 100, type: 'total' },
+                    { id: 'q5_obj2', text: 'Master 3 topics (90%+)', target: 3, type: 'mastery' },
+                    { id: 'q5_obj3', text: 'Build a 7-day streak', target: 7, type: 'streak' }
+                ],
+                reward: { xp: 1000, badge: '🏆' }
+            }
+        ];
+
+        window.questProgress = {
+            currentChapter: 1,
+            objectiveProgress: {},
+            completedChapters: []
+        };
+
+        window.loadQuestProgress = function() {
+            const stored = localStorage.getItem('questProgress');
+            if (stored) {
+                try {
+                    window.questProgress = JSON.parse(stored);
+                } catch (e) {}
+            }
+            updateQuestDisplay();
+        };
+
+        window.saveQuestProgress = function() {
+            localStorage.setItem('questProgress', JSON.stringify(window.questProgress));
+        };
+
+        window.updateQuestDisplay = function() {
+            const quest = window.QUEST_CHAPTERS.find(q => q.id === window.questProgress.currentChapter);
+            if (!quest) return;
+
+            const nameEl = document.getElementById('quest-name');
+            const chapterEl = document.getElementById('quest-chapter');
+            const descEl = document.getElementById('quest-description');
+            const objContainer = document.getElementById('quest-objectives');
+
+            if (nameEl) nameEl.textContent = quest.name;
+            if (chapterEl) chapterEl.textContent = `Ch. ${quest.id}`;
+            if (descEl) descEl.textContent = quest.description;
+
+            if (objContainer) {
+                objContainer.innerHTML = quest.objectives.map((obj, i) => {
+                    const progress = window.questProgress.objectiveProgress[obj.id] || 0;
+                    const completed = progress >= obj.target;
+                    return `
+                        <div class="quest-objective ${completed ? 'completed' : ''}" id="quest-obj-${i + 1}">
+                            <div class="quest-objective-check">${completed ? '✓' : '○'}</div>
+                            <span>${obj.text} (${Math.min(progress, obj.target)}/${obj.target})</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        };
+
+        window.checkQuestObjectives = function() {
+            const quest = window.QUEST_CHAPTERS.find(q => q.id === window.questProgress.currentChapter);
+            if (!quest) return;
+
+            quest.objectives.forEach(obj => {
+                let currentValue = 0;
+                switch (obj.type) {
+                    case 'correct':
+                        currentValue = window.gamificationState?.totalCorrect || 0;
+                        break;
+                    case 'total':
+                        currentValue = window.gamificationState?.totalAttempts || 0;
+                        break;
+                    case 'topics':
+                        currentValue = Object.keys(window.topicMastery || {}).length;
+                        break;
+                    case 'accuracy':
+                        currentValue = window.gamificationState?.totalAttempts > 0
+                            ? Math.round((window.gamificationState.totalCorrect / window.gamificationState.totalAttempts) * 100)
+                            : 0;
+                        break;
+                    case 'streak':
+                        currentValue = parseInt(document.getElementById('login-days-display')?.textContent?.match(/\d+/) || 0);
+                        break;
+                    case 'streak_correct':
+                        currentValue = window.gamificationState?.streak || 0;
+                        break;
+                    case 'achievements':
+                        currentValue = window.gamificationState?.unlockedAchievements?.length || 0;
+                        break;
+                    case 'mastery':
+                        currentValue = Object.values(window.topicMastery || {}).filter(m => m.percentage >= 90).length;
+                        break;
+                }
+                window.questProgress.objectiveProgress[obj.id] = currentValue;
+            });
+
+            // Check if all objectives completed
+            const allComplete = quest.objectives.every(obj =>
+                (window.questProgress.objectiveProgress[obj.id] || 0) >= obj.target
+            );
+
+            if (allComplete && !window.questProgress.completedChapters.includes(quest.id)) {
+                completeQuestChapter(quest);
+            }
+
+            saveQuestProgress();
+            updateQuestDisplay();
+        };
+
+        window.completeQuestChapter = function(quest) {
+            window.questProgress.completedChapters.push(quest.id);
+
+            // Show celebration
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #FF9800, #F57C00);
+                color: white;
+                padding: 40px;
+                border-radius: 24px;
+                text-align: center;
+                z-index: 10008;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+                animation: modalPop 0.5s ease;
+            `;
+            modal.innerHTML = `
+                <div style="font-size: 4rem; margin-bottom: 15px;">📜</div>
+                <h2 style="margin: 0 0 10px 0;">Chapter Complete!</h2>
+                <h3 style="margin: 0 0 20px 0; opacity: 0.9;">"${quest.name}"</h3>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px 25px; border-radius: 15px; margin-bottom: 20px;">
+                    <div style="font-size: 1.2rem; font-weight: 600;">Rewards Earned</div>
+                    <div style="font-size: 1.5rem; margin-top: 8px;">${quest.reward.badge} +${quest.reward.xp} XP</div>
+                </div>
+                <button onclick="this.parentElement.remove(); advanceToNextChapter();"
+                        style="padding: 12px 30px; border-radius: 25px; border: none; background: white; color: #FF9800; font-weight: 700; cursor: pointer; font-size: 1rem;">
+                    Continue to Chapter ${quest.id + 1} →
+                </button>
+            `;
+
+            document.body.appendChild(modal);
+            if (window.triggerCelebration) triggerCelebration();
+            if (window.addXP) addXP(quest.reward.xp, `Chapter ${quest.id} Complete`);
+        };
+
+        window.advanceToNextChapter = function() {
+            if (window.questProgress.currentChapter < window.QUEST_CHAPTERS.length) {
+                window.questProgress.currentChapter++;
+                saveQuestProgress();
+                updateQuestDisplay();
+                if (window.showToast) showToast(`Chapter ${window.questProgress.currentChapter} started!`, 'success');
+            }
+        };
+
+        window.showQuestDetails = function() {
+            const quest = window.QUEST_CHAPTERS.find(q => q.id === window.questProgress.currentChapter);
+            if (!quest) return;
+
+            // Remove existing
+            document.querySelectorAll('.quest-details-modal, .modal-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+
+            const modal = document.createElement('div');
+            modal.className = 'quest-details-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                border-radius: 24px;
+                padding: 30px;
+                max-width: 450px;
+                width: 90%;
+                z-index: 10006;
+                box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            `;
+            modal.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 3rem;">📜</div>
+                    <h2 style="margin: 10px 0 5px 0; color: #FF9800;">Chapter ${quest.id}: ${quest.name}</h2>
+                    <p style="color: #666; margin: 0;">${quest.description}</p>
+                </div>
+                <div style="background: #FFF3E0; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                    <div style="font-weight: 600; color: #E65100; margin-bottom: 10px;">Objectives:</div>
+                    ${quest.objectives.map(obj => {
+                        const progress = window.questProgress.objectiveProgress[obj.id] || 0;
+                        const completed = progress >= obj.target;
+                        return `
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #FFE0B2;">
+                                <span style="color: ${completed ? '#4CAF50' : '#FF9800'};">${completed ? '✓' : '○'}</span>
+                                <span style="flex: 1; ${completed ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${obj.text}</span>
+                                <span style="font-weight: 600; color: #FF9800;">${Math.min(progress, obj.target)}/${obj.target}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                <div style="background: linear-gradient(135deg, #FF9800, #F57C00); color: white; padding: 15px; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 0.9rem; margin-bottom: 5px;">Chapter Reward</div>
+                    <div style="font-size: 1.5rem; font-weight: 700;">${quest.reward.badge} +${quest.reward.xp} XP</div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="document.querySelectorAll('.quest-details-modal, .modal-backdrop').forEach(el => el.remove());"
+                            style="padding: 12px 30px; border-radius: 25px; border: none; background: #FF9800; color: white; font-weight: 600; cursor: pointer;">
+                        Keep Questing!
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        // =====================================================
+        // KEYBOARD SHORTCUTS GUIDE
+        // =====================================================
+        window.KEYBOARD_SHORTCUTS = [
+            { action: 'Toggle Dark Mode', keys: ['Alt', 'D'] },
+            { action: 'Quick Help', keys: ['Alt', 'H'] },
+            { action: 'Show Keyboard Shortcuts', keys: ['Alt', 'K'] },
+            { action: 'Next Question', keys: ['Alt', 'N'] },
+            { action: 'Submit Answer', keys: ['Enter'] },
+            { action: 'Toggle Practice Mode', keys: ['Alt', 'P'] },
+            { action: 'Show Achievements', keys: ['Alt', 'A'] },
+            { action: 'Focus Search', keys: ['Ctrl', 'K'] }
+        ];
+
+        window.showKeyboardShortcuts = function() {
+            // Remove existing
+            document.querySelectorAll('.shortcuts-modal, .modal-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+
+            const modal = document.createElement('div');
+            modal.className = 'shortcuts-modal';
+            modal.innerHTML = `
+                <h2 style="margin: 0 0 10px 0; text-align: center; font-size: 1.5rem;">⌨️ Keyboard Shortcuts</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">Speed up your learning with these handy shortcuts!</p>
+                <div class="shortcut-list">
+                    ${window.KEYBOARD_SHORTCUTS.map(shortcut => `
+                        <div class="shortcut-item">
+                            <span class="shortcut-action">${shortcut.action}</span>
+                            <div class="shortcut-keys">
+                                ${shortcut.keys.map(key => `<span class="key">${key}</span>`).join(' + ')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="document.querySelectorAll('.shortcuts-modal, .modal-backdrop').forEach(el => el.remove());"
+                            style="padding: 12px 30px; border-radius: 25px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; cursor: pointer;">
+                        Got It!
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        // Add keyboard shortcut listener
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                showKeyboardShortcuts();
+            }
+            if (e.altKey && e.key.toLowerCase() === 'a') {
+                e.preventDefault();
+                if (window.showAchievementsModal) showAchievementsModal();
+            }
+            if (e.altKey && e.key.toLowerCase() === 'n') {
+                e.preventDefault();
+                document.querySelector('.next-btn:not(.hidden)')?.click();
+            }
+            if (e.altKey && e.key.toLowerCase() === 'p') {
+                e.preventDefault();
+                if (window.switchTab) switchTab('practice');
+            }
+        });
+
+        // =====================================================
+        // SOCIAL SHARING FOR ACHIEVEMENTS
+        // =====================================================
+        window.shareAchievement = function(achievement) {
+            // Remove existing
+            document.querySelectorAll('.share-achievement-modal, .modal-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10006;';
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+
+            const shareText = `🎉 I just unlocked the "${achievement.name}" achievement on Science CER! ${achievement.icon} #ScienceLearning #Achievement`;
+
+            const modal = document.createElement('div');
+            modal.className = 'share-achievement-modal';
+            modal.innerHTML = `
+                <h2 style="margin: 0 0 20px 0; text-align: center;">🎉 Share Your Achievement!</h2>
+                <div class="share-preview-card">
+                    <div style="font-size: 4rem; margin-bottom: 10px;">${achievement.icon}</div>
+                    <div style="font-size: 1.3rem; font-weight: 700;">${achievement.name}</div>
+                    <div style="opacity: 0.9; margin-top: 5px;">${achievement.description}</div>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn copy" onclick="copyAchievementText('${shareText.replace(/'/g, "\\'")}')">
+                        📋 Copy Text
+                    </button>
+                    <button class="share-btn download" onclick="downloadAchievementCard('${achievement.icon}', '${achievement.name}')">
+                        📥 Save Image
+                    </button>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="document.querySelectorAll('.share-achievement-modal, .modal-backdrop').forEach(el => el.remove());"
+                            style="padding: 10px 25px; border-radius: 20px; border: 1px solid #ddd; background: white; cursor: pointer;">
+                        Close
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        window.copyAchievementText = function(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (window.showToast) showToast('Copied to clipboard!', 'success');
+            }).catch(() => {
+                if (window.showToast) showToast('Could not copy text', 'error');
+            });
+        };
+
+        window.downloadAchievementCard = function(icon, name) {
+            // Create a simple canvas-based share card
+            const canvas = document.createElement('canvas');
+            canvas.width = 600;
+            canvas.height = 400;
+            const ctx = canvas.getContext('2d');
+
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 600, 400);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 600, 400);
+
+            // Icon
+            ctx.font = '80px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(icon, 300, 150);
+
+            // Achievement name
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 32px Arial';
+            ctx.fillText(name, 300, 220);
+
+            // App name
+            ctx.font = '20px Arial';
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.fillText('Unlocked on Science CER', 300, 280);
+
+            // Download
+            const link = document.createElement('a');
+            link.download = `achievement-${name.replace(/\s+/g, '-').toLowerCase()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+
+            if (window.showToast) showToast('Achievement card saved!', 'success');
+        };
+
+        // =====================================================
+        // ENHANCED CONFETTI BURST
+        // =====================================================
+        window.triggerEpicConfetti = function(x, y) {
+            const container = document.createElement('div');
+            container.className = 'epic-achievement-burst';
+
+            const emojis = ['🎉', '✨', '⭐', '🌟', '💫', '🎊', '🏆', '🎯', '🔥', '💎'];
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3', '#F38181', '#AA96DA'];
+
+            // Create 50 confetti pieces
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-burst';
+                piece.style.left = (x || window.innerWidth / 2) + 'px';
+                piece.style.top = (y || window.innerHeight / 2) + 'px';
+
+                const angle = (Math.random() * 360) * (Math.PI / 180);
+                const distance = 100 + Math.random() * 300;
+                const xDist = Math.cos(angle) * distance;
+                const yDist = Math.sin(angle) * distance - 100;
+
+                piece.style.setProperty('--x', xDist + 'px');
+                piece.style.setProperty('--y', yDist + 'px');
+
+                if (Math.random() > 0.5) {
+                    piece.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                } else {
+                    piece.textContent = '●';
+                    piece.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.fontSize = (8 + Math.random() * 12) + 'px';
+                }
+
+                piece.style.animationDelay = (Math.random() * 0.3) + 's';
+                container.appendChild(piece);
+            }
+
+            document.body.appendChild(container);
+            setTimeout(() => container.remove(), 2000);
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+            loadQuestProgress();
+
+            // Check quest objectives periodically
+            setInterval(checkQuestObjectives, 5000);
+        });
+
+        // Hook into answer tracking for quest progress
+        const originalHandleAnswer6 = window.handleQuestionAnswer;
+        window.handleQuestionAnswer = function(isCorrect, questionElement, questionType) {
+            if (originalHandleAnswer6) {
+                originalHandleAnswer6(isCorrect, questionElement, questionType);
+            }
+            checkQuestObjectives();
+        };
+
+        // Hook into achievement unlocks for sharing
+        const originalUnlockAchievement = window.unlockAchievement;
+        window.unlockAchievement = function(achievementId) {
+            if (originalUnlockAchievement) {
+                const result = originalUnlockAchievement(achievementId);
+
+                // Trigger epic confetti for achievements
+                if (result && window.GAMIFICATION_CONFIG?.ACHIEVEMENTS) {
+                    const achievement = window.GAMIFICATION_CONFIG.ACHIEVEMENTS.find(a => a.id === achievementId);
+                    if (achievement) {
+                        setTimeout(() => triggerEpicConfetti(), 500);
+                    }
+                }
+                return result;
+            }
+        };
+
+        console.log('🎭 Avatar, Quest, Shortcuts, and Enhanced Confetti systems loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
