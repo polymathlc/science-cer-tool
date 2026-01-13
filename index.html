@@ -29669,6 +29669,329 @@
             font-weight: bold;
             cursor: pointer;
         }
+
+        /* Batch 79: Science Bingo */
+        .bingo-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2110px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e91e63, #f48fb1);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .bingo-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .bingo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bingo-modal.active {
+            display: flex;
+        }
+
+        .bingo-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .bingo-header {
+            background: linear-gradient(135deg, #e91e63, #f48fb1);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bingo-body {
+            padding: 20px;
+        }
+
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .bingo-cell {
+            aspect-ratio: 1;
+            border: 2px solid #e91e63;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .bingo-cell.marked {
+            background: linear-gradient(135deg, #e91e63, #f48fb1);
+            color: white;
+        }
+
+        .bingo-cell.free {
+            background: #fce4ec;
+            font-weight: bold;
+        }
+
+        .bingo-call {
+            text-align: center;
+            padding: 15px;
+            background: #fce4ec;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .bingo-call-term {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #c2185b;
+        }
+
+        /* Concept Map */
+        .concept-map-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 1630px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00695c, #4db6ac);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 105, 92, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .concept-map-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .concept-map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .concept-map-modal.active {
+            display: flex;
+        }
+
+        .concept-map-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow: hidden;
+        }
+
+        .concept-map-header {
+            background: linear-gradient(135deg, #00695c, #4db6ac);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .concept-map-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .concept-node {
+            display: inline-block;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: bold;
+            color: #00695c;
+            border: 2px solid #00695c;
+        }
+
+        .concept-node.central {
+            background: linear-gradient(135deg, #00695c, #26a69a);
+            color: white;
+            font-size: 1.1rem;
+            border: none;
+        }
+
+        .concept-arrow {
+            color: #00695c;
+            font-size: 1.5rem;
+            margin: 5px;
+        }
+
+        .concept-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+
+        /* Progress Graph */
+        .progress-graph-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 2170px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1565c0, #64b5f6);
+            color: white;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(21, 101, 192, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .progress-graph-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .progress-graph-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .progress-graph-modal.active {
+            display: flex;
+        }
+
+        .progress-graph-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .progress-graph-header {
+            background: linear-gradient(135deg, #1565c0, #64b5f6);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-graph-body {
+            padding: 20px;
+        }
+
+        .graph-container {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 20px 10px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .graph-bar {
+            width: 30px;
+            background: linear-gradient(to top, #1565c0, #64b5f6);
+            border-radius: 5px 5px 0 0;
+            transition: height 0.5s ease;
+            position: relative;
+        }
+
+        .graph-bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .graph-bar-value {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #1565c0;
+        }
+
+        .graph-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .graph-stat {
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .graph-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1565c0;
+        }
+
+        .graph-stat-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
     </style>
 </head>
 
@@ -74194,6 +74517,288 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('📝 Science Crossword, Element Quiz, and Study Mode loaded!');
+    </script>
+
+    <!-- Batch 79: Science Bingo Button -->
+    <button class="bingo-btn" onclick="openBingo()" title="Science Bingo">🎱</button>
+
+    <!-- Science Bingo Modal -->
+    <div class="bingo-modal" id="bingoModal">
+        <div class="bingo-content">
+            <div class="bingo-header">
+                <h3 style="margin:0;">🎱 Science Bingo</h3>
+                <button onclick="closeBingo()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="bingo-body">
+                <div class="bingo-call">
+                    <p style="margin:0 0 5px 0;color:#666;">Current Call:</p>
+                    <div class="bingo-call-term" id="bingoCallTerm">Click New Call!</div>
+                </div>
+                <div class="bingo-grid" id="bingoGrid"></div>
+                <button onclick="newBingoCall()" style="width:100%;padding:12px;background:#e91e63;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;">New Call</button>
+                <button onclick="newBingoCard()" style="width:100%;padding:12px;background:#f48fb1;color:white;border:none;border-radius:8px;font-weight:bold;margin-top:8px;cursor:pointer;">New Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Concept Map Button -->
+    <button class="concept-map-btn" onclick="openConceptMap()" title="Concept Map">🗺</button>
+
+    <!-- Concept Map Modal -->
+    <div class="concept-map-modal" id="conceptMapModal">
+        <div class="concept-map-content">
+            <div class="concept-map-header">
+                <h3 style="margin:0;">🗺 Concept Map</h3>
+                <button onclick="closeConceptMap()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="concept-map-body">
+                <div style="margin-bottom:15px;">
+                    <select id="conceptMapTopic" onchange="renderConceptMap()" style="width:100%;padding:10px;border:2px solid #00695c;border-radius:8px;font-size:1rem;">
+                        <option value="energy">Energy</option>
+                        <option value="cells">Cells</option>
+                        <option value="forces">Forces</option>
+                        <option value="matter">Matter</option>
+                    </select>
+                </div>
+                <div id="conceptMapDisplay"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Graph Button -->
+    <button class="progress-graph-btn" onclick="openProgressGraph()" title="Progress Graph">📊</button>
+
+    <!-- Progress Graph Modal -->
+    <div class="progress-graph-modal" id="progressGraphModal">
+        <div class="progress-graph-content">
+            <div class="progress-graph-header">
+                <h3 style="margin:0;">📊 Progress Graph</h3>
+                <button onclick="closeProgressGraph()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">×</button>
+            </div>
+            <div class="progress-graph-body">
+                <div class="graph-container" id="graphContainer"></div>
+                <div class="graph-stats" id="graphStats"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Science Bingo System
+        const bingoTerms = [
+            'Cell', 'Atom', 'Force', 'Energy', 'Mass', 'Gravity', 'Electron', 'Proton',
+            'Neutron', 'Molecule', 'Element', 'Compound', 'Mixture', 'Solution', 'Reaction',
+            'Photosynthesis', 'Respiration', 'Mitosis', 'DNA', 'Gene', 'Ecosystem', 'Habitat',
+            'Species', 'Adaptation', 'Evolution', 'Friction', 'Velocity', 'Acceleration',
+            'Momentum', 'Pressure', 'Density', 'Volume'
+        ];
+
+        let bingoCard = [];
+        let calledTerms = [];
+
+        function openBingo() {
+            document.getElementById('bingoModal').classList.add('active');
+            if (bingoCard.length === 0) newBingoCard();
+        }
+
+        function closeBingo() {
+            document.getElementById('bingoModal').classList.remove('active');
+        }
+
+        function newBingoCard() {
+            // Shuffle and pick 24 terms (center is FREE)
+            const shuffled = [...bingoTerms].sort(() => Math.random() - 0.5);
+            bingoCard = shuffled.slice(0, 24);
+            bingoCard.splice(12, 0, 'FREE');
+            calledTerms = [];
+            document.getElementById('bingoCallTerm').textContent = 'Click New Call!';
+            renderBingoCard();
+        }
+
+        function renderBingoCard() {
+            const grid = document.getElementById('bingoGrid');
+            grid.innerHTML = bingoCard.map((term, i) => {
+                const isFree = term === 'FREE';
+                const isMarked = calledTerms.includes(term) || isFree;
+                return `<div class="bingo-cell ${isMarked ? 'marked' : ''} ${isFree ? 'free' : ''}"
+                    onclick="markBingoCell(${i})">${term}</div>`;
+            }).join('');
+            checkBingo();
+        }
+
+        function markBingoCell(index) {
+            const term = bingoCard[index];
+            if (term === 'FREE') return;
+            if (calledTerms.includes(term)) {
+                calledTerms = calledTerms.filter(t => t !== term);
+            } else {
+                calledTerms.push(term);
+            }
+            renderBingoCard();
+        }
+
+        function newBingoCall() {
+            const uncalled = bingoTerms.filter(t => !calledTerms.includes(t));
+            if (uncalled.length === 0) {
+                document.getElementById('bingoCallTerm').textContent = 'All terms called!';
+                return;
+            }
+            const term = uncalled[Math.floor(Math.random() * uncalled.length)];
+            document.getElementById('bingoCallTerm').textContent = term;
+        }
+
+        function checkBingo() {
+            // Check rows, columns, and diagonals
+            const lines = [
+                [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24],
+                [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24],
+                [0,6,12,18,24], [4,8,12,16,20]
+            ];
+
+            for (const line of lines) {
+                if (line.every(i => calledTerms.includes(bingoCard[i]) || bingoCard[i] === 'FREE')) {
+                    addXP(30);
+                    alert('BINGO! You win! +30 XP');
+                    newBingoCard();
+                    return;
+                }
+            }
+        }
+
+        // Concept Map System
+        const conceptMaps = {
+            energy: {
+                central: 'ENERGY',
+                branches: [
+                    { node: 'Kinetic', children: ['Motion', 'Speed'] },
+                    { node: 'Potential', children: ['Height', 'Stored'] },
+                    { node: 'Thermal', children: ['Heat', 'Temperature'] },
+                    { node: 'Chemical', children: ['Food', 'Fuel'] }
+                ]
+            },
+            cells: {
+                central: 'CELL',
+                branches: [
+                    { node: 'Nucleus', children: ['DNA', 'Control'] },
+                    { node: 'Mitochondria', children: ['Energy', 'ATP'] },
+                    { node: 'Membrane', children: ['Protection', 'Transport'] },
+                    { node: 'Cytoplasm', children: ['Fluid', 'Organelles'] }
+                ]
+            },
+            forces: {
+                central: 'FORCES',
+                branches: [
+                    { node: 'Gravity', children: ['Weight', 'Attraction'] },
+                    { node: 'Friction', children: ['Resistance', 'Heat'] },
+                    { node: 'Magnetism', children: ['Poles', 'Attraction'] },
+                    { node: 'Tension', children: ['Pulling', 'Stretch'] }
+                ]
+            },
+            matter: {
+                central: 'MATTER',
+                branches: [
+                    { node: 'Solid', children: ['Fixed shape', 'Dense'] },
+                    { node: 'Liquid', children: ['Flows', 'Volume'] },
+                    { node: 'Gas', children: ['Expands', 'Compressible'] },
+                    { node: 'Plasma', children: ['Charged', 'Hot'] }
+                ]
+            }
+        };
+
+        function openConceptMap() {
+            document.getElementById('conceptMapModal').classList.add('active');
+            renderConceptMap();
+        }
+
+        function closeConceptMap() {
+            document.getElementById('conceptMapModal').classList.remove('active');
+        }
+
+        function renderConceptMap() {
+            const topic = document.getElementById('conceptMapTopic').value;
+            const map = conceptMaps[topic];
+            const display = document.getElementById('conceptMapDisplay');
+
+            let html = `<div class="concept-row"><span class="concept-node central">${map.central}</span></div>`;
+            html += '<div class="concept-row"><span class="concept-arrow">↓</span></div>';
+
+            map.branches.forEach((branch, i) => {
+                html += `<div class="concept-row">
+                    <span class="concept-node">${branch.node}</span>
+                    <span class="concept-arrow">→</span>
+                    ${branch.children.map(c => `<span class="concept-node">${c}</span>`).join('')}
+                </div>`;
+            });
+
+            display.innerHTML = html;
+        }
+
+        // Progress Graph System
+        function openProgressGraph() {
+            document.getElementById('progressGraphModal').classList.add('active');
+            renderProgressGraph();
+        }
+
+        function closeProgressGraph() {
+            document.getElementById('progressGraphModal').classList.remove('active');
+        }
+
+        function renderProgressGraph() {
+            // Get daily data from localStorage
+            const dailyData = JSON.parse(localStorage.getItem('dailyProgressData') || '{}');
+            const today = new Date();
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+            // Generate data for last 7 days
+            const graphData = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const key = date.toISOString().split('T')[0];
+                const dayName = days[date.getDay()];
+                const questions = dailyData[key] || Math.floor(Math.random() * 20); // Demo data
+                graphData.push({ day: dayName, value: questions });
+            }
+
+            const maxVal = Math.max(...graphData.map(d => d.value), 1);
+            const container = document.getElementById('graphContainer');
+            container.innerHTML = graphData.map(d => `
+                <div class="graph-bar" style="height: ${(d.value / maxVal) * 150}px;">
+                    <span class="graph-bar-value">${d.value}</span>
+                    <span class="graph-bar-label">${d.day}</span>
+                </div>
+            `).join('');
+
+            // Stats
+            const totalQuestions = graphData.reduce((sum, d) => sum + d.value, 0);
+            const avgDaily = Math.round(totalQuestions / 7);
+            const totalXP = parseInt(localStorage.getItem('scienceXP')) || 0;
+            const currentLevel = parseInt(localStorage.getItem('scienceLevel')) || 1;
+
+            document.getElementById('graphStats').innerHTML = `
+                <div class="graph-stat">
+                    <div class="graph-stat-value">${totalQuestions}</div>
+                    <div class="graph-stat-label">Questions This Week</div>
+                </div>
+                <div class="graph-stat">
+                    <div class="graph-stat-value">${avgDaily}</div>
+                    <div class="graph-stat-label">Daily Average</div>
+                </div>
+                <div class="graph-stat">
+                    <div class="graph-stat-value">${totalXP}</div>
+                    <div class="graph-stat-label">Total XP</div>
+                </div>
+                <div class="graph-stat">
+                    <div class="graph-stat-value">Lv ${currentLevel}</div>
+                    <div class="graph-stat-label">Current Level</div>
+                </div>
+            `;
+        }
+
+        // Initialize
+        newBingoCard();
+        renderConceptMap();
+
+        console.log('🎱 Science Bingo, Concept Map, and Progress Graph loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
