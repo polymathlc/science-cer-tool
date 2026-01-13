@@ -22705,6 +22705,488 @@
         console.log('📈 Topic mastery and focused practice loaded!');
     </script>
 
+    <!-- =====================================================
+         LEARNING GOALS, SESSION STATS & POWER-UPS
+         ===================================================== -->
+    <script>
+        // =====================================================
+        // LEARNING GOALS SYSTEM
+        // =====================================================
+        window.learningGoals = {
+            daily: { target: 10, current: 0, lastReset: null },
+            weekly: { target: 50, current: 0, lastReset: null },
+            customGoal: null
+        };
+
+        window.initLearningGoals = function() {
+            const stored = localStorage.getItem('learningGoals');
+            if (stored) {
+                try {
+                    window.learningGoals = JSON.parse(stored);
+                } catch (e) { }
+            }
+
+            // Check if daily/weekly needs reset
+            const now = new Date();
+            const today = now.toDateString();
+            const weekStart = getWeekStart(now).toDateString();
+
+            if (window.learningGoals.daily.lastReset !== today) {
+                window.learningGoals.daily.current = 0;
+                window.learningGoals.daily.lastReset = today;
+            }
+
+            if (window.learningGoals.weekly.lastReset !== weekStart) {
+                window.learningGoals.weekly.current = 0;
+                window.learningGoals.weekly.lastReset = weekStart;
+            }
+
+            saveLearningGoals();
+        };
+
+        window.updateLearningGoals = function() {
+            window.learningGoals.daily.current++;
+            window.learningGoals.weekly.current++;
+
+            // Check if goals completed
+            if (window.learningGoals.daily.current === window.learningGoals.daily.target) {
+                showGoalCompleted('daily');
+            }
+            if (window.learningGoals.weekly.current === window.learningGoals.weekly.target) {
+                showGoalCompleted('weekly');
+            }
+
+            saveLearningGoals();
+        };
+
+        window.showGoalCompleted = function(type) {
+            const goalName = type === 'daily' ? 'Daily Goal' : 'Weekly Goal';
+            const xpBonus = type === 'daily' ? 30 : 100;
+
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #00C853, #69F0AE);
+                color: white;
+                padding: 30px 40px;
+                border-radius: 20px;
+                text-align: center;
+                z-index: 10005;
+                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+                animation: goalPop 0.5s ease;
+            `;
+            notification.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 10px;">🎯</div>
+                <h2 style="margin: 0 0 10px 0; font-size: 1.5rem;">${goalName} Complete!</h2>
+                <p style="margin: 0 0 15px 0; opacity: 0.9;">You did it! Keep up the great work!</p>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 10px; display: inline-block;">
+                    +${xpBonus} XP Bonus
+                </div>
+                <br>
+                <button onclick="this.parentElement.remove()" style="margin-top: 15px; background: white; color: #00C853; border: none; padding: 10px 25px; border-radius: 20px; font-weight: 600; cursor: pointer;">
+                    Awesome!
+                </button>
+            `;
+
+            if (!document.getElementById('goal-pop-style')) {
+                const style = document.createElement('style');
+                style.id = 'goal-pop-style';
+                style.textContent = '@keyframes goalPop { from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }';
+                document.head.appendChild(style);
+            }
+
+            document.body.appendChild(notification);
+
+            // Add XP
+            if (window.addXP) {
+                setTimeout(() => addXP(xpBonus, `${goalName} Complete`), 500);
+            }
+
+            if (window.triggerCelebration) triggerCelebration();
+
+            setTimeout(() => {
+                if (notification.parentElement) notification.remove();
+            }, 6000);
+        };
+
+        window.saveLearningGoals = function() {
+            localStorage.setItem('learningGoals', JSON.stringify(window.learningGoals));
+        };
+
+        // =====================================================
+        // SESSION STATISTICS
+        // =====================================================
+        window.sessionStats = {
+            startTime: null,
+            questionsAnswered: 0,
+            correctAnswers: 0,
+            xpEarned: 0,
+            bestStreak: 0,
+            topicsVisited: new Set()
+        };
+
+        window.initSessionStats = function() {
+            window.sessionStats.startTime = Date.now();
+        };
+
+        window.getSessionDuration = function() {
+            if (!window.sessionStats.startTime) return '0m';
+            const durationMs = Date.now() - window.sessionStats.startTime;
+            const minutes = Math.floor(durationMs / 60000);
+            const hours = Math.floor(minutes / 60);
+            if (hours > 0) {
+                return `${hours}h ${minutes % 60}m`;
+            }
+            return `${minutes}m`;
+        };
+
+        window.updateSessionStats = function(isCorrect, xpAmount) {
+            window.sessionStats.questionsAnswered++;
+            if (isCorrect) {
+                window.sessionStats.correctAnswers++;
+            }
+            window.sessionStats.xpEarned += xpAmount || 0;
+
+            // Update best streak
+            const currentStreak = window.gamificationState?.currentStreak || 0;
+            if (currentStreak > window.sessionStats.bestStreak) {
+                window.sessionStats.bestStreak = currentStreak;
+            }
+        };
+
+        window.showSessionSummary = function() {
+            const stats = window.sessionStats;
+            const accuracy = stats.questionsAnswered > 0
+                ? Math.round((stats.correctAnswers / stats.questionsAnswered) * 100)
+                : 0;
+
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10006;
+            `;
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 24px; padding: 30px; max-width: 400px; width: 90%; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">📊</div>
+                    <h2 style="margin: 0 0 20px 0; color: #333;">Session Summary</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 12px;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #667eea;">${stats.questionsAnswered}</div>
+                            <div style="font-size: 0.8rem; color: #666;">Questions</div>
+                        </div>
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 12px;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #4CAF50;">${accuracy}%</div>
+                            <div style="font-size: 0.8rem; color: #666;">Accuracy</div>
+                        </div>
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 12px;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #FF9800;">${stats.xpEarned}</div>
+                            <div style="font-size: 0.8rem; color: #666;">XP Earned</div>
+                        </div>
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 12px;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #E91E63;">${getSessionDuration()}</div>
+                            <div style="font-size: 0.8rem; color: #666;">Duration</div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Best Streak</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;">🔥 ${stats.bestStreak} in a row</div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-weight: 600; cursor: pointer;">
+                        Continue Learning
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        };
+
+        // =====================================================
+        // POWER-UPS SYSTEM
+        // =====================================================
+        window.powerUps = {
+            doubleXP: { active: false, endTime: null, remaining: 3 },
+            hintBoost: { remaining: 5 },
+            streakShield: { remaining: 2 }
+        };
+
+        window.initPowerUps = function() {
+            const stored = localStorage.getItem('powerUps');
+            if (stored) {
+                try {
+                    window.powerUps = JSON.parse(stored);
+                } catch (e) { }
+            }
+
+            // Check if double XP expired
+            if (window.powerUps.doubleXP.active && window.powerUps.doubleXP.endTime) {
+                if (Date.now() > window.powerUps.doubleXP.endTime) {
+                    window.powerUps.doubleXP.active = false;
+                    window.powerUps.doubleXP.endTime = null;
+                }
+            }
+
+            savePowerUps();
+        };
+
+        window.activateDoubleXP = function() {
+            if (window.powerUps.doubleXP.remaining <= 0) {
+                showToast('No Double XP power-ups remaining!', 'warning');
+                return;
+            }
+
+            window.powerUps.doubleXP.active = true;
+            window.powerUps.doubleXP.endTime = Date.now() + (5 * 60 * 1000); // 5 minutes
+            window.powerUps.doubleXP.remaining--;
+
+            savePowerUps();
+
+            showPowerUpActivated('Double XP', '2x XP for 5 minutes!', '⚡');
+
+            // Auto-deactivate after 5 minutes
+            setTimeout(() => {
+                window.powerUps.doubleXP.active = false;
+                window.powerUps.doubleXP.endTime = null;
+                savePowerUps();
+                showToast('Double XP has expired', 'info');
+            }, 5 * 60 * 1000);
+        };
+
+        window.useHintBoost = function() {
+            if (window.powerUps.hintBoost.remaining <= 0) {
+                showToast('No Hint Boosts remaining!', 'warning');
+                return false;
+            }
+
+            window.powerUps.hintBoost.remaining--;
+            savePowerUps();
+            showToast('💡 Hint Boost used!', 'success');
+            return true;
+        };
+
+        window.useStreakShield = function() {
+            if (window.powerUps.streakShield.remaining <= 0) {
+                return false;
+            }
+
+            window.powerUps.streakShield.remaining--;
+            savePowerUps();
+            showToast('🛡️ Streak Shield activated! Your streak is protected!', 'success');
+            return true;
+        };
+
+        window.showPowerUpActivated = function(name, desc, emoji) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                color: #333;
+                padding: 15px 25px;
+                border-radius: 16px;
+                box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+                z-index: 10004;
+                animation: powerUpSlide 0.5s ease;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            `;
+            notification.innerHTML = `
+                <span style="font-size: 2rem;">${emoji}</span>
+                <div>
+                    <div style="font-weight: 700; font-size: 1.1rem;">${name} Activated!</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9;">${desc}</div>
+                </div>
+            `;
+
+            if (!document.getElementById('powerup-slide-style')) {
+                const style = document.createElement('style');
+                style.id = 'powerup-slide-style';
+                style.textContent = '@keyframes powerUpSlide { from { transform: translateX(-50%) translateY(-50px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }';
+                document.head.appendChild(style);
+            }
+
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 4000);
+        };
+
+        window.savePowerUps = function() {
+            localStorage.setItem('powerUps', JSON.stringify(window.powerUps));
+        };
+
+        // Award power-ups on level up
+        window.awardPowerUpsOnLevelUp = function(newLevel) {
+            if (newLevel % 2 === 0) { // Every even level
+                window.powerUps.doubleXP.remaining++;
+                window.powerUps.hintBoost.remaining++;
+                savePowerUps();
+                showToast('🎁 Level up bonus: +1 Double XP, +1 Hint Boost!', 'success');
+            }
+            if (newLevel % 5 === 0) { // Every 5 levels
+                window.powerUps.streakShield.remaining++;
+                savePowerUps();
+                showToast('🛡️ Level up bonus: +1 Streak Shield!', 'success');
+            }
+        };
+
+        // =====================================================
+        // QUICK HELP MODAL (KEYBOARD SHORTCUTS)
+        // =====================================================
+        window.showQuickHelp = function() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10006;
+            `;
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 24px; padding: 30px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="margin: 0; color: #333; display: flex; align-items: center; gap: 10px;">
+                            <span>⌨️</span> Quick Help
+                        </h2>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+                    </div>
+
+                    <h3 style="color: #667eea; margin: 15px 0 10px 0; font-size: 1rem;">Keyboard Shortcuts</h3>
+                    <div style="background: #f5f5f5; border-radius: 12px; padding: 15px;">
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd;">
+                            <span>Toggle Dark Mode</span>
+                            <kbd style="background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Alt + D</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd;">
+                            <span>Toggle MCQ/OEQ</span>
+                            <kbd style="background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Alt + M</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd;">
+                            <span>Practice Mode</span>
+                            <kbd style="background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Alt + P</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd;">
+                            <span>My Worksheet</span>
+                            <kbd style="background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Alt + W</kbd>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                            <span>My Progress</span>
+                            <kbd style="background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem;">Alt + Y</kbd>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #667eea; margin: 20px 0 10px 0; font-size: 1rem;">Power-Ups Available</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                        <div style="background: #FFF3E0; padding: 15px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 1.5rem;">⚡</div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">Double XP</div>
+                            <div style="font-size: 0.8rem; color: #666;">${window.powerUps?.doubleXP?.remaining || 0} left</div>
+                        </div>
+                        <div style="background: #E3F2FD; padding: 15px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 1.5rem;">💡</div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">Hint Boost</div>
+                            <div style="font-size: 0.8rem; color: #666;">${window.powerUps?.hintBoost?.remaining || 0} left</div>
+                        </div>
+                        <div style="background: #E8F5E9; padding: 15px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 1.5rem;">🛡️</div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">Streak Shield</div>
+                            <div style="font-size: 0.8rem; color: #666;">${window.powerUps?.streakShield?.remaining || 0} left</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: #667eea; margin: 20px 0 10px 0; font-size: 1rem;">Today's Goals</h3>
+                    <div style="background: #f5f5f5; border-radius: 12px; padding: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span>Daily Goal</span>
+                            <span style="font-weight: 600;">${window.learningGoals?.daily?.current || 0}/${window.learningGoals?.daily?.target || 10}</span>
+                        </div>
+                        <div style="background: #ddd; height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div style="background: linear-gradient(90deg, #4CAF50, #8BC34A); height: 100%; width: ${Math.min(((window.learningGoals?.daily?.current || 0) / (window.learningGoals?.daily?.target || 10)) * 100, 100)}%;"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="this.parentElement.parentElement.remove()" style="margin-top: 20px; width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer;">
+                        Got it!
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initLearningGoals();
+            initSessionStats();
+            initPowerUps();
+        });
+
+        // Add keyboard shortcut for quick help
+        document.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key === 'h') {
+                e.preventDefault();
+                showQuickHelp();
+            }
+        });
+
+        // Hook into answer handling
+        const originalHandleAnswer4 = window.handleQuestionAnswer;
+        window.handleQuestionAnswer = function(isCorrect, questionElement, questionType) {
+            // Track XP before the call
+            const xpBefore = window.gamificationState?.xp || 0;
+
+            if (originalHandleAnswer4) {
+                originalHandleAnswer4(isCorrect, questionElement, questionType);
+            }
+
+            // Calculate XP earned
+            const xpAfter = window.gamificationState?.xp || 0;
+            const xpEarned = xpAfter - xpBefore;
+
+            // Apply double XP if active
+            if (window.powerUps.doubleXP.active && xpEarned > 0) {
+                addXP(xpEarned, 'Double XP Bonus');
+            }
+
+            // Update learning goals
+            updateLearningGoals();
+
+            // Update session stats
+            updateSessionStats(isCorrect, xpEarned);
+        };
+
+        // Hook into level up for power-up awards
+        const originalShowLevelUpModal = window.showLevelUpModal;
+        window.showLevelUpModal = function(newLevel) {
+            if (originalShowLevelUpModal) {
+                originalShowLevelUpModal(newLevel);
+            }
+            awardPowerUpsOnLevelUp(newLevel);
+        };
+
+        console.log('🎯 Learning goals, session stats, and power-ups loaded!');
+    </script>
+
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
     <div id="table-grid-selector" class="table-grid-selector">
         <h4 style="margin: 0 0 12px 0; font-size: 1rem; color: #2e7d32; font-weight: 600; display: flex; align-items: center; gap: 8px;">
