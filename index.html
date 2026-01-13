@@ -25071,6 +25071,269 @@
             padding: 15px;
             margin-top: 15px;
         }
+
+        /* Batch 63: Quick Notes */
+        .quick-notes-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1070px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .quick-notes-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .notes-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .notes-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .note-card {
+            background: #fff8e1;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 10px 10px 0;
+            position: relative;
+        }
+
+        .note-card-time {
+            font-size: 0.75rem;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .note-card-text {
+            color: #333;
+        }
+
+        .note-card-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #f44336;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .note-input-area {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        /* Formula Sheet */
+        .formula-sheet-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 590px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #795548 0%, #5d4037 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(121, 85, 72, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .formula-sheet-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .formula-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .formula-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 650px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .formula-category {
+            margin: 20px 0;
+        }
+
+        .formula-category-title {
+            background: linear-gradient(135deg, #795548 0%, #8d6e63 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .formula-item {
+            background: #efebe9;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .formula-name {
+            font-weight: bold;
+            color: #5d4037;
+        }
+
+        .formula-equation {
+            font-family: 'Courier New', monospace;
+            background: #d7ccc8;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #3e2723;
+        }
+
+        .formula-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #795548;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        /* Question Archive */
+        .archive-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1110px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #607d8b 0%, #455a64 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(96, 125, 139, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .archive-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .archive-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .archive-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .archive-question {
+            background: #eceff1;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .archive-question:hover {
+            background: #cfd8dc;
+            transform: translateX(5px);
+        }
+
+        .archive-question-date {
+            font-size: 0.8rem;
+            color: #607d8b;
+            margin-bottom: 8px;
+        }
+
+        .archive-question-text {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .archive-question-status {
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        .archive-question-status.correct {
+            color: #4caf50;
+        }
+
+        .archive-question-status.wrong {
+            color: #f44336;
+        }
+
+        .archive-question-status.unanswered {
+            color: #ff9800;
+        }
     </style>
 </head>
 
@@ -65536,6 +65799,226 @@ This report was generated from the Science CER Practice App.
         }
 
         console.log('📅 Study Planner, Topic Quiz, and Concept Map loaded!');
+    </script>
+
+    <!-- Batch 63: Quick Notes Button -->
+    <button class="quick-notes-btn" onclick="openQuickNotes()" title="Quick Notes">📝</button>
+
+    <!-- Quick Notes Modal -->
+    <div class="notes-modal" id="notes-modal">
+        <div class="notes-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #ff9800;">📝 Quick Notes</h2>
+                <button onclick="closeQuickNotes()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <textarea class="note-input-area" id="note-input" placeholder="Write a quick note..."></textarea>
+            <button onclick="saveQuickNote()" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); color: white; border: none; border-radius: 10px; font-size: 1rem; cursor: pointer;">Save Note</button>
+            <h4 style="margin-top: 25px; color: #666;">Your Notes</h4>
+            <div id="notes-list"></div>
+        </div>
+    </div>
+
+    <!-- Formula Sheet Button -->
+    <button class="formula-sheet-btn" onclick="openFormulaSheet()" title="Formula Sheet">∑</button>
+
+    <!-- Formula Sheet Modal -->
+    <div class="formula-modal" id="formula-modal">
+        <div class="formula-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #795548;">∑ Formula Sheet</h2>
+                <button onclick="closeFormulaSheet()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <select class="formula-select" id="formula-category-select" onchange="loadFormulas()">
+                <option value="physics">Physics Formulas</option>
+                <option value="chemistry">Chemistry Formulas</option>
+                <option value="biology">Biology Equations</option>
+                <option value="math">Math Formulas</option>
+            </select>
+            <div id="formula-list"></div>
+        </div>
+    </div>
+
+    <!-- Question Archive Button -->
+    <button class="archive-btn" onclick="openArchive()" title="Question Archive">📚</button>
+
+    <!-- Question Archive Modal -->
+    <div class="archive-modal" id="archive-modal">
+        <div class="archive-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #607d8b;">📚 Question Archive</h2>
+                <button onclick="closeArchive()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <p style="color: #666; margin-bottom: 15px;">Browse past daily challenge questions</p>
+            <div id="archive-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Batch 63: Quick Notes
+        let quickNotes = JSON.parse(localStorage.getItem('quickNotes') || '[]');
+
+        function openQuickNotes() {
+            document.getElementById('notes-modal').style.display = 'flex';
+            renderNotes();
+        }
+
+        function closeQuickNotes() {
+            document.getElementById('notes-modal').style.display = 'none';
+        }
+
+        function saveQuickNote() {
+            const input = document.getElementById('note-input');
+            const text = input.value.trim();
+            if (text) {
+                quickNotes.unshift({
+                    text: text,
+                    time: new Date().toLocaleString()
+                });
+                localStorage.setItem('quickNotes', JSON.stringify(quickNotes));
+                input.value = '';
+                renderNotes();
+                addXP(3);
+            }
+        }
+
+        function renderNotes() {
+            const list = document.getElementById('notes-list');
+            if (quickNotes.length === 0) {
+                list.innerHTML = '<p style="color: #999; text-align: center;">No notes yet. Start taking notes!</p>';
+                return;
+            }
+            list.innerHTML = quickNotes.map((note, i) => `
+                <div class="note-card">
+                    <button class="note-card-delete" onclick="deleteNote(${i})">×</button>
+                    <div class="note-card-time">${note.time}</div>
+                    <div class="note-card-text">${note.text}</div>
+                </div>
+            `).join('');
+        }
+
+        function deleteNote(index) {
+            if (confirm('Delete this note?')) {
+                quickNotes.splice(index, 1);
+                localStorage.setItem('quickNotes', JSON.stringify(quickNotes));
+                renderNotes();
+            }
+        }
+
+        // Formula Sheet
+        const formulas = {
+            physics: [
+                { name: 'Speed', eq: 'v = d / t' },
+                { name: 'Acceleration', eq: 'a = (v - u) / t' },
+                { name: 'Force', eq: 'F = m × a' },
+                { name: 'Weight', eq: 'W = m × g' },
+                { name: 'Work', eq: 'W = F × d' },
+                { name: 'Power', eq: 'P = W / t' },
+                { name: 'Kinetic Energy', eq: 'KE = ½mv²' },
+                { name: 'Potential Energy', eq: 'PE = mgh' },
+                { name: 'Pressure', eq: 'P = F / A' },
+                { name: 'Density', eq: 'ρ = m / V' },
+                { name: 'Momentum', eq: 'p = m × v' },
+                { name: 'Ohm\'s Law', eq: 'V = I × R' }
+            ],
+            chemistry: [
+                { name: 'Moles', eq: 'n = m / M' },
+                { name: 'Concentration', eq: 'C = n / V' },
+                { name: 'Dilution', eq: 'C₁V₁ = C₂V₂' },
+                { name: 'Percent Composition', eq: '% = (mass part / total) × 100' },
+                { name: 'Ideal Gas', eq: 'PV = nRT' },
+                { name: 'pH', eq: 'pH = -log[H⁺]' },
+                { name: 'Density', eq: 'D = m / V' },
+                { name: 'Rate of Reaction', eq: 'Rate = Δ[conc] / Δt' }
+            ],
+            biology: [
+                { name: 'Photosynthesis', eq: '6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂' },
+                { name: 'Respiration', eq: 'C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + ATP' },
+                { name: 'Magnification', eq: 'M = Image size / Actual size' },
+                { name: 'BMI', eq: 'BMI = weight(kg) / height²(m)' },
+                { name: 'Heart Rate', eq: 'Max HR = 220 - age' },
+                { name: 'Genetics Ratio', eq: 'Punnet Square 3:1 dominant' }
+            ],
+            math: [
+                { name: 'Area (Rectangle)', eq: 'A = l × w' },
+                { name: 'Area (Circle)', eq: 'A = πr²' },
+                { name: 'Area (Triangle)', eq: 'A = ½ × b × h' },
+                { name: 'Circumference', eq: 'C = 2πr' },
+                { name: 'Volume (Cube)', eq: 'V = s³' },
+                { name: 'Volume (Cylinder)', eq: 'V = πr²h' },
+                { name: 'Pythagoras', eq: 'a² + b² = c²' },
+                { name: 'Quadratic', eq: 'x = (-b ± √(b²-4ac)) / 2a' },
+                { name: 'Slope', eq: 'm = (y₂ - y₁) / (x₂ - x₁)' },
+                { name: 'Percentage', eq: '% = (part / whole) × 100' }
+            ]
+        };
+
+        function openFormulaSheet() {
+            document.getElementById('formula-modal').style.display = 'flex';
+            loadFormulas();
+        }
+
+        function closeFormulaSheet() {
+            document.getElementById('formula-modal').style.display = 'none';
+        }
+
+        function loadFormulas() {
+            const category = document.getElementById('formula-category-select').value;
+            const list = document.getElementById('formula-list');
+            const categoryFormulas = formulas[category];
+
+            list.innerHTML = `
+                <div class="formula-category">
+                    ${categoryFormulas.map(f => `
+                        <div class="formula-item">
+                            <span class="formula-name">${f.name}</span>
+                            <span class="formula-equation">${f.eq}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Question Archive
+        const archiveQuestions = [
+            { date: 'Jan 13', q: 'What is the powerhouse of the cell?', answer: 'Mitochondria', status: 'correct' },
+            { date: 'Jan 12', q: 'What is the chemical symbol for gold?', answer: 'Au', status: 'correct' },
+            { date: 'Jan 11', q: 'What planet is known as the Red Planet?', answer: 'Mars', status: 'wrong' },
+            { date: 'Jan 10', q: 'What is the speed of light in a vacuum?', answer: '300,000 km/s', status: 'correct' },
+            { date: 'Jan 9', q: 'What is the hardest natural substance?', answer: 'Diamond', status: 'unanswered' },
+            { date: 'Jan 8', q: 'Which gas do plants absorb?', answer: 'Carbon dioxide', status: 'correct' },
+            { date: 'Jan 7', q: 'What is the largest organ in the human body?', answer: 'Skin', status: 'correct' },
+            { date: 'Jan 6', q: 'What is H2O commonly known as?', answer: 'Water', status: 'correct' },
+            { date: 'Jan 5', q: 'Which planet has the most moons?', answer: 'Saturn', status: 'wrong' },
+            { date: 'Jan 4', q: 'What type of energy does the Sun produce?', answer: 'Nuclear', status: 'correct' }
+        ];
+
+        function openArchive() {
+            document.getElementById('archive-modal').style.display = 'flex';
+            renderArchive();
+        }
+
+        function closeArchive() {
+            document.getElementById('archive-modal').style.display = 'none';
+        }
+
+        function renderArchive() {
+            const list = document.getElementById('archive-list');
+            list.innerHTML = archiveQuestions.map(q => `
+                <div class="archive-question" onclick="showArchiveAnswer('${q.q}', '${q.answer}')">
+                    <div class="archive-question-date">${q.date}</div>
+                    <div class="archive-question-text">${q.q}</div>
+                    <div class="archive-question-status ${q.status}">
+                        ${q.status === 'correct' ? '✓ Answered correctly' : q.status === 'wrong' ? '✗ Answered incorrectly' : '○ Not attempted'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showArchiveAnswer(question, answer) {
+            alert(`Question: ${question}\n\nAnswer: ${answer}`);
+        }
+
+        console.log('📝 Quick Notes, Formula Sheet, and Question Archive loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
