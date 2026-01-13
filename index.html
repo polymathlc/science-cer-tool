@@ -235,6 +235,134 @@
             transform: scale(0.95);
         }
 
+        /* Tooltip System */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0.8) translateY(-5px);
+            transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 250px;
+            white-space: normal;
+            line-height: 1.4;
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+        }
+
+        /* Tooltip positioning */
+        .tooltip-top {
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.8) translateY(-5px);
+        }
+
+        .tooltip-top::before {
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-top-color: #333;
+        }
+
+        .tooltip-bottom {
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.8) translateY(5px);
+        }
+
+        .tooltip-bottom::before {
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom-color: #333;
+        }
+
+        .tooltip-left {
+            right: calc(100% + 10px);
+            top: 50%;
+            transform: translateY(-50%) scale(0.8) translateX(-5px);
+        }
+
+        .tooltip-left::before {
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left-color: #333;
+        }
+
+        .tooltip-right {
+            left: calc(100% + 10px);
+            top: 50%;
+            transform: translateY(-50%) scale(0.8) translateX(5px);
+        }
+
+        .tooltip-right::before {
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border-right-color: #333;
+        }
+
+        .tooltip.show {
+            opacity: 1 !important;
+            animation: tooltipPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .tooltip-top.show {
+            transform: translateX(-50%) scale(1) translateY(0) !important;
+        }
+
+        .tooltip-bottom.show {
+            transform: translateX(-50%) scale(1) translateY(0) !important;
+            animation: tooltipPopBottom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes tooltipPop {
+            0% {
+                transform: translateX(-50%) scale(0.8) translateY(-5px);
+                opacity: 0;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.05) translateY(0);
+            }
+            100% {
+                transform: translateX(-50%) scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes tooltipPopBottom {
+            0% {
+                transform: translateX(-50%) scale(0.8) translateY(5px);
+                opacity: 0;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.05) translateY(0);
+            }
+            100% {
+                transform: translateX(-50%) scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
         .question-container {
             margin-bottom: 3rem;
             position: relative;
@@ -4351,21 +4479,21 @@
                 <div style="display: flex; align-items: center; gap: 0.8rem;">
                     <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
                         alt="Polymath Logo" class="app-logo">
-                    <button class="print-btn" onclick="printAll()">🖨️ Print All</button>
+                    <button class="print-btn tooltip-container" onclick="printAll()" data-tooltip="Print the current page or worksheet">🖨️ Print All</button>
                 </div>
                 <div class="header-icons">
-                    <button class="header-icon-btn hidden" onclick="switchTab('flagged', this)" title="Flagged Questions" id="header-flagged-btn">
+                    <button class="header-icon-btn tooltip-container hidden" onclick="switchTab('flagged', this)" data-tooltip="View questions that have been flagged for review (Admin only)" id="header-flagged-btn">
                         🚩
                         <span id="header-flagged-badge" class="header-icon-badge" style="display: none;">0</span>
                     </button>
-                    <button class="header-icon-btn" onclick="switchTab('inbox', this)" title="Inbox" id="header-inbox-btn">
+                    <button class="header-icon-btn tooltip-container" onclick="switchTab('inbox', this)" data-tooltip="View messages and notifications from teachers" id="header-inbox-btn">
                         📬
                         <span id="header-inbox-badge" class="header-icon-badge" style="display: none;">0</span>
                     </button>
-                    <button class="header-icon-btn" onclick="showAccountSettings()" title="Account Settings" id="header-settings-btn">
+                    <button class="header-icon-btn tooltip-container" onclick="showAccountSettings()" data-tooltip="Access account settings and preferences" id="header-settings-btn">
                         ⚙️
                     </button>
-                    <button class="tutorial-help-btn" onclick="startTutorial()" title="Help & Tutorial" id="header-tutorial-btn" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-blue); color: white; border: none; font-size: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3); transition: all 0.3s;">
+                    <button class="tutorial-help-btn tooltip-container" onclick="startTutorial()" data-tooltip="Click to view a comprehensive tutorial covering all features of the app" id="header-tutorial-btn" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-blue); color: white; border: none; font-size: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3); transition: all 0.3s;">
                         ?
                     </button>
                 </div>
@@ -4379,17 +4507,17 @@
                         <span class="nav-arrow" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
                     </button>
                     <div class="nav-dropdown" id="practice-dropdown" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 220px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
-                        <button class="nav-dropdown-item" onclick="switchTab('practice', this)" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
+                        <button class="nav-dropdown-item tooltip-container" onclick="switchTab('practice', this)" data-tooltip="Practice mode - work through questions at your own pace" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>🎯</span> Practice Mode
                         </button>
-                        <button class="nav-dropdown-item" onclick="switchTab('worksheet', this)" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;">
+                        <button class="nav-dropdown-item tooltip-container" onclick="switchTab('worksheet', this)" data-tooltip="My Worksheet - view and manage your practice questions" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; justify-content: space-between;">
                             <span style="display: flex; align-items: center; gap: 10px;"><span>📝</span> My Worksheet</span>
                             <span id="worksheet-count-header" style="background: var(--primary-blue); color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">0</span>
                         </button>
-                        <button class="nav-dropdown-item" onclick="switchTab('saved-worksheets', this)" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
+                        <button class="nav-dropdown-item tooltip-container" onclick="switchTab('saved-worksheets', this)" data-tooltip="Access your previously saved worksheets" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>📚</span> Saved Worksheets
                         </button>
-                        <button class="nav-dropdown-item" onclick="switchTab('question-list', this)" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
+                        <button class="nav-dropdown-item tooltip-container" onclick="switchTab('question-list', this)" data-tooltip="Question Library - browse and search all available questions" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>📚</span> Question Library
                         </button>
                     </div>
@@ -4401,10 +4529,10 @@
                         <span class="nav-arrow" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
                     </button>
                     <div class="nav-dropdown" id="progress-dropdown" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 200px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
-                        <button class="nav-dropdown-item" onclick="switchTab('my-progress', this)" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
+                        <button class="nav-dropdown-item tooltip-container" onclick="switchTab('my-progress', this)" data-tooltip="View your learning progress and mastery statistics" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>📈</span> My Progress
                         </button>
-                        <button class="nav-dropdown-item" onclick="switchTab('leaderboard', this)" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
+                        <button class="nav-dropdown-item tooltip-container" onclick="switchTab('leaderboard', this)" data-tooltip="See how you rank among other students" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>🏆</span> Leaderboard
                         </button>
                     </div>
@@ -4416,7 +4544,7 @@
                         <span class="nav-arrow" style="font-size: 10px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">▼</span>
                     </button>
                     <div class="nav-dropdown" id="learn-dropdown" style="position: absolute; top: calc(100% + 4px); left: 0; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 8px; min-width: 180px; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000;">
-                        <button class="nav-dropdown-item" onclick="switchTab('lessons', this)" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
+                        <button class="nav-dropdown-item tooltip-container" onclick="switchTab('lessons', this)" data-tooltip="Watch video lessons and complete practice questions" style="width: 100%; padding: 12px 16px; text-align: left; background: none; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--main-text); transition: background 0.2s; display: flex; align-items: center; gap: 10px;">
                             <span>🎓</span> Lessons
                         </button>
                     </div>
@@ -4488,7 +4616,7 @@
                     <div id="login-days-display">📅 Loading Streak...</div>
                     
                     <!-- Animated Practice Mode Button -->
-                    <button id="btn-sidebar-practice" class="practice-btn-animated" onclick="switchTab('practice', this)">
+                    <button id="btn-sidebar-practice" class="practice-btn-animated tooltip-container" onclick="switchTab('practice', this)" data-tooltip="Enter practice mode to work through questions at your own pace">
                         <span class="practice-btn-icon">🎯</span>
                         <span class="practice-btn-text">Practice Mode</span>
                         <span class="practice-btn-sparkle">✨</span>
@@ -4497,7 +4625,7 @@
                     <!-- iOS-style OEQ/MCQ Toggle -->
                     <div class="ios-toggle-container">
                         <span class="ios-toggle-label">OEQ</span>
-                        <div class="ios-toggle" id="mode-toggle" onclick="toggleMode()">
+                        <div class="ios-toggle tooltip-container" id="mode-toggle" onclick="toggleMode()" data-tooltip="Switch between OEQ (Open-Ended Questions) and MCQ (Multiple Choice Questions) modes">
                             <div class="ios-toggle-track">
                                 <div class="ios-toggle-thumb" id="toggle-thumb"></div>
                             </div>
@@ -4522,41 +4650,41 @@
                 
                 <!-- BOTTOM SECTION: Navigation Buttons -->
                 <div class="sidebar-nav-section">
-                    <button id="btn-sidebar-admin" class="hidden sidebar-nav-btn admin-btn" onclick="switchTab('admin', this)">
+                    <button id="btn-sidebar-admin" class="hidden sidebar-nav-btn admin-btn tooltip-container" onclick="switchTab('admin', this)" data-tooltip="Access admin panel to manage questions and view student data (Admin only)">
                         🛠️ Admin Mode
                     </button>
 
-                    <button id="btn-sidebar-progress" class="hidden sidebar-nav-btn progress-btn" onclick="switchTab('student-progress', this)">
+                    <button id="btn-sidebar-progress" class="hidden sidebar-nav-btn progress-btn tooltip-container" onclick="switchTab('student-progress', this)" data-tooltip="View detailed progress for all students (Admin only)">
                         📊 Student Progress
                     </button>
 
-                    <button id="btn-sidebar-leaderboard" class="sidebar-nav-btn" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: white;" onclick="switchTab('leaderboard', this)">
+                    <button id="btn-sidebar-leaderboard" class="sidebar-nav-btn tooltip-container" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: white;" onclick="switchTab('leaderboard', this)" data-tooltip="See rankings and compare your performance with other students">
                         🏆 Leaderboard
                     </button>
 
-                    <button id="btn-sidebar-my-progress" class="sidebar-nav-btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;" onclick="switchTab('my-progress', this)">
+                    <button id="btn-sidebar-my-progress" class="sidebar-nav-btn tooltip-container" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;" onclick="switchTab('my-progress', this)" data-tooltip="Track your learning progress, mastery percentages, and improvement over time">
                         📈 My Progress
                     </button>
 
-                    <button id="btn-sidebar-worksheet" class="sidebar-nav-btn worksheet-btn" onclick="switchTab('worksheet', this)">
+                    <button id="btn-sidebar-worksheet" class="sidebar-nav-btn worksheet-btn tooltip-container" onclick="switchTab('worksheet', this)" data-tooltip="View and manage your collection of practice questions">
                         📝 My Worksheet <span id="worksheet-count" class="worksheet-badge">0</span>
                     </button>
 
-                    <button id="btn-sidebar-saved-worksheets" class="sidebar-nav-btn saved-btn" onclick="switchTab('saved-worksheets', this)">
+                    <button id="btn-sidebar-saved-worksheets" class="sidebar-nav-btn saved-btn tooltip-container" onclick="switchTab('saved-worksheets', this)" data-tooltip="Access previously saved worksheets for review">
                         📚 Saved Worksheets
                     </button>
 
-                    <button id="btn-sidebar-lessons" class="sidebar-nav-btn lessons-btn" onclick="switchTab('lessons', this)">
+                    <button id="btn-sidebar-lessons" class="sidebar-nav-btn lessons-btn tooltip-container" onclick="switchTab('lessons', this)" data-tooltip="Browse video lessons with practice questions">
                         🎓 Lessons
                     </button>
 
-                    <button id="btn-sidebar-question-list" class="sidebar-nav-btn" style="background: linear-gradient(135deg, #9c27b0, #673ab7); color: white;" onclick="switchTab('question-list', this)">
+                    <button id="btn-sidebar-question-list" class="sidebar-nav-btn tooltip-container" style="background: linear-gradient(135deg, #9c27b0, #673ab7); color: white;" onclick="switchTab('question-list', this)" data-tooltip="Browse and search all available questions in the library">
                         📚 Question Library
                     </button>
                     
                     <!-- Tutorial button moved to header -->
                     
-                    <button onclick="handleLogout()" class="logout-btn">🚪 Logout</button>
+                    <button onclick="handleLogout()" class="logout-btn tooltip-container" data-tooltip="Sign out of your account">🚪 Logout</button>
                 </div>
 
                 <div id="oeq-sidebar-content">
@@ -5430,9 +5558,30 @@
                 <!-- LEADERBOARD VIEW -->
                 <div id="view-leaderboard" class="view-content hidden" style="flex: 1;">
                     <div style="max-width: 1000px; margin: 0 auto; padding: 2rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                             <h2 style="margin: 0; background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🏆 Student Leaderboard</h2>
-                            <button class="btn" style="background: #1976d2; color: white;" onclick="loadLeaderboard()">🔄 Refresh</button>
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <button class="btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);" onclick="switchTab('practice', this)" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'">
+                                    🎯 Practice Now
+                                </button>
+                                <button class="btn" style="background: #1976d2; color: white;" onclick="loadLeaderboard()">🔄 Refresh</button>
+                            </div>
+                        </div>
+
+                        <!-- Leaderboard Info Box -->
+                        <div style="background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); border-left: 4px solid #667eea; border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="font-size: 1.5rem; line-height: 1;">ℹ️</div>
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: #333; font-weight: 600;">How the Leaderboard Works</h3>
+                                    <p style="margin: 0; font-size: 0.9rem; color: #555; line-height: 1.6;">
+                                        Your ranking is based on your <strong>rating</strong>, which changes when you answer questions in <strong>Practice Mode</strong>. 
+                                        Answering questions correctly increases your rating, while incorrect answers decrease it. 
+                                        The leaderboard shows your current rating, improvement score, and total attempts. 
+                                        <strong>Only practice mode activities count towards your leaderboard ranking.</strong>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
                         <div id="leaderboard-container">
@@ -17062,6 +17211,11 @@
                         window.updateTabCounts();
                     }
                     
+                    // Initialize tooltips
+                    if (window.initTooltips) {
+                        initTooltips();
+                    }
+                    
                     // Start checking for updates
                     window.startUpdateChecker();
                     
@@ -17406,120 +17560,9 @@
         // Initialize tutorial
         window.tutorialState.steps = tutorialSteps;
 
-        // Get context-aware tutorial steps based on current page
-        function getContextualTutorialSteps() {
-            const currentTab = window.currentActiveTab || '';
-            const currentMode = window.currentMode || 'oeq';
-            
-            // Map tabs to relevant tutorial steps
-            const contextualSteps = {
-                'worksheet': [
-                    {
-                        title: "My Worksheet 📝",
-                        content: "Your worksheet is where you collect questions to practice. You can: print your worksheet, save it for later, or remove questions. The badge shows how many questions you have. Use the 'Add to Worksheet' button on any question to add it here.",
-                        highlight: "#view-worksheet",
-                        action: null
-                    },
-                    {
-                        title: "Adding Questions ➕",
-                        content: "To add questions to your worksheet: 1) Find a question you want to practice, 2) Click the '➕ Add to Worksheet' button on the question, 3) The question will be saved to your worksheet. You can add multiple questions and practice them all together.",
-                        highlight: ".btn-worksheet-add",
-                        action: null
-                    }
-                ],
-                'my-progress': [
-                    {
-                        title: "My Progress 📈",
-                        content: "Track your learning progress! This page shows: your overall success rate, topic mastery percentages, questions that need more practice, and your rating. This helps you identify areas to focus on.",
-                        highlight: "#view-my-progress",
-                        action: null
-                    },
-                    {
-                        title: "Understanding Your Progress",
-                        content: "The progress page displays: mastery percentages for each topic (green = mastered, yellow = in progress, red = needs work), your overall success rate, questions you've attempted, and your current rating. Use this to focus your study efforts!",
-                        highlight: null,
-                        action: null
-                    }
-                ],
-                'leaderboard': [
-                    {
-                        title: "Leaderboard 🏆",
-                        content: "See how you rank among other students! The leaderboard shows: student rankings by rating, improvement scores, total attempts, and top performers. Admins can click on student names to view their detailed progress.",
-                        highlight: "#view-leaderboard",
-                        action: null
-                    }
-                ],
-                'question-list': [
-                    {
-                        title: "Question Library 📚",
-                        content: "Browse all available questions in the Question Library! Features include: sortable columns (click headers to sort), filters by topic and level, search functionality, checkboxes to select multiple questions, and 'Add to Worksheet' button for bulk adding.",
-                        highlight: "#view-question-list",
-                        action: null
-                    },
-                    {
-                        title: "Using Filters & Search 🔍",
-                        content: "Find questions quickly! You can: filter by topic using the dropdown, filter by level (P3-P6), search by typing keywords in the search box, and sort by clicking column headers. This makes it easy to find exactly what you need!",
-                        highlight: null,
-                        action: null
-                    }
-                ],
-                'lessons': [
-                    {
-                        title: "Lessons 🎓",
-                        content: "Learn from video lessons! Each lesson includes: a video explanation, related practice questions, and progress tracking. Complete lessons to improve your understanding.",
-                        highlight: "#view-lessons",
-                        action: null
-                    }
-                ],
-                'practice': [
-                    {
-                        title: "Practice Mode 🎯",
-                        content: "Practice mode lets you work through questions at your own pace. You can switch between OEQ and MCQ modes, select topics, and track your progress as you practice.",
-                        highlight: "#view-practice",
-                        action: null
-                    }
-                ]
-            };
-            
-            // Check if we're on an OEQ topic page
-            const oeqTabs = ['cer', 'definition', 'single-relationship', 'double-relationship', 'fairness', 'reliability', 'accuracy', 'constant-variable', 'explanation', 'control-setup'];
-            if (oeqTabs.includes(currentTab)) {
-                return [
-                    {
-                        title: `Answering ${currentTab.charAt(0).toUpperCase() + currentTab.slice(1)} Questions ✍️`,
-                        content: "For Open-Ended Questions (OEQ): 1) Read the question and instructions carefully, 2) Type your answer in the text input fields provided, 3) Click 'Submit' to check your answer. You'll see feedback showing which parts are correct.",
-                        highlight: ".answer-template",
-                        action: null
-                    },
-                    {
-                        title: "Adding to Worksheet ➕",
-                        content: "You can add this question to your worksheet for later practice by clicking the '➕ Add to Worksheet' button. This saves the question so you can practice it again anytime.",
-                        highlight: ".btn-worksheet-add",
-                        action: null
-                    }
-                ];
-            }
-            
-            // Check if we're in MCQ mode
-            if (currentMode === 'mcq') {
-                return [
-                    {
-                        title: "Answering MCQ Questions 📝",
-                        content: "For Multiple Choice Questions (MCQ): 1) Read the question carefully, 2) Click on one of the answer options (A, B, C, or D), 3) Click 'Check Answer' to see if you're correct. The correct answer will be highlighted in green, and incorrect answers in red.",
-                        highlight: ".mcq-container",
-                        action: null
-                    }
-                ];
-            }
-            
-            // Return contextual steps if available, otherwise return general steps
-            return contextualSteps[currentTab] || tutorialSteps;
-        }
-
-        // Start tutorial - context-aware
+        // Start tutorial - shows all functions
         window.startTutorial = function() {
-            const contextualSteps = getContextualTutorialSteps();
-            window.tutorialState.steps = contextualSteps;
+            window.tutorialState.steps = tutorialSteps;
             window.tutorialState.currentStep = 0;
             showTutorialStep(0);
         };
@@ -17676,6 +17719,171 @@
             }
         `;
         document.head.appendChild(tutorialStyle);
+
+        // =====================================================
+        // TOOLTIP SYSTEM
+        // =====================================================
+
+        // Tooltip descriptions for buttons
+        const tooltipDescriptions = {
+            'header-tutorial-btn': 'Click to view a comprehensive tutorial covering all features of the app',
+            'header-inbox-btn': 'View messages and notifications from teachers',
+            'header-flagged-btn': 'View questions that have been flagged for review (Admin only)',
+            'header-settings-btn': 'Access account settings and preferences',
+            'print-btn': 'Print the current page or worksheet',
+            'btn-sidebar-practice': 'Enter practice mode to work through questions at your own pace',
+            'mode-toggle': 'Switch between OEQ (Open-Ended Questions) and MCQ (Multiple Choice Questions) modes',
+            'exam-mode-toggle': 'Toggle exam mode for a distraction-free testing environment',
+            'btn-sidebar-admin': 'Access admin panel to manage questions and view student data (Admin only)',
+            'btn-sidebar-progress': 'View detailed progress for all students (Admin only)',
+            'btn-sidebar-leaderboard': 'See rankings and compare your performance with other students',
+            'btn-sidebar-my-progress': 'Track your learning progress, mastery percentages, and improvement over time',
+            'btn-sidebar-worksheet': 'View and manage your collection of practice questions',
+            'btn-sidebar-saved-worksheets': 'Access previously saved worksheets for review',
+            'btn-sidebar-lessons': 'Browse video lessons with practice questions',
+            'btn-sidebar-question-list': 'Browse and search all available questions in the library',
+            'logout-btn': 'Sign out of your account',
+            'practice': 'Practice mode - work through questions at your own pace',
+            'worksheet': 'My Worksheet - view and manage your practice questions',
+            'saved-worksheets': 'Access your previously saved worksheets',
+            'question-list': 'Question Library - browse and search all available questions',
+            'my-progress': 'View your learning progress and mastery statistics',
+            'leaderboard': 'See how you rank among other students',
+            'lessons': 'Watch video lessons and complete practice questions'
+        };
+
+        // Initialize tooltips
+        window.initTooltips = function() {
+            // Add tooltips to all buttons with data-tooltip or matching IDs
+            document.querySelectorAll('button, .nav-group-btn, .nav-dropdown-item, .tab-btn').forEach(button => {
+                const id = button.id;
+                const text = button.textContent.trim();
+                const onclick = button.getAttribute('onclick');
+                
+                // Get tooltip text
+                let tooltipText = tooltipDescriptions[id];
+                
+                // Check for navigation items
+                if (!tooltipText && onclick) {
+                    if (onclick.includes("switchTab('practice'")) tooltipText = tooltipDescriptions['practice'];
+                    else if (onclick.includes("switchTab('worksheet'")) tooltipText = tooltipDescriptions['worksheet'];
+                    else if (onclick.includes("switchTab('saved-worksheets'")) tooltipText = tooltipDescriptions['saved-worksheets'];
+                    else if (onclick.includes("switchTab('question-list'")) tooltipText = tooltipDescriptions['question-list'];
+                    else if (onclick.includes("switchTab('my-progress'")) tooltipText = tooltipDescriptions['my-progress'];
+                    else if (onclick.includes("switchTab('leaderboard'")) tooltipText = tooltipDescriptions['leaderboard'];
+                    else if (onclick.includes("switchTab('lessons'")) tooltipText = tooltipDescriptions['lessons'];
+                }
+                
+                // Check for mode toggle
+                if (!tooltipText && (id === 'mode-toggle' || onclick?.includes('toggleMode'))) {
+                    tooltipText = tooltipDescriptions['mode-toggle'];
+                }
+                
+                // Check for exam mode toggle
+                if (!tooltipText && (id === 'exam-mode-toggle' || onclick?.includes('toggleExamMode'))) {
+                    tooltipText = tooltipDescriptions['exam-mode-toggle'];
+                }
+                
+                if (tooltipText) {
+                    button.setAttribute('data-tooltip', tooltipText);
+                    button.classList.add('tooltip-container');
+                }
+            });
+        }
+
+        // Show tooltip
+        function showTooltip(element, text) {
+            // Remove existing tooltip
+            const existing = document.querySelector('.tooltip');
+            if (existing) {
+                existing.remove();
+            }
+
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip tooltip-top';
+            tooltip.textContent = text;
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.opacity = '0';
+            
+            document.body.appendChild(tooltip);
+            
+            // Position tooltip
+            const rect = element.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            // Determine position (prefer top, but use bottom if not enough space)
+            let position = 'top';
+            if (rect.top < tooltipRect.height + 30) {
+                position = 'bottom';
+                tooltip.className = 'tooltip tooltip-bottom';
+            }
+            
+            // Adjust horizontal position
+            const left = rect.left + (rect.width / 2);
+            tooltip.style.left = left + 'px';
+            
+            if (position === 'top') {
+                tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
+            } else {
+                tooltip.style.top = (rect.bottom + 10) + 'px';
+            }
+            
+            tooltip.style.visibility = 'visible';
+            
+            // Show with animation after a brief delay
+            setTimeout(() => {
+                tooltip.classList.add('show');
+            }, 50);
+        }
+
+        // Hide tooltip
+        function hideTooltip() {
+            const tooltip = document.querySelector('.tooltip');
+            if (tooltip) {
+                tooltip.classList.remove('show');
+                setTimeout(() => {
+                    tooltip.remove();
+                }, 200);
+            }
+        }
+
+        // Add tooltip event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            initTooltips();
+            
+            let tooltipTimeout;
+            
+            document.addEventListener('mouseenter', (e) => {
+                const element = e.target.closest('[data-tooltip]');
+                if (element) {
+                    const text = element.getAttribute('data-tooltip');
+                    if (text) {
+                        // 1 second delay before showing tooltip
+                        tooltipTimeout = setTimeout(() => {
+                            showTooltip(element, text);
+                        }, 1000);
+                    }
+                }
+            }, true);
+            
+            document.addEventListener('mouseleave', (e) => {
+                const element = e.target.closest('[data-tooltip]');
+                if (element) {
+                    clearTimeout(tooltipTimeout);
+                    hideTooltip();
+                }
+            }, true);
+        });
+
+        // Re-initialize tooltips after dynamic content loads
+        const originalSwitchTab = window.switchTab;
+        window.switchTab = function(...args) {
+            const result = originalSwitchTab.apply(this, args);
+            setTimeout(() => {
+                initTooltips();
+            }, 100);
+            return result;
+        };
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
