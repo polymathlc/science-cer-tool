@@ -5801,6 +5801,121 @@
                             </div>
                         </div>
 
+                        <!-- 🎁 PRIZE DRAW SECTION -->
+                        <div id="prize-draw-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4); position: relative; overflow: hidden;">
+                            <!-- Animated background sparkles -->
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); opacity: 0.5; pointer-events: none;"></div>
+
+                            <div style="position: relative; z-index: 1;">
+                                <!-- Header -->
+                                <div style="text-align: center; margin-bottom: 1.5rem;">
+                                    <div style="display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 50px; padding: 8px 24px; margin-bottom: 1rem;">
+                                        <span style="color: #FFD700; font-size: 1.5rem; animation: pulse 2s infinite;">🎉</span>
+                                        <span style="color: white; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;">Lucky Draw Event</span>
+                                        <span style="color: #FFD700; font-size: 1.5rem; animation: pulse 2s infinite;">🎉</span>
+                                    </div>
+                                    <h2 style="color: white; font-size: 2rem; margin: 0 0 0.5rem 0; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">🎁 Grand Prize Draw!</h2>
+                                    <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin: 0;">Win amazing prizes just by learning!</p>
+                                </div>
+
+                                <!-- Countdown Timer -->
+                                <div style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; text-align: center;">
+                                    <p style="color: rgba(255,255,255,0.8); margin: 0 0 0.75rem 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">⏰ Draw Date: January 15, 2026</p>
+                                    <div id="prize-countdown" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                                        <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 20px; min-width: 80px;">
+                                            <div id="countdown-days" style="color: #FFD700; font-size: 2rem; font-weight: 800; line-height: 1;">--</div>
+                                            <div style="color: rgba(255,255,255,0.8); font-size: 0.75rem; text-transform: uppercase;">Days</div>
+                                        </div>
+                                        <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 20px; min-width: 80px;">
+                                            <div id="countdown-hours" style="color: #FFD700; font-size: 2rem; font-weight: 800; line-height: 1;">--</div>
+                                            <div style="color: rgba(255,255,255,0.8); font-size: 0.75rem; text-transform: uppercase;">Hours</div>
+                                        </div>
+                                        <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 20px; min-width: 80px;">
+                                            <div id="countdown-mins" style="color: #FFD700; font-size: 2rem; font-weight: 800; line-height: 1;">--</div>
+                                            <div style="color: rgba(255,255,255,0.8); font-size: 0.75rem; text-transform: uppercase;">Mins</div>
+                                        </div>
+                                        <div style="background: rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 20px; min-width: 80px;">
+                                            <div id="countdown-secs" style="color: #FFD700; font-size: 2rem; font-weight: 800; line-height: 1;">--</div>
+                                            <div style="color: rgba(255,255,255,0.8); font-size: 0.75rem; text-transform: uppercase;">Secs</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Winner Announcement (hidden by default, shown after draw) -->
+                                <div id="prize-winner-announcement" style="display: none; background: linear-gradient(135deg, #FFD700, #FFA500); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center;">
+                                    <h3 style="color: #333; margin: 0 0 0.5rem 0; font-size: 1.5rem;">🎊 Congratulations! 🎊</h3>
+                                    <p style="color: #333; margin: 0; font-size: 1.1rem;">Winner: <strong id="winner-name">---</strong></p>
+                                    <p style="color: #555; margin: 0.5rem 0 0 0; font-size: 0.9rem;">Thank you to all participants!</p>
+                                </div>
+
+                                <!-- Prizes Display -->
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                                    <!-- Prize 1: Popular Voucher -->
+                                    <div style="background: white; border-radius: 16px; padding: 1.5rem; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.15); transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.15)'">
+                                        <div style="background: linear-gradient(135deg, #FF6B6B, #ee5a24); color: white; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 1rem; text-transform: uppercase;">Prize Option 1</div>
+                                        <img src="https://www.dropbox.com/scl/fi/e7u3u8hx9rrnmfd33ypzm/popular-voucher.png?rlkey=8yoay1qitlu73vh21zuuznyoy&raw=1" alt="Popular $30 Voucher" style="width: 100%; max-width: 200px; height: 120px; object-fit: contain; margin-bottom: 1rem; border-radius: 8px;">
+                                        <h4 style="color: #333; margin: 0 0 0.5rem 0; font-size: 1.2rem;">$30 Popular Voucher</h4>
+                                        <p style="color: #666; margin: 0; font-size: 0.85rem;">Get books, stationery & more!</p>
+                                    </div>
+
+                                    <!-- Prize 2: Roblox Gift Card -->
+                                    <div style="background: white; border-radius: 16px; padding: 1.5rem; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.15); transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.15)'">
+                                        <div style="background: linear-gradient(135deg, #00b894, #00cec9); color: white; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 1rem; text-transform: uppercase;">Prize Option 2</div>
+                                        <img src="https://www.dropbox.com/scl/fi/mc75afi4leil0ohgfmicm/roblox_30_gift_card_1725114732_880fb481_progressive.jpg?rlkey=imkwpncqglevmw9i2caklq8gd&raw=1" alt="Roblox $30 Gift Card" style="width: 100%; max-width: 200px; height: 120px; object-fit: contain; margin-bottom: 1rem; border-radius: 8px;">
+                                        <h4 style="color: #333; margin: 0 0 0.5rem 0; font-size: 1.2rem;">$30 Roblox Gift Card</h4>
+                                        <p style="color: #666; margin: 0; font-size: 0.85rem;">Get Robux for your favourite games!</p>
+                                    </div>
+                                </div>
+
+                                <!-- Your Tickets Section -->
+                                <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                        <div>
+                                            <h4 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.1rem;">🎟️ Your Lucky Draw Tickets</h4>
+                                            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.85rem;">More tickets = Higher chance to win!</p>
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <div id="user-ticket-count" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; font-size: 2.5rem; font-weight: 800; padding: 10px 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(255,215,0,0.4);">0</div>
+                                            <div style="color: rgba(255,255,255,0.9); font-size: 0.8rem; margin-top: 4px;">TICKETS</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- How to Earn Tickets -->
+                                <div style="background: rgba(255,255,255,0.95); border-radius: 16px; padding: 1.5rem;">
+                                    <h4 style="color: #333; margin: 0 0 1rem 0; font-size: 1.1rem; text-align: center;">🚀 How to Earn More Tickets</h4>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                        <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 1rem; border-radius: 12px; text-align: center;">
+                                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔥</div>
+                                            <div style="font-weight: 700; color: #2e7d32; font-size: 0.95rem;">Login Streak</div>
+                                            <div style="color: #555; font-size: 0.8rem;">+1 ticket per streak day</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); padding: 1rem; border-radius: 12px; text-align: center;">
+                                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⭐</div>
+                                            <div style="font-weight: 700; color: #1565c0; font-size: 0.95rem;">Rating Points</div>
+                                            <div style="color: #555; font-size: 0.8rem;">+1 ticket per 100 rating</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 1rem; border-radius: 12px; text-align: center;">
+                                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">✅</div>
+                                            <div style="font-weight: 700; color: #e65100; font-size: 0.95rem;">Correct Answers</div>
+                                            <div style="color: #555; font-size: 0.8rem;">+1 ticket per 10 correct</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #fce4ec, #f8bbd9); padding: 1rem; border-radius: 12px; text-align: center;">
+                                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📅</div>
+                                            <div style="font-weight: 700; color: #c2185b; font-size: 0.95rem;">Total Login Days</div>
+                                            <div style="color: #555; font-size: 0.8rem;">+1 ticket per 3 days</div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center; margin-top: 1.25rem;">
+                                        <button onclick="switchTab('practice', this)" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 14px 32px; border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(102,126,234,0.4); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px) scale(1.02)'; this.style.boxShadow='0 6px 20px rgba(102,126,234,0.5)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 15px rgba(102,126,234,0.4)'">
+                                            🎯 Start Practicing to Earn Tickets!
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END PRIZE DRAW SECTION -->
+
                         <!-- Leaderboard Info Box -->
                         <div style="background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); border-left: 4px solid #667eea; border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
                             <div style="display: flex; align-items: flex-start; gap: 12px;">
@@ -5808,9 +5923,9 @@
                                 <div style="flex: 1;">
                                     <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: #333; font-weight: 600;">How the Leaderboard Works</h3>
                                     <p style="margin: 0; font-size: 0.9rem; color: #555; line-height: 1.6;">
-                                        Your ranking is based on your <strong>rating</strong>, which changes when you answer questions in <strong>Practice Mode</strong>. 
-                                        Answering questions correctly increases your rating, while incorrect answers decrease it. 
-                                        The leaderboard shows your current rating, improvement score, and total attempts. 
+                                        Your ranking is based on your <strong>rating</strong>, which changes when you answer questions in <strong>Practice Mode</strong>.
+                                        Answering questions correctly increases your rating, while incorrect answers decrease it.
+                                        The leaderboard shows your current rating, improvement score, and total attempts.
                                         <strong>Only practice mode activities count towards your leaderboard ranking.</strong>
                                     </p>
                                 </div>
@@ -8707,10 +8822,224 @@
 
                 container.innerHTML = leaderboardHTML;
 
+                // Initialize prize draw section
+                initPrizeDraw();
+
             } catch (e) {
                 console.error("Error loading leaderboard:", e);
                 container.innerHTML = '<div class="placeholder-content"><p style="font-size: 1.2rem; color: #dc3545;">Error loading leaderboard. Please try again.</p></div>';
             }
+        };
+
+        // =====================================================
+        // PRIZE DRAW SYSTEM
+        // =====================================================
+
+        const PRIZE_DRAW_DATE = new Date('2026-01-15T12:00:00+08:00'); // Jan 15, 2026 at noon SGT
+
+        // Start countdown timer
+        window.startPrizeCountdown = function() {
+            function updateCountdown() {
+                const now = new Date();
+                const diff = PRIZE_DRAW_DATE - now;
+
+                if (diff <= 0) {
+                    // Draw has happened
+                    document.getElementById('countdown-days').textContent = '0';
+                    document.getElementById('countdown-hours').textContent = '0';
+                    document.getElementById('countdown-mins').textContent = '0';
+                    document.getElementById('countdown-secs').textContent = '0';
+
+                    // Check if winner needs to be drawn
+                    checkAndPerformDraw();
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                const daysEl = document.getElementById('countdown-days');
+                const hoursEl = document.getElementById('countdown-hours');
+                const minsEl = document.getElementById('countdown-mins');
+                const secsEl = document.getElementById('countdown-secs');
+
+                if (daysEl) daysEl.textContent = days;
+                if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+                if (minsEl) minsEl.textContent = mins.toString().padStart(2, '0');
+                if (secsEl) secsEl.textContent = secs.toString().padStart(2, '0');
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        };
+
+        // Calculate tickets for a student based on their stats
+        window.calculateTickets = function(studentData) {
+            let tickets = 0;
+
+            // Login streak: +1 ticket per streak day
+            const streak = studentData.loginStreak || 0;
+            tickets += streak;
+
+            // Rating: +1 ticket per 100 rating points (above 1000 base)
+            const rating = studentData.rating || 1000;
+            tickets += Math.floor(rating / 100);
+
+            // Correct answers: +1 ticket per 10 correct answers
+            const correctCount = studentData.correctCount || 0;
+            tickets += Math.floor(correctCount / 10);
+
+            // Total login days: +1 ticket per 3 days
+            const totalLoginDays = studentData.totalLoginDays || 0;
+            tickets += Math.floor(totalLoginDays / 3);
+
+            return Math.max(1, tickets); // Minimum 1 ticket for participating
+        };
+
+        // Load and display user's ticket count
+        window.loadUserTickets = async function() {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user || !window.db_fs) return;
+
+                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                const userDoc = await getDoc(doc(window.db_fs, "users", user.uid));
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const students = userData.students || [];
+
+                    // Calculate total tickets for all students under this account
+                    let totalTickets = 0;
+                    students.forEach(student => {
+                        totalTickets += calculateTickets(student);
+                    });
+
+                    const ticketEl = document.getElementById('user-ticket-count');
+                    if (ticketEl) {
+                        ticketEl.textContent = totalTickets;
+                        // Add animation
+                        ticketEl.style.transform = 'scale(1.1)';
+                        setTimeout(() => {
+                            ticketEl.style.transform = 'scale(1)';
+                        }, 200);
+                    }
+                }
+            } catch (e) {
+                console.error("Error loading user tickets:", e);
+            }
+        };
+
+        // Check if draw needs to happen and perform it
+        window.checkAndPerformDraw = async function() {
+            try {
+                const { doc, getDoc, setDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+                // Check if winner already exists
+                const drawDoc = await getDoc(doc(window.db_fs, "prize_draw", "jan2026"));
+
+                if (drawDoc.exists() && drawDoc.data().winner) {
+                    // Winner already selected, show announcement
+                    showWinnerAnnouncement(drawDoc.data().winner);
+                    return;
+                }
+
+                // Only admins can trigger the draw
+                if (!window.isAdminUser) {
+                    // For non-admins, just check if winner exists
+                    return;
+                }
+
+                // Perform the draw (admin only)
+                const now = new Date();
+                if (now >= PRIZE_DRAW_DATE) {
+                    await performPrizeDraw();
+                }
+            } catch (e) {
+                console.error("Error checking draw:", e);
+            }
+        };
+
+        // Perform the actual prize draw
+        window.performPrizeDraw = async function() {
+            try {
+                const { doc, setDoc, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+                // Collect all tickets
+                const usersRef = collection(window.db_fs, "users");
+                const snapshot = await getDocs(usersRef);
+
+                const ticketPool = []; // Array of {studentName, userId, studentIndex}
+
+                snapshot.forEach(userDoc => {
+                    const userData = userDoc.data();
+                    const students = userData.students || [];
+
+                    students.forEach((student, index) => {
+                        const tickets = calculateTickets(student);
+                        // Add entry for each ticket
+                        for (let i = 0; i < tickets; i++) {
+                            ticketPool.push({
+                                studentName: student.name || 'Student',
+                                userId: userDoc.id,
+                                studentIndex: index,
+                                parentEmail: userData.email
+                            });
+                        }
+                    });
+                });
+
+                if (ticketPool.length === 0) {
+                    console.log("No tickets in the pool");
+                    return;
+                }
+
+                // Random draw
+                const winnerIndex = Math.floor(Math.random() * ticketPool.length);
+                const winner = ticketPool[winnerIndex];
+
+                // Save winner to Firebase
+                await setDoc(doc(window.db_fs, "prize_draw", "jan2026"), {
+                    winner: winner,
+                    drawDate: new Date().toISOString(),
+                    totalTickets: ticketPool.length,
+                    drawnBy: window.auth?.currentUser?.uid
+                });
+
+                // Show announcement
+                showWinnerAnnouncement(winner);
+
+            } catch (e) {
+                console.error("Error performing draw:", e);
+            }
+        };
+
+        // Show winner announcement
+        window.showWinnerAnnouncement = function(winner) {
+            const announcementEl = document.getElementById('prize-winner-announcement');
+            const winnerNameEl = document.getElementById('winner-name');
+            const countdownSection = document.getElementById('prize-countdown')?.parentElement;
+
+            if (announcementEl && winnerNameEl) {
+                winnerNameEl.textContent = winner.studentName;
+                announcementEl.style.display = 'block';
+
+                // Hide countdown
+                if (countdownSection) {
+                    countdownSection.style.display = 'none';
+                }
+            }
+        };
+
+        // Initialize prize draw section when leaderboard loads
+        window.initPrizeDraw = function() {
+            startPrizeCountdown();
+            loadUserTickets();
+
+            // Check for existing winner
+            checkAndPerformDraw();
         };
 
         // Load and display student's own progress
