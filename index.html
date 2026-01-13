@@ -5073,24 +5073,23 @@
                     <!-- iOS-style OEQ/MCQ Toggle -->
                     <div class="ios-toggle-container" role="group" aria-label="Question type toggle">
                         <span class="ios-toggle-label" id="oeq-label">OEQ</span>
-                        <button class="ios-toggle tooltip-container mcq-active" id="mode-toggle" onclick="toggleMode()" data-tooltip="Switch between OEQ (Open-Ended Questions) and MCQ (Multiple Choice Questions) modes" role="switch" aria-checked="true" aria-labelledby="oeq-label mcq-label" tabindex="0">
+                        <div class="ios-toggle tooltip-container mcq-active" id="mode-toggle" onclick="toggleMode()" data-tooltip="Switch between OEQ (Open-Ended Questions) and MCQ (Multiple Choice Questions) modes" role="switch" aria-checked="true" tabindex="0">
                             <div class="ios-toggle-track" aria-hidden="true">
                                 <div class="ios-toggle-thumb" id="toggle-thumb"></div>
                             </div>
-                        </button>
+                        </div>
                         <span class="ios-toggle-label active" id="mcq-label">MCQ</span>
                     </div>
                     
                     <!-- Exam Mode Toggle (Monochrome) -->
-                    <div class="exam-mode-toggle-container" role="group" aria-label="Display mode toggle">
+                    <div class="exam-mode-toggle-container" role="group" aria-label="Display mode toggle" title="Exam Mode: Shows questions in black & white like actual exams">
                         <span class="exam-mode-label" id="colour-label">🎨 Colour</span>
-                        <button class="exam-mode-toggle" id="exam-mode-toggle" onclick="toggleExamMode()" role="switch" aria-checked="false" aria-labelledby="colour-label exam-label" tabindex="0" aria-describedby="exam-mode-description">
+                        <div class="exam-mode-toggle" id="exam-mode-toggle" onclick="toggleExamMode()" role="switch" aria-checked="false" tabindex="0">
                             <div class="exam-mode-track" aria-hidden="true">
                                 <div class="exam-mode-thumb"></div>
                             </div>
-                        </button>
+                        </div>
                         <span class="exam-mode-label" id="exam-label">📄 Exam</span>
-                        <span id="exam-mode-description" class="visually-hidden" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Shows questions in black and white like actual exams</span>
                     </div>
                 </div>
                 
