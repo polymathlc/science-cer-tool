@@ -7032,6 +7032,230 @@
             0%, 100% { transform: rotate(-5deg); }
             50% { transform: rotate(5deg) scale(1.1); }
         }
+
+        /* Batch 14: Science Facts, Streak Calendar, Flashcards */
+
+        /* Science Fact Card */
+        .science-fact-card {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            max-width: 320px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .science-fact-card.show {
+            transform: translateX(0);
+        }
+
+        .science-fact-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .science-fact-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .science-fact-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .science-fact-dismiss {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Streak Calendar */
+        .streak-calendar-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            max-width: 400px;
+            width: 95%;
+            z-index: 10006;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            animation: modalPop 0.3s ease;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-top: 15px;
+        }
+
+        .calendar-day-header {
+            font-size: 0.7rem;
+            color: #888;
+            text-align: center;
+            padding: 5px;
+            font-weight: 600;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            background: #f5f5f5;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day.active {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            font-weight: 600;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #2196F3;
+        }
+
+        .calendar-day.future {
+            background: #fafafa;
+            color: #ccc;
+        }
+
+        .calendar-day-fire {
+            font-size: 0.6rem;
+            margin-top: 2px;
+        }
+
+        /* Flashcard Mode */
+        .flashcard-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 450px;
+            z-index: 10006;
+            perspective: 1000px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 280px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+
+        .flashcard-front {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+        }
+
+        .flashcard-back {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-topic {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .flashcard-question {
+            font-size: 1.3rem;
+            text-align: center;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .flashcard-answer {
+            font-size: 1.2rem;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .flashcard-hint {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .flashcard-controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .flashcard-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .flashcard-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .flashcard-progress {
+            text-align: center;
+            margin-top: 15px;
+            color: white;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 
@@ -28344,6 +28568,475 @@
         }
 
         console.log('🎮 Encouragement Messages, Mini-Games, and Daily Goals loaded!');
+    </script>
+
+    <!-- BATCH 14: Science Facts, Streak Calendar, Flashcards -->
+    <script>
+        // =====================================================
+        // SCIENCE FACT CARDS
+        // =====================================================
+        window.SCIENCE_FACTS = [
+            { category: 'Physics', icon: '⚡', fact: 'Lightning strikes Earth about 100 times per second, that\'s 8.6 million times per day!' },
+            { category: 'Biology', icon: '🧬', fact: 'Your DNA could stretch from Earth to the Sun and back about 600 times!' },
+            { category: 'Chemistry', icon: '🧪', fact: 'Water is the only substance that exists naturally in all three states: solid, liquid, and gas.' },
+            { category: 'Space', icon: '🚀', fact: 'A day on Venus is longer than a year on Venus! It takes 243 Earth days to rotate but only 225 to orbit the Sun.' },
+            { category: 'Physics', icon: '🌊', fact: 'Sound travels about 4 times faster through water than through air.' },
+            { category: 'Biology', icon: '🦴', fact: 'Babies are born with about 300 bones, but adults only have 206 because many fuse together.' },
+            { category: 'Chemistry', icon: '💎', fact: 'Diamonds and graphite are both made of pure carbon - only the arrangement of atoms differs!' },
+            { category: 'Space', icon: '🌟', fact: 'Neutron stars are so dense that a teaspoon would weigh about 6 billion tons!' },
+            { category: 'Biology', icon: '🧠', fact: 'The human brain uses about 20% of your body\'s total energy, even though it\'s only 2% of your weight.' },
+            { category: 'Physics', icon: '🔋', fact: 'A single bolt of lightning contains enough energy to toast 100,000 slices of bread!' },
+            { category: 'Chemistry', icon: '🎈', fact: 'Helium is the only element that cannot be solidified at normal atmospheric pressure.' },
+            { category: 'Space', icon: '🌙', fact: 'The Moon is slowly drifting away from Earth at about 3.8 centimeters per year.' },
+            { category: 'Biology', icon: '❤️', fact: 'Your heart beats about 100,000 times per day, pumping about 2,000 gallons of blood!' },
+            { category: 'Physics', icon: '🌈', fact: 'Rainbows are actually full circles! We only see a semicircle because the ground is in the way.' },
+            { category: 'Chemistry', icon: '🌡️', fact: 'At -40 degrees, Celsius and Fahrenheit are the same temperature!' },
+            { category: 'Space', icon: '☀️', fact: 'Light from the Sun takes 8 minutes and 20 seconds to reach Earth.' },
+            { category: 'Biology', icon: '👁️', fact: 'Your eyes can distinguish about 10 million different colors!' },
+            { category: 'Physics', icon: '🧲', fact: 'Magnetic North Pole moves about 40 kilometers per year toward Russia.' },
+            { category: 'Chemistry', icon: '💧', fact: 'Hot water freezes faster than cold water under certain conditions - called the Mpemba effect!' },
+            { category: 'Space', icon: '🪐', fact: 'Saturn\'s density is so low it would float in water if you could find a bathtub big enough!' },
+            { category: 'Biology', icon: '🦎', fact: 'Octopuses have three hearts and blue blood!' },
+            { category: 'Physics', icon: '📻', fact: 'Radio waves travel at the speed of light - 299,792 kilometers per second!' },
+            { category: 'Chemistry', icon: '🔥', fact: 'Fire is not a solid, liquid, or gas - it\'s a plasma, the fourth state of matter!' },
+            { category: 'Space', icon: '🌌', fact: 'There are more stars in the universe than grains of sand on all of Earth\'s beaches.' }
+        ];
+
+        window.shownFactIndices = JSON.parse(localStorage.getItem('science_shown_facts') || '[]');
+        window.factShowCount = parseInt(localStorage.getItem('science_fact_count') || '0');
+
+        window.showRandomScienceFact = function() {
+            // Only show facts occasionally (every 5-7 questions)
+            window.factShowCount++;
+            localStorage.setItem('science_fact_count', window.factShowCount);
+
+            if (window.factShowCount % 6 !== 0) return;
+
+            // Get unshown facts
+            let availableIndices = [];
+            for (let i = 0; i < window.SCIENCE_FACTS.length; i++) {
+                if (!window.shownFactIndices.includes(i)) {
+                    availableIndices.push(i);
+                }
+            }
+
+            // Reset if all facts shown
+            if (availableIndices.length === 0) {
+                window.shownFactIndices = [];
+                availableIndices = [...Array(window.SCIENCE_FACTS.length).keys()];
+            }
+
+            // Pick random fact
+            const factIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+            window.shownFactIndices.push(factIndex);
+            localStorage.setItem('science_shown_facts', JSON.stringify(window.shownFactIndices));
+
+            const fact = window.SCIENCE_FACTS[factIndex];
+            displayScienceFact(fact);
+        };
+
+        window.displayScienceFact = function(fact) {
+            // Remove existing
+            document.querySelectorAll('.science-fact-card').forEach(el => el.remove());
+
+            const card = document.createElement('div');
+            card.className = 'science-fact-card';
+            card.innerHTML = `
+                <button class="science-fact-dismiss" onclick="this.parentElement.classList.remove('show'); setTimeout(() => this.parentElement.remove(), 500);">×</button>
+                <div class="science-fact-icon">${fact.icon}</div>
+                <div class="science-fact-category">${fact.category}</div>
+                <div class="science-fact-text">${fact.fact}</div>
+            `;
+
+            document.body.appendChild(card);
+
+            // Animate in
+            requestAnimationFrame(() => {
+                card.classList.add('show');
+            });
+
+            // Auto-remove after 8 seconds
+            setTimeout(() => {
+                if (card.parentElement) {
+                    card.classList.remove('show');
+                    setTimeout(() => card.remove(), 500);
+                }
+            }, 8000);
+        };
+
+        // Hook into answer submission for facts
+        const originalCheckFacts = window.checkForMiniGameBreak;
+        if (originalCheckFacts) {
+            window.checkForMiniGameBreak = function() {
+                originalCheckFacts();
+                showRandomScienceFact();
+            };
+        }
+
+        // =====================================================
+        // STREAK CALENDAR VISUALIZATION
+        // =====================================================
+        window.streakData = JSON.parse(localStorage.getItem('science_streak_calendar') || '{}');
+
+        window.recordTodayActivity = function() {
+            const today = new Date().toISOString().split('T')[0];
+            if (!window.streakData[today]) {
+                window.streakData[today] = { questions: 0, correct: 0 };
+            }
+            window.streakData[today].questions++;
+            localStorage.setItem('science_streak_calendar', JSON.stringify(window.streakData));
+        };
+
+        window.recordCorrectAnswer = function() {
+            const today = new Date().toISOString().split('T')[0];
+            if (!window.streakData[today]) {
+                window.streakData[today] = { questions: 0, correct: 0 };
+            }
+            window.streakData[today].correct++;
+            localStorage.setItem('science_streak_calendar', JSON.stringify(window.streakData));
+        };
+
+        window.showStreakCalendar = function() {
+            // Remove existing
+            document.querySelectorAll('.streak-calendar-modal, .calendar-backdrop').forEach(el => el.remove());
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'calendar-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10005;';
+
+            const modal = document.createElement('div');
+            modal.className = 'streak-calendar-modal';
+
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDay = firstDay.getDay();
+
+            // Calculate streak
+            let currentStreak = 0;
+            let checkDate = new Date(today);
+            while (true) {
+                const dateStr = checkDate.toISOString().split('T')[0];
+                if (window.streakData[dateStr] && window.streakData[dateStr].questions > 0) {
+                    currentStreak++;
+                    checkDate.setDate(checkDate.getDate() - 1);
+                } else {
+                    break;
+                }
+            }
+
+            // Get month name
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                               'July', 'August', 'September', 'October', 'November', 'December'];
+
+            // Build calendar HTML
+            let calendarHTML = `
+                <h2 style="margin: 0 0 5px 0; text-align: center;">📅 Study Calendar</h2>
+                <div style="text-align: center; color: #666; margin-bottom: 15px;">
+                    ${monthNames[currentMonth]} ${currentYear}
+                </div>
+                <div style="display: flex; justify-content: space-around; margin-bottom: 15px; padding: 15px; background: linear-gradient(135deg, #FF6B6B, #FF8E53); border-radius: 15px; color: white;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8rem; font-weight: 700;">🔥 ${currentStreak}</div>
+                        <div style="font-size: 0.8rem; opacity: 0.9;">Day Streak</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8rem; font-weight: 700;">${Object.keys(window.streakData).length}</div>
+                        <div style="font-size: 0.8rem; opacity: 0.9;">Active Days</div>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">Sun</div>
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-day-header">Thu</div>
+                    <div class="calendar-day-header">Fri</div>
+                    <div class="calendar-day-header">Sat</div>
+            `;
+
+            // Empty cells for days before month starts
+            for (let i = 0; i < startDay; i++) {
+                calendarHTML += '<div class="calendar-day" style="background: transparent;"></div>';
+            }
+
+            // Days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const dateStr = date.toISOString().split('T')[0];
+                const data = window.streakData[dateStr];
+                const isToday = date.toDateString() === today.toDateString();
+                const isFuture = date > today;
+                const isActive = data && data.questions > 0;
+
+                let classes = 'calendar-day';
+                if (isActive) classes += ' active';
+                if (isToday) classes += ' today';
+                if (isFuture) classes += ' future';
+
+                calendarHTML += `
+                    <div class="${classes}" title="${data ? data.questions + ' questions' : 'No activity'}">
+                        <span>${day}</span>
+                        ${isActive ? '<span class="calendar-day-fire">🔥</span>' : ''}
+                    </div>
+                `;
+            }
+
+            calendarHTML += `
+                </div>
+                <button onclick="document.querySelectorAll('.streak-calendar-modal, .calendar-backdrop').forEach(el => el.remove());"
+                        style="width: 100%; margin-top: 20px; padding: 12px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; font-weight: 600; cursor: pointer;">
+                    Keep Studying! 📚
+                </button>
+            `;
+
+            modal.innerHTML = calendarHTML;
+
+            backdrop.onclick = () => { backdrop.remove(); modal.remove(); };
+            document.body.appendChild(backdrop);
+            document.body.appendChild(modal);
+        };
+
+        // Add calendar button to sidebar or create floating button
+        window.createStreakCalendarButton = function() {
+            // Remove existing
+            document.querySelectorAll('.streak-calendar-btn').forEach(el => el.remove());
+
+            const btn = document.createElement('button');
+            btn.className = 'streak-calendar-btn';
+            btn.style.cssText = `
+                position: fixed;
+                bottom: 170px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border: none;
+                background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+                z-index: 999;
+                transition: all 0.3s ease;
+            `;
+            btn.innerHTML = '📅';
+            btn.title = 'View Streak Calendar';
+            btn.onclick = showStreakCalendar;
+
+            btn.onmouseenter = () => btn.style.transform = 'scale(1.1)';
+            btn.onmouseleave = () => btn.style.transform = 'scale(1)';
+
+            document.body.appendChild(btn);
+        };
+
+        // =====================================================
+        // QUICK FLASHCARD REVIEW MODE
+        // =====================================================
+        window.FLASHCARDS = [
+            { topic: 'Physics', question: 'What is the formula for force?', answer: 'F = ma (Force = mass × acceleration)' },
+            { topic: 'Chemistry', question: 'What is the chemical formula for water?', answer: 'H₂O (two hydrogen atoms and one oxygen atom)' },
+            { topic: 'Biology', question: 'What is the powerhouse of the cell?', answer: 'Mitochondria - they produce ATP through cellular respiration' },
+            { topic: 'Physics', question: 'What is the speed of light?', answer: '299,792,458 meters per second (approximately 3×10⁸ m/s)' },
+            { topic: 'Chemistry', question: 'What is the pH of pure water?', answer: '7 - neutral, neither acidic nor basic' },
+            { topic: 'Biology', question: 'What organelle contains genetic material?', answer: 'Nucleus - contains DNA organized into chromosomes' },
+            { topic: 'Physics', question: 'What is Newton\'s Third Law?', answer: 'For every action, there is an equal and opposite reaction' },
+            { topic: 'Chemistry', question: 'What is an isotope?', answer: 'Atoms of the same element with different numbers of neutrons' },
+            { topic: 'Biology', question: 'What is photosynthesis?', answer: 'Process where plants convert CO₂ and H₂O into glucose and O₂ using light' },
+            { topic: 'Physics', question: 'What is kinetic energy?', answer: 'Energy of motion: KE = ½mv² (half mass times velocity squared)' },
+            { topic: 'Chemistry', question: 'What is an ionic bond?', answer: 'A bond formed by the transfer of electrons between atoms' },
+            { topic: 'Biology', question: 'What are the base pairs in DNA?', answer: 'Adenine-Thymine (A-T) and Guanine-Cytosine (G-C)' },
+            { topic: 'Physics', question: 'What is Ohm\'s Law?', answer: 'V = IR (Voltage = Current × Resistance)' },
+            { topic: 'Chemistry', question: 'What is a covalent bond?', answer: 'A bond formed by sharing electrons between atoms' },
+            { topic: 'Biology', question: 'What is the function of red blood cells?', answer: 'Transport oxygen from lungs to body tissues using hemoglobin' }
+        ];
+
+        window.flashcardState = {
+            currentIndex: 0,
+            isFlipped: false,
+            deck: []
+        };
+
+        window.startFlashcardMode = function() {
+            // Remove existing
+            document.querySelectorAll('.flashcard-container, .flashcard-backdrop').forEach(el => el.remove());
+
+            // Shuffle deck
+            window.flashcardState.deck = [...window.FLASHCARDS].sort(() => Math.random() - 0.5);
+            window.flashcardState.currentIndex = 0;
+            window.flashcardState.isFlipped = false;
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'flashcard-backdrop';
+            backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(102,126,234,0.9), rgba(118,75,162,0.9)); z-index: 10005; backdrop-filter: blur(5px);';
+
+            const container = document.createElement('div');
+            container.className = 'flashcard-container';
+
+            renderFlashcard(container);
+            document.body.appendChild(backdrop);
+            document.body.appendChild(container);
+
+            // Keyboard navigation
+            window.flashcardKeyHandler = function(e) {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipFlashcard();
+                } else if (e.code === 'ArrowRight' || e.code === 'Enter') {
+                    nextFlashcard();
+                } else if (e.code === 'ArrowLeft') {
+                    prevFlashcard();
+                } else if (e.code === 'Escape') {
+                    closeFlashcards();
+                }
+            };
+            document.addEventListener('keydown', window.flashcardKeyHandler);
+        };
+
+        window.renderFlashcard = function(container) {
+            const card = window.flashcardState.deck[window.flashcardState.currentIndex];
+            const total = window.flashcardState.deck.length;
+            const current = window.flashcardState.currentIndex + 1;
+
+            container.innerHTML = `
+                <div class="flashcard ${window.flashcardState.isFlipped ? 'flipped' : ''}" onclick="flipFlashcard()">
+                    <div class="flashcard-face flashcard-front">
+                        <div class="flashcard-topic">📚 ${card.topic}</div>
+                        <div class="flashcard-question">${card.question}</div>
+                        <div class="flashcard-hint">Tap or press Space to flip</div>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <div class="flashcard-topic">✅ Answer</div>
+                        <div class="flashcard-answer">${card.answer}</div>
+                    </div>
+                </div>
+                <div class="flashcard-controls">
+                    <button class="flashcard-btn" onclick="prevFlashcard()" style="background: rgba(255,255,255,0.2); color: white;">
+                        ← Previous
+                    </button>
+                    <button class="flashcard-btn" onclick="nextFlashcard()" style="background: white; color: #667eea;">
+                        Next →
+                    </button>
+                </div>
+                <div class="flashcard-progress">${current} / ${total}</div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button onclick="closeFlashcards()" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 20px; border-radius: 20px; cursor: pointer;">
+                        Exit Flashcards
+                    </button>
+                </div>
+            `;
+        };
+
+        window.flipFlashcard = function() {
+            window.flashcardState.isFlipped = !window.flashcardState.isFlipped;
+            const container = document.querySelector('.flashcard-container');
+            if (container) renderFlashcard(container);
+        };
+
+        window.nextFlashcard = function() {
+            if (window.flashcardState.currentIndex < window.flashcardState.deck.length - 1) {
+                window.flashcardState.currentIndex++;
+                window.flashcardState.isFlipped = false;
+                const container = document.querySelector('.flashcard-container');
+                if (container) renderFlashcard(container);
+            } else {
+                // Completed all cards
+                showFlashcardComplete();
+            }
+        };
+
+        window.prevFlashcard = function() {
+            if (window.flashcardState.currentIndex > 0) {
+                window.flashcardState.currentIndex--;
+                window.flashcardState.isFlipped = false;
+                const container = document.querySelector('.flashcard-container');
+                if (container) renderFlashcard(container);
+            }
+        };
+
+        window.showFlashcardComplete = function() {
+            const container = document.querySelector('.flashcard-container');
+            if (container) {
+                container.innerHTML = `
+                    <div style="background: white; border-radius: 24px; padding: 40px; text-align: center;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+                        <h2 style="margin: 0 0 10px 0; color: #333;">All Cards Reviewed!</h2>
+                        <p style="color: #666; margin-bottom: 25px;">You reviewed ${window.flashcardState.deck.length} flashcards</p>
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <button onclick="startFlashcardMode()" style="padding: 12px 25px; border-radius: 25px; border: none; background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; cursor: pointer;">
+                                🔄 Review Again
+                            </button>
+                            <button onclick="closeFlashcards()" style="padding: 12px 25px; border-radius: 25px; border: none; background: #e0e0e0; color: #666; font-weight: 600; cursor: pointer;">
+                                Done
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            // Award XP for completing review
+            if (window.addXP) window.addXP(30, 'Flashcard review complete');
+        };
+
+        window.closeFlashcards = function() {
+            document.querySelectorAll('.flashcard-container, .flashcard-backdrop').forEach(el => el.remove());
+            if (window.flashcardKeyHandler) {
+                document.removeEventListener('keydown', window.flashcardKeyHandler);
+            }
+        };
+
+        // Add flashcard button
+        window.createFlashcardButton = function() {
+            // Remove existing
+            document.querySelectorAll('.flashcard-mode-btn').forEach(el => el.remove());
+
+            const btn = document.createElement('button');
+            btn.className = 'flashcard-mode-btn';
+            btn.style.cssText = `
+                position: fixed;
+                bottom: 230px;
+                left: 20px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border: none;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+                z-index: 999;
+                transition: all 0.3s ease;
+            `;
+            btn.innerHTML = '📝';
+            btn.title = 'Quick Flashcard Review';
+            btn.onclick = startFlashcardMode;
+
+            btn.onmouseenter = () => btn.style.transform = 'scale(1.1)';
+            btn.onmouseleave = () => btn.style.transform = 'scale(1)';
+
+            document.body.appendChild(btn);
+        };
+
+        // =====================================================
+        // INITIALIZATION
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            createStreakCalendarButton();
+            createFlashcardButton();
+            recordTodayActivity(); // Record that user visited today
+        });
+
+        // Also init if DOM already loaded
+        if (document.readyState !== 'loading') {
+            createStreakCalendarButton();
+            createFlashcardButton();
+            recordTodayActivity();
+        }
+
+        console.log('📚 Science Facts, Streak Calendar, and Flashcard Review loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
