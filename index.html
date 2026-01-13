@@ -24784,6 +24784,293 @@
             font-size: 0.85rem;
             color: #666;
         }
+
+        /* Batch 62: Study Planner */
+        .study-planner-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 510px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(103, 58, 183, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .study-planner-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .planner-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .planner-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 650px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .planner-week {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .planner-day {
+            background: #ede7f6;
+            border-radius: 10px;
+            padding: 10px 5px;
+            text-align: center;
+            min-height: 120px;
+        }
+
+        .planner-day-header {
+            font-weight: bold;
+            color: #673ab7;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .planner-task {
+            background: #673ab7;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            margin: 3px 0;
+            cursor: pointer;
+        }
+
+        .planner-task:hover {
+            opacity: 0.8;
+        }
+
+        .add-task-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #673ab7;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .planner-day-select {
+            padding: 10px;
+            border: 2px solid #673ab7;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+
+        /* Topic Quiz Generator */
+        .topic-quiz-btn {
+            position: fixed;
+            left: 18px;
+            bottom: 1030px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .topic-quiz-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .topic-quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .topic-quiz-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .topic-select-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .topic-card {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            border: 2px solid #e91e63;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3);
+        }
+
+        .topic-card.selected {
+            background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+            color: white;
+        }
+
+        .topic-card-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-settings {
+            background: #fce4ec;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .quiz-setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .quiz-count-select {
+            padding: 10px 20px;
+            border: 2px solid #e91e63;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        /* Concept Map */
+        .concept-map-btn {
+            position: fixed;
+            right: 18px;
+            bottom: 550px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #009688 0%, #00796b 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .concept-map-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .concept-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .concept-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .concept-map-area {
+            background: #e0f2f1;
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 300px;
+            position: relative;
+        }
+
+        .concept-node {
+            position: absolute;
+            background: linear-gradient(135deg, #009688 0%, #4db6ac 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3);
+        }
+
+        .concept-node:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .concept-node.central {
+            background: linear-gradient(135deg, #00796b 0%, #004d40 100%);
+            font-size: 1.1rem;
+        }
+
+        .concept-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #009688;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .concept-info {
+            background: #b2dfdb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 
@@ -64890,6 +65177,365 @@ This report was generated from the Science CER Practice App.
         // Initialize
         initDailyChallengeBtn();
         console.log('📅 Daily Challenge, Vocabulary Builder, and Progress Charts loaded!');
+    </script>
+
+    <!-- Batch 62: Study Planner Button -->
+    <button class="study-planner-btn" onclick="openStudyPlanner()" title="Study Planner">📅</button>
+
+    <!-- Study Planner Modal -->
+    <div class="planner-modal" id="planner-modal">
+        <div class="planner-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #673ab7;">📅 Study Planner</h2>
+                <button onclick="closeStudyPlanner()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <div class="planner-week" id="planner-week"></div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="text" class="add-task-input" id="new-task-input" placeholder="Add study task..." style="flex: 1; min-width: 200px;">
+                <select class="planner-day-select" id="task-day-select">
+                    <option value="0">Monday</option>
+                    <option value="1">Tuesday</option>
+                    <option value="2">Wednesday</option>
+                    <option value="3">Thursday</option>
+                    <option value="4">Friday</option>
+                    <option value="5">Saturday</option>
+                    <option value="6">Sunday</option>
+                </select>
+                <button onclick="addPlannerTask()" style="padding: 10px 20px; background: #673ab7; color: white; border: none; border-radius: 10px; cursor: pointer;">Add</button>
+            </div>
+            <button onclick="clearAllTasks()" style="margin-top: 15px; padding: 10px 20px; background: #f44336; color: white; border: none; border-radius: 10px; cursor: pointer;">Clear All Tasks</button>
+        </div>
+    </div>
+
+    <!-- Topic Quiz Generator Button -->
+    <button class="topic-quiz-btn" onclick="openTopicQuiz()" title="Topic Quiz">🎯</button>
+
+    <!-- Topic Quiz Modal -->
+    <div class="topic-quiz-modal" id="topic-quiz-modal">
+        <div class="topic-quiz-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #e91e63;">🎯 Topic Quiz</h2>
+                <button onclick="closeTopicQuiz()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <div id="topic-quiz-content"></div>
+        </div>
+    </div>
+
+    <!-- Concept Map Button -->
+    <button class="concept-map-btn" onclick="openConceptMap()" title="Concept Map">🔗</button>
+
+    <!-- Concept Map Modal -->
+    <div class="concept-modal" id="concept-modal">
+        <div class="concept-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #009688;">🔗 Concept Map</h2>
+                <button onclick="closeConceptMap()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+            </div>
+            <select class="concept-select" id="concept-topic-select" onchange="loadConceptMap()">
+                <option value="cells">Cell Biology</option>
+                <option value="forces">Forces & Motion</option>
+                <option value="atoms">Atomic Structure</option>
+                <option value="ecology">Ecology</option>
+                <option value="energy">Energy Types</option>
+            </select>
+            <div class="concept-map-area" id="concept-map-area"></div>
+            <div class="concept-info" id="concept-info">Click a concept to learn more</div>
+        </div>
+    </div>
+
+    <script>
+        // Batch 62: Study Planner
+        let plannerTasks = JSON.parse(localStorage.getItem('plannerTasks') || '{}');
+        const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+        function openStudyPlanner() {
+            document.getElementById('planner-modal').style.display = 'flex';
+            renderPlanner();
+        }
+
+        function closeStudyPlanner() {
+            document.getElementById('planner-modal').style.display = 'none';
+        }
+
+        function renderPlanner() {
+            const week = document.getElementById('planner-week');
+            week.innerHTML = dayNames.map((day, i) => {
+                const tasks = plannerTasks[i] || [];
+                return `
+                    <div class="planner-day">
+                        <div class="planner-day-header">${day}</div>
+                        ${tasks.map((t, j) => `<div class="planner-task" onclick="removeTask(${i}, ${j})">${t}</div>`).join('')}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addPlannerTask() {
+            const input = document.getElementById('new-task-input');
+            const day = parseInt(document.getElementById('task-day-select').value);
+            const task = input.value.trim();
+            if (task) {
+                if (!plannerTasks[day]) plannerTasks[day] = [];
+                plannerTasks[day].push(task);
+                localStorage.setItem('plannerTasks', JSON.stringify(plannerTasks));
+                input.value = '';
+                renderPlanner();
+                addXP(2);
+            }
+        }
+
+        function removeTask(day, index) {
+            if (confirm('Remove this task?')) {
+                plannerTasks[day].splice(index, 1);
+                localStorage.setItem('plannerTasks', JSON.stringify(plannerTasks));
+                renderPlanner();
+            }
+        }
+
+        function clearAllTasks() {
+            if (confirm('Clear all tasks from the planner?')) {
+                plannerTasks = {};
+                localStorage.setItem('plannerTasks', JSON.stringify(plannerTasks));
+                renderPlanner();
+            }
+        }
+
+        // Topic Quiz Generator
+        const topicQuizzes = {
+            physics: {
+                icon: '⚡', name: 'Physics',
+                questions: [
+                    { q: "What is the SI unit of force?", opts: ["Joule", "Newton", "Watt", "Pascal"], a: 1 },
+                    { q: "Speed with direction is called?", opts: ["Acceleration", "Velocity", "Momentum", "Force"], a: 1 },
+                    { q: "What type of energy is stored in a battery?", opts: ["Kinetic", "Nuclear", "Chemical", "Sound"], a: 2 },
+                    { q: "Light travels fastest through?", opts: ["Water", "Glass", "Vacuum", "Air"], a: 2 },
+                    { q: "What is measured in Hertz?", opts: ["Wavelength", "Frequency", "Amplitude", "Speed"], a: 1 }
+                ]
+            },
+            chemistry: {
+                icon: '🧪', name: 'Chemistry',
+                questions: [
+                    { q: "What is the pH of pure water?", opts: ["0", "7", "14", "1"], a: 1 },
+                    { q: "Which particle has no charge?", opts: ["Proton", "Electron", "Neutron", "Ion"], a: 2 },
+                    { q: "What is the symbol for sodium?", opts: ["So", "Na", "Sd", "S"], a: 1 },
+                    { q: "Rusting is an example of?", opts: ["Physical change", "Oxidation", "Reduction", "Sublimation"], a: 1 },
+                    { q: "Noble gases are in group?", opts: ["1", "7", "18", "2"], a: 2 }
+                ]
+            },
+            biology: {
+                icon: '🧬', name: 'Biology',
+                questions: [
+                    { q: "Where does photosynthesis occur?", opts: ["Mitochondria", "Chloroplast", "Nucleus", "Ribosome"], a: 1 },
+                    { q: "What carries oxygen in blood?", opts: ["Plasma", "White cells", "Platelets", "Hemoglobin"], a: 3 },
+                    { q: "DNA stands for?", opts: ["Deoxyribose acid", "Deoxyribonucleic acid", "Dinucleic acid", "None"], a: 1 },
+                    { q: "The basic unit of life is?", opts: ["Atom", "Molecule", "Cell", "Tissue"], a: 2 },
+                    { q: "Enzymes are made of?", opts: ["Carbohydrates", "Lipids", "Proteins", "Nucleic acids"], a: 2 }
+                ]
+            },
+            earth: {
+                icon: '🌍', name: 'Earth Science',
+                questions: [
+                    { q: "What causes tides?", opts: ["Wind", "Moon's gravity", "Earth's rotation", "Sun"], a: 1 },
+                    { q: "The outer layer of Earth is?", opts: ["Mantle", "Core", "Crust", "Magma"], a: 2 },
+                    { q: "Fossils are found in which rock?", opts: ["Igneous", "Sedimentary", "Metamorphic", "Volcanic"], a: 1 },
+                    { q: "What scale measures earthquakes?", opts: ["pH", "Richter", "Kelvin", "Decibel"], a: 1 },
+                    { q: "Water cycle includes?", opts: ["Evaporation only", "Condensation only", "All water movements", "Rain only"], a: 2 }
+                ]
+            }
+        };
+
+        let selectedQuizTopic = null;
+        let currentTopicQuiz = [];
+        let topicQuizIndex = 0;
+        let topicQuizScore = 0;
+
+        function openTopicQuiz() {
+            document.getElementById('topic-quiz-modal').style.display = 'flex';
+            showTopicSelection();
+        }
+
+        function closeTopicQuiz() {
+            document.getElementById('topic-quiz-modal').style.display = 'none';
+        }
+
+        function showTopicSelection() {
+            const content = document.getElementById('topic-quiz-content');
+            content.innerHTML = `
+                <p style="color: #666; margin-bottom: 15px;">Select a topic to quiz yourself:</p>
+                <div class="topic-select-grid">
+                    ${Object.entries(topicQuizzes).map(([key, val]) => `
+                        <div class="topic-card" onclick="selectQuizTopic('${key}')">
+                            <div class="topic-card-icon">${val.icon}</div>
+                            <div>${val.name}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="quiz-settings">
+                    <div class="quiz-setting-row">
+                        <span>Number of questions:</span>
+                        <select class="quiz-count-select" id="quiz-count">
+                            <option value="3">3 Questions</option>
+                            <option value="5" selected>5 Questions</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="startTopicQuiz()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%); color: white; border: none; border-radius: 15px; font-size: 1.1rem; cursor: pointer;">Start Quiz</button>
+            `;
+        }
+
+        function selectQuizTopic(topic) {
+            selectedQuizTopic = topic;
+            document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function startTopicQuiz() {
+            if (!selectedQuizTopic) {
+                alert('Please select a topic first!');
+                return;
+            }
+            const count = parseInt(document.getElementById('quiz-count').value);
+            const allQ = topicQuizzes[selectedQuizTopic].questions;
+            currentTopicQuiz = [...allQ].sort(() => Math.random() - 0.5).slice(0, count);
+            topicQuizIndex = 0;
+            topicQuizScore = 0;
+            showTopicQuestion();
+        }
+
+        function showTopicQuestion() {
+            const content = document.getElementById('topic-quiz-content');
+            const q = currentTopicQuiz[topicQuizIndex];
+            content.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                    <span style="color: #666;">Question ${topicQuizIndex + 1} of ${currentTopicQuiz.length}</span>
+                    <span style="color: #e91e63; font-weight: bold;">Score: ${topicQuizScore}</span>
+                </div>
+                <div style="background: #fce4ec; padding: 20px; border-radius: 15px; margin-bottom: 15px;">
+                    <h3 style="margin: 0; color: #880e4f;">${q.q}</h3>
+                </div>
+                ${q.opts.map((opt, i) => `
+                    <button onclick="answerTopicQuiz(${i}, ${q.a})" style="display: block; width: 100%; padding: 15px; margin: 10px 0; background: white; border: 2px solid #e91e63; border-radius: 10px; cursor: pointer; text-align: left; font-size: 1rem; transition: all 0.3s ease;">${opt}</button>
+                `).join('')}
+            `;
+        }
+
+        function answerTopicQuiz(selected, correct) {
+            const isCorrect = selected === correct;
+            if (isCorrect) topicQuizScore++;
+
+            topicQuizIndex++;
+            if (topicQuizIndex < currentTopicQuiz.length) {
+                setTimeout(showTopicQuestion, 500);
+            } else {
+                showTopicQuizResults();
+            }
+        }
+
+        function showTopicQuizResults() {
+            const content = document.getElementById('topic-quiz-content');
+            const percent = Math.round((topicQuizScore / currentTopicQuiz.length) * 100);
+            const xpEarned = topicQuizScore * 5;
+            addXP(xpEarned);
+
+            content.innerHTML = `
+                <div style="text-align: center; padding: 30px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">${percent >= 80 ? '🏆' : percent >= 50 ? '👍' : '📚'}</div>
+                    <h2 style="color: #e91e63;">${topicQuizzes[selectedQuizTopic].name} Quiz Complete!</h2>
+                    <p style="font-size: 1.5rem; margin: 20px 0;">${topicQuizScore} / ${currentTopicQuiz.length} correct</p>
+                    <p style="color: #4caf50; font-weight: bold;">+${xpEarned} XP earned!</p>
+                    <button onclick="showTopicSelection()" style="margin-top: 20px; padding: 15px 30px; background: #e91e63; color: white; border: none; border-radius: 25px; cursor: pointer; font-size: 1rem;">Try Another Topic</button>
+                </div>
+            `;
+        }
+
+        // Concept Map
+        const conceptMaps = {
+            cells: {
+                central: 'Cell',
+                nodes: [
+                    { name: 'Nucleus', x: 20, y: 10, info: 'Contains DNA and controls cell activities' },
+                    { name: 'Mitochondria', x: 60, y: 10, info: 'Powerhouse - produces ATP energy' },
+                    { name: 'Cell Membrane', x: 10, y: 50, info: 'Controls what enters and exits the cell' },
+                    { name: 'Cytoplasm', x: 70, y: 50, info: 'Jelly-like substance filling the cell' },
+                    { name: 'Ribosomes', x: 20, y: 85, info: 'Makes proteins from amino acids' },
+                    { name: 'ER', x: 60, y: 85, info: 'Transports materials in the cell' }
+                ]
+            },
+            forces: {
+                central: 'Forces',
+                nodes: [
+                    { name: 'Gravity', x: 15, y: 10, info: 'Attracts objects with mass toward each other' },
+                    { name: 'Friction', x: 65, y: 10, info: 'Opposes motion between surfaces' },
+                    { name: 'Tension', x: 10, y: 50, info: 'Pulling force through a rope or string' },
+                    { name: 'Normal', x: 70, y: 50, info: 'Support force perpendicular to surface' },
+                    { name: 'Applied', x: 20, y: 85, info: 'Force applied by a person or object' },
+                    { name: 'Air Resistance', x: 55, y: 85, info: 'Friction from air on moving objects' }
+                ]
+            },
+            atoms: {
+                central: 'Atom',
+                nodes: [
+                    { name: 'Proton', x: 20, y: 15, info: 'Positive charge, found in nucleus' },
+                    { name: 'Neutron', x: 60, y: 15, info: 'No charge, found in nucleus' },
+                    { name: 'Electron', x: 10, y: 50, info: 'Negative charge, orbits nucleus' },
+                    { name: 'Nucleus', x: 70, y: 50, info: 'Center containing protons and neutrons' },
+                    { name: 'Shell', x: 20, y: 85, info: 'Energy levels where electrons orbit' },
+                    { name: 'Ion', x: 60, y: 85, info: 'Atom with gained or lost electrons' }
+                ]
+            },
+            ecology: {
+                central: 'Ecosystem',
+                nodes: [
+                    { name: 'Producer', x: 15, y: 10, info: 'Makes own food through photosynthesis' },
+                    { name: 'Consumer', x: 65, y: 10, info: 'Eats other organisms for energy' },
+                    { name: 'Decomposer', x: 10, y: 50, info: 'Breaks down dead organic matter' },
+                    { name: 'Food Chain', x: 70, y: 50, info: 'Energy flow from one organism to next' },
+                    { name: 'Habitat', x: 20, y: 85, info: 'Place where an organism lives' },
+                    { name: 'Niche', x: 60, y: 85, info: 'Role of organism in ecosystem' }
+                ]
+            },
+            energy: {
+                central: 'Energy',
+                nodes: [
+                    { name: 'Kinetic', x: 15, y: 10, info: 'Energy of motion' },
+                    { name: 'Potential', x: 65, y: 10, info: 'Stored energy due to position' },
+                    { name: 'Thermal', x: 10, y: 50, info: 'Heat energy from particle movement' },
+                    { name: 'Chemical', x: 70, y: 50, info: 'Energy stored in chemical bonds' },
+                    { name: 'Electrical', x: 20, y: 85, info: 'Energy from moving electrons' },
+                    { name: 'Light', x: 60, y: 85, info: 'Electromagnetic radiation energy' }
+                ]
+            }
+        };
+
+        function openConceptMap() {
+            document.getElementById('concept-modal').style.display = 'flex';
+            loadConceptMap();
+        }
+
+        function closeConceptMap() {
+            document.getElementById('concept-modal').style.display = 'none';
+        }
+
+        function loadConceptMap() {
+            const topic = document.getElementById('concept-topic-select').value;
+            const map = conceptMaps[topic];
+            const area = document.getElementById('concept-map-area');
+
+            area.innerHTML = `
+                <div class="concept-node central" style="left: 50%; top: 50%; transform: translate(-50%, -50%);" onclick="showConceptInfo('${map.central}', 'The central concept connecting all related ideas')">${map.central}</div>
+                ${map.nodes.map(n => `
+                    <div class="concept-node" style="left: ${n.x}%; top: ${n.y}%;" onclick="showConceptInfo('${n.name}', '${n.info}')">${n.name}</div>
+                `).join('')}
+            `;
+            document.getElementById('concept-info').innerHTML = 'Click a concept to learn more';
+        }
+
+        function showConceptInfo(name, info) {
+            document.getElementById('concept-info').innerHTML = `<strong>${name}:</strong> ${info}`;
+            addXP(1);
+        }
+
+        console.log('📅 Study Planner, Topic Quiz, and Concept Map loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
