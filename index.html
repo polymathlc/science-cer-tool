@@ -21149,6 +21149,350 @@
         .floating-motivation-btn:hover {
             transform: scale(1.1);
         }
+
+        /* ========== Batch 53: Study Notes, Hint System, Topic Progress ========== */
+
+        /* Study Notes Styles */
+        .notes-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .notes-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 600px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 183, 77, 0.3);
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .notes-header h2 {
+            color: #ffb74d;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .note-editor {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 183, 77, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .note-title-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid rgba(255, 183, 77, 0.3);
+            background: transparent;
+            color: #ffb74d;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .note-title-input::placeholder {
+            color: rgba(255, 183, 77, 0.5);
+        }
+
+        .note-text-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 0.95rem;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .note-text-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .save-note-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffb74d 0%, #ffd54f 100%);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .notes-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            background: rgba(255, 183, 77, 0.1);
+            border: 1px solid rgba(255, 183, 77, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .note-item-title {
+            color: #ffb74d;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .note-item-text {
+            color: #ddd;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .note-item-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+
+        .note-item-date {
+            color: #888;
+        }
+
+        .note-delete-btn {
+            background: rgba(244, 67, 54, 0.3);
+            color: #ef5350;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Hint System Styles */
+        .hint-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #2196f3 0%, #64b5f6 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .hint-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .hint-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .hint-display {
+            background: rgba(33, 150, 243, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .hint-display.show {
+            display: block;
+            animation: hint-fade-in 0.3s ease;
+        }
+
+        @keyframes hint-fade-in {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hint-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        .hint-text {
+            color: #64b5f6;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .hint-cost {
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        /* Topic Progress Styles */
+        .progress-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .progress-content {
+            background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 550px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(103, 58, 183, 0.3);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-header h2 {
+            color: #b39ddb;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .overall-progress {
+            background: rgba(103, 58, 183, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .overall-percent {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #b39ddb;
+        }
+
+        .overall-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .topic-progress-item {
+            margin-bottom: 15px;
+        }
+
+        .topic-progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .topic-progress-name {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .topic-progress-percent {
+            color: #b39ddb;
+            font-weight: bold;
+        }
+
+        .topic-progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .topic-progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .topic-progress-fill.matter { background: linear-gradient(90deg, #4caf50 0%, #81c784 100%); }
+        .topic-progress-fill.heat { background: linear-gradient(90deg, #ff9800 0%, #ffb74d 100%); }
+        .topic-progress-fill.light { background: linear-gradient(90deg, #ffeb3b 0%, #fff176 100%); }
+        .topic-progress-fill.energy { background: linear-gradient(90deg, #2196f3 0%, #64b5f6 100%); }
+        .topic-progress-fill.forces { background: linear-gradient(90deg, #e91e63 0%, #f48fb1 100%); }
+        .topic-progress-fill.life { background: linear-gradient(90deg, #00bcd4 0%, #4dd0e1 100%); }
+        .topic-progress-fill.plants { background: linear-gradient(90deg, #8bc34a 0%, #aed581 100%); }
+
+        /* Floating Buttons for Batch 53 */
+        .floating-notes-btn {
+            position: fixed;
+            bottom: 5200px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffb74d 0%, #ffd54f 100%);
+            color: #000;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 183, 77, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-notes-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-progress-btn {
+            position: fixed;
+            bottom: 5260px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #673ab7 0%, #9575cd 100%);
+            color: white;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(103, 58, 183, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-progress-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -57441,6 +57785,298 @@ Science Made Fun!
         setTimeout(checkDailyMotivation, 3000);
 
         console.log('🏆 Scoreboard, Question Timer, and Motivation Quotes loaded!');
+    </script>
+
+    <!-- ========== Batch 53: Study Notes, Hint System, Topic Progress ========== -->
+
+    <!-- Study Notes Floating Button -->
+    <button class="floating-notes-btn" onclick="openNotes()" title="Study Notes">📝</button>
+
+    <!-- Topic Progress Floating Button -->
+    <button class="floating-progress-btn" onclick="openTopicProgress()" title="Topic Progress">📊</button>
+
+    <!-- Study Notes Modal -->
+    <div class="notes-modal" id="notes-modal">
+        <div class="notes-content">
+            <div class="notes-header">
+                <h2>📝 Study Notes</h2>
+                <button onclick="closeNotes()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="note-editor">
+                <input type="text" class="note-title-input" id="note-title" placeholder="Note title...">
+                <textarea class="note-text-input" id="note-text" placeholder="Write your notes here..."></textarea>
+                <button class="save-note-btn" onclick="saveNote()">💾 Save Note</button>
+            </div>
+            <h3 style="color:#ffb74d;margin-bottom:10px;font-size:1rem;">Your Notes</h3>
+            <div class="notes-list" id="notes-list"></div>
+        </div>
+    </div>
+
+    <!-- Topic Progress Modal -->
+    <div class="progress-modal" id="progress-modal">
+        <div class="progress-content">
+            <div class="progress-header">
+                <h2>📊 Topic Progress</h2>
+                <button onclick="closeTopicProgress()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="overall-progress">
+                <div class="overall-percent" id="overall-percent">0%</div>
+                <div class="overall-label">Overall Mastery</div>
+            </div>
+            <div id="topic-progress-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========== Study Notes System ==========
+        let studyNotes = JSON.parse(localStorage.getItem('studyNotes') || '[]');
+
+        function openNotes() {
+            document.getElementById('notes-modal').style.display = 'flex';
+            renderNotes();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeNotes() {
+            document.getElementById('notes-modal').style.display = 'none';
+        }
+
+        function saveNote() {
+            const title = document.getElementById('note-title').value.trim();
+            const text = document.getElementById('note-text').value.trim();
+
+            if (!text) {
+                alert('Please write something in your note!');
+                return;
+            }
+
+            const note = {
+                id: Date.now(),
+                title: title || 'Untitled Note',
+                text: text,
+                timestamp: new Date().toISOString()
+            };
+
+            studyNotes.push(note);
+            // Keep only last 50 notes
+            if (studyNotes.length > 50) {
+                studyNotes = studyNotes.slice(-50);
+            }
+            localStorage.setItem('studyNotes', JSON.stringify(studyNotes));
+
+            // Clear inputs
+            document.getElementById('note-title').value = '';
+            document.getElementById('note-text').value = '';
+
+            renderNotes();
+            if (typeof playSound === 'function' && getSoundSetting('correct')) playSound('success');
+        }
+
+        function deleteNote(id) {
+            if (confirm('Delete this note?')) {
+                studyNotes = studyNotes.filter(n => n.id !== id);
+                localStorage.setItem('studyNotes', JSON.stringify(studyNotes));
+                renderNotes();
+            }
+        }
+
+        function renderNotes() {
+            const list = document.getElementById('notes-list');
+
+            if (studyNotes.length === 0) {
+                list.innerHTML = '<p style="color:#888;text-align:center;padding:20px;">No notes yet. Start writing!</p>';
+                return;
+            }
+
+            list.innerHTML = studyNotes.slice().reverse().map(note => {
+                const date = new Date(note.timestamp);
+                const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                return `
+                    <div class="note-item">
+                        <div class="note-item-title">${note.title}</div>
+                        <div class="note-item-text">${note.text.substring(0, 200)}${note.text.length > 200 ? '...' : ''}</div>
+                        <div class="note-item-meta">
+                            <span class="note-item-date">${dateStr}</span>
+                            <button class="note-delete-btn" onclick="deleteNote(${note.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== Hint System ==========
+        let hintUsage = JSON.parse(localStorage.getItem('hintUsage') || '{}');
+        const hintCost = 10; // XP cost per hint
+
+        const hintDatabase = {
+            'matter': [
+                'Think about what happens to particles when heated or cooled.',
+                'Consider the arrangement of particles in each state.',
+                'Remember: solids have fixed shape, liquids flow, gases expand.'
+            ],
+            'heat': [
+                'Heat always flows from hotter to cooler objects.',
+                'Good conductors transfer heat quickly, poor conductors slowly.',
+                'Think about what materials feel cold vs warm to touch.'
+            ],
+            'light': [
+                'Light travels in straight lines.',
+                'Transparent materials let all light through, opaque block it.',
+                'Shadows form because light cannot pass through opaque objects.'
+            ],
+            'energy': [
+                'Energy cannot be created or destroyed, only transformed.',
+                'Think about the source and what it changes into.',
+                'Electrical energy requires a complete circuit to flow.'
+            ],
+            'forces': [
+                'Forces always come in pairs - action and reaction.',
+                'Friction opposes motion between surfaces.',
+                'Gravity pulls everything toward the center of Earth.'
+            ],
+            'life': [
+                'All living things need food, water, and air.',
+                'Plants make food through photosynthesis.',
+                'Think about how energy flows in food chains.'
+            ],
+            'plants': [
+                'Plants need sunlight, water, carbon dioxide for photosynthesis.',
+                'Roots absorb water, leaves capture sunlight.',
+                'The green color comes from chlorophyll.'
+            ]
+        };
+
+        function getHint(topic, questionId) {
+            const currentXP = parseInt(localStorage.getItem('userXP')) || 0;
+
+            // Check if already used hint for this question
+            if (hintUsage[questionId]) {
+                showHintDisplay(questionId, hintUsage[questionId]);
+                return;
+            }
+
+            // Check if user has enough XP
+            if (currentXP < hintCost) {
+                alert(`You need ${hintCost} XP to get a hint. You have ${currentXP} XP.`);
+                return;
+            }
+
+            // Deduct XP
+            const newXP = currentXP - hintCost;
+            localStorage.setItem('userXP', newXP);
+            if (typeof updateXPDisplay === 'function') updateXPDisplay();
+
+            // Get random hint for topic
+            const topicKey = topic.toLowerCase().replace(/\s+/g, '');
+            const hints = hintDatabase[topicKey] || hintDatabase['matter'];
+            const hint = hints[Math.floor(Math.random() * hints.length)];
+
+            // Save hint usage
+            hintUsage[questionId] = hint;
+            localStorage.setItem('hintUsage', JSON.stringify(hintUsage));
+
+            showHintDisplay(questionId, hint);
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function showHintDisplay(questionId, hint) {
+            const question = document.getElementById(questionId);
+            if (!question) return;
+
+            let hintDiv = question.querySelector('.hint-display');
+            if (!hintDiv) {
+                hintDiv = document.createElement('div');
+                hintDiv.className = 'hint-display';
+                question.appendChild(hintDiv);
+            }
+
+            hintDiv.innerHTML = `
+                <span class="hint-icon">💡</span>
+                <span class="hint-text">${hint}</span>
+                <div class="hint-cost">Hint used (${hintCost} XP)</div>
+            `;
+            hintDiv.classList.add('show');
+        }
+
+        function createHintButton(topic, questionId) {
+            return `<button class="hint-btn" onclick="getHint('${topic}', '${questionId}')">💡 Get Hint (-${hintCost} XP)</button>`;
+        }
+
+        // ========== Topic Progress System ==========
+        let topicProgressData = JSON.parse(localStorage.getItem('topicProgress') || '{}');
+
+        const topicList = [
+            { id: 'matter', name: 'Matter', class: 'matter' },
+            { id: 'heat', name: 'Heat', class: 'heat' },
+            { id: 'light', name: 'Light', class: 'light' },
+            { id: 'energy', name: 'Energy', class: 'energy' },
+            { id: 'forces', name: 'Forces', class: 'forces' },
+            { id: 'life', name: 'Life Science', class: 'life' },
+            { id: 'plants', name: 'Plants', class: 'plants' }
+        ];
+
+        function openTopicProgress() {
+            document.getElementById('progress-modal').style.display = 'flex';
+            renderTopicProgress();
+            if (typeof playSound === 'function' && getSoundSetting('notify')) playSound('pop');
+        }
+
+        function closeTopicProgress() {
+            document.getElementById('progress-modal').style.display = 'none';
+        }
+
+        function updateTopicProgress(topicId, correct, total) {
+            if (!topicProgressData[topicId]) {
+                topicProgressData[topicId] = { correct: 0, total: 0 };
+            }
+            topicProgressData[topicId].correct += correct;
+            topicProgressData[topicId].total += total;
+            localStorage.setItem('topicProgress', JSON.stringify(topicProgressData));
+        }
+
+        function recordTopicAnswer(topicId, isCorrect) {
+            if (!topicProgressData[topicId]) {
+                topicProgressData[topicId] = { correct: 0, total: 0 };
+            }
+            topicProgressData[topicId].total += 1;
+            if (isCorrect) topicProgressData[topicId].correct += 1;
+            localStorage.setItem('topicProgress', JSON.stringify(topicProgressData));
+        }
+
+        function renderTopicProgress() {
+            const list = document.getElementById('topic-progress-list');
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+
+            const progressHTML = topicList.map(topic => {
+                const data = topicProgressData[topic.id] || { correct: 0, total: 0 };
+                const percent = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
+
+                totalCorrect += data.correct;
+                totalQuestions += data.total;
+
+                return `
+                    <div class="topic-progress-item">
+                        <div class="topic-progress-header">
+                            <span class="topic-progress-name">${topic.name}</span>
+                            <span class="topic-progress-percent">${percent}%</span>
+                        </div>
+                        <div class="topic-progress-bar">
+                            <div class="topic-progress-fill ${topic.class}" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            list.innerHTML = progressHTML;
+
+            // Update overall
+            const overallPercent = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+            document.getElementById('overall-percent').textContent = `${overallPercent}%`;
+        }
+
+        console.log('📝 Study Notes, Hint System, and Topic Progress loaded!');
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
