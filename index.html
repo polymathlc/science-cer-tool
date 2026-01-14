@@ -1730,6 +1730,12 @@
             50% { transform: translateY(-3px); }
         }
 
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         @keyframes practiceSparkle {
             0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
             25% { transform: scale(1.2) rotate(10deg); opacity: 0.8; }
@@ -6418,16 +6424,67 @@
 
                         <!-- Start Practice Button -->
                         <div id="practice-start-container" style="text-align: center; padding: 3rem;">
-                            <button id="btn-start-practice" class="btn" style="background: #7b1fa2; color: white; font-size: 1.2rem; padding: 15px 40px;" onclick="startPractice()" disabled>
+                            <button id="btn-start-practice" class="btn" style="background: linear-gradient(135deg, #7b1fa2, #9c27b0); color: white; font-size: 1.2rem; padding: 15px 40px; box-shadow: 0 4px 15px rgba(123,31,162,0.3);" onclick="startPractice()" disabled>
                                 🚀 Start Practice
                             </button>
                             <p style="color: #888; margin-top: 1rem; font-size: 0.9rem;">Questions will be served based on your level. Review questions (from 7 days ago) come first!</p>
+
+                            <!-- Gamification Info -->
+                            <div style="margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #fff8e1, #ffecb3); border-radius: 12px; border: 2px solid #ffd54f;">
+                                <h4 style="color: #f57c00; margin: 0 0 0.75rem 0;">🎟️ Earn Tickets While You Practice!</h4>
+                                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; font-size: 0.85rem; color: #666;">
+                                    <span>✅ +1 ticket per correct answer</span>
+                                    <span>🔥 Streak bonuses every 3 correct</span>
+                                    <span>💪 2-3x multiplier for hard questions</span>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Current Question Container -->
                         <div id="practice-question-container" class="hidden">
+                            <!-- Gamification Progress Bar -->
+                            <div id="practice-gamification-bar" style="background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; color: white;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                                    <!-- Tickets Earned -->
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,215,0,0.2); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ffd700;">
+                                        <span style="font-size: 1.2rem;">🎟️</span>
+                                        <span style="font-weight: bold; color: #ffd700;" id="practice-tickets-earned">0</span>
+                                        <span style="font-size: 0.75rem; color: #ccc;">tickets</span>
+                                    </div>
+
+                                    <!-- Current Streak -->
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,87,34,0.2); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #ff5722;">
+                                        <span style="font-size: 1.2rem;">🔥</span>
+                                        <span style="font-weight: bold; color: #ff5722;" id="practice-current-streak">0</span>
+                                        <span style="font-size: 0.75rem; color: #ccc;">streak</span>
+                                    </div>
+
+                                    <!-- Combo Multiplier -->
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(156,39,176,0.2); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #9c27b0;">
+                                        <span style="font-size: 1.2rem;">⚡</span>
+                                        <span style="font-weight: bold; color: #ce93d8;" id="practice-combo-multiplier">1.0x</span>
+                                        <span style="font-size: 0.75rem; color: #ccc;">combo</span>
+                                    </div>
+
+                                    <!-- XP Progress -->
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(76,175,80,0.2); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #4CAF50;">
+                                        <span style="font-size: 1.2rem;">✨</span>
+                                        <span style="font-weight: bold; color: #81c784;" id="practice-xp-earned">0</span>
+                                        <span style="font-size: 0.75rem; color: #ccc;">XP</span>
+                                    </div>
+                                </div>
+
+                                <!-- Reward Popup (hidden by default) -->
+                                <div id="practice-reward-popup" style="display: none; margin-top: 0.75rem; text-align: center; animation: pulse 0.5s ease-out;">
+                                    <span style="background: linear-gradient(135deg, #ffd700, #ff8f00); color: #1a1a2e; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; font-size: 0.9rem;" id="practice-reward-text">+1 🎟️</span>
+                                </div>
+                            </div>
+
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                <span style="background: #f3e5f5; color: #7b1fa2; padding: 5px 15px; border-radius: 20px; font-weight: 600;" id="practice-question-level">P6</span>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <span style="background: #f3e5f5; color: #7b1fa2; padding: 5px 15px; border-radius: 20px; font-weight: 600;" id="practice-question-level">P6</span>
+                                    <span style="padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem;" id="practice-question-difficulty">Moderate</span>
+                                </div>
                                 <span style="color: #888; font-size: 0.9rem;" id="practice-question-topic">Topic: Forces</span>
                             </div>
                             <div id="practice-question-content" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
@@ -6438,11 +6495,59 @@
                         </div>
 
                         <!-- Practice Complete -->
-                        <div id="practice-complete" class="hidden" style="text-align: center; padding: 3rem;">
+                        <div id="practice-complete" class="hidden" style="text-align: center; padding: 2rem;">
                             <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
-                            <h3 style="color: #7b1fa2;">Practice Complete!</h3>
-                            <p style="color: #666;" id="practice-summary">Great job!</p>
-                            <button class="btn" style="background: #7b1fa2; color: white; margin-top: 1rem;" onclick="restartPractice()">Practice Again</button>
+                            <h3 style="color: #7b1fa2; margin-bottom: 1.5rem;">Practice Complete!</h3>
+
+                            <!-- Tickets Earned Summary -->
+                            <div id="practice-tickets-summary" style="background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; color: white;">
+                                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎟️</div>
+                                <div style="font-size: 2rem; font-weight: bold; color: #ffd700;" id="practice-total-tickets">0</div>
+                                <div style="color: #ccc; font-size: 0.9rem;">Tickets Earned!</div>
+
+                                <!-- Ticket Breakdown -->
+                                <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; font-size: 0.85rem;">
+                                    <div style="text-align: center;">
+                                        <div style="color: #81c784;">✅ <span id="summary-correct-tickets">0</span></div>
+                                        <div style="color: #888; font-size: 0.75rem;">Correct</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="color: #ff8a65;">🔥 <span id="summary-streak-bonus">0</span></div>
+                                        <div style="color: #888; font-size: 0.75rem;">Streak</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="color: #ce93d8;">💪 <span id="summary-difficulty-bonus">0</span></div>
+                                        <div style="color: #888; font-size: 0.75rem;">Difficulty</div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="color: #64b5f6;">⭐ <span id="summary-session-bonus">0</span></div>
+                                        <div style="color: #888; font-size: 0.75rem;">Session</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stats Grid -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                <div style="background: #f5f5f5; padding: 1rem; border-radius: 12px;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: #4CAF50;" id="summary-correct-count">0</div>
+                                    <div style="color: #888; font-size: 0.8rem;">Correct</div>
+                                </div>
+                                <div style="background: #f5f5f5; padding: 1rem; border-radius: 12px;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: #ff5722;" id="summary-best-streak">0</div>
+                                    <div style="color: #888; font-size: 0.8rem;">Best Streak</div>
+                                </div>
+                                <div style="background: #f5f5f5; padding: 1rem; border-radius: 12px;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: #2196F3;" id="summary-accuracy">0%</div>
+                                    <div style="color: #888; font-size: 0.8rem;">Accuracy</div>
+                                </div>
+                                <div style="background: #f5f5f5; padding: 1rem; border-radius: 12px;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: #9c27b0;" id="summary-xp-total">0</div>
+                                    <div style="color: #888; font-size: 0.8rem;">XP Earned</div>
+                                </div>
+                            </div>
+
+                            <p style="color: #666; margin-bottom: 1rem;" id="practice-summary">Great job!</p>
+                            <button class="btn" style="background: linear-gradient(135deg, #7b1fa2, #9c27b0); color: white; padding: 12px 30px;" onclick="restartPractice()">Practice Again</button>
                         </div>
                     </div>
                 </div>
@@ -9289,7 +9394,113 @@
             wrong: 0,
             streak: 0,
             answeredQuestions: new Set(),
-            wrongAnswersForReview: {} // {questionId: timestamp} - questions to review after 7 days
+            wrongAnswersForReview: {}, // {questionId: timestamp} - questions to review after 7 days
+            // Gamification state
+            ticketsEarned: 0,
+            bestStreak: 0,
+            xpEarned: 0,
+            perfectAnswers: 0, // Answered hard questions correctly
+            comboMultiplier: 1
+        };
+
+        // Gamification configuration
+        const GAMIFICATION_CONFIG = {
+            // Base ticket rewards
+            TICKET_PER_CORRECT: 1,           // Base tickets per correct answer
+            TICKET_STREAK_BONUS: 1,          // Extra ticket every X streak
+            STREAK_BONUS_THRESHOLD: 3,       // Streak needed for bonus
+
+            // Difficulty multipliers for tickets
+            DIFFICULTY_MULTIPLIERS: {
+                'Very Hard': 3,   // <35% expected success
+                'Hard': 2,        // 35-49% expected success
+                'Challenging': 1.5, // 50-69% expected success
+                'Moderate': 1,    // 70-84% expected success
+                'Easy': 0.5       // 85%+ expected success
+            },
+
+            // XP rewards (for visual progression)
+            XP_PER_CORRECT: 10,
+            XP_STREAK_MULTIPLIER: 1.5,       // XP multiplier when on streak
+
+            // Session bonuses
+            PERFECT_SESSION_BONUS: 5,        // Bonus tickets for 100% session
+            GREAT_SESSION_BONUS: 3,          // Bonus tickets for 80%+ session
+            GOOD_SESSION_BONUS: 1,           // Bonus tickets for 60%+ session
+
+            // Combo system
+            COMBO_INCREASE_PER_CORRECT: 0.1, // Combo multiplier increase
+            MAX_COMBO_MULTIPLIER: 2.0
+        };
+
+        // Gamification UI update helper
+        window.updateGamificationUI = function(ticketsEarned, streakBonus, difficultyMultiplier) {
+            const state = window.practiceState;
+
+            // Update ticket count
+            document.getElementById('practice-tickets-earned').textContent = state.ticketsEarned;
+
+            // Update streak display
+            document.getElementById('practice-current-streak').textContent = state.streak;
+
+            // Update combo multiplier
+            document.getElementById('practice-combo-multiplier').textContent = state.comboMultiplier.toFixed(1) + 'x';
+
+            // Update XP
+            document.getElementById('practice-xp-earned').textContent = state.xpEarned;
+
+            // Show reward popup
+            const popup = document.getElementById('practice-reward-popup');
+            const rewardText = document.getElementById('practice-reward-text');
+
+            let rewardMessage = `+${ticketsEarned} 🎟️`;
+            if (streakBonus > 0) {
+                rewardMessage += ` (🔥 Streak Bonus!)`;
+            }
+            if (difficultyMultiplier >= 2) {
+                rewardMessage += ` (💪 Hard Q!)`;
+            }
+
+            rewardText.textContent = rewardMessage;
+            popup.style.display = 'block';
+
+            // Animate and hide popup
+            popup.style.animation = 'none';
+            popup.offsetHeight; // Trigger reflow
+            popup.style.animation = 'pulse 0.6s ease-out';
+
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 2000);
+        };
+
+        // Reset gamification state for new practice session
+        window.resetGamificationState = function() {
+            const state = window.practiceState;
+            state.ticketsEarned = 0;
+            state.bestStreak = 0;
+            state.xpEarned = 0;
+            state.perfectAnswers = 0;
+            state.comboMultiplier = 1;
+
+            // Reset UI
+            document.getElementById('practice-tickets-earned').textContent = '0';
+            document.getElementById('practice-current-streak').textContent = '0';
+            document.getElementById('practice-combo-multiplier').textContent = '1.0x';
+            document.getElementById('practice-xp-earned').textContent = '0';
+            document.getElementById('practice-reward-popup').style.display = 'none';
+        };
+
+        // Get difficulty badge styling
+        window.getDifficultyBadgeStyle = function(difficultyLabel) {
+            const styles = {
+                'Very Hard': { bg: '#9c27b0', color: 'white' },
+                'Hard': { bg: '#f44336', color: 'white' },
+                'Challenging': { bg: '#ff9800', color: 'white' },
+                'Moderate': { bg: '#8bc34a', color: 'white' },
+                'Easy': { bg: '#4CAF50', color: 'white' }
+            };
+            return styles[difficultyLabel] || { bg: '#888', color: 'white' };
         };
 
         // =====================================================
@@ -9854,6 +10065,10 @@
             // Total login days: +1 ticket per 3 days
             const totalLoginDays = studentData.totalLoginDays || 0;
             tickets += Math.floor(totalLoginDays / 3);
+
+            // Practice tickets earned from gamification
+            const practiceTickets = studentData.practiceTickets || 0;
+            tickets += practiceTickets;
 
             return Math.max(1, tickets); // Minimum 1 ticket for participating
         };
@@ -11687,7 +11902,10 @@
             window.practiceState.correct = 0;
             window.practiceState.wrong = 0;
             window.practiceState.streak = 0;
-            
+
+            // Reset gamification state
+            resetGamificationState();
+
             // Load answered questions, wrong answers for review, and ratings
             await loadAnsweredQuestions();
             await loadWrongAnswersForReview();
@@ -11983,7 +12201,16 @@
             // Update level and topic display
             document.getElementById('practice-question-level').textContent = question.level;
             document.getElementById('practice-question-topic').textContent = `Topic: ${question.topic}`;
-            
+
+            // Update difficulty badge in header
+            const difficultyBadgeEl = document.getElementById('practice-question-difficulty');
+            if (difficultyBadgeEl) {
+                const badgeStyle = getDifficultyBadgeStyle(difficulty.label);
+                difficultyBadgeEl.textContent = difficulty.label;
+                difficultyBadgeEl.style.background = badgeStyle.bg;
+                difficultyBadgeEl.style.color = badgeStyle.color;
+            }
+
             updatePracticeStats();
         };
 
@@ -12136,31 +12363,88 @@
             if (isCorrect) {
                 state.correct++;
                 state.streak++;
-                
+
+                // Track best streak
+                if (state.streak > state.bestStreak) {
+                    state.bestStreak = state.streak;
+                }
+
                 // If this was a review question answered correctly, remove from review queue
                 if (question.isReviewQuestion) {
                     removeFromReviewQueue(question.id);
-                    
+
                     // Show encouraging message for mastered review question
                     const masteredMsg = document.createElement('div');
                     masteredMsg.style.cssText = 'background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 12px; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 600; color: #155724;';
                     masteredMsg.innerHTML = '🎉 Great job! You\'ve mastered this review question!';
                     container.appendChild(masteredMsg);
                 }
+
+                // =====================================================
+                // GAMIFICATION: Calculate and award tickets
+                // =====================================================
+                const difficulty = getDifficultyLabel(studentRating, questionRating);
+                const difficultyMultiplier = GAMIFICATION_CONFIG.DIFFICULTY_MULTIPLIERS[difficulty.label] || 1;
+
+                // Base ticket for correct answer
+                let ticketsThisQuestion = GAMIFICATION_CONFIG.TICKET_PER_CORRECT;
+
+                // Apply difficulty multiplier
+                ticketsThisQuestion = Math.ceil(ticketsThisQuestion * difficultyMultiplier);
+
+                // Streak bonus (every 3 correct answers in a row)
+                let streakBonus = 0;
+                if (state.streak > 0 && state.streak % GAMIFICATION_CONFIG.STREAK_BONUS_THRESHOLD === 0) {
+                    streakBonus = GAMIFICATION_CONFIG.TICKET_STREAK_BONUS;
+                    ticketsThisQuestion += streakBonus;
+                }
+
+                // Apply combo multiplier
+                ticketsThisQuestion = Math.ceil(ticketsThisQuestion * state.comboMultiplier);
+
+                // Increase combo multiplier
+                state.comboMultiplier = Math.min(
+                    GAMIFICATION_CONFIG.MAX_COMBO_MULTIPLIER,
+                    state.comboMultiplier + GAMIFICATION_CONFIG.COMBO_INCREASE_PER_CORRECT
+                );
+
+                // Calculate XP
+                let xpThisQuestion = GAMIFICATION_CONFIG.XP_PER_CORRECT;
+                if (state.streak >= 3) {
+                    xpThisQuestion = Math.ceil(xpThisQuestion * GAMIFICATION_CONFIG.XP_STREAK_MULTIPLIER);
+                }
+
+                // Track hard question bonus
+                if (difficultyMultiplier >= 2) {
+                    state.perfectAnswers++;
+                }
+
+                // Add to totals
+                state.ticketsEarned += ticketsThisQuestion;
+                state.xpEarned += xpThisQuestion;
+
+                // Update gamification UI
+                updateGamificationUI(ticketsThisQuestion, streakBonus, difficultyMultiplier);
+
             } else {
                 state.wrong++;
                 state.streak = 0;
-                
+                state.comboMultiplier = 1; // Reset combo on wrong answer
+
+                // Update gamification UI to show streak broken
+                document.getElementById('practice-current-streak').textContent = '0';
+                document.getElementById('practice-combo-multiplier').textContent = '1.0x';
+
                 // Save wrong answer for 7-day review (spaced repetition)
                 saveWrongAnswerForReview(question.id);
-                
+
                 // Show spaced repetition reminder
                 const reviewMsg = document.createElement('div');
                 reviewMsg.style.cssText = 'background: linear-gradient(135deg, #fff3cd, #ffeeba); padding: 12px; border-radius: 8px; margin-top: 1rem; text-align: center; font-weight: 600; color: #856404;';
                 reviewMsg.innerHTML = '📅 This question will return for review in <strong>7 days</strong> to help you master it!';
                 container.appendChild(reviewMsg);
             }
-            
+
             // Mark as answered
             state.answeredQuestions.add(question.id);
             saveAnsweredQuestions();
@@ -12176,73 +12460,118 @@
             showCurrentPracticeQuestion();
         };
 
-        window.endPractice = function() {
+        window.endPractice = async function() {
             const state = window.practiceState;
             const student = state.currentStudent;
-            
+
             document.getElementById('practice-question-container').classList.add('hidden');
             document.getElementById('practice-complete').classList.remove('hidden');
-            
+
             const total = state.correct + state.wrong;
             const percentage = total > 0 ? Math.round((state.correct / total) * 100) : 0;
-            
+
             // Calculate rating change during session
             const startRating = student.startRating || 1000;
             const endRating = student.rating || 1000;
             const ratingChange = endRating - startRating;
             const ratingTier = getRatingTier(endRating);
-            
-            // Build summary with rating info
+
+            // =====================================================
+            // GAMIFICATION: Calculate session bonus tickets
+            // =====================================================
+            let sessionBonus = 0;
+            if (total >= 3) { // Only award session bonus if they answered at least 3 questions
+                if (percentage === 100) {
+                    sessionBonus = GAMIFICATION_CONFIG.PERFECT_SESSION_BONUS;
+                } else if (percentage >= 80) {
+                    sessionBonus = GAMIFICATION_CONFIG.GREAT_SESSION_BONUS;
+                } else if (percentage >= 60) {
+                    sessionBonus = GAMIFICATION_CONFIG.GOOD_SESSION_BONUS;
+                }
+            }
+
+            // Calculate ticket breakdown
+            const baseTickets = state.correct; // 1 ticket per correct answer base
+            const difficultyBonus = state.ticketsEarned - baseTickets - Math.floor(state.bestStreak / GAMIFICATION_CONFIG.STREAK_BONUS_THRESHOLD);
+            const streakBonusTotal = Math.floor(state.bestStreak / GAMIFICATION_CONFIG.STREAK_BONUS_THRESHOLD);
+
+            // Add session bonus to total
+            const totalTickets = state.ticketsEarned + sessionBonus;
+
+            // Update summary UI elements
+            document.getElementById('practice-total-tickets').textContent = totalTickets;
+            document.getElementById('summary-correct-tickets').textContent = baseTickets;
+            document.getElementById('summary-streak-bonus').textContent = streakBonusTotal;
+            document.getElementById('summary-difficulty-bonus').textContent = Math.max(0, difficultyBonus);
+            document.getElementById('summary-session-bonus').textContent = sessionBonus;
+            document.getElementById('summary-correct-count').textContent = state.correct;
+            document.getElementById('summary-best-streak').textContent = state.bestStreak;
+            document.getElementById('summary-accuracy').textContent = percentage + '%';
+            document.getElementById('summary-xp-total').textContent = state.xpEarned;
+
+            // Build rating summary message
             let summaryHtml = `
                 <div style="text-align: center;">
-                    <div style="font-size: 1.2rem; margin-bottom: 1rem;">
-                        You got <strong>${state.correct}</strong> out of <strong>${total}</strong> correct (<strong>${percentage}%</strong>)!
+                    <div style="font-size: 1.1rem; margin-bottom: 0.75rem;">
+                        You got <strong>${state.correct}</strong> out of <strong>${total}</strong> correct!
                     </div>
-                    <div style="background: linear-gradient(135deg, #f5f5f5, #e8e8e8); padding: 15px; border-radius: 12px; margin-top: 1rem;">
-                        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">📊 Rating Summary</div>
-                        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="background: linear-gradient(135deg, #f5f5f5, #e8e8e8); padding: 12px; border-radius: 12px;">
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;">
                             <div>
-                                <div style="color: #888; font-size: 0.85rem;">Current Rating</div>
-                                <div style="font-size: 1.5rem; font-weight: 700; color: ${ratingTier.color};">${endRating}</div>
-                                <div style="font-size: 0.8rem; color: ${ratingTier.color};">${ratingTier.tier}</div>
+                                <div style="color: #888; font-size: 0.75rem;">Rating</div>
+                                <div style="font-size: 1.2rem; font-weight: 700; color: ${ratingTier.color};">${endRating}</div>
                             </div>
-                            <div style="font-size: 2rem; color: ${ratingChange >= 0 ? '#4CAF50' : '#f44336'};">
+                            <div style="font-size: 1.5rem; color: ${ratingChange >= 0 ? '#4CAF50' : '#f44336'};">
                                 ${ratingChange >= 0 ? '↑' : '↓'}
                             </div>
                             <div>
-                                <div style="color: #888; font-size: 0.85rem;">Session Change</div>
-                                <div style="font-size: 1.3rem; font-weight: 600; color: ${ratingChange >= 0 ? '#4CAF50' : '#f44336'};">
+                                <div style="color: #888; font-size: 0.75rem;">Change</div>
+                                <div style="font-size: 1.1rem; font-weight: 600; color: ${ratingChange >= 0 ? '#4CAF50' : '#f44336'};">
                                     ${ratingChange >= 0 ? '+' : ''}${ratingChange}
                                 </div>
                             </div>
                         </div>
                     </div>
             `;
-            
+
             // Add performance feedback
             if (percentage >= 80) {
                 summaryHtml += `
-                    <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 12px; border-radius: 8px; margin-top: 1rem; color: #155724;">
+                    <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); padding: 10px; border-radius: 8px; margin-top: 0.75rem; color: #155724; font-size: 0.9rem;">
                         🌟 Excellent work! You're mastering this material!
                     </div>
                 `;
             } else if (percentage >= 60) {
                 summaryHtml += `
-                    <div style="background: linear-gradient(135deg, #cce5ff, #b8daff); padding: 12px; border-radius: 8px; margin-top: 1rem; color: #004085;">
+                    <div style="background: linear-gradient(135deg, #cce5ff, #b8daff); padding: 10px; border-radius: 8px; margin-top: 0.75rem; color: #004085; font-size: 0.9rem;">
                         👍 Good progress! Keep practicing to improve further.
                     </div>
                 `;
-            } else {
+            } else if (total > 0) {
                 summaryHtml += `
-                    <div style="background: linear-gradient(135deg, #fff3cd, #ffeeba); padding: 12px; border-radius: 8px; margin-top: 1rem; color: #856404;">
+                    <div style="background: linear-gradient(135deg, #fff3cd, #ffeeba); padding: 10px; border-radius: 8px; margin-top: 0.75rem; color: #856404; font-size: 0.9rem;">
                         💪 Don't give up! Review the explanations and try again.
                     </div>
                 `;
             }
-            
+
             summaryHtml += '</div>';
-            
+
             document.getElementById('practice-summary').innerHTML = summaryHtml;
+
+            // =====================================================
+            // Save tickets to Firebase
+            // =====================================================
+            if (totalTickets > 0 && student) {
+                await savePracticeTickets(student.index, totalTickets, {
+                    correct: state.correct,
+                    total: total,
+                    percentage: percentage,
+                    bestStreak: state.bestStreak,
+                    xpEarned: state.xpEarned,
+                    sessionBonus: sessionBonus
+                });
+            }
         };
 
         window.restartPractice = function() {
@@ -12250,6 +12579,64 @@
             document.getElementById('practice-start-container').classList.remove('hidden');
             document.getElementById('practice-stats').classList.add('hidden');
             document.getElementById('practice-question-container').classList.add('hidden');
+        };
+
+        // Save earned practice tickets to Firebase
+        window.savePracticeTickets = async function(studentIndex, tickets, sessionData) {
+            try {
+                const user = window.auth?.currentUser;
+                if (!user || tickets <= 0) return;
+
+                const { doc, getDoc, updateDoc, arrayUnion, increment } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+                const userRef = doc(window.db_fs, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const students = userData.students || [];
+
+                    if (students[studentIndex]) {
+                        // Update student's practice tickets
+                        const currentTickets = students[studentIndex].practiceTickets || 0;
+                        students[studentIndex].practiceTickets = currentTickets + tickets;
+
+                        // Track total tickets earned from practice
+                        students[studentIndex].totalPracticeTicketsEarned =
+                            (students[studentIndex].totalPracticeTicketsEarned || 0) + tickets;
+
+                        // Track best streak
+                        if (sessionData.bestStreak > (students[studentIndex].bestPracticeStreak || 0)) {
+                            students[studentIndex].bestPracticeStreak = sessionData.bestStreak;
+                        }
+
+                        // Track total XP
+                        students[studentIndex].totalXP =
+                            (students[studentIndex].totalXP || 0) + sessionData.xpEarned;
+
+                        // Track practice sessions
+                        students[studentIndex].practiceSessionsCompleted =
+                            (students[studentIndex].practiceSessionsCompleted || 0) + 1;
+
+                        // Save to Firebase
+                        await updateDoc(userRef, { students });
+
+                        // Show success toast
+                        if (window.showToast) {
+                            window.showToast(`🎟️ +${tickets} tickets earned!`, 'success');
+                        }
+
+                        // Refresh ticket display if function exists
+                        if (window.loadUserTickets) {
+                            await window.loadUserTickets();
+                        }
+
+                        console.log(`Saved ${tickets} practice tickets for student ${studentIndex}`);
+                    }
+                }
+            } catch (error) {
+                console.error('Error saving practice tickets:', error);
+            }
         };
 
         window.updatePracticeStats = function() {
