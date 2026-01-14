@@ -20595,14 +20595,23 @@
         });
 
         // Re-initialize tooltips after dynamic content loads
-        const originalSwitchTab = window.switchTab;
-        window.switchTab = function(...args) {
-            const result = originalSwitchTab.apply(this, args);
-            setTimeout(() => {
-                initTooltips();
-            }, 100);
-            return result;
-        };
+        // Wait for switchTab to be defined before wrapping it
+        function wrapSwitchTab() {
+            if (typeof window.switchTab === 'function') {
+                const originalSwitchTab = window.switchTab;
+                window.switchTab = function(...args) {
+                    const result = originalSwitchTab.apply(this, args);
+                    setTimeout(() => {
+                        initTooltips();
+                    }, 100);
+                    return result;
+                };
+            } else {
+                // If switchTab doesn't exist yet, try again after a short delay
+                setTimeout(wrapSwitchTab, 100);
+            }
+        }
+        wrapSwitchTab();
     </script>
 
     <!-- PowerPoint-style Table Grid Selector (positioned fixed, outside all containers) -->
