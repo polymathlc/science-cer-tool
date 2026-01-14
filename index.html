@@ -14,7 +14,7 @@
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <!-- APP VERSION - Update this when making changes -->
-    <meta name="app-version" content="2026.01.13.1">
+    <meta name="app-version" content="2026.01.13.2">
     <title>CER Interactive Questions</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +34,57 @@
             --secondary-blue: #6c757d;
             --disabled-grey: #b0b8c0;
             --label-color: #aab5c0;
+            --card-bg: #ffffff;
+            --sidebar-bg: #fdfdfd;
+            --input-bg: #ffffff;
+            --modal-bg: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+        }
+
+        /* Dark Mode Colors */
+        [data-theme="dark"] {
+            --bg-color: #1a1a2e;
+            --main-text: #e8e8e8;
+            --light-text: #b0b0b0;
+            --peach: #3d2e2e;
+            --teal: #2e3d3d;
+            --blue-light: #1e2d3d;
+            --border-color: #3a3a4a;
+            --correct-color: #4caf50;
+            --incorrect-color: #f44336;
+            --primary-blue: #5c9eff;
+            --secondary-blue: #8a8a9a;
+            --disabled-grey: #5a5a6a;
+            --label-color: #7a7a8a;
+            --card-bg: #252538;
+            --sidebar-bg: #1e1e30;
+            --input-bg: #2a2a3e;
+            --modal-bg: #252538;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* System preference dark mode */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg-color: #1a1a2e;
+                --main-text: #e8e8e8;
+                --light-text: #b0b0b0;
+                --peach: #3d2e2e;
+                --teal: #2e3d3d;
+                --blue-light: #1e2d3d;
+                --border-color: #3a3a4a;
+                --correct-color: #4caf50;
+                --incorrect-color: #f44336;
+                --primary-blue: #5c9eff;
+                --secondary-blue: #8a8a9a;
+                --disabled-grey: #5a5a6a;
+                --label-color: #7a7a8a;
+                --card-bg: #252538;
+                --sidebar-bg: #1e1e30;
+                --input-bg: #2a2a3e;
+                --modal-bg: #252538;
+                --shadow-color: rgba(0, 0, 0, 0.4);
+            }
         }
 
         /* Skip link for accessibility - shows on focus */
@@ -96,9 +147,9 @@
             flex-direction: column;
             width: 100%;
             max-width: 1200px;
-            background: transparent;
+            background: var(--card-bg);
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 40px var(--shadow-color);
             overflow: hidden;
             padding: 0;
         }
@@ -106,7 +157,7 @@
         .sidebar {
             width: 250px;
             padding: 2rem;
-            background-color: #fdfdfd;
+            background-color: var(--sidebar-bg);
             border-right: 1px solid var(--border-color);
             flex-shrink: 0;
         }
@@ -1468,19 +1519,24 @@
             width: 100%;
             padding: 12px 20px;
             margin-bottom: 16px;
-            border: 2px solid #f0f0f0;
+            border: 2px solid var(--border-color);
             border-radius: 14px;
             font-size: 1rem;
             transition: all 0.2s;
             font-family: inherit;
-            background: #fafafa;
+            background: var(--input-bg);
+            color: var(--main-text);
         }
 
         .auth-input:focus {
             border-color: var(--primary-blue);
-            background: #fff;
+            background: var(--card-bg);
             outline: none;
-            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+        }
+
+        .auth-input::placeholder {
+            color: var(--label-color);
         }
 
         .auth-btn {
@@ -3002,6 +3058,66 @@
                 display: block !important;
                 break-inside: avoid !important;
             }
+
+            /* Page settings */
+            @page {
+                size: A4;
+                margin: 2cm 1.5cm;
+            }
+
+            @page :first {
+                margin-top: 1cm;
+            }
+
+            /* Print header with student info */
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 2px solid #333;
+            }
+
+            .print-header h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .print-header .student-info {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.9rem;
+            }
+
+            /* Score section at bottom */
+            .print-score-section {
+                display: block !important;
+                margin-top: 2rem;
+                padding: 1rem;
+                border: 2px solid #333;
+                page-break-inside: avoid;
+            }
+
+            .print-score-section .score-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.5rem 0;
+                border-bottom: 1px dashed #999;
+            }
+
+            /* Better question formatting */
+            .worksheet-question-card h4 {
+                font-size: 1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            /* Writing lines for answers */
+            .writing-lines {
+                display: block !important;
+                border-bottom: 1px solid #333;
+                margin: 0.5rem 0;
+                height: 2rem;
+            }
         }
 
         /* Save Worksheet Modal */
@@ -3027,12 +3143,13 @@
         }
 
         .modal-box {
-            background: white;
+            background: var(--modal-bg);
+            color: var(--main-text);
             padding: 2rem;
             border-radius: 16px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px var(--shadow-color);
             transform: translateY(-20px);
             transition: transform 0.3s ease;
         }
@@ -4283,6 +4400,63 @@
                 font-size: 0.6rem;
                 padding: 2px 6px;
             }
+
+            /* Enhanced touch targets - minimum 44px */
+            button, a, select, input[type="checkbox"], input[type="radio"] {
+                min-height: 44px;
+            }
+
+            /* Better touch feedback */
+            button:active, .tab-btn:active, .sidebar-nav-btn:active {
+                transform: scale(0.97);
+                opacity: 0.9;
+            }
+
+            /* Toast notifications on mobile */
+            #toast-notification {
+                left: 10px !important;
+                right: 10px !important;
+                bottom: 10px !important;
+                max-width: none !important;
+            }
+
+            /* Main navigation groups on mobile */
+            .main-nav-groups {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                gap: 16px !important;
+                padding-left: 4px !important;
+                padding-right: 4px !important;
+            }
+
+            .main-nav-groups::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-group-btn {
+                font-size: 12px !important;
+                padding: 6px 10px !important;
+            }
+
+            .nav-dropdown {
+                min-width: 180px !important;
+            }
+
+            /* Better spacing for question cards */
+            .question-container {
+                margin-bottom: 1rem;
+            }
+
+            /* Full-width worksheet items */
+            .worksheet-item {
+                flex-direction: column;
+            }
+
+            .worksheet-item .actions {
+                width: 100%;
+                margin-top: 10px;
+            }
         }
 
         /* =====================================================
@@ -4760,6 +4934,9 @@
                     </button>
                     <button class="header-icon-btn tooltip-container" onclick="showAccountSettings()" data-tooltip="Access account settings and preferences" id="header-settings-btn">
                         ⚙️
+                    </button>
+                    <button class="header-icon-btn tooltip-container" onclick="toggleDarkMode()" data-tooltip="Toggle dark/light mode (Alt+D)" id="dark-mode-toggle" aria-label="Toggle dark mode">
+                        🌙
                     </button>
                     <button class="tutorial-help-btn tooltip-container" onclick="startTutorial()" data-tooltip="Click to view a comprehensive tutorial covering all features of the app" id="header-tutorial-btn" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-blue); color: white; border: none; font-size: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3); transition: all 0.3s;">
                         ?
@@ -6827,6 +7004,266 @@
             if (spinner) spinner.remove();
         };
 
+        // =====================================================
+        // KEYBOARD SHORTCUTS
+        // =====================================================
+
+        /**
+         * Keyboard shortcuts for power users
+         * Alt+P: Practice mode
+         * Alt+W: Worksheet
+         * Alt+L: Leaderboard
+         * Alt+M: Toggle MCQ/OEQ mode
+         * Alt+S: Save worksheet (when in worksheet view)
+         * Alt+H: Show help/shortcuts
+         * Escape: Close modals
+         * Arrow keys: Navigate questions (when in practice mode)
+         */
+        window.keyboardShortcutsEnabled = true;
+
+        window.initKeyboardShortcuts = function() {
+            document.addEventListener('keydown', function(e) {
+                // Don't trigger shortcuts when typing in inputs
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                    // Only handle Escape in inputs
+                    if (e.key === 'Escape') {
+                        e.target.blur();
+                    }
+                    return;
+                }
+
+                if (!window.keyboardShortcutsEnabled) return;
+
+                // Handle Escape key - close modals
+                if (e.key === 'Escape') {
+                    // Close any visible modal
+                    const visibleModal = document.querySelector('.modal-overlay.visible');
+                    if (visibleModal) {
+                        visibleModal.classList.remove('visible');
+                        e.preventDefault();
+                        return;
+                    }
+                    // Close question popup if open
+                    const questionPopup = document.querySelector('.modal-overlay[style*="z-index: 10000"]');
+                    if (questionPopup) {
+                        questionPopup.remove();
+                        e.preventDefault();
+                        return;
+                    }
+                }
+
+                // Alt key shortcuts
+                if (e.altKey && !e.ctrlKey && !e.metaKey) {
+                    switch(e.key.toLowerCase()) {
+                        case 'p': // Practice mode
+                            e.preventDefault();
+                            if (window.switchTab) switchTab('practice');
+                            window.showToast('Switched to Practice Mode', 'info', 1500);
+                            break;
+                        case 'w': // Worksheet
+                            e.preventDefault();
+                            if (window.switchTab) switchTab('worksheet');
+                            window.showToast('Switched to Worksheet', 'info', 1500);
+                            break;
+                        case 'l': // Leaderboard
+                            e.preventDefault();
+                            if (window.switchTab) switchTab('leaderboard');
+                            window.showToast('Switched to Leaderboard', 'info', 1500);
+                            break;
+                        case 'm': // Toggle mode
+                            e.preventDefault();
+                            if (window.toggleMode) toggleMode();
+                            break;
+                        case 's': // Save worksheet
+                            e.preventDefault();
+                            if (window.showSaveWorksheetModal) showSaveWorksheetModal();
+                            break;
+                        case 'h': // Show help
+                            e.preventDefault();
+                            showKeyboardShortcutsHelp();
+                            break;
+                        case 'q': // Question library
+                            e.preventDefault();
+                            if (window.switchTab) switchTab('question-list');
+                            window.showToast('Switched to Question Library', 'info', 1500);
+                            break;
+                        case 'r': // My Progress
+                            e.preventDefault();
+                            if (window.switchTab) switchTab('my-progress');
+                            window.showToast('Switched to My Progress', 'info', 1500);
+                            break;
+                        case 'd': // Dark mode toggle
+                            e.preventDefault();
+                            if (window.toggleDarkMode) toggleDarkMode();
+                            break;
+                    }
+                }
+
+                // Number keys 1-4 for level selection (without modifiers)
+                if (!e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+                    if (e.key >= '3' && e.key <= '6') {
+                        const level = 'P' + e.key;
+                        if (window.changeLevel) {
+                            changeLevel(level);
+                            window.showToast(`Level changed to ${level}`, 'info', 1500);
+                        }
+                    }
+                }
+            });
+        };
+
+        /**
+         * Show keyboard shortcuts help modal
+         */
+        window.showKeyboardShortcutsHelp = function() {
+            const existingModal = document.getElementById('shortcuts-help-modal');
+            if (existingModal) existingModal.remove();
+
+            const modal = document.createElement('div');
+            modal.id = 'shortcuts-help-modal';
+            modal.className = 'modal-overlay visible';
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-labelledby', 'shortcuts-title');
+            modal.style.zIndex = '10005';
+            modal.innerHTML = `
+                <div class="modal-box" style="max-width: 500px;">
+                    <h3 id="shortcuts-title" style="margin-bottom: 1.5rem; color: #667eea; display: flex; align-items: center; gap: 10px;">
+                        ⌨️ Keyboard Shortcuts
+                    </h3>
+                    <div style="display: grid; gap: 12px;">
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + P</kbd></span>
+                            <span style="color: #666;">Practice Mode</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + W</kbd></span>
+                            <span style="color: #666;">My Worksheet</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + Q</kbd></span>
+                            <span style="color: #666;">Question Library</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + L</kbd></span>
+                            <span style="color: #666;">Leaderboard</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + R</kbd></span>
+                            <span style="color: #666;">My Progress</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + M</kbd></span>
+                            <span style="color: #666;">Toggle MCQ/OEQ Mode</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + S</kbd></span>
+                            <span style="color: #666;">Save Worksheet</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">3, 4, 5, 6</kbd></span>
+                            <span style="color: #666;">Change Level (P3-P6)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + D</kbd></span>
+                            <span style="color: #666;">Toggle Dark Mode</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Escape</kbd></span>
+                            <span style="color: #666;">Close Modal/Popup</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                            <span><kbd style="background: #f5f5f5; padding: 4px 8px; border-radius: 4px; font-family: monospace; border: 1px solid #ddd;">Alt + H</kbd></span>
+                            <span style="color: #666;">Show This Help</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1.5rem; text-align: center;">
+                        <button onclick="this.closest('.modal-overlay').remove()" class="btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            Got it!
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            // Close on backdrop click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) modal.remove();
+            });
+        };
+
+        // Initialize keyboard shortcuts when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initKeyboardShortcuts);
+        } else {
+            window.initKeyboardShortcuts();
+        }
+
+        // =====================================================
+        // DARK MODE SUPPORT
+        // =====================================================
+
+        /**
+         * Initialize dark mode based on saved preference or system preference
+         */
+        window.initDarkMode = function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+            // If no saved preference, system preference is handled by CSS media query
+        };
+
+        /**
+         * Toggle dark mode on/off
+         */
+        window.toggleDarkMode = function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme;
+
+            if (currentTheme === 'dark') {
+                newTheme = 'light';
+            } else if (currentTheme === 'light') {
+                // If explicitly light, switch to dark
+                newTheme = 'dark';
+            } else {
+                // If no explicit theme, check system preference
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                newTheme = prefersDark ? 'light' : 'dark';
+            }
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            const icon = newTheme === 'dark' ? '🌙' : '☀️';
+            const label = newTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
+            window.showToast(`${icon} ${label} enabled`, 'info', 1500);
+
+            // Update toggle button if exists
+            const darkModeBtn = document.getElementById('dark-mode-toggle');
+            if (darkModeBtn) {
+                darkModeBtn.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+                darkModeBtn.setAttribute('aria-label', newTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+            }
+        };
+
+        /**
+         * Get current theme
+         */
+        window.getCurrentTheme = function() {
+            const savedTheme = document.documentElement.getAttribute('data-theme');
+            if (savedTheme) return savedTheme;
+
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+
+        // Initialize dark mode on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initDarkMode);
+        } else {
+            window.initDarkMode();
+        }
+
         // Change level (works for both OEQ and MCQ modes)
         window.changeLevel = function(level) {
             if (window.currentMode === 'mcq') {
@@ -7089,10 +7526,274 @@
         function saveWorksheetToStorage() {
             try {
                 localStorage.setItem('worksheetItems', JSON.stringify(window.worksheetItems));
+                // Track last save time
+                localStorage.setItem('worksheetLastSaved', Date.now().toString());
             } catch (e) {
                 console.error('Error saving worksheet:', e);
             }
         }
+
+        // =====================================================
+        // AUTO-SAVE FUNCTIONALITY
+        // =====================================================
+
+        /**
+         * Auto-save worksheet progress
+         * Saves every 60 seconds if there are changes
+         */
+        window.autoSaveInterval = null;
+        window.lastSavedWorksheetHash = '';
+
+        window.getWorksheetHash = function() {
+            return JSON.stringify(window.worksheetItems || []);
+        };
+
+        window.startAutoSave = function() {
+            // Don't start if already running
+            if (window.autoSaveInterval) return;
+
+            // Save initial hash
+            window.lastSavedWorksheetHash = window.getWorksheetHash();
+
+            // Auto-save every 60 seconds
+            window.autoSaveInterval = setInterval(function() {
+                const currentHash = window.getWorksheetHash();
+
+                // Only save if there are changes
+                if (currentHash !== window.lastSavedWorksheetHash && window.worksheetItems && window.worksheetItems.length > 0) {
+                    saveWorksheetToStorage();
+                    window.lastSavedWorksheetHash = currentHash;
+
+                    // Show subtle notification
+                    const indicator = document.createElement('div');
+                    indicator.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        left: 20px;
+                        background: rgba(40, 167, 69, 0.9);
+                        color: white;
+                        padding: 8px 16px;
+                        border-radius: 8px;
+                        font-size: 0.85rem;
+                        z-index: 10000;
+                        animation: fadeInOut 2s ease;
+                    `;
+                    indicator.innerHTML = '💾 Auto-saved';
+                    document.body.appendChild(indicator);
+
+                    setTimeout(() => indicator.remove(), 2000);
+                }
+            }, 60000); // 60 seconds
+
+            console.log('Auto-save started');
+        };
+
+        window.stopAutoSave = function() {
+            if (window.autoSaveInterval) {
+                clearInterval(window.autoSaveInterval);
+                window.autoSaveInterval = null;
+                console.log('Auto-save stopped');
+            }
+        };
+
+        // Add auto-save animation
+        if (!document.getElementById('autosave-styles')) {
+            const style = document.createElement('style');
+            style.id = 'autosave-styles';
+            style.textContent = `
+                @keyframes fadeInOut {
+                    0% { opacity: 0; transform: translateY(10px); }
+                    20% { opacity: 1; transform: translateY(0); }
+                    80% { opacity: 1; transform: translateY(0); }
+                    100% { opacity: 0; transform: translateY(-10px); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Start auto-save when document is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.startAutoSave);
+        } else {
+            window.startAutoSave();
+        }
+
+        // =====================================================
+        // ENHANCED CONFIRMATION DIALOG
+        // =====================================================
+
+        /**
+         * Show a custom confirmation dialog
+         * @param {Object} options - Dialog options
+         * @param {string} options.title - Dialog title
+         * @param {string} options.message - Dialog message
+         * @param {string} options.confirmText - Confirm button text (default: "Confirm")
+         * @param {string} options.cancelText - Cancel button text (default: "Cancel")
+         * @param {string} options.type - Type: 'danger', 'warning', 'info' (default: 'warning')
+         * @returns {Promise<boolean>} - Resolves true if confirmed, false if cancelled
+         */
+        window.showConfirmDialog = function(options = {}) {
+            return new Promise((resolve) => {
+                const {
+                    title = 'Confirm Action',
+                    message = 'Are you sure you want to proceed?',
+                    confirmText = 'Confirm',
+                    cancelText = 'Cancel',
+                    type = 'warning'
+                } = options;
+
+                const colors = {
+                    danger: { bg: '#dc3545', icon: '⚠️' },
+                    warning: { bg: '#ffc107', icon: '⚡' },
+                    info: { bg: '#17a2b8', icon: 'ℹ️' }
+                };
+                const color = colors[type] || colors.warning;
+
+                const modal = document.createElement('div');
+                modal.className = 'modal-overlay visible';
+                modal.style.zIndex = '10006';
+                modal.setAttribute('role', 'alertdialog');
+                modal.setAttribute('aria-modal', 'true');
+                modal.setAttribute('aria-labelledby', 'confirm-dialog-title');
+                modal.innerHTML = `
+                    <div class="modal-box" style="max-width: 400px; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">${color.icon}</div>
+                        <h3 id="confirm-dialog-title" style="margin-bottom: 1rem; color: var(--main-text);">${window.sanitizeHTML(title)}</h3>
+                        <p style="color: var(--light-text); margin-bottom: 1.5rem;">${window.sanitizeHTML(message)}</p>
+                        <div style="display: flex; gap: 12px; justify-content: center;">
+                            <button class="confirm-cancel-btn" style="padding: 12px 24px; border: 2px solid var(--border-color); background: transparent; border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--main-text); min-width: 100px;">
+                                ${window.sanitizeHTML(cancelText)}
+                            </button>
+                            <button class="confirm-ok-btn" style="padding: 12px 24px; border: none; background: ${color.bg}; color: white; border-radius: 8px; cursor: pointer; font-weight: 600; min-width: 100px;">
+                                ${window.sanitizeHTML(confirmText)}
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+
+                // Focus the cancel button by default (safer)
+                const cancelBtn = modal.querySelector('.confirm-cancel-btn');
+                const confirmBtn = modal.querySelector('.confirm-ok-btn');
+                cancelBtn.focus();
+
+                // Handle cancel
+                cancelBtn.addEventListener('click', () => {
+                    modal.remove();
+                    resolve(false);
+                });
+
+                // Handle confirm
+                confirmBtn.addEventListener('click', () => {
+                    modal.remove();
+                    resolve(true);
+                });
+
+                // Handle backdrop click (cancel)
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                        resolve(false);
+                    }
+                });
+
+                // Handle Escape key
+                const handleEscape = (e) => {
+                    if (e.key === 'Escape') {
+                        modal.remove();
+                        resolve(false);
+                        document.removeEventListener('keydown', handleEscape);
+                    }
+                };
+                document.addEventListener('keydown', handleEscape);
+            });
+        };
+
+        // =====================================================
+        // IMAGE LAZY LOADING
+        // =====================================================
+
+        /**
+         * Initialize lazy loading for images
+         * Uses native loading="lazy" with IntersectionObserver fallback
+         */
+        window.initLazyLoading = function() {
+            // Add loading="lazy" to all images without it
+            document.querySelectorAll('img:not([loading])').forEach(img => {
+                img.setAttribute('loading', 'lazy');
+            });
+
+            // For browsers that don't support native lazy loading, use IntersectionObserver
+            if (!('loading' in HTMLImageElement.prototype)) {
+                const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+
+                if ('IntersectionObserver' in window) {
+                    const imageObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const img = entry.target;
+                                if (img.dataset.src) {
+                                    img.src = img.dataset.src;
+                                    img.removeAttribute('data-src');
+                                }
+                                observer.unobserve(img);
+                            }
+                        });
+                    }, {
+                        rootMargin: '50px 0px',
+                        threshold: 0.01
+                    });
+
+                    lazyImages.forEach(img => {
+                        // Store original src in data-src for lazy loading
+                        if (img.src && !img.dataset.src) {
+                            img.dataset.src = img.src;
+                            img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
+                        }
+                        imageObserver.observe(img);
+                    });
+                }
+            }
+
+            console.log('Lazy loading initialized');
+        };
+
+        // Initialize lazy loading when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initLazyLoading);
+        } else {
+            window.initLazyLoading();
+        }
+
+        /**
+         * Shuffle array randomly (Fisher-Yates algorithm)
+         * @param {Array} array - Array to shuffle
+         * @returns {Array} - Shuffled array
+         */
+        window.shuffleArray = function(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        };
+
+        /**
+         * Shuffle questions in worksheet
+         */
+        window.shuffleWorksheetQuestions = function() {
+            if (!window.worksheetItems || window.worksheetItems.length < 2) {
+                window.showToast('Need at least 2 questions to shuffle', 'warning');
+                return;
+            }
+
+            window.worksheetItems = window.shuffleArray(window.worksheetItems);
+            saveWorksheetToStorage();
+            updateWorksheetUI();
+            window.showToast('Questions shuffled!', 'success');
+        };
 
         // Toggle question in/out of worksheet
         window.toggleWorksheetItem = function (btn) {
@@ -18859,4 +19560,3 @@
 </body>
 
 </html>
-
