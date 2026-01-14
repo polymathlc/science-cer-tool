@@ -6418,10 +6418,16 @@
 
                         <!-- Start Practice Button -->
                         <div id="practice-start-container" style="text-align: center; padding: 3rem;">
-                            <button id="btn-start-practice" class="btn" style="background: #7b1fa2; color: white; font-size: 1.2rem; padding: 15px 40px;" onclick="startPractice()" disabled>
-                                🚀 Start Practice
-                            </button>
+                            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 1.5rem;">
+                                <button id="btn-start-practice" class="btn" style="background: #7b1fa2; color: white; font-size: 1.2rem; padding: 15px 40px;" onclick="startPractice()" disabled>
+                                    🚀 Start Practice
+                                </button>
+                                <button id="btn-start-poketd" class="btn" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: #1a1a2e; font-size: 1.2rem; padding: 15px 40px; font-weight: bold;" onclick="startPokeTD()" disabled>
+                                    🎮 Play Poke TD
+                                </button>
+                            </div>
                             <p style="color: #888; margin-top: 1rem; font-size: 0.9rem;">Questions will be served based on your level. Review questions (from 7 days ago) come first!</p>
+                            <p style="color: #FFA500; margin-top: 0.5rem; font-size: 0.85rem;">🎮 <strong>Poke TD:</strong> Answer MCQ questions to earn coins and defend against Pokemon waves!</p>
                         </div>
 
                         <!-- Current Question Container -->
@@ -6708,6 +6714,16 @@
                     Maybe Later
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Poke TD Game Modal -->
+    <div id="poketd-modal" class="modal-overlay" style="display: none; z-index: 10000;">
+        <div style="position: relative; width: 100%; height: 100%; background: linear-gradient(135deg, #1e3c72, #2a5298);">
+            <button onclick="closePokeTD()" style="position: absolute; top: 10px; right: 10px; z-index: 10001; background: #ff6b6b; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold;">
+                ✕ Exit Game
+            </button>
+            <iframe id="poketd-iframe" style="width: 100%; height: 100%; border: none;"></iframe>
         </div>
     </div>
 
@@ -11651,7 +11667,8 @@
             const select = document.getElementById('practice-student-select');
             const selectedOption = select.options[select.selectedIndex];
             const startBtn = document.getElementById('btn-start-practice');
-            
+            const pokeTdBtn = document.getElementById('btn-start-poketd');
+
             if (select.value && selectedOption.dataset.name) {
                 // Handle admin test mode vs regular students
                 const isAdminMode = select.value === 'admin';
@@ -11661,15 +11678,132 @@
                     level: selectedOption.dataset.level,
                     isAdminMode: isAdminMode
                 };
-                document.getElementById('practice-student-info').textContent = 
+                document.getElementById('practice-student-info').textContent =
                     `Student: ${selectedOption.dataset.name} | Level: ${selectedOption.dataset.level}`;
                 startBtn.disabled = false;
+                if (pokeTdBtn) pokeTdBtn.disabled = false;
             } else {
                 window.practiceState.currentStudent = null;
                 document.getElementById('practice-student-info').textContent = 'Select a student to start practicing';
                 startBtn.disabled = true;
+                if (pokeTdBtn) pokeTdBtn.disabled = true;
             }
         };
+
+        // =====================================================
+        // POKE TD GAME INTEGRATION
+        // =====================================================
+
+        window.pokeTdQuestions = [];
+
+        window.startPokeTD = async function() {
+            if (!window.practiceState.currentStudent) {
+                alert("Please select a student first.");
+                return;
+            }
+
+            const student = window.practiceState.currentStudent;
+            const level = student.level;
+
+            // Gather MCQ questions from the DOM (similar to startPractice)
+            const mcqQuestions = [];
+            const levels = [level];
+            const levelOrder = ['P3', 'P4', 'P5', 'P6'];
+            const currentLevelIndex = levelOrder.indexOf(level);
+            if (currentLevelIndex > 0) {
+                levels.push(levelOrder[currentLevelIndex - 1]);
+            }
+
+            // Collect MCQ questions from each topic
+            levels.forEach((lvl, priority) => {
+                const topics = window.mcqCurriculum[lvl] || [];
+                topics.forEach(topicName => {
+                    const topicId = topicName.toLowerCase().replace(/\s+/g, '-');
+                    const topicContainer = document.getElementById(`topic-mcq-${topicId}`);
+                    if (topicContainer) {
+                        const questions = topicContainer.querySelectorAll('.question-container');
+                        questions.forEach((qEl, idx) => {
+                            const mcqContainer = qEl.querySelector('.mcq-container');
+                            if (mcqContainer) {
+                                // Extract question data
+                                const questionText = qEl.querySelector('p')?.textContent || qEl.querySelector('h3')?.textContent || `Question ${idx + 1}`;
+                                const options = [];
+                                let correctIndex = 0;
+
+                                mcqContainer.querySelectorAll('.mcq-option').forEach((opt, optIdx) => {
+                                    const input = opt.querySelector('input[type="radio"]');
+                                    const span = opt.querySelector('span');
+                                    if (span) {
+                                        options.push(span.textContent.trim());
+                                        if (input && input.dataset.correct === 'true') {
+                                            correctIndex = optIdx;
+                                        }
+                                    }
+                                });
+
+                                if (options.length >= 2) {
+                                    mcqQuestions.push({
+                                        id: qEl.id || `mcq-${topicId}-${idx}`,
+                                        topic: topicName,
+                                        level: lvl,
+                                        question: questionText,
+                                        options: options,
+                                        correctIndex: correctIndex,
+                                        priority: priority
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+            if (mcqQuestions.length < 4) {
+                alert("Not enough MCQ questions available. Please ensure MCQ mode has questions loaded.");
+                return;
+            }
+
+            // Shuffle questions
+            window.pokeTdQuestions = mcqQuestions.sort(() => Math.random() - 0.5);
+
+            // Show the modal and load the game
+            const modal = document.getElementById('poketd-modal');
+            const iframe = document.getElementById('poketd-iframe');
+
+            modal.style.display = 'flex';
+
+            // Load the game - using GitHub raw content or local path
+            // For now, use the poketd repo's GitHub Pages URL
+            iframe.src = 'https://polymathlc.github.io/poketd/';
+
+            // Wait for iframe to load, then send questions
+            iframe.onload = function() {
+                setTimeout(() => {
+                    iframe.contentWindow.postMessage({
+                        type: 'POKETD_MCQ_QUESTIONS',
+                        questions: window.pokeTdQuestions,
+                        studentName: student.name,
+                        studentLevel: level
+                    }, '*');
+                }, 1000);
+            };
+        };
+
+        window.closePokeTD = function() {
+            const modal = document.getElementById('poketd-modal');
+            const iframe = document.getElementById('poketd-iframe');
+
+            modal.style.display = 'none';
+            iframe.src = 'about:blank';
+        };
+
+        // Listen for messages from Poke TD game
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'POKETD_GAME_RESULT') {
+                console.log('Poke TD game result:', event.data);
+                // Could update practice stats here if needed
+            }
+        });
 
         window.startPractice = async function() {
             if (!window.practiceState.currentStudent) {
