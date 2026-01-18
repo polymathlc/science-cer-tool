@@ -18860,7 +18860,7 @@
         // =====================================================
 
         // Update worksheet count in header badge
-        function updateWorksheetCountHeader() {
+        window.updateWorksheetCountHeader = function() {
             const count = window.worksheetItems ? window.worksheetItems.length : 0;
             const headerBadge = document.getElementById('worksheet-count-header');
             if (headerBadge) {
