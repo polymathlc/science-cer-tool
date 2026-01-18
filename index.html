@@ -13834,7 +13834,7 @@
                         <div class="view-message-question">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                                 <strong>📋 Related Question:</strong>
-                                ${msg.questionId ? `<button class="btn" style="background: #1976d2; color: white; padding: 5px 12px; font-size: 0.8rem;" onclick="viewOriginalQuestion('${msg.questionId}')">👁️ View Full Question</button>` : ''}
+                                ${msg.questionId ? `<button class="btn" style="background: #1976d2; color: white; padding: 5px 12px; font-size: 0.8rem;" onclick="viewOriginalQuestion('${window.escapeAttr(msg.questionId)}')">👁️ View Full Question</button>` : ''}
                             </div>
                             <div style="color: #555;">${msg.questionContext}</div>
                         </div>
@@ -13854,23 +13854,51 @@
         };
 
         // View original question from message
-        window.viewOriginalQuestion = function(questionId) {
+        window.viewOriginalQuestion = async function(questionId) {
             const questionElement = document.getElementById(questionId);
-            
+
             if (questionElement) {
                 // Clone the question for the popup
                 const clone = questionElement.cloneNode(true);
                 clone.id = 'popup-question-clone';
-                
+
                 // Remove controls from clone
                 clone.querySelectorAll('.worksheet-control-bar, .admin-controls').forEach(el => el.remove());
-                
+
                 // Show in a popup modal
                 const popupContent = document.getElementById('question-popup-content');
                 popupContent.innerHTML = '';
                 popupContent.appendChild(clone);
-                
+
                 document.getElementById('question-popup-modal').classList.add('visible');
+            } else if (questionId && questionId.startsWith('q-')) {
+                // Try to fetch from Firestore for custom questions
+                try {
+                    const firestoreId = questionId.replace('q-', '');
+                    const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                    const questionDoc = await getDoc(doc(window.db_fs, "custom_questions", firestoreId));
+
+                    if (questionDoc.exists()) {
+                        const data = questionDoc.data();
+                        const popupContent = document.getElementById('question-popup-content');
+
+                        // Build question HTML similar to how it's rendered elsewhere
+                        const questionHtml = `
+                            <div class="question-container" style="margin: 0; box-shadow: none;">
+                                <h3 style="color: #1976d2; margin-bottom: 1rem;">${window.sanitizeHTML(data.title || 'Question')}</h3>
+                                <div class="question-content">${data.html || '<p>Question content not available.</p>'}</div>
+                            </div>
+                        `;
+
+                        popupContent.innerHTML = questionHtml;
+                        document.getElementById('question-popup-modal').classList.add('visible');
+                    } else {
+                        alert("Question not found. It may have been deleted.");
+                    }
+                } catch (e) {
+                    console.error("Error fetching question:", e);
+                    alert("Error loading question. Please try again.");
+                }
             } else {
                 alert("Question not found. It may have been deleted or moved.");
             }
