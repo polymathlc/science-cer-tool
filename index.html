@@ -5146,8 +5146,9 @@
                         🎓 Lessons
                     </button>
 
-                    <button id="btn-sidebar-question-list" class="sidebar-nav-btn tooltip-container" style="background: linear-gradient(135deg, #9c27b0, #673ab7); color: white;" onclick="switchTab('question-list', this)" data-tooltip="Browse and search all available questions in the library">
-                        📚 Question Library
+                    <button id="btn-sidebar-question-list" class="sidebar-nav-btn tooltip-container" style="background: linear-gradient(135deg, #9c27b0, #673ab7); color: white;" onclick="switchTab('question-list', this)" data-tooltip="Browse all questions including pending vetting and approved questions">
+                        📚 Question Bank
+                        <span id="sidebar-vetting-badge" class="hidden" style="background: #ff9800; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; margin-left: 8px;">0</span>
                     </button>
                     
                     <!-- Tutorial button moved to header -->
@@ -6204,9 +6205,30 @@
                 <div id="view-question-list" class="view-content hidden" style="flex: 1;">
                     <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-                            <h2 style="margin: 0; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">📚 Question Library</h2>
-                            <button class="btn" style="background: #1976d2; color: white;" onclick="loadQuestionList()">🔄 Refresh</button>
+                            <h2 style="margin: 0; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">📚 Question Bank</h2>
+                            <button class="btn" style="background: #1976d2; color: white;" onclick="loadQuestionList()">🔄 Refresh All</button>
                         </div>
+
+                        <!-- Vetting List Section (Admin Only) -->
+                        <div id="question-bank-vetting-section" class="hidden" style="margin-bottom: 2rem;">
+                            <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-radius: 12px; padding: 1.5rem; border: 2px solid #ff9800;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                                    <div>
+                                        <h3 style="margin: 0; color: #e65100; display: flex; align-items: center; gap: 8px;">
+                                            <span>📋</span> Vetting List
+                                            <span id="vetting-section-badge" style="background: #ff9800; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.85rem;">0</span>
+                                        </h3>
+                                        <p style="margin: 0.5rem 0 0; color: #666; font-size: 0.9rem;">Questions pending review before adding to question bank</p>
+                                    </div>
+                                    <button class="btn" style="background: #ff9800; color: white;" onclick="loadVettingListInBank()">🔄 Refresh</button>
+                                </div>
+                                <div id="vetting-list-bank-container">
+                                    <div style="text-align: center; padding: 1rem; color: #888;">Loading vetting list...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="margin: 0 0 1rem; color: #667eea;">📚 Question Library</h3>
 
                         <!-- Filter and Sort Controls -->
                         <div style="background: #f5f5f5; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
@@ -10806,12 +10828,88 @@
         window.allQuestionsList = [];
         window.filteredQuestionsList = [];
 
+        // Load vetting list in question bank view (for admins)
+        window.loadVettingListInBank = async function() {
+            const vettingSection = document.getElementById('question-bank-vetting-section');
+            const vettingContainer = document.getElementById('vetting-list-bank-container');
+            const vettingBadge = document.getElementById('vetting-section-badge');
+            const sidebarBadge = document.getElementById('sidebar-vetting-badge');
+
+            if (!vettingSection || !vettingContainer) return;
+
+            // Show vetting section for admins
+            if (window.isAdminUser) {
+                vettingSection.classList.remove('hidden');
+                vettingContainer.innerHTML = '<div style="text-align: center; padding: 1rem; color: #888;">Loading vetting list...</div>';
+
+                // Load vetting questions from Firebase
+                if (window.loadVettingListFromFirebase) {
+                    await window.loadVettingListFromFirebase();
+                }
+
+                const questions = window.vettingQuestions || [];
+                const count = questions.length;
+
+                // Update badges
+                if (vettingBadge) {
+                    vettingBadge.textContent = count;
+                }
+                if (sidebarBadge) {
+                    sidebarBadge.textContent = count;
+                    sidebarBadge.classList.toggle('hidden', count === 0);
+                }
+
+                if (count === 0) {
+                    vettingContainer.innerHTML = `
+                        <div style="text-align: center; padding: 1rem; color: #888;">
+                            <p style="margin: 0;">No questions pending review</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Render vetting questions (compact cards)
+                vettingContainer.innerHTML = questions.map(q => `
+                    <div class="flagged-question-card" data-vetting-id="${window.escapeAttr(q.id)}" style="border-left-color: #ff9800; margin-bottom: 1rem;">
+                        <div class="flagged-question-header">
+                            <div>
+                                <div class="flagged-question-title">${window.sanitizeHTML(q.title || 'Untitled Question')}</div>
+                                <div class="flagged-question-meta">
+                                    <span>Category: ${window.sanitizeHTML(q.category || 'N/A')}</span> •
+                                    <span>Level: ${window.sanitizeHTML(q.level || 'N/A')}</span> •
+                                    <span>Topic: ${window.sanitizeHTML(q.topic || 'N/A')}</span> •
+                                    <span>By: ${window.sanitizeHTML(q.createdBy || 'Unknown')}</span>
+                                </div>
+                            </div>
+                            <span class="flagged-status-badge pending" style="background: #ff9800;">Pending</span>
+                        </div>
+                        <div class="flagged-question-actions">
+                            <button class="btn" style="background: #667eea; color: white;" onclick="viewVettingQuestion('${window.escapeAttr(q.id)}')">Preview</button>
+                            <button class="btn" style="background: #1976d2; color: white;" onclick="editVettingQuestion('${window.escapeAttr(q.id)}')">Edit</button>
+                            <button class="btn" style="background: #4CAF50; color: white;" onclick="approveVettingQuestion('${window.escapeAttr(q.id)}')">Approve</button>
+                            <button class="btn" style="background: #dc3545; color: white;" onclick="deleteVettingQuestion('${window.escapeAttr(q.id)}')">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                vettingSection.classList.add('hidden');
+                if (sidebarBadge) {
+                    sidebarBadge.classList.add('hidden');
+                }
+            }
+        };
+
         // Load all questions for the question list page
         window.loadQuestionList = async function() {
             const container = document.getElementById('question-list-container');
             if (!container) return;
 
             container.innerHTML = '<div class="placeholder-content" id="question-list-loading-msg"><p style="font-size: 1.2rem; color: #666;">Loading questions...</p></div>';
+
+            // Load vetting section for admins
+            if (window.isAdminUser) {
+                await loadVettingListInBank();
+            }
 
             try {
                 // Load question ratings if available
@@ -15127,9 +15225,13 @@
                     window.clearAdminForm(true, true);
                 }
 
-                // Refresh vetting count
+                // Refresh vetting count and list
                 if (window.loadVettingListFromFirebase) {
                     await window.loadVettingListFromFirebase();
+                    // If currently viewing vetting tab, refresh the list display
+                    if (window.currentActiveTab === 'vetting' && window.renderVettingList) {
+                        window.renderVettingList();
+                    }
                 }
 
             } catch (e) {
@@ -15151,7 +15253,7 @@
             }
 
             // Update button states
-            const allBtns = document.querySelectorAll('.tab-btn, #btn-sidebar-admin, #btn-sidebar-worksheet, #btn-sidebar-saved-worksheets, #btn-sidebar-practice, #btn-sidebar-lessons, #btn-sidebar-progress, #btn-sidebar-leaderboard, #btn-sidebar-my-progress, #header-inbox-btn, #header-flagged-btn, #header-vetting-btn');
+            const allBtns = document.querySelectorAll('.tab-btn, #btn-sidebar-admin, #btn-sidebar-worksheet, #btn-sidebar-saved-worksheets, #btn-sidebar-practice, #btn-sidebar-lessons, #btn-sidebar-progress, #btn-sidebar-leaderboard, #btn-sidebar-my-progress, #btn-sidebar-question-list, #header-inbox-btn, #header-flagged-btn, #header-vetting-btn');
             allBtns.forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
@@ -19134,6 +19236,10 @@
                         await deleteDoc(doc(db, "vetting_questions", vettingId));
                         alert("Question removed from vetting list.");
                         window.loadVettingList();
+                        // Also refresh vetting list in question bank view
+                        if (window.loadVettingListInBank) {
+                            await window.loadVettingListInBank();
+                        }
                     } catch (e) {
                         console.error("Error deleting vetting question:", e);
                         alert("Error deleting question. Please try again.");
@@ -19176,6 +19282,10 @@
 
                         // Reload vetting list and custom questions
                         window.loadVettingList();
+                        // Also refresh vetting list in question bank view
+                        if (window.loadVettingListInBank) {
+                            await window.loadVettingListInBank();
+                        }
                         if (window.loadCustomQuestions) {
                             window.customQuestionsLoaded = false;
                             document.querySelectorAll('.custom-question').forEach(el => el.remove());
