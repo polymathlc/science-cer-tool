@@ -12042,6 +12042,11 @@
                             window.setupQuestionFormGlobal(bodyDiv.id);
                         }
                     }
+
+                    // Process images to add proper error handling
+                    if (window.processImagesInElement) {
+                        window.processImagesInElement(bodyDiv);
+                    }
                 }
             }, 100);
 
@@ -15519,6 +15524,12 @@
                     <div class="question-content">${fixedHtml}</div>
                 </div>
             `;
+
+            // Process images after inserting HTML to add proper error handling
+            setTimeout(() => {
+                window.processImagesInElement(content);
+            }, 50);
+
             document.getElementById('question-popup-modal').classList.add('visible');
         };
 
@@ -18148,6 +18159,14 @@
             html += afterAnswerHtml;
 
             previewContent.innerHTML = html;
+
+            // Process images to add proper error handling
+            setTimeout(() => {
+                if (window.processImagesInElement) {
+                    window.processImagesInElement(previewContent);
+                }
+            }, 50);
+
             previewSection.scrollIntoView({ behavior: 'smooth' });
         };
 
@@ -18633,6 +18652,99 @@
             });
 
             return tempDiv.innerHTML;
+        };
+
+        /**
+         * Process all images in a DOM element to fix URLs and add proper error handling
+         * Call this after inserting HTML content that may contain images
+         * @param {HTMLElement} element - The DOM element containing images
+         */
+        window.processImagesInElement = function(element) {
+            if (!element) return;
+
+            element.querySelectorAll('img').forEach((img, index) => {
+                // Fix the image URL
+                let src = img.getAttribute('src') || '';
+                src = window.decodeHtmlEntities(src);
+                const fixedSrc = window.convertDropboxUrl(src);
+
+                if (fixedSrc !== src) {
+                    img.src = fixedSrc;
+                }
+
+                // Generate unique ID if not present
+                if (!img.id) {
+                    img.id = 'img-processed-' + Date.now() + '-' + index;
+                }
+
+                // Store original src for retry
+                img.dataset.originalSrc = fixedSrc;
+                img.dataset.retryCount = '0';
+
+                // Remove old inline handlers and add new ones
+                img.removeAttribute('onerror');
+                img.removeAttribute('onload');
+
+                // Wrap image if not already wrapped
+                let wrapper = img.closest('.img-loading-wrapper');
+                if (!wrapper) {
+                    wrapper = document.createElement('div');
+                    wrapper.className = 'img-loading-wrapper';
+                    wrapper.id = img.id + '-wrapper';
+                    wrapper.style.cssText = 'position: relative;';
+                    wrapper.dataset.src = fixedSrc;
+
+                    // Create placeholder
+                    const placeholder = document.createElement('div');
+                    placeholder.id = img.id + '-placeholder';
+                    placeholder.className = 'img-placeholder';
+                    placeholder.style.cssText = `
+                        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+                        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                        background-size: 200% 100%;
+                        animation: shimmer 1.5s infinite;
+                        border-radius: 8px;
+                        min-height: 100px;
+                        display: block;
+                    `;
+
+                    // Insert wrapper
+                    img.parentNode.insertBefore(wrapper, img);
+                    wrapper.appendChild(placeholder);
+                    wrapper.appendChild(img);
+                }
+
+                // Get or create placeholder
+                const placeholderId = img.id + '-placeholder';
+                let placeholder = document.getElementById(placeholderId);
+                if (!placeholder) {
+                    placeholder = wrapper.querySelector('.img-placeholder');
+                }
+
+                // Set up proper styling
+                img.style.cssText = 'opacity: 0; transition: opacity 0.3s ease; max-width: 100%; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;';
+
+                // Add load handler
+                img.onload = function() {
+                    this.style.opacity = '1';
+                    this.style.display = 'block';
+                    if (placeholder) placeholder.style.display = 'none';
+                };
+
+                // Add error handler with retry
+                img.onerror = function() {
+                    window.handleImageError(this, img.id);
+                };
+
+                // If image is already complete and loaded successfully
+                if (img.complete && img.naturalHeight > 0) {
+                    img.style.opacity = '1';
+                    if (placeholder) placeholder.style.display = 'none';
+                } else if (img.complete && img.naturalHeight === 0) {
+                    // Image failed to load
+                    window.handleImageError(img, img.id);
+                }
+            });
         };
 
         function editQuestion(btn, isDuplicate = false) {
@@ -19931,6 +20043,10 @@
                                 if (category !== 'mcq' && window.setupQuestionFormGlobal) {
                                     window.setupQuestionFormGlobal(`${qId}-body`);
                                 }
+                                // Process images after inserting to add proper error handling
+                                if (window.processImagesInElement) {
+                                    window.processImagesInElement(div);
+                                }
                             }
                         });
 
@@ -20157,8 +20273,16 @@
                         const previewSection = document.getElementById('admin-preview-section');
                         const previewContent = document.getElementById('admin-preview-content');
                         if (previewSection && previewContent) {
-                            previewContent.innerHTML = data.html || '';
+                            // Use robust image URL normalization
+                            let fixedHtml = window.normalizeImageUrls(data.html || '');
+                            previewContent.innerHTML = fixedHtml;
                             previewSection.classList.remove('hidden');
+                            // Process images after inserting to add proper error handling
+                            setTimeout(() => {
+                                if (window.processImagesInElement) {
+                                    window.processImagesInElement(previewContent);
+                                }
+                            }, 50);
                         }
 
                         alert("Question loaded for editing. Make your changes and click 'Add to Question Bank' to approve.");
@@ -20271,6 +20395,12 @@
                             let fixedHtml = window.normalizeImageUrls(data.html || '');
                             previewContent.innerHTML = fixedHtml;
                             previewSection.classList.remove('hidden');
+                            // Process images after inserting to add proper error handling
+                            setTimeout(() => {
+                                if (window.processImagesInElement) {
+                                    window.processImagesInElement(previewContent);
+                                }
+                            }, 50);
                         }
 
                         alert("Question loaded for editing. Make changes and save when ready.");
