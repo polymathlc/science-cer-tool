@@ -18415,7 +18415,7 @@
 
         /**
          * Convert Dropbox URL for direct image display
-         * Simple version - just adds dl=1 for direct download
+         * Uses raw=1 for inline display (dl=1 forces download)
          */
         window.convertDropboxUrl = function(url) {
             if (!url) return url;
@@ -18430,11 +18430,13 @@
 
             // New format: dropbox.com/scl/fi/...
             if (url.includes('dropbox.com/scl/')) {
-                // Just add dl=1 if not present
-                if (!url.includes('dl=1')) {
-                    url = url.replace(/[?&]dl=0/g, '');
-                    url += (url.includes('?') ? '&' : '?') + 'dl=1';
+                // Already has raw=1, return as-is
+                if (url.includes('raw=1')) {
+                    return url;
                 }
+                // Remove dl=0 or dl=1 and add raw=1 for inline display
+                url = url.replace(/[?&]dl=[01]/g, '');
+                url += (url.includes('?') ? '&' : '?') + 'raw=1';
                 return url;
             }
 
