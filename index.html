@@ -8029,132 +8029,14 @@
         };
 
         /**
-         * Create an optimized image element with loading placeholder and retry logic
-         * @param {string} src - Image source URL
-         * @param {string} className - CSS class name
-         * @param {string} style - Inline styles
-         * @returns {string} - HTML string for image with loading state
+         * Create a simple image element - no fancy wrappers
          */
         window.createOptimizedImage = function(src, className = '', style = '') {
-            // Ensure URL is properly converted
-            const normalizedSrc = window.convertDropboxUrl(src);
-            const uniqueId = 'img-' + Math.random().toString(36).substr(2, 9);
-            const isCached = window.imageCache.has(normalizedSrc);
-
-            // Start preloading if not cached
-            if (!isCached) {
-                window.preloadImage(normalizedSrc);
-            }
-
-            return `<div class="img-loading-wrapper" id="${uniqueId}-wrapper" data-src="${normalizedSrc.replace(/"/g, '&quot;')}" style="position: relative; ${style}">
-                <div id="${uniqueId}-placeholder" class="img-placeholder" style="
-                    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-                    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-                    background-size: 200% 100%;
-                    animation: ${isCached ? 'none' : 'shimmer 1.5s infinite'};
-                    border-radius: 8px;
-                    min-height: 100px;
-                    display: ${isCached ? 'none' : 'block'};
-                "></div>
-                <img src="${normalizedSrc}"
-                    id="${uniqueId}"
-                    class="${className}"
-                    data-retry-count="0"
-                    data-original-src="${normalizedSrc.replace(/"/g, '&quot;')}"
-                    style="opacity: ${isCached ? '1' : '0'}; transition: opacity 0.3s ease; max-width: 100%; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;"
-                    onload="this.style.opacity='1'; this.style.display='block'; var p=document.getElementById('${uniqueId}-placeholder'); if(p)p.style.display='none';"
-                    onerror="window.handleImageError(this, '${uniqueId}')"
-                    loading="eager"
-                >
-            </div>`;
-        };
-
-        /**
-         * Handle image loading errors with retry logic
-         */
-        window.handleImageError = function(img, uniqueId) {
-            const retryCount = parseInt(img.dataset.retryCount || '0');
-            const maxRetries = 2; // Quick retries
-            const placeholder = document.getElementById(uniqueId + '-placeholder');
-
-            if (retryCount < maxRetries) {
-                img.dataset.retryCount = retryCount + 1;
-                const originalSrc = img.dataset.originalSrc || img.src;
-
-                // Just add a simple timestamp to bypass cache
-                let newSrc = originalSrc.replace(/[?&]_t=\d+/g, '').replace(/[?&]$/, '');
-                newSrc += (newSrc.includes('?') ? '&' : '?') + '_t=' + Date.now();
-
-                // Quick retry with minimal delay
-                setTimeout(() => {
-                    img.src = newSrc;
-                }, 200);
-            } else {
-                // Show error state
-                img.style.display = 'none';
-                if (placeholder) {
-                    placeholder.innerHTML = `
-                        <div style="color: #dc3545; text-align: center; padding: 20px; background: #fff3f3; border-radius: 8px; border: 1px dashed #dc3545;">
-                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🖼️</div>
-                            <p style="margin: 0 0 0.5rem 0; font-weight: 500;">Image unavailable</p>
-                            <button onclick="window.retryImageLoad('${uniqueId}')" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">
-                                🔄 Retry
-                            </button>
-                        </div>
-                    `;
-                    placeholder.style.display = 'block';
-                    placeholder.style.position = 'relative';
-                }
-            }
+            const fixedSrc = window.convertDropboxUrl(src);
+            return `<img src="${fixedSrc}" class="${className}" style="max-width: 100%; border-radius: 8px; display: block; margin: 0 auto; ${style}" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<div style=\\'color:#999; text-align:center; padding:15px; background:#f8f8f8; border-radius:8px;\\'>Image unavailable</div>');">`;
         };
 
 
-        /**
-         * Retry loading a failed image
-         */
-        window.retryImageLoad = function(uniqueId) {
-            const img = document.getElementById(uniqueId);
-            const placeholder = document.getElementById(uniqueId + '-placeholder');
-
-            if (img) {
-                img.dataset.retryCount = '0';
-
-                // Show loading state
-                if (placeholder) {
-                    placeholder.innerHTML = '';
-                    placeholder.style.background = 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)';
-                    placeholder.style.backgroundSize = '200% 100%';
-                    placeholder.style.animation = 'shimmer 1.5s infinite';
-                    placeholder.style.display = 'block';
-                }
-
-                // Use original URL with timestamp to bypass cache
-                const originalSrc = img.dataset.originalSrc || img.src;
-                let newSrc = originalSrc.replace(/[?&]_t=\d+/g, '').replace(/[?&]$/, '');
-                newSrc += (newSrc.includes('?') ? '&' : '?') + '_t=' + Date.now();
-
-                img.style.display = 'block';
-                img.style.opacity = '0';
-                img.src = newSrc;
-            }
-        };
-
-        /**
-         * Refresh all images on the page
-         */
-        window.refreshAllImages = function() {
-            window.imageCache.clear();
-
-            document.querySelectorAll('.img-loading-wrapper img').forEach(img => {
-                if (img.id) {
-                    img.dataset.retryCount = '0';
-                    const originalSrc = img.dataset.originalSrc || img.src;
-                    let newSrc = originalSrc.replace(/[?&]_t=\d+/g, '').replace(/[?&]$/, '');
-                    newSrc += (newSrc.includes('?') ? '&' : '?') + '_t=' + Date.now();
-                    img.src = newSrc;
-                }
-            });
-        };
 
         /**
          * Extract and preload images from HTML string
@@ -18534,88 +18416,43 @@
         };
 
         /**
-         * Convert Dropbox URL to displayable direct link format
-         * Handles all Dropbox URL formats and HTML-encoded ampersands
+         * Convert Dropbox URL to direct link - SIMPLE VERSION
          */
-        window.convertDropboxUrl = function(url, skipCacheBuster = true) {
+        window.convertDropboxUrl = function(url) {
             if (!url) return url;
 
-            // First, decode any HTML entities
-            url = window.decodeHtmlEntities(url);
+            // Decode HTML entities
+            url = url.replace(/&amp;/g, '&');
 
-            // Also decode URI-encoded characters that might cause issues
-            try {
-                if (url.includes('%26') || url.includes('%3D')) {
-                    url = decodeURIComponent(url);
-                }
-            } catch (e) {
-                // If decoding fails, continue with original URL
-            }
-
-            // Handle new Dropbox format: /scl/fi/xxx/file.jpg?rlkey=xxx&dl=0
+            // New format: dropbox.com/scl/fi/... - change dl=0 to dl=1
             if (url.includes('dropbox.com/scl/')) {
-                try {
-                    const urlObj = new URL(url);
-                    // Use dl=1 for direct download (more reliable than raw=1)
-                    urlObj.searchParams.set('dl', '1');
-                    urlObj.searchParams.delete('raw');
-                    return urlObj.toString();
-                } catch (e) {
-                    // Fallback to regex approach
-                    url = url.replace(/([?&])dl=0/g, '$1dl=1');
-                    if (!url.includes('dl=1')) {
-                        url += (url.includes('?') ? '&' : '?') + 'dl=1';
-                    }
-                    return url;
-                }
+                return url.replace('dl=0', 'dl=1');
             }
 
-            // Handle old Dropbox format (www.dropbox.com/s/...)
-            if (url.includes('dropbox.com/s/')) {
-                url = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
-                         .replace(/\?dl=[01]/, '')
-                         .replace(/\?raw=[01]/, '');
-                return url;
-            }
-
-            // Handle dl.dropboxusercontent.com URLs (already direct)
-            if (url.includes('dl.dropboxusercontent.com')) {
-                return url;
+            // Old format: www.dropbox.com/s/... - use direct domain
+            if (url.includes('www.dropbox.com/s/')) {
+                return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+                          .replace('?dl=0', '').replace('?dl=1', '');
             }
 
             return url;
         };
 
         /**
-         * Normalize all image URLs in HTML content
-         * Fixes HTML-encoded ampersands and converts Dropbox URLs
+         * Normalize image URLs in HTML - SIMPLE VERSION
          */
         window.normalizeImageUrls = function(html) {
             if (!html) return html;
 
-            // First decode all HTML-encoded ampersands globally
-            let normalized = html.replace(/&amp;/g, '&');
+            // Fix encoded ampersands
+            html = html.replace(/&amp;/g, '&');
 
-            // Process all image src attributes
-            normalized = normalized.replace(/src="([^"]+)"/g, (match, url) => {
-                // Check if this is an image URL
-                if (url.match(/\.(jpg|jpeg|png|gif|webp|svg|bmp)/i) || url.includes('dropbox.com')) {
-                    const fixedUrl = window.convertDropboxUrl(url);
-                    return `src="${fixedUrl}"`;
-                }
-                return match;
+            // Fix Dropbox URLs
+            html = html.replace(/src="([^"]*dropbox\.com[^"]*)"/g, (match, url) => {
+                return 'src="' + window.convertDropboxUrl(url) + '"';
             });
 
-            // Also handle single-quoted src attributes
-            normalized = normalized.replace(/src='([^']+)'/g, (match, url) => {
-                if (url.match(/\.(jpg|jpeg|png|gif|webp|svg|bmp)/i) || url.includes('dropbox.com')) {
-                    const fixedUrl = window.convertDropboxUrl(url);
-                    return `src='${fixedUrl}'`;
-                }
-                return match;
-            });
-
-            return normalized;
+            return html;
         };
 
         /**
@@ -18661,120 +18498,30 @@
         };
 
         /**
-         * Process all images in a DOM element to fix URLs and add proper error handling
-         * Call this after inserting HTML content that may contain images
-         * @param {HTMLElement} element - The DOM element containing images
+         * Process images in element - SIMPLE VERSION
          */
         window.processImagesInElement = function(element) {
             if (!element) return;
 
-            const images = element.querySelectorAll('img');
-
-            images.forEach((img, index) => {
-                // Fix the image URL
+            element.querySelectorAll('img').forEach(img => {
                 let src = img.getAttribute('src') || '';
                 if (!src) return;
 
-                src = window.decodeHtmlEntities(src);
-                const fixedSrc = window.convertDropboxUrl(src);
+                // Fix the URL
+                const fixedSrc = window.convertDropboxUrl(src.replace(/&amp;/g, '&'));
 
-                // Generate unique ID if not present
-                if (!img.id) {
-                    img.id = 'img-processed-' + Date.now() + '-' + index;
-                }
-
-                // Store original src for retry
-                img.dataset.originalSrc = fixedSrc;
-                img.dataset.retryCount = '0';
-
-                // Remove old inline handlers
-                img.removeAttribute('onerror');
-                img.removeAttribute('onload');
-
-                // Check if already wrapped
-                let wrapper = img.closest('.img-loading-wrapper');
-
-                // Check if there's an old-style placeholder with error message
-                const oldPlaceholder = img.previousElementSibling;
-                if (oldPlaceholder && oldPlaceholder.classList.contains('img-placeholder')) {
-                    // Clear old error content
-                    const hasOldError = oldPlaceholder.innerHTML.includes('failed to load');
-                    if (hasOldError) {
-                        oldPlaceholder.innerHTML = '';
-                        oldPlaceholder.style.cssText = `
-                            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-                            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-                            background-size: 200% 100%;
-                            animation: shimmer 1.5s infinite;
-                            border-radius: 8px;
-                            min-height: 100px;
-                            display: block;
-                        `;
-                    }
-                }
-
-                if (!wrapper) {
-                    wrapper = document.createElement('div');
-                    wrapper.className = 'img-loading-wrapper';
-                    wrapper.id = img.id + '-wrapper';
-                    wrapper.style.cssText = 'position: relative;';
-                    wrapper.dataset.src = fixedSrc;
-
-                    // Create placeholder
-                    const placeholder = document.createElement('div');
-                    placeholder.id = img.id + '-placeholder';
-                    placeholder.className = 'img-placeholder';
-                    placeholder.style.cssText = `
-                        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-                        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-                        background-size: 200% 100%;
-                        animation: shimmer 1.5s infinite;
-                        border-radius: 8px;
-                        min-height: 100px;
-                        display: block;
-                    `;
-
-                    // Insert wrapper
-                    img.parentNode.insertBefore(wrapper, img);
-                    wrapper.appendChild(placeholder);
-                    wrapper.appendChild(img);
-                }
-
-                // Get or create placeholder
-                const placeholderId = img.id + '-placeholder';
-                let placeholder = document.getElementById(placeholderId);
-                if (!placeholder) {
-                    placeholder = wrapper.querySelector('.img-placeholder');
-                }
-
-                // Set up proper styling
-                img.style.cssText = 'opacity: 0; transition: opacity 0.3s ease; max-width: 100%; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;';
-
-                // Add load handler
-                img.onload = function() {
-                    this.style.opacity = '1';
-                    this.style.display = 'block';
-                    if (placeholder) placeholder.style.display = 'none';
-                };
-
-                // Add error handler with retry
-                img.onerror = function() {
-                    window.handleImageError(this, img.id);
-                };
-
-                // Update the src after setting up handlers
+                // Update src if changed
                 if (fixedSrc !== img.src) {
                     img.src = fixedSrc;
-                } else if (img.complete && img.naturalHeight > 0) {
-                    // Already loaded successfully
-                    img.style.opacity = '1';
-                    if (placeholder) placeholder.style.display = 'none';
-                } else if (img.complete && img.naturalHeight === 0) {
-                    // Failed - force reload with timestamp
-                    let newSrc = fixedSrc.replace(/[?&]_t=\d+/g, '').replace(/[?&]$/, '');
-                    newSrc += (newSrc.includes('?') ? '&' : '?') + '_t=' + Date.now();
-                    img.src = newSrc;
                 }
+
+                // Simple error handler - just hide and show message
+                img.onerror = function() {
+                    this.style.display = 'none';
+                    if (!this.nextElementSibling?.classList?.contains('img-error')) {
+                        this.insertAdjacentHTML('afterend', '<div class="img-error" style="color:#999; text-align:center; padding:15px; background:#f8f8f8; border-radius:8px; margin: 10px 0;">Image unavailable</div>');
+                    }
+                };
             });
         };
 
