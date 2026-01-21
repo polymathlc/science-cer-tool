@@ -6938,6 +6938,98 @@
         })();
 
         // =====================================================
+        // AUTO-REFRESH QUESTIONS ON PAGE ACCESS
+        // =====================================================
+        (function() {
+            'use strict';
+
+            // Session cache buster for images
+            window.sessionCacheBuster = Date.now();
+
+            // Track when page was last refreshed
+            let lastRefreshTime = Date.now();
+            const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+            // Function to refresh question data
+            window.refreshQuestionData = async function() {
+                console.log('Refreshing question data...');
+
+                // Clear image cache to force fresh images
+                if (window.imageCache) {
+                    window.imageCache.clear();
+                }
+                window.preloadingImages = new Set();
+
+                // Update session cache buster for new images
+                window.sessionCacheBuster = Date.now();
+
+                // Reset custom questions loaded flag
+                window.customQuestionsLoaded = false;
+
+                // Remove existing custom questions from DOM
+                document.querySelectorAll('.custom-question').forEach(el => el.remove());
+
+                // Reload custom questions if function exists and user is logged in
+                if (window.loadCustomQuestions && window.auth?.currentUser) {
+                    try {
+                        await window.loadCustomQuestions();
+                        console.log('Questions refreshed successfully');
+                    } catch (e) {
+                        console.error('Error refreshing questions:', e);
+                    }
+                }
+
+                lastRefreshTime = Date.now();
+            };
+
+            // Refresh when page becomes visible (user switches back to tab)
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    const timeSinceLastRefresh = Date.now() - lastRefreshTime;
+
+                    // Only refresh if it's been more than 5 minutes since last refresh
+                    // and user is not in admin mode
+                    if (timeSinceLastRefresh > REFRESH_INTERVAL) {
+                        const isInAdminMode = document.getElementById('view-admin') &&
+                                              !document.getElementById('view-admin').classList.contains('hidden');
+                        const hasUnsavedWork = window.adminBlocks && window.adminBlocks.length > 0;
+
+                        if (!isInAdminMode && !hasUnsavedWork) {
+                            window.refreshQuestionData();
+                        }
+                    }
+                }
+            });
+
+            // Also refresh on page focus (for browsers that don't fire visibilitychange)
+            window.addEventListener('focus', function() {
+                const timeSinceLastRefresh = Date.now() - lastRefreshTime;
+                if (timeSinceLastRefresh > REFRESH_INTERVAL) {
+                    const isInAdminMode = document.getElementById('view-admin') &&
+                                          !document.getElementById('view-admin').classList.contains('hidden');
+                    const hasUnsavedWork = window.adminBlocks && window.adminBlocks.length > 0;
+
+                    if (!isInAdminMode && !hasUnsavedWork) {
+                        window.refreshQuestionData();
+                    }
+                }
+            });
+
+            // Clear stale data on initial page load
+            window.addEventListener('load', function() {
+                // Clear image cache on fresh page load
+                if (window.imageCache) {
+                    window.imageCache.clear();
+                }
+
+                // Reset custom questions loaded flag to ensure fresh load
+                window.customQuestionsLoaded = false;
+
+                console.log('Page loaded - ready for fresh question data');
+            });
+        })();
+
+        // =====================================================
         // GLOBAL STATE & UTILITIES
         // =====================================================
         window.adminBlocks = [];
@@ -8468,10 +8560,14 @@
                         if (!window.worksheetItems.some(item => item.id === question.id)) {
                             // Process HTML similar to how it's done in loadCustomQuestions
                             let processedHtml = question.html;
-                            
+
+                            // Fix HTML-encoded ampersands in URLs (& becomes &amp; when stored/retrieved via innerHTML)
+                            processedHtml = processedHtml.replace(/&amp;/g, '&');
+
                             // Fix Dropbox image URLs
                             processedHtml = processedHtml.replace(/src="(https:\/\/www\.dropbox\.com\/scl\/[^"]+)"/g, (match, url) => {
-                                let fixedUrl = url.replace(/[?&]dl=[01]/, '&raw=1');
+                                let fixedUrl = url.replace(/&amp;/g, '&');
+                                fixedUrl = fixedUrl.replace(/[?&]dl=[01]/, '&raw=1');
                                 if (!fixedUrl.includes('raw=1')) {
                                     fixedUrl += (fixedUrl.includes('?') ? '&' : '?') + 'raw=1';
                                 }
@@ -11687,6 +11783,9 @@
                 question = found;
             }
 
+            // Fix HTML-encoded ampersands in the question HTML
+            let fixedHtml = (question.html || '').replace(/&amp;/g, '&');
+
             // Create modal
             const modal = document.createElement('div');
             modal.className = 'modal-overlay visible';
@@ -11712,10 +11811,25 @@
                         </span>
                     </div>
                     <div class="question-body" style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
-                        ${question.html || '<p style="color: #999;">Question content not available.</p>'}
+                        ${fixedHtml || '<p style="color: #999;">Question content not available.</p>'}
                     </div>
                     <div id="popup-submit-area" style="margin-top: 1rem; text-align: center;"></div>
                     <div id="popup-result-area" style="margin-top: 1rem; display: none;"></div>
+                    ${window.isAdminUser && question.fromFirestore ? `
+                    <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd;">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button class="btn" style="background: #ff9800; color: white;" onclick="moveToVetting('${question.id}')">
+                                📋 Move to Vetting
+                            </button>
+                            <button class="btn" style="background: #1976d2; color: white;" onclick="editQuestionFromBank('${question.firestoreId}')">
+                                ✏️ Edit Question
+                            </button>
+                            <button class="btn" style="background: #dc3545; color: white;" onclick="deleteQuestionFromBank('${question.firestoreId}', '${question.id}')">
+                                🗑️ Delete
+                            </button>
+                        </div>
+                    </div>
+                    ` : ''}
                 </div>
             `;
             document.body.appendChild(modal);
@@ -15296,11 +15410,14 @@
                 return;
             }
 
+            // Fix HTML-encoded ampersands in URLs before displaying
+            let fixedHtml = question.html.replace(/&amp;/g, '&');
+
             const content = document.getElementById('question-popup-content');
             content.innerHTML = `
                 <div class="question-container" style="margin: 0; box-shadow: none;">
                     <h3 style="color: #1976d2; margin-bottom: 1rem;">${window.sanitizeHTML(question.title || 'Question')}</h3>
-                    <div class="question-content">${question.html}</div>
+                    <div class="question-content">${fixedHtml}</div>
                 </div>
             `;
             document.getElementById('question-popup-modal').classList.add('visible');
@@ -18282,9 +18399,15 @@
         };
 
         // Convert Dropbox URL to displayable format
+        // Adds cache-busting parameter to prevent stale images
         window.convertDropboxUrl = function(url) {
             if (!url) return url;
-            
+
+            // Get or create a session-based cache buster
+            if (!window.sessionCacheBuster) {
+                window.sessionCacheBuster = Date.now();
+            }
+
             // Handle new Dropbox format: /scl/fi/xxx/file.jpg?rlkey=xxx&dl=0
             if (url.includes('dropbox.com/scl/')) {
                 // Replace dl=0 or dl=1 with raw=1
@@ -18292,16 +18415,25 @@
                 if (!url.includes('raw=1')) {
                     url += (url.includes('?') ? '&' : '?') + 'raw=1';
                 }
+                // Add cache-buster if not already present
+                if (!url.includes('_cb=')) {
+                    url += '&_cb=' + window.sessionCacheBuster;
+                }
                 return url;
             }
-            
+
             // Handle old Dropbox format
             if (url.includes('dropbox.com')) {
-                return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+                url = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
                           .replace('?dl=0', '')
                           .replace('?dl=1', '');
+                // Add cache-buster
+                if (!url.includes('_cb=')) {
+                    url += (url.includes('?') ? '&' : '?') + '_cb=' + window.sessionCacheBuster;
+                }
+                return url;
             }
-            
+
             return url;
         };
 
@@ -19480,6 +19612,18 @@
                 overlay.style.display = 'none';
                 trackLoginDays(user);
 
+                // Reset question loading state on login to ensure fresh data
+                window.customQuestionsLoaded = false;
+
+                // Clear image cache to force fresh images on login
+                if (window.imageCache) {
+                    window.imageCache.clear();
+                }
+                window.sessionCacheBuster = Date.now();
+
+                // Remove any existing custom questions to prevent duplicates
+                document.querySelectorAll('.custom-question').forEach(el => el.remove());
+
                 window.loadCustomQuestions = async function() {
                     if (window.customQuestionsLoaded) return;
                     window.customQuestionsLoaded = true;
@@ -19525,9 +19669,14 @@
                                 
                                 // Convert any Dropbox URLs in the saved HTML
                                 let processedHtml = data.html;
+
+                                // Fix HTML-encoded ampersands in URLs (& becomes &amp; when stored/retrieved via innerHTML)
+                                processedHtml = processedHtml.replace(/&amp;/g, '&');
+
                                 // Fix Dropbox image URLs
                                 processedHtml = processedHtml.replace(/src="(https:\/\/www\.dropbox\.com\/scl\/[^"]+)"/g, (match, url) => {
-                                    let fixedUrl = url.replace(/[?&]dl=[01]/, '&raw=1');
+                                    let fixedUrl = url.replace(/&amp;/g, '&');
+                                    fixedUrl = fixedUrl.replace(/[?&]dl=[01]/, '&raw=1');
                                     if (!fixedUrl.includes('raw=1')) {
                                         fixedUrl += (fixedUrl.includes('?') ? '&' : '?') + 'raw=1';
                                     }
@@ -19814,6 +19963,147 @@
                     } catch (e) {
                         console.error("Error editing vetting question:", e);
                         alert("Error loading question. Please try again.");
+                    }
+                };
+
+                // Move question from question bank to vetting list
+                window.moveToVetting = async function(questionId) {
+                    if (!confirm("Move this question to the vetting list? Students will not be able to see it until it's approved again.")) return;
+
+                    try {
+                        // Get the question data from custom_questions
+                        const firestoreId = questionId.replace('q-', '');
+                        const questionDoc = await getDoc(doc(db, "custom_questions", firestoreId));
+
+                        if (!questionDoc.exists()) {
+                            alert("Question not found in database.");
+                            return;
+                        }
+
+                        const data = questionDoc.data();
+                        const vettingId = "vet-" + Date.now();
+
+                        // Save to vetting_questions
+                        await setDoc(doc(db, "vetting_questions", vettingId), {
+                            title: data.title,
+                            html: data.html,
+                            category: data.category,
+                            level: data.level,
+                            topic: data.topic,
+                            type: 'custom',
+                            createdBy: data.createdBy || user.email,
+                            createdAt: data.createdAt || new Date().toISOString(),
+                            movedToVettingBy: user.email,
+                            movedToVettingAt: new Date().toISOString(),
+                            originalQuestionId: firestoreId
+                        });
+
+                        // Delete from custom_questions
+                        await deleteDoc(doc(db, "custom_questions", firestoreId));
+
+                        alert("Question moved to vetting list. Students can no longer see this question until it's approved.");
+
+                        // Remove from DOM
+                        const questionEl = document.getElementById(questionId);
+                        if (questionEl) {
+                            questionEl.remove();
+                        }
+
+                        // Reload vetting list
+                        if (window.loadVettingListFromFirebase) {
+                            await window.loadVettingListFromFirebase();
+                            window.updateVettingCount();
+                        }
+                        if (window.loadVettingList) {
+                            await window.loadVettingList();
+                        }
+                        if (window.loadVettingListInBank) {
+                            await window.loadVettingListInBank();
+                        }
+
+                        // Close any open popups
+                        document.querySelectorAll('.modal-overlay.visible').forEach(m => m.remove());
+
+                    } catch (e) {
+                        console.error("Error moving question to vetting:", e);
+                        alert("Error moving question. Please try again.");
+                    }
+                };
+
+                // Edit question from question bank (load into admin form)
+                window.editQuestionFromBank = async function(firestoreId) {
+                    try {
+                        const questionDoc = await getDoc(doc(db, "custom_questions", firestoreId));
+                        if (!questionDoc.exists()) {
+                            alert("Question not found.");
+                            return;
+                        }
+
+                        const data = questionDoc.data();
+
+                        // Close any open popups
+                        document.querySelectorAll('.modal-overlay.visible').forEach(m => m.remove());
+
+                        // Switch to admin tab
+                        window.switchTab('admin');
+
+                        // Clear form first
+                        if (window.clearAdminForm) {
+                            window.clearAdminForm(true, false);
+                        }
+
+                        // Fill in the form
+                        document.getElementById('admin-title').value = data.title || '';
+                        document.getElementById('admin-category').value = data.category || 'oeq';
+                        document.getElementById('admin-level').value = data.level || 'P3';
+                        document.getElementById('admin-topic').value = data.topic || 'heat';
+
+                        // Store the question ID for updating
+                        window.editingQuestionId = firestoreId;
+
+                        // Show the preview content
+                        const previewSection = document.getElementById('admin-preview-section');
+                        const previewContent = document.getElementById('admin-preview-content');
+                        if (previewSection && previewContent) {
+                            // Fix HTML-encoded ampersands before displaying
+                            let fixedHtml = (data.html || '').replace(/&amp;/g, '&');
+                            previewContent.innerHTML = fixedHtml;
+                            previewSection.classList.remove('hidden');
+                        }
+
+                        alert("Question loaded for editing. Make changes and save when ready.");
+                    } catch (e) {
+                        console.error("Error loading question for editing:", e);
+                        alert("Error loading question. Please try again.");
+                    }
+                };
+
+                // Delete question from question bank
+                window.deleteQuestionFromBank = async function(firestoreId, questionId) {
+                    if (!confirm("Are you sure you want to permanently delete this question? This cannot be undone.")) return;
+
+                    try {
+                        await deleteDoc(doc(db, "custom_questions", firestoreId));
+
+                        alert("Question deleted.");
+
+                        // Remove from DOM
+                        const questionEl = document.getElementById(questionId);
+                        if (questionEl) {
+                            questionEl.remove();
+                        }
+
+                        // Close any open popups
+                        document.querySelectorAll('.modal-overlay.visible').forEach(m => m.remove());
+
+                        // Refresh question list if visible
+                        if (window.loadQuestionList) {
+                            window.loadQuestionList();
+                        }
+
+                    } catch (e) {
+                        console.error("Error deleting question:", e);
+                        alert("Error deleting question. Please try again.");
                     }
                 };
 
