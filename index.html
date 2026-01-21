@@ -8074,31 +8074,23 @@
          */
         window.handleImageError = function(img, uniqueId) {
             const retryCount = parseInt(img.dataset.retryCount || '0');
-            const maxRetries = 3; // Increased retries
+            const maxRetries = 2; // Quick retries
             const placeholder = document.getElementById(uniqueId + '-placeholder');
 
             if (retryCount < maxRetries) {
-                // Retry with a new cache buster
                 img.dataset.retryCount = retryCount + 1;
                 const originalSrc = img.dataset.originalSrc || img.src;
 
-                // Remove old cache buster and add new one
-                let newSrc = originalSrc.replace(/[?&]_cb=\d+/g, '');
-                // Clean up any trailing ? or &
-                newSrc = newSrc.replace(/[?&]$/, '');
-                newSrc += (newSrc.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+                // Just add a simple timestamp to bypass cache
+                let newSrc = originalSrc.replace(/[?&]_t=\d+/g, '').replace(/[?&]$/, '');
+                newSrc += (newSrc.includes('?') ? '&' : '?') + '_t=' + Date.now();
 
-                console.log(`Image retry ${retryCount + 1}/${maxRetries}: ${newSrc}`);
-
-                // Exponential backoff delay before retry
+                // Quick retry with minimal delay
                 setTimeout(() => {
                     img.src = newSrc;
-                }, 500 * Math.pow(2, retryCount));
+                }, 200);
             } else {
-                // Show error state after all retries failed
-                const originalSrc = img.dataset.originalSrc || img.src;
-                console.error('Image failed after all retries:', originalSrc);
-
+                // Show error state
                 img.style.display = 'none';
                 if (placeholder) {
                     placeholder.innerHTML = `
@@ -8125,7 +8117,6 @@
             const placeholder = document.getElementById(uniqueId + '-placeholder');
 
             if (img) {
-                // Reset retry count
                 img.dataset.retryCount = '0';
 
                 // Show loading state
@@ -8137,10 +8128,10 @@
                     placeholder.style.display = 'block';
                 }
 
-                // Generate new URL with fresh cache buster
+                // Use original URL with timestamp to bypass cache
                 const originalSrc = img.dataset.originalSrc || img.src;
-                let newSrc = originalSrc.replace(/[?&]_cb=\d+/, '');
-                newSrc += (newSrc.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+                let newSrc = originalSrc.replace(/[?&]_t=\d+/g, '').replace(/[?&]$/, '');
+                newSrc += (newSrc.includes('?') ? '&' : '?') + '_t=' + Date.now();
 
                 img.style.display = 'block';
                 img.style.opacity = '0';
@@ -8149,21 +8140,17 @@
         };
 
         /**
-         * Refresh all images on the page with new cache busters
+         * Refresh all images on the page
          */
         window.refreshAllImages = function() {
-            window.sessionCacheBuster = Date.now();
             window.imageCache.clear();
 
             document.querySelectorAll('.img-loading-wrapper img').forEach(img => {
-                const wrapper = img.closest('.img-loading-wrapper');
-                const uniqueId = img.id;
-
-                if (uniqueId) {
+                if (img.id) {
                     img.dataset.retryCount = '0';
                     const originalSrc = img.dataset.originalSrc || img.src;
-                    let newSrc = originalSrc.replace(/[?&]_cb=\d+/, '');
-                    newSrc += (newSrc.includes('?') ? '&' : '?') + '_cb=' + window.sessionCacheBuster;
+                    let newSrc = originalSrc.replace(/[?&]_t=\d+/g, '').replace(/[?&]$/, '');
+                    newSrc += (newSrc.includes('?') ? '&' : '?') + '_t=' + Date.now();
                     img.src = newSrc;
                 }
             });
@@ -18550,7 +18537,7 @@
          * Convert Dropbox URL to displayable direct link format
          * Handles all Dropbox URL formats and HTML-encoded ampersands
          */
-        window.convertDropboxUrl = function(url, skipCacheBuster = false) {
+        window.convertDropboxUrl = function(url, skipCacheBuster = true) {
             if (!url) return url;
 
             // First, decode any HTML entities
@@ -18558,53 +18545,41 @@
 
             // Also decode URI-encoded characters that might cause issues
             try {
-                // Decode any %26 (ampersand) that might be double-encoded
                 if (url.includes('%26') || url.includes('%3D')) {
                     url = decodeURIComponent(url);
                 }
             } catch (e) {
                 // If decoding fails, continue with original URL
-                console.warn('URL decode failed:', e);
             }
 
             // Handle new Dropbox format: /scl/fi/xxx/file.jpg?rlkey=xxx&dl=0
             if (url.includes('dropbox.com/scl/')) {
-                // Parse the URL to handle parameters properly
                 try {
                     const urlObj = new URL(url);
-                    // Remove dl parameter and set to raw=1
-                    urlObj.searchParams.delete('dl');
-                    if (!urlObj.searchParams.has('raw')) {
-                        urlObj.searchParams.set('raw', '1');
-                    }
-                    // Add cache-buster
-                    if (!skipCacheBuster && !urlObj.searchParams.has('_cb')) {
-                        urlObj.searchParams.set('_cb', window.sessionCacheBuster);
-                    }
+                    // Use dl=1 for direct download (more reliable than raw=1)
+                    urlObj.searchParams.set('dl', '1');
+                    urlObj.searchParams.delete('raw');
                     return urlObj.toString();
                 } catch (e) {
-                    // Fallback to regex approach if URL parsing fails
-                    console.warn('URL parsing failed, using regex:', e);
-                    url = url.replace(/([?&])dl=[01](&|$)/g, '$1').replace(/[?&]$/, '');
-                    if (!url.includes('raw=1')) {
-                        url += (url.includes('?') ? '&' : '?') + 'raw=1';
-                    }
-                    if (!skipCacheBuster && !url.includes('_cb=')) {
-                        url += '&_cb=' + window.sessionCacheBuster;
+                    // Fallback to regex approach
+                    url = url.replace(/([?&])dl=0/g, '$1dl=1');
+                    if (!url.includes('dl=1')) {
+                        url += (url.includes('?') ? '&' : '?') + 'dl=1';
                     }
                     return url;
                 }
             }
 
             // Handle old Dropbox format (www.dropbox.com/s/...)
-            if (url.includes('dropbox.com')) {
+            if (url.includes('dropbox.com/s/')) {
                 url = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
                          .replace(/\?dl=[01]/, '')
                          .replace(/\?raw=[01]/, '');
-                // Add cache-buster
-                if (!skipCacheBuster && !url.includes('_cb=')) {
-                    url += (url.includes('?') ? '&' : '?') + '_cb=' + window.sessionCacheBuster;
-                }
+                return url;
+            }
+
+            // Handle dl.dropboxusercontent.com URLs (already direct)
+            if (url.includes('dl.dropboxusercontent.com')) {
                 return url;
             }
 
@@ -18694,20 +18669,14 @@
             if (!element) return;
 
             const images = element.querySelectorAll('img');
-            console.log(`Processing ${images.length} images in element`);
 
             images.forEach((img, index) => {
                 // Fix the image URL
                 let src = img.getAttribute('src') || '';
-                if (!src) {
-                    console.warn('Image has no src attribute');
-                    return;
-                }
+                if (!src) return;
 
                 src = window.decodeHtmlEntities(src);
                 const fixedSrc = window.convertDropboxUrl(src);
-
-                console.log('Image URL:', { original: src, fixed: fixedSrc });
 
                 // Generate unique ID if not present
                 if (!img.id) {
@@ -18783,7 +18752,6 @@
 
                 // Add load handler
                 img.onload = function() {
-                    console.log('Image loaded successfully:', this.id);
                     this.style.opacity = '1';
                     this.style.display = 'block';
                     if (placeholder) placeholder.style.display = 'none';
@@ -18791,23 +18759,20 @@
 
                 // Add error handler with retry
                 img.onerror = function() {
-                    console.warn('Image error:', this.id, this.src);
                     window.handleImageError(this, img.id);
                 };
 
-                // Update the src after setting up handlers (this triggers a fresh load)
+                // Update the src after setting up handlers
                 if (fixedSrc !== img.src) {
                     img.src = fixedSrc;
                 } else if (img.complete && img.naturalHeight > 0) {
-                    // Image is already loaded successfully
+                    // Already loaded successfully
                     img.style.opacity = '1';
                     if (placeholder) placeholder.style.display = 'none';
                 } else if (img.complete && img.naturalHeight === 0) {
-                    // Image failed to load - trigger retry
-                    console.warn('Image already failed, triggering retry:', img.id);
-                    // Force reload with new cache buster
-                    let newSrc = fixedSrc.replace(/[?&]_cb=\d+/g, '').replace(/[?&]$/, '');
-                    newSrc += (newSrc.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+                    // Failed - force reload with timestamp
+                    let newSrc = fixedSrc.replace(/[?&]_t=\d+/g, '').replace(/[?&]$/, '');
+                    newSrc += (newSrc.includes('?') ? '&' : '?') + '_t=' + Date.now();
                     img.src = newSrc;
                 }
             });
