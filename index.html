@@ -20359,36 +20359,405 @@ Tips:
                             window.clearAdminForm(true, false);
                         }
 
-                        // Fill in the form
-                        document.getElementById('admin-title').value = data.title || '';
-                        document.getElementById('admin-category').value = data.category || 'oeq';
-                        document.getElementById('admin-level').value = data.level || 'P3';
-                        document.getElementById('admin-topic').value = data.topic || 'heat';
-
                         // Store the vetting ID for saving back
                         window.editingVettingId = vettingId;
+                        window.editingQuestionId = null; // Not editing from question bank
 
-                        // Show the preview content
-                        const previewSection = document.getElementById('admin-preview-section');
-                        const previewContent = document.getElementById('admin-preview-content');
-                        if (previewSection && previewContent) {
-                            // Use robust image URL normalization
-                            let fixedHtml = window.normalizeImageUrls(data.html || '');
-                            previewContent.innerHTML = fixedHtml;
-                            previewSection.classList.remove('hidden');
-                            // Process images after inserting to add proper error handling
-                            setTimeout(() => {
-                                if (window.processImagesInElement) {
-                                    window.processImagesInElement(previewContent);
-                                }
-                            }, 50);
+                        // Set category first so the UI updates correctly
+                        const category = data.category || 'cer';
+                        document.getElementById('admin-category').value = category;
+                        if (window.handleCategoryChange) {
+                            window.handleCategoryChange(category);
                         }
 
-                        alert("Question loaded for editing. Make your changes and click 'Add to Question Bank' to approve.");
+                        // For MCQ, set the level first to populate topics
+                        if (category === 'mcq') {
+                            const level = data.level || 'P3';
+                            document.getElementById('admin-level').value = level;
+                            if (window.updateAdminTopicsByLevel) {
+                                window.updateAdminTopicsByLevel(level);
+                            }
+                        }
+
+                        // Small delay to let UI update, then set other values
+                        setTimeout(() => {
+                            // Fill in the form
+                            document.getElementById('admin-title').value = data.title || '';
+
+                            // Set topic after level update
+                            const topicSelect = document.getElementById('admin-topic');
+                            const topic = data.topic || 'heat';
+                            const topicExists = Array.from(topicSelect.options).some(opt => opt.value === topic);
+                            if (topicExists) {
+                                topicSelect.value = topic;
+                            }
+
+                            // Extract blocks from HTML
+                            if (data.html) {
+                                window.extractBlocksFromHtml(data.html, category);
+                            }
+
+                            // Render the blocks in the editor
+                            if (window.renderAdminBlocks) {
+                                window.renderAdminBlocks();
+                            }
+
+                            // Update editing indicator
+                            if (window.updateEditingIndicator) {
+                                window.updateEditingIndicator();
+                            }
+
+                            alert("Question loaded for editing. Modify the blocks above and save when ready.");
+                        }, 150);
+
                     } catch (e) {
                         console.error("Error editing vetting question:", e);
                         alert("Error loading question. Please try again.");
                     }
+                };
+
+                /**
+                 * Extract blocks from HTML content and populate window.adminBlocks
+                 * @param {string} html - The HTML content to parse
+                 * @param {string} category - The question category (cer, mcq, etc.)
+                 */
+                window.extractBlocksFromHtml = function(html, category) {
+                    // Clear existing blocks
+                    window.adminBlocks = [];
+
+                    if (!html) return;
+
+                    // Create a temporary container to parse the HTML
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = window.normalizeImageUrls(html);
+
+                    let blockIdOffset = 0;
+
+                    // Process element recursively
+                    const processElement = (element) => {
+                        if (!element || element.classList?.contains('controls')) return;
+
+                        const tagName = element.tagName?.toLowerCase();
+
+                        // Skip certain elements
+                        if (element.classList?.contains('feedback-icon')) return;
+                        if (tagName === 'button') return;
+                        if (tagName === 'h3') return;
+
+                        // Check for image wrapper
+                        if (element.classList?.contains('img-loading-wrapper')) {
+                            const img = element.querySelector('img');
+                            if (img && img.src && !img.src.includes('data:')) {
+                                // Get original src if available
+                                const originalSrc = img.dataset?.originalSrc || img.src;
+                                window.adminBlocks.push({
+                                    id: Date.now() + blockIdOffset++,
+                                    type: 'image',
+                                    value: originalSrc
+                                });
+                            }
+                            return;
+                        }
+
+                        // Check for standalone image
+                        if (tagName === 'img' && element.src && !element.src.includes('data:')) {
+                            const originalSrc = element.dataset?.originalSrc || element.src;
+                            window.adminBlocks.push({
+                                id: Date.now() + blockIdOffset++,
+                                type: 'image',
+                                value: originalSrc
+                            });
+                            return;
+                        }
+
+                        // Check for explanation box
+                        if (element.classList?.contains('explanation-box')) {
+                            const contentDiv = element.querySelector('div:last-child') || element.querySelector('div');
+                            let explainText = '';
+                            if (contentDiv) {
+                                explainText = contentDiv.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim();
+                            } else {
+                                explainText = element.textContent.replace(/💡\s*Explanation/i, '').trim();
+                            }
+                            if (explainText) {
+                                window.adminBlocks.push({
+                                    id: Date.now() + blockIdOffset++,
+                                    type: 'explanation',
+                                    value: explainText
+                                });
+                            }
+                            return;
+                        }
+
+                        // Check for video container
+                        if (element.classList?.contains('video-container')) {
+                            const iframe = element.querySelector('iframe');
+                            if (iframe && iframe.src) {
+                                window.adminBlocks.push({
+                                    id: Date.now() + blockIdOffset++,
+                                    type: 'video',
+                                    value: iframe.src
+                                });
+                            }
+                            return;
+                        }
+
+                        // Check for standalone iframe (video)
+                        if (tagName === 'iframe' && (element.src?.includes('youtube') || element.src?.includes('dropbox'))) {
+                            window.adminBlocks.push({
+                                id: Date.now() + blockIdOffset++,
+                                type: 'video',
+                                value: element.src
+                            });
+                            return;
+                        }
+
+                        // Check for MCQ container - extract MCQ options
+                        if (element.classList?.contains('mcq-container')) {
+                            // MCQ options will be extracted separately for the MCQ form
+                            const options = element.querySelectorAll('.mcq-option, label');
+                            let correctIndex = 1;
+                            options.forEach((opt, idx) => {
+                                const radio = opt.querySelector('input[type="radio"]');
+                                const span = opt.querySelector('span') || opt;
+                                const optText = span.textContent.trim();
+
+                                // Set MCQ option in the form
+                                const optInput = document.getElementById(`mcq-opt-${idx + 1}`);
+                                if (optInput) {
+                                    optInput.value = optText;
+                                }
+
+                                // Check if this is the correct answer
+                                if (radio && radio.dataset?.correct === 'true') {
+                                    correctIndex = idx + 1;
+                                }
+                            });
+
+                            // Set correct answer
+                            const correctSelect = document.getElementById('mcq-correct');
+                            if (correctSelect) {
+                                correctSelect.value = correctIndex;
+                            }
+                            return;
+                        }
+
+                        // Check for table
+                        if (tagName === 'table') {
+                            const tableData = extractTableData(element);
+                            if (tableData && tableData.rows > 0 && tableData.cols > 0) {
+                                window.adminBlocks.push({
+                                    id: Date.now() + blockIdOffset++,
+                                    type: 'table',
+                                    value: tableData
+                                });
+                            }
+                            return;
+                        }
+
+                        // Check for CER segment (fill-in-blank)
+                        if (element.classList?.contains('cer-segment')) {
+                            let segText = '';
+                            const label = element.getAttribute('data-label') || '';
+
+                            // Walk through all nodes to build the text with blanks marked
+                            const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
+                            let node;
+                            while (node = walker.nextNode()) {
+                                if (node.nodeType === Node.TEXT_NODE) {
+                                    segText += node.textContent;
+                                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                                    if (node.classList?.contains('answer-input') || node.tagName === 'INPUT') {
+                                        const answer = node.dataset?.answer || node.value || '';
+                                        if (answer) {
+                                            segText += `[${answer}]`;
+                                        }
+                                    }
+                                }
+                            }
+
+                            segText = segText.replace(/\s+/g, ' ').trim();
+                            segText = segText.replace(/[✔✖]/g, '').trim();
+
+                            if (segText) {
+                                window.adminBlocks.push({
+                                    id: Date.now() + blockIdOffset++,
+                                    type: 'answer',
+                                    value: (label ? `(${label}) ` : '') + segText
+                                });
+                            }
+                            return;
+                        }
+
+                        // Check for div with text content
+                        if (tagName === 'div') {
+                            // Skip if it's a container div with processable children
+                            const hasProcessableChildren = element.querySelector('img, table, iframe, .cer-segment, .explanation-box, .video-container, .mcq-container, .img-loading-wrapper');
+                            if (hasProcessableChildren) {
+                                Array.from(element.children).forEach(child => processElement(child));
+                                return;
+                            }
+
+                            // It's a text div
+                            const text = element.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '').trim();
+                            if (text && text.length > 0 && !text.includes('Check Answer')) {
+                                window.adminBlocks.push({
+                                    id: Date.now() + blockIdOffset++,
+                                    type: 'text',
+                                    value: text
+                                });
+                            }
+                            return;
+                        }
+
+                        // Check for paragraph
+                        if (tagName === 'p') {
+                            if (element.closest('.mcq-option') || element.closest('.explanation-box')) return;
+
+                            const text = element.textContent.trim();
+                            if (text && !text.includes('Check Answer')) {
+                                window.adminBlocks.push({
+                                    id: Date.now() + blockIdOffset++,
+                                    type: 'text',
+                                    value: text
+                                });
+                            }
+                            return;
+                        }
+                    };
+
+                    // Helper function to extract table data
+                    const extractTableData = (tableEl) => {
+                        const rows = tableEl.querySelectorAll('tr');
+                        if (rows.length === 0) return null;
+
+                        const occupiedGrid = {};
+                        const mergedCells = [];
+                        let maxCols = 0;
+
+                        rows.forEach((row, rowIdx) => {
+                            let colIdx = 0;
+                            row.querySelectorAll('th, td').forEach((cell) => {
+                                while (occupiedGrid[`${rowIdx}-${colIdx}`]) {
+                                    colIdx++;
+                                }
+
+                                const colspan = parseInt(cell.getAttribute('colspan'), 10) || 1;
+                                const rowspan = parseInt(cell.getAttribute('rowspan'), 10) || 1;
+
+                                for (let r = 0; r < rowspan; r++) {
+                                    for (let c = 0; c < colspan; c++) {
+                                        occupiedGrid[`${rowIdx + r}-${colIdx + c}`] = {
+                                            content: cell.textContent.trim(),
+                                            align: cell.style.textAlign || 'left',
+                                            vAlign: cell.style.verticalAlign || 'middle',
+                                            bgColor: cell.style.backgroundColor || '#FFFFFF',
+                                            isOrigin: r === 0 && c === 0
+                                        };
+                                    }
+                                }
+
+                                if (colspan > 1 || rowspan > 1) {
+                                    mergedCells.push({
+                                        startRow: rowIdx,
+                                        startCol: colIdx,
+                                        endRow: rowIdx + rowspan - 1,
+                                        endCol: colIdx + colspan - 1
+                                    });
+                                }
+
+                                maxCols = Math.max(maxCols, colIdx + colspan);
+                                colIdx += colspan;
+                            });
+                        });
+
+                        const tableData = {
+                            rows: rows.length,
+                            cols: maxCols,
+                            cells: [],
+                            headerRow: !!rows[0]?.querySelector('th')
+                        };
+
+                        if (mergedCells.length > 0) {
+                            tableData.mergedCells = mergedCells;
+                        }
+
+                        for (let r = 0; r < rows.length; r++) {
+                            const rowData = [];
+                            for (let c = 0; c < maxCols; c++) {
+                                const cellInfo = occupiedGrid[`${r}-${c}`];
+                                if (cellInfo) {
+                                    rowData.push({
+                                        content: cellInfo.isOrigin ? cellInfo.content : '',
+                                        align: cellInfo.align,
+                                        vAlign: cellInfo.vAlign || 'middle',
+                                        bgColor: cellInfo.bgColor
+                                    });
+                                } else {
+                                    rowData.push({
+                                        content: '',
+                                        align: 'left',
+                                        vAlign: 'middle',
+                                        bgColor: '#FFFFFF'
+                                    });
+                                }
+                            }
+                            tableData.cells.push(rowData);
+                        }
+
+                        return tableData;
+                    };
+
+                    // Process all children of the temp container
+                    Array.from(tempDiv.children).forEach(child => processElement(child));
+
+                    // If no blocks were extracted, try a simpler approach
+                    if (window.adminBlocks.length === 0) {
+                        // Get all text content
+                        const allText = [];
+                        tempDiv.querySelectorAll('p, div').forEach(el => {
+                            if (!el.closest('.mcq-option') && !el.closest('.explanation-box') && !el.closest('.controls')) {
+                                const text = el.textContent.trim();
+                                if (text && !text.includes('Check Answer')) {
+                                    allText.push(text);
+                                }
+                            }
+                        });
+                        if (allText.length > 0) {
+                            window.adminBlocks.push({
+                                id: Date.now(),
+                                type: 'text',
+                                value: allText.join('\n\n')
+                            });
+                        }
+
+                        // Get images
+                        tempDiv.querySelectorAll('img').forEach((img, idx) => {
+                            if (img.src && !img.src.includes('data:') && !img.closest('.explanation-box')) {
+                                window.adminBlocks.push({
+                                    id: Date.now() + idx + 100,
+                                    type: 'image',
+                                    value: img.dataset?.originalSrc || img.src
+                                });
+                            }
+                        });
+
+                        // Get explanation
+                        const explanation = tempDiv.querySelector('.explanation-box');
+                        if (explanation) {
+                            const contentDiv = explanation.querySelector('div:last-child') || explanation.querySelector('div');
+                            let explainText = contentDiv ? contentDiv.textContent.trim() : explanation.textContent.replace(/💡\s*Explanation/i, '').trim();
+                            if (explainText) {
+                                window.adminBlocks.push({
+                                    id: Date.now() + 500,
+                                    type: 'explanation',
+                                    value: explainText
+                                });
+                            }
+                        }
+                    }
+
+                    console.log('Extracted blocks:', window.adminBlocks);
                 };
 
                 // Move question from question bank to vetting list
@@ -20477,32 +20846,57 @@ Tips:
                             window.clearAdminForm(true, false);
                         }
 
-                        // Fill in the form
-                        document.getElementById('admin-title').value = data.title || '';
-                        document.getElementById('admin-category').value = data.category || 'oeq';
-                        document.getElementById('admin-level').value = data.level || 'P3';
-                        document.getElementById('admin-topic').value = data.topic || 'heat';
-
                         // Store the question ID for updating
                         window.editingQuestionId = firestoreId;
+                        window.editingVettingId = null; // Not editing from vetting
 
-                        // Show the preview content
-                        const previewSection = document.getElementById('admin-preview-section');
-                        const previewContent = document.getElementById('admin-preview-content');
-                        if (previewSection && previewContent) {
-                            // Use robust image URL normalization
-                            let fixedHtml = window.normalizeImageUrls(data.html || '');
-                            previewContent.innerHTML = fixedHtml;
-                            previewSection.classList.remove('hidden');
-                            // Process images after inserting to add proper error handling
-                            setTimeout(() => {
-                                if (window.processImagesInElement) {
-                                    window.processImagesInElement(previewContent);
-                                }
-                            }, 50);
+                        // Set category first so the UI updates correctly
+                        const category = data.category || 'cer';
+                        document.getElementById('admin-category').value = category;
+                        if (window.handleCategoryChange) {
+                            window.handleCategoryChange(category);
                         }
 
-                        alert("Question loaded for editing. Make changes and save when ready.");
+                        // For MCQ, set the level first to populate topics
+                        if (category === 'mcq') {
+                            const level = data.level || 'P3';
+                            document.getElementById('admin-level').value = level;
+                            if (window.updateAdminTopicsByLevel) {
+                                window.updateAdminTopicsByLevel(level);
+                            }
+                        }
+
+                        // Small delay to let UI update, then set other values
+                        setTimeout(() => {
+                            // Fill in the form
+                            document.getElementById('admin-title').value = data.title || '';
+
+                            // Set topic after level update
+                            const topicSelect = document.getElementById('admin-topic');
+                            const topic = data.topic || 'heat';
+                            const topicExists = Array.from(topicSelect.options).some(opt => opt.value === topic);
+                            if (topicExists) {
+                                topicSelect.value = topic;
+                            }
+
+                            // Extract blocks from HTML
+                            if (data.html) {
+                                window.extractBlocksFromHtml(data.html, category);
+                            }
+
+                            // Render the blocks in the editor
+                            if (window.renderAdminBlocks) {
+                                window.renderAdminBlocks();
+                            }
+
+                            // Update editing indicator
+                            if (window.updateEditingIndicator) {
+                                window.updateEditingIndicator();
+                            }
+
+                            alert("Question loaded for editing. Modify the blocks above and save when ready.");
+                        }, 150);
+
                     } catch (e) {
                         console.error("Error loading question for editing:", e);
                         alert("Error loading question. Please try again.");
