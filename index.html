@@ -8029,22 +8029,24 @@
         };
 
         /**
-         * Create an optimized image element with loading placeholder
+         * Create an optimized image element with loading placeholder and retry logic
          * @param {string} src - Image source URL
          * @param {string} className - CSS class name
          * @param {string} style - Inline styles
          * @returns {string} - HTML string for image with loading state
          */
         window.createOptimizedImage = function(src, className = '', style = '') {
+            // Ensure URL is properly converted
+            const normalizedSrc = window.convertDropboxUrl(src);
             const uniqueId = 'img-' + Math.random().toString(36).substr(2, 9);
-            const isCached = window.imageCache.has(src);
+            const isCached = window.imageCache.has(normalizedSrc);
 
             // Start preloading if not cached
             if (!isCached) {
-                window.preloadImage(src);
+                window.preloadImage(normalizedSrc);
             }
 
-            return `<div class="img-loading-wrapper" style="position: relative; ${style}">
+            return `<div class="img-loading-wrapper" id="${uniqueId}-wrapper" data-src="${normalizedSrc.replace(/"/g, '&quot;')}" style="position: relative; ${style}">
                 <div id="${uniqueId}-placeholder" class="img-placeholder" style="
                     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
                     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -8054,14 +8056,111 @@
                     min-height: 100px;
                     display: ${isCached ? 'none' : 'block'};
                 "></div>
-                <img src="${src}"
+                <img src="${normalizedSrc}"
+                    id="${uniqueId}"
                     class="${className}"
+                    data-retry-count="0"
+                    data-original-src="${normalizedSrc.replace(/"/g, '&quot;')}"
                     style="opacity: ${isCached ? '1' : '0'}; transition: opacity 0.3s ease; max-width: 100%; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;"
-                    onload="this.style.opacity='1'; var p=document.getElementById('${uniqueId}-placeholder'); if(p)p.style.display='none';"
-                    onerror="this.style.display='none'; var p=document.getElementById('${uniqueId}-placeholder'); if(p)p.innerHTML='<p style=\\'color:#dc3545; text-align:center; padding:20px;\\'>⚠️ Image failed to load</p>';"
+                    onload="this.style.opacity='1'; this.style.display='block'; var p=document.getElementById('${uniqueId}-placeholder'); if(p)p.style.display='none';"
+                    onerror="window.handleImageError(this, '${uniqueId}')"
                     loading="eager"
                 >
             </div>`;
+        };
+
+        /**
+         * Handle image loading errors with retry logic
+         */
+        window.handleImageError = function(img, uniqueId) {
+            const retryCount = parseInt(img.dataset.retryCount || '0');
+            const maxRetries = 2;
+            const placeholder = document.getElementById(uniqueId + '-placeholder');
+
+            if (retryCount < maxRetries) {
+                // Retry with a new cache buster
+                img.dataset.retryCount = retryCount + 1;
+                const originalSrc = img.dataset.originalSrc || img.src;
+
+                // Remove old cache buster and add new one
+                let newSrc = originalSrc.replace(/[?&]_cb=\d+/, '');
+                newSrc += (newSrc.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+
+                console.log(`Image retry ${retryCount + 1}/${maxRetries}: ${newSrc}`);
+
+                // Small delay before retry
+                setTimeout(() => {
+                    img.src = newSrc;
+                }, 500 * (retryCount + 1));
+            } else {
+                // Show error state after all retries failed
+                img.style.display = 'none';
+                if (placeholder) {
+                    placeholder.innerHTML = `
+                        <div style="color: #dc3545; text-align: center; padding: 20px; background: #fff3f3; border-radius: 8px; border: 1px dashed #dc3545;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🖼️</div>
+                            <p style="margin: 0 0 0.5rem 0; font-weight: 500;">Image unavailable</p>
+                            <button onclick="window.retryImageLoad('${uniqueId}')" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">
+                                🔄 Retry
+                            </button>
+                        </div>
+                    `;
+                    placeholder.style.display = 'block';
+                    placeholder.style.position = 'relative';
+                }
+            }
+        };
+
+        /**
+         * Retry loading a failed image
+         */
+        window.retryImageLoad = function(uniqueId) {
+            const img = document.getElementById(uniqueId);
+            const placeholder = document.getElementById(uniqueId + '-placeholder');
+
+            if (img) {
+                // Reset retry count
+                img.dataset.retryCount = '0';
+
+                // Show loading state
+                if (placeholder) {
+                    placeholder.innerHTML = '';
+                    placeholder.style.background = 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)';
+                    placeholder.style.backgroundSize = '200% 100%';
+                    placeholder.style.animation = 'shimmer 1.5s infinite';
+                    placeholder.style.display = 'block';
+                }
+
+                // Generate new URL with fresh cache buster
+                const originalSrc = img.dataset.originalSrc || img.src;
+                let newSrc = originalSrc.replace(/[?&]_cb=\d+/, '');
+                newSrc += (newSrc.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+
+                img.style.display = 'block';
+                img.style.opacity = '0';
+                img.src = newSrc;
+            }
+        };
+
+        /**
+         * Refresh all images on the page with new cache busters
+         */
+        window.refreshAllImages = function() {
+            window.sessionCacheBuster = Date.now();
+            window.imageCache.clear();
+
+            document.querySelectorAll('.img-loading-wrapper img').forEach(img => {
+                const wrapper = img.closest('.img-loading-wrapper');
+                const uniqueId = img.id;
+
+                if (uniqueId) {
+                    img.dataset.retryCount = '0';
+                    const originalSrc = img.dataset.originalSrc || img.src;
+                    let newSrc = originalSrc.replace(/[?&]_cb=\d+/, '');
+                    newSrc += (newSrc.includes('?') ? '&' : '?') + '_cb=' + window.sessionCacheBuster;
+                    img.src = newSrc;
+                }
+            });
         };
 
         /**
@@ -11783,8 +11882,8 @@
                 question = found;
             }
 
-            // Fix HTML-encoded ampersands in the question HTML
-            let fixedHtml = (question.html || '').replace(/&amp;/g, '&');
+            // Use robust image URL normalization
+            let fixedHtml = window.normalizeImageUrls(question.html || '');
 
             // Create modal
             const modal = document.createElement('div');
@@ -15410,8 +15509,8 @@
                 return;
             }
 
-            // Fix HTML-encoded ampersands in URLs before displaying
-            let fixedHtml = question.html.replace(/&amp;/g, '&');
+            // Use robust image URL normalization
+            let fixedHtml = window.normalizeImageUrls(question.html || '');
 
             const content = document.getElementById('question-popup-content');
             content.innerHTML = `
@@ -18398,43 +18497,142 @@
             updateEditingIndicator();
         };
 
-        // Convert Dropbox URL to displayable format
-        // Adds cache-busting parameter to prevent stale images
-        window.convertDropboxUrl = function(url) {
+        // =====================================================
+        // ROBUST IMAGE URL PROCESSING SYSTEM
+        // =====================================================
+
+        // Get or create session-based cache buster
+        if (!window.sessionCacheBuster) {
+            window.sessionCacheBuster = Date.now();
+        }
+
+        /**
+         * Decode HTML entities in URLs (e.g., &amp; -> &)
+         * This is needed because HTML stored in innerHTML gets encoded
+         */
+        window.decodeHtmlEntities = function(url) {
+            if (!url) return url;
+            // Decode common HTML entities that appear in URLs
+            return url
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'");
+        };
+
+        /**
+         * Convert Dropbox URL to displayable direct link format
+         * Handles all Dropbox URL formats and HTML-encoded ampersands
+         */
+        window.convertDropboxUrl = function(url, skipCacheBuster = false) {
             if (!url) return url;
 
-            // Get or create a session-based cache buster
-            if (!window.sessionCacheBuster) {
-                window.sessionCacheBuster = Date.now();
-            }
+            // First, decode any HTML entities
+            url = window.decodeHtmlEntities(url);
 
             // Handle new Dropbox format: /scl/fi/xxx/file.jpg?rlkey=xxx&dl=0
             if (url.includes('dropbox.com/scl/')) {
-                // Replace dl=0 or dl=1 with raw=1
-                url = url.replace(/[?&]dl=[01]/, '&raw=1');
+                // Remove dl=0 or dl=1 parameter
+                url = url.replace(/([?&])dl=[01](&|$)/g, '$1').replace(/[?&]$/, '');
+                // Add raw=1 if not present
                 if (!url.includes('raw=1')) {
                     url += (url.includes('?') ? '&' : '?') + 'raw=1';
                 }
-                // Add cache-buster if not already present
-                if (!url.includes('_cb=')) {
+                // Add cache-buster if not already present and not skipped
+                if (!skipCacheBuster && !url.includes('_cb=')) {
                     url += '&_cb=' + window.sessionCacheBuster;
                 }
                 return url;
             }
 
-            // Handle old Dropbox format
+            // Handle old Dropbox format (www.dropbox.com/s/...)
             if (url.includes('dropbox.com')) {
                 url = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
-                          .replace('?dl=0', '')
-                          .replace('?dl=1', '');
+                         .replace(/\?dl=[01]/, '')
+                         .replace(/\?raw=[01]/, '');
                 // Add cache-buster
-                if (!url.includes('_cb=')) {
+                if (!skipCacheBuster && !url.includes('_cb=')) {
                     url += (url.includes('?') ? '&' : '?') + '_cb=' + window.sessionCacheBuster;
                 }
                 return url;
             }
 
             return url;
+        };
+
+        /**
+         * Normalize all image URLs in HTML content
+         * Fixes HTML-encoded ampersands and converts Dropbox URLs
+         */
+        window.normalizeImageUrls = function(html) {
+            if (!html) return html;
+
+            // First decode all HTML-encoded ampersands globally
+            let normalized = html.replace(/&amp;/g, '&');
+
+            // Process all image src attributes
+            normalized = normalized.replace(/src="([^"]+)"/g, (match, url) => {
+                // Check if this is an image URL
+                if (url.match(/\.(jpg|jpeg|png|gif|webp|svg|bmp)/i) || url.includes('dropbox.com')) {
+                    const fixedUrl = window.convertDropboxUrl(url);
+                    return `src="${fixedUrl}"`;
+                }
+                return match;
+            });
+
+            // Also handle single-quoted src attributes
+            normalized = normalized.replace(/src='([^']+)'/g, (match, url) => {
+                if (url.match(/\.(jpg|jpeg|png|gif|webp|svg|bmp)/i) || url.includes('dropbox.com')) {
+                    const fixedUrl = window.convertDropboxUrl(url);
+                    return `src='${fixedUrl}'`;
+                }
+                return match;
+            });
+
+            return normalized;
+        };
+
+        /**
+         * Clean HTML for storage - removes runtime artifacts
+         * Use this before saving to Firestore
+         */
+        window.cleanHtmlForStorage = function(html) {
+            if (!html) return html;
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            // Remove control buttons
+            tempDiv.querySelectorAll('.controls, button.submit-btn, button.next-btn, button.print-btn, button.btn-primary').forEach(el => el.remove());
+
+            // Remove "Check Answer" text nodes
+            tempDiv.querySelectorAll('div').forEach(div => {
+                const text = div.textContent.trim();
+                if (text === 'Check Answer' || text === 'Submit') {
+                    div.remove();
+                }
+            });
+
+            // Remove MCQ options containing "Check Answer"
+            tempDiv.querySelectorAll('.mcq-option, label').forEach(el => {
+                if (el.textContent.trim().includes('Check Answer')) {
+                    el.remove();
+                }
+            });
+
+            // Ensure explanation boxes are hidden
+            tempDiv.querySelectorAll('.explanation-box').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            // Ensure video containers are hidden
+            tempDiv.querySelectorAll('.video-container').forEach(el => {
+                el.style.display = 'none';
+                el.classList.add('hidden-until-answered');
+            });
+
+            return tempDiv.innerHTML;
         };
 
         function editQuestion(btn, isDuplicate = false) {
@@ -19046,18 +19244,20 @@
             if (window.isAdminUser && !container.querySelector('.admin-controls')) {
                 const controls = document.createElement('div');
                 controls.className = 'admin-controls';
-                
+
                 const isCustomQuestion = container.classList.contains('custom-question') || container.id.includes('custom');
-                
+
                 let controlsHtml = `
                     <button class="admin-edit-btn" onclick="editQuestion(this)">✏️ Edit</button>
                     <button class="admin-duplicate-btn" onclick="editQuestion(this, true)">📋 Duplicate</button>
                 `;
-                
+
                 if (isCustomQuestion) {
+                    // Add Move to Vetting button for custom questions
+                    controlsHtml += `<button class="admin-vetting-btn" onclick="moveQuestionToVetting(this)" style="background: #fff3e0; color: #ff9800; border: 1px solid #ff9800;">📋 Move to Vetting</button>`;
                     controlsHtml += `<button class="admin-delete-btn" onclick="deleteQuestion(this)" style="background: #ffeae8; color: #dc3545; border: 1px solid #dc3545;">🗑️ Delete</button>`;
                 }
-                
+
                 controls.innerHTML = controlsHtml;
                 container.appendChild(controls);
             }
@@ -19066,23 +19266,39 @@
         // Delete a custom question
         window.deleteQuestion = async function(btn) {
             if (!confirm("Are you sure you want to delete this question? This cannot be undone.")) return;
-            
+
             const container = btn.closest('.question-container');
             if (!container || !container.id) {
                 alert("Cannot identify question to delete.");
                 return;
             }
-            
+
             try {
                 const questionId = container.id.replace('q-', '');
                 const { doc, deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
                 await deleteDoc(doc(window.db_fs, "custom_questions", questionId));
-                
+
                 alert("Question deleted successfully!");
                 container.remove();
             } catch (e) {
                 console.error("Delete Error:", e);
                 alert("Error deleting question: " + e.message);
+            }
+        };
+
+        // Move a custom question to vetting list (from question container button)
+        window.moveQuestionToVetting = async function(btn) {
+            const container = btn.closest('.question-container');
+            if (!container || !container.id) {
+                alert("Cannot identify question to move.");
+                return;
+            }
+
+            // Use the existing moveToVetting function
+            if (window.moveToVetting) {
+                await window.moveToVetting(container.id);
+            } else {
+                alert("Move to vetting function not available. Please try again.");
             }
         };
 
@@ -19666,28 +19882,14 @@
                                 div.className = 'question-container custom-question';
                                 div.id = qId;
                                 div.style.borderLeft = '4px solid #fbc02d';
-                                
-                                // Convert any Dropbox URLs in the saved HTML
-                                let processedHtml = data.html;
 
-                                // Fix HTML-encoded ampersands in URLs (& becomes &amp; when stored/retrieved via innerHTML)
-                                processedHtml = processedHtml.replace(/&amp;/g, '&');
+                                // Use robust image URL normalization
+                                let processedHtml = window.normalizeImageUrls(data.html || '');
 
-                                // Fix Dropbox image URLs
-                                processedHtml = processedHtml.replace(/src="(https:\/\/www\.dropbox\.com\/scl\/[^"]+)"/g, (match, url) => {
-                                    let fixedUrl = url.replace(/&amp;/g, '&');
-                                    fixedUrl = fixedUrl.replace(/[?&]dl=[01]/, '&raw=1');
-                                    if (!fixedUrl.includes('raw=1')) {
-                                        fixedUrl += (fixedUrl.includes('?') ? '&' : '?') + 'raw=1';
-                                    }
-                                    return `src="${fixedUrl}"`;
-                                });
-                                
-                                // Remove any existing controls/buttons from saved HTML to prevent duplicates
+                                // Clean the HTML for display
                                 const tempDiv = document.createElement('div');
                                 tempDiv.innerHTML = processedHtml;
                                 tempDiv.querySelectorAll('.controls').forEach(el => el.remove());
-                                // Also remove any stray buttons that might be outside controls
                                 tempDiv.querySelectorAll('button.submit-btn, button.next-btn, button.print-btn, button.btn-primary').forEach(el => el.remove());
                                 // Remove any divs that only contain "Check Answer" text
                                 tempDiv.querySelectorAll('div').forEach(div => {
@@ -19752,7 +19954,7 @@
                 window.submitFlagToFirebase = async function(flagData) {
                     try {
                         const flagId = `flag-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-                        await setDoc(doc(db, "flagged_questions", flagId), {
+                        await setDoc(doc(db_fs, "flagged_questions", flagId), {
                             ...flagData,
                             id: flagId,
                             userEmail: user.email,
@@ -19771,7 +19973,7 @@
                 // Load flagged questions from Firebase (admin only)
                 window.loadFlaggedQuestionsFromFirebase = async function() {
                     try {
-                        const flagsRef = collection(db, "flagged_questions");
+                        const flagsRef = collection(db_fs, "flagged_questions");
                         const snapshot = await getDocs(flagsRef);
                         
                         window.flaggedQuestions = [];
@@ -19795,7 +19997,7 @@
                 // Update flag status in Firebase
                 window.updateFlagStatusInFirebase = async function(flagId, status) {
                     try {
-                        await updateDoc(doc(db, "flagged_questions", flagId), {
+                        await updateDoc(doc(db_fs, "flagged_questions", flagId), {
                             status: status,
                             updatedAt: new Date(),
                             resolvedBy: status === 'resolved' ? user.email : null
@@ -19809,7 +20011,7 @@
                 // Delete flag from Firebase
                 window.deleteFlagFromFirebase = async function(flagId) {
                     try {
-                        await deleteDoc(doc(db, "flagged_questions", flagId));
+                        await deleteDoc(doc(db_fs, "flagged_questions", flagId));
                     } catch (e) {
                         console.error("Error deleting flag:", e);
                         alert("Error deleting flag. Please try again.");
@@ -19823,7 +20025,7 @@
                 // Load vetting list from Firebase
                 window.loadVettingListFromFirebase = async function() {
                     try {
-                        const vettingRef = collection(db, "vetting_questions");
+                        const vettingRef = collection(db_fs, "vetting_questions");
                         const snapshot = await getDocs(vettingRef);
 
                         window.vettingQuestions = [];
@@ -19859,7 +20061,7 @@
                     if (!confirm("Are you sure you want to delete this question from the vetting list?")) return;
 
                     try {
-                        await deleteDoc(doc(db, "vetting_questions", vettingId));
+                        await deleteDoc(doc(db_fs, "vetting_questions", vettingId));
                         alert("Question removed from vetting list.");
                         window.loadVettingList();
                         // Also refresh vetting list in question bank view
@@ -19876,7 +20078,7 @@
                 window.approveVettingQuestion = async function(vettingId) {
                     try {
                         // Get the vetting question data
-                        const vettingDoc = await getDoc(doc(db, "vetting_questions", vettingId));
+                        const vettingDoc = await getDoc(doc(db_fs, "vetting_questions", vettingId));
                         if (!vettingDoc.exists()) {
                             alert("Question not found.");
                             return;
@@ -19886,7 +20088,7 @@
                         const questionId = "custom-" + Date.now();
 
                         // Save to custom_questions (question bank)
-                        await setDoc(doc(db, "custom_questions", questionId), {
+                        await setDoc(doc(db_fs, "custom_questions", questionId), {
                             title: data.title,
                             html: data.html,
                             category: data.category,
@@ -19902,7 +20104,7 @@
                         });
 
                         // Delete from vetting list
-                        await deleteDoc(doc(db, "vetting_questions", vettingId));
+                        await deleteDoc(doc(db_fs, "vetting_questions", vettingId));
 
                         alert("Question approved and added to question bank!");
 
@@ -19926,7 +20128,7 @@
                 // Edit vetting question (load into admin form)
                 window.editVettingQuestion = async function(vettingId) {
                     try {
-                        const vettingDoc = await getDoc(doc(db, "vetting_questions", vettingId));
+                        const vettingDoc = await getDoc(doc(db_fs, "vetting_questions", vettingId));
                         if (!vettingDoc.exists()) {
                             alert("Question not found.");
                             return;
@@ -19973,7 +20175,7 @@
                     try {
                         // Get the question data from custom_questions
                         const firestoreId = questionId.replace('q-', '');
-                        const questionDoc = await getDoc(doc(db, "custom_questions", firestoreId));
+                        const questionDoc = await getDoc(doc(db_fs, "custom_questions", firestoreId));
 
                         if (!questionDoc.exists()) {
                             alert("Question not found in database.");
@@ -19984,7 +20186,7 @@
                         const vettingId = "vet-" + Date.now();
 
                         // Save to vetting_questions
-                        await setDoc(doc(db, "vetting_questions", vettingId), {
+                        await setDoc(doc(db_fs, "vetting_questions", vettingId), {
                             title: data.title,
                             html: data.html,
                             category: data.category,
@@ -19999,7 +20201,7 @@
                         });
 
                         // Delete from custom_questions
-                        await deleteDoc(doc(db, "custom_questions", firestoreId));
+                        await deleteDoc(doc(db_fs, "custom_questions", firestoreId));
 
                         alert("Question moved to vetting list. Students can no longer see this question until it's approved.");
 
@@ -20033,7 +20235,7 @@
                 // Edit question from question bank (load into admin form)
                 window.editQuestionFromBank = async function(firestoreId) {
                     try {
-                        const questionDoc = await getDoc(doc(db, "custom_questions", firestoreId));
+                        const questionDoc = await getDoc(doc(db_fs, "custom_questions", firestoreId));
                         if (!questionDoc.exists()) {
                             alert("Question not found.");
                             return;
@@ -20065,8 +20267,8 @@
                         const previewSection = document.getElementById('admin-preview-section');
                         const previewContent = document.getElementById('admin-preview-content');
                         if (previewSection && previewContent) {
-                            // Fix HTML-encoded ampersands before displaying
-                            let fixedHtml = (data.html || '').replace(/&amp;/g, '&');
+                            // Use robust image URL normalization
+                            let fixedHtml = window.normalizeImageUrls(data.html || '');
                             previewContent.innerHTML = fixedHtml;
                             previewSection.classList.remove('hidden');
                         }
@@ -20083,7 +20285,7 @@
                     if (!confirm("Are you sure you want to permanently delete this question? This cannot be undone.")) return;
 
                     try {
-                        await deleteDoc(doc(db, "custom_questions", firestoreId));
+                        await deleteDoc(doc(db_fs, "custom_questions", firestoreId));
 
                         alert("Question deleted.");
 
