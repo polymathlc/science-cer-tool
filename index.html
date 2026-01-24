@@ -5252,7 +5252,19 @@
                 <!-- CER Trial Question -->
                 <div id="trial-cer" class="landing-trial-content active">
                     <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                        <strong style="color: #1565c0;">Sample CER Question</strong>
+                        <strong style="color: #1565c0;">Sample CER Question - Heat Conduction</strong>
+                    </div>
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <img src="https://www.dropbox.com/scl/fi/wy9k3tgjbwq4p6qk7d8pu/spoons-hot-water.png?rlkey=xr8h6m4v2njk5lw9z3q1y0abc&raw=1"
+                            alt="Metal and plastic spoons in hot water"
+                            style="max-width: 100%; height: auto; max-height: 250px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display: none; background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 2rem; border-radius: 12px; justify-content: center; align-items: center; min-height: 150px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 3rem; margin-bottom: 0.5rem;">🥄☕🥄</div>
+                                <p style="color: #1565c0; font-weight: 500;">Metal spoon & Plastic spoon in hot water</p>
+                            </div>
+                        </div>
                     </div>
                     <div style="margin-bottom: 1.5rem;">
                         <p style="font-size: 1.1rem; color: #333; margin-bottom: 1rem;"><strong>Question:</strong> A student places a metal spoon and a plastic spoon in a cup of hot water. After 2 minutes, the metal spoon feels hot while the plastic spoon remains cool. Explain why this happens.</p>
@@ -5281,7 +5293,33 @@
                 <!-- MCQ Trial Question -->
                 <div id="trial-mcq" class="landing-trial-content">
                     <div style="background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                        <strong style="color: #2e7d32;">Sample MCQ Question</strong>
+                        <strong style="color: #2e7d32;">Sample MCQ Question - Materials & Conductors</strong>
+                    </div>
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <img src="https://www.dropbox.com/scl/fi/k8m2p4n5v6q7r9s0t1u2w/materials-conductors.png?rlkey=abc123def456ghi789jkl0mn&raw=1"
+                            alt="Different materials - wood, plastic, copper, rubber"
+                            style="max-width: 100%; height: auto; max-height: 200px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display: none; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 1.5rem; border-radius: 12px; justify-content: center; align-items: center;">
+                            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem;">🪵</div>
+                                    <div style="font-size: 0.85rem; color: #555;">Wood</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem;">🧴</div>
+                                    <div style="font-size: 0.85rem; color: #555;">Plastic</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem;">🪙</div>
+                                    <div style="font-size: 0.85rem; color: #555;">Copper</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem;">🔴</div>
+                                    <div style="font-size: 0.85rem; color: #555;">Rubber</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div style="margin-bottom: 1.5rem;">
                         <p style="font-size: 1.1rem; color: #333;"><strong>Question:</strong> Which of the following is a good conductor of heat?</p>
@@ -5483,7 +5521,7 @@
     <!-- Skip to main content link for accessibility -->
     <a href="#main-content-area" class="skip-link" style="position: absolute; top: -40px; left: 0; background: var(--primary-blue); color: white; padding: 8px 16px; z-index: 10002; text-decoration: none; font-weight: 600; border-radius: 0 0 8px 0; transition: top 0.3s;">Skip to main content</a>
 
-    <div class="app-container" role="application" aria-label="CER Interactive Questions Application">
+    <div class="app-container" role="application" aria-label="CER Interactive Questions Application" style="display: none;">
         <header class="app-header" role="banner">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
                 <div style="display: flex; align-items: center; gap: 0.8rem;">
@@ -20314,9 +20352,11 @@
         onAuthStateChanged(auth, (user) => {
             const overlay = document.getElementById('auth-overlay');
             const landingPage = document.getElementById('landing-page');
+            const appContainer = document.querySelector('.app-container');
             if (user) {
                 overlay.style.display = 'none';
                 if (landingPage) landingPage.style.display = 'none';
+                if (appContainer) appContainer.style.display = 'flex';
                 trackLoginDays(user);
 
                 // Reset question loading state on login to ensure fresh data
@@ -21275,6 +21315,7 @@
             } else {
                 // Show landing page instead of auth overlay when not logged in
                 if (landingPage) landingPage.style.display = 'block';
+                if (appContainer) appContainer.style.display = 'none';
                 overlay.style.display = 'none';
             }
         });
