@@ -25,6 +25,10 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://www.gstatic.com">
     <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com">
+    <link rel="dns-prefetch" href="https://www.dropbox.com">
+    <link rel="preconnect" href="https://www.dropbox.com" crossorigin>
+    <!-- Preload logo for faster display -->
+    <link rel="preload" as="image" href="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1">
     <!-- Preload critical Firebase modules -->
     <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js">
     <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js">
@@ -1319,6 +1323,12 @@
             flex: 1;
         }
 
+        .app-logo-container {
+            display: flex;
+            align-items: center;
+            min-height: 50px;
+        }
+
         .app-logo {
             height: 50px;
             margin-right: 0;
@@ -1329,6 +1339,13 @@
 
         .app-logo:hover {
             transform: scale(1.05) rotate(-2deg);
+        }
+
+        .app-logo-fallback {
+            width: 50px;
+            height: 50px;
+            font-size: 1.8rem;
+            border-radius: 12px;
         }
 
         .tab-btn {
@@ -1580,10 +1597,31 @@
             flex-shrink: 0;
         }
 
+        .auth-logo-container {
+            margin-bottom: 2rem;
+            min-height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .auth-logo {
             height: 70px;
-            margin-bottom: 2rem;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .logo-fallback {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
         }
 
         @keyframes slideUp {
@@ -4899,8 +4937,11 @@
     <!-- Auth Overlay -->
     <div id="auth-overlay">
         <div class="auth-box">
-            <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
-                alt="Polymath Logo" class="auth-logo">
+            <div class="auth-logo-container">
+                <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
+                    alt="Polymath Logo" class="auth-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="logo-fallback" style="display:none;">P</div>
+            </div>
             <h2 id="auth-title" class="auth-title">Welcome Back!</h2>
             <p class="auth-subtitle" id="auth-subtitle">Sign in to continue your learning journey</p>
 
@@ -5024,8 +5065,11 @@
         <header class="app-header" role="banner">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
                 <div style="display: flex; align-items: center; gap: 0.8rem;">
-                    <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
-                        alt="Polymath Logo" class="app-logo">
+                    <div class="app-logo-container">
+                        <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
+                            alt="Polymath Logo" class="app-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="logo-fallback app-logo-fallback" style="display:none;">P</div>
+                    </div>
                     <button class="print-btn tooltip-container" onclick="printAll()" data-tooltip="Print the current page or worksheet">🖨️ Print All</button>
                 </div>
                 <div class="header-icons">
