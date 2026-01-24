@@ -19574,7 +19574,7 @@
 
         window.toggleAuthMode = () => {
             isSignUpMode = !isSignUpMode;
-            document.querySelector('.toggle-link').innerText = isSignUpMode ? "Already have an account? Login" : "New here? Create an Account";
+            document.querySelector('.toggle-link').innerText = isSignUpMode ? "← Back to Login" : "New here? Create an Account";
             document.getElementById('reg-fields').style.display = isSignUpMode ? "block" : "none";
             document.getElementById('legal-box').style.display = isSignUpMode ? "block" : "none";
             document.getElementById('btn-google').style.display = isSignUpMode ? "none" : "flex";
