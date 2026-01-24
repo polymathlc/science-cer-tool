@@ -1762,6 +1762,256 @@
             margin-top: 4px;
         }
 
+        /* Landing Page Styles */
+        #landing-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .landing-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .landing-nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .landing-nav-logo img {
+            height: 40px;
+        }
+
+        .landing-nav-logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .landing-nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .landing-nav-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .landing-nav-btn.login {
+            background: transparent;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .landing-nav-btn.login:hover {
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .landing-nav-btn.signup {
+            background: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            color: white;
+        }
+
+        .landing-nav-btn.signup:hover {
+            background: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .landing-hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .landing-hero h1 {
+            font-size: 2.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .landing-hero p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .landing-section {
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .landing-section h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .landing-trial-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .landing-trial-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 1rem;
+        }
+
+        .landing-trial-tab {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .landing-trial-tab.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .landing-trial-content {
+            display: none;
+        }
+
+        .landing-trial-content.active {
+            display: block;
+        }
+
+        .landing-explainer {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .explainer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .explainer-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .explainer-card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .explainer-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .landing-cta {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .landing-cta h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .landing-cta p {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .landing-cta-btn {
+            background: white;
+            color: var(--primary-blue);
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .landing-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .landing-nav {
+                padding: 0.75rem 1rem;
+            }
+
+            .landing-nav-logo span {
+                display: none;
+            }
+
+            .landing-nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .landing-hero {
+                padding: 6rem 1rem 2rem;
+            }
+
+            .landing-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .landing-hero p {
+                font-size: 1rem;
+            }
+
+            .landing-section {
+                padding: 2rem 1rem;
+            }
+
+            .landing-trial-container,
+            .landing-explainer {
+                padding: 1.25rem;
+            }
+        }
+
         /* Streak Display */
         #login-days-display {
             background: linear-gradient(135deg, #e7f5ff 0%, #d7eded 100%);
@@ -4969,8 +5219,143 @@
     <!-- Version Indicator for debugging -->
     <div class="version-indicator" id="version-display"></div>
 
+    <!-- Landing Page (shown when not logged in) -->
+    <div id="landing-page">
+        <!-- Top Navigation Bar -->
+        <nav class="landing-nav">
+            <div class="landing-nav-logo">
+                <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
+                    alt="Polymath Logo" onerror="this.style.display='none';">
+                <span>Polymath</span>
+            </div>
+            <div class="landing-nav-buttons">
+                <button class="landing-nav-btn login" onclick="showAuthOverlay(); isSignUpMode = true; toggleAuthMode();">Login</button>
+                <button class="landing-nav-btn signup" onclick="showAuthOverlay(); isSignUpMode = false; toggleAuthMode();">Sign Up</button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <div class="landing-hero">
+            <h1>Master Science with CER & MCQ Practice</h1>
+            <p>Interactive learning platform designed for Primary 3-6 students. Practice Claim-Evidence-Reasoning questions and Multiple Choice Questions with instant feedback.</p>
+        </div>
+
+        <!-- Trial Section -->
+        <div class="landing-section">
+            <h2>Try It Out - Free Trial Questions</h2>
+            <div class="landing-trial-container">
+                <div class="landing-trial-tabs">
+                    <button class="landing-trial-tab active" onclick="switchTrialTab('cer')">CER Question</button>
+                    <button class="landing-trial-tab" onclick="switchTrialTab('mcq')">MCQ Question</button>
+                </div>
+
+                <!-- CER Trial Question -->
+                <div id="trial-cer" class="landing-trial-content active">
+                    <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong style="color: #1565c0;">Sample CER Question</strong>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="font-size: 1.1rem; color: #333; margin-bottom: 1rem;"><strong>Question:</strong> A student places a metal spoon and a plastic spoon in a cup of hot water. After 2 minutes, the metal spoon feels hot while the plastic spoon remains cool. Explain why this happens.</p>
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label style="font-weight: 600; color: #333; display: block; margin-bottom: 0.5rem;">Claim (What do you think?):</label>
+                        <textarea id="trial-claim" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-family: inherit; resize: vertical;" rows="2" placeholder="Write your claim here..."></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label style="font-weight: 600; color: #333; display: block; margin-bottom: 0.5rem;">Evidence (What facts support your claim?):</label>
+                        <textarea id="trial-evidence" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-family: inherit; resize: vertical;" rows="2" placeholder="Write your evidence here..."></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label style="font-weight: 600; color: #333; display: block; margin-bottom: 0.5rem;">Reasoning (Why does your evidence support your claim?):</label>
+                        <textarea id="trial-reasoning" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-family: inherit; resize: vertical;" rows="2" placeholder="Write your reasoning here..."></textarea>
+                    </div>
+
+                    <button onclick="checkTrialCER()" style="background: var(--primary-blue); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit;">Check Answer</button>
+
+                    <div id="trial-cer-feedback" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 8px;"></div>
+                </div>
+
+                <!-- MCQ Trial Question -->
+                <div id="trial-mcq" class="landing-trial-content">
+                    <div style="background: #e8f5e9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong style="color: #2e7d32;">Sample MCQ Question</strong>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="font-size: 1.1rem; color: #333;"><strong>Question:</strong> Which of the following is a good conductor of heat?</p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
+                        <label style="display: flex; align-items: center; padding: 1rem; background: #f5f5f5; border-radius: 8px; cursor: pointer; transition: all 0.2s;" class="mcq-option">
+                            <input type="radio" name="trial-mcq" value="A" style="margin-right: 1rem; transform: scale(1.2);">
+                            <span>A. Wood</span>
+                        </label>
+                        <label style="display: flex; align-items: center; padding: 1rem; background: #f5f5f5; border-radius: 8px; cursor: pointer; transition: all 0.2s;" class="mcq-option">
+                            <input type="radio" name="trial-mcq" value="B" style="margin-right: 1rem; transform: scale(1.2);">
+                            <span>B. Plastic</span>
+                        </label>
+                        <label style="display: flex; align-items: center; padding: 1rem; background: #f5f5f5; border-radius: 8px; cursor: pointer; transition: all 0.2s;" class="mcq-option">
+                            <input type="radio" name="trial-mcq" value="C" style="margin-right: 1rem; transform: scale(1.2);">
+                            <span>C. Copper</span>
+                        </label>
+                        <label style="display: flex; align-items: center; padding: 1rem; background: #f5f5f5; border-radius: 8px; cursor: pointer; transition: all 0.2s;" class="mcq-option">
+                            <input type="radio" name="trial-mcq" value="D" style="margin-right: 1rem; transform: scale(1.2);">
+                            <span>D. Rubber</span>
+                        </label>
+                    </div>
+
+                    <button onclick="checkTrialMCQ()" style="background: #4caf50; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit;">Check Answer</button>
+
+                    <div id="trial-mcq-feedback" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 8px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explainer Section -->
+        <div class="landing-section">
+            <h2>How It Works</h2>
+            <div class="landing-explainer">
+                <div class="explainer-grid">
+                    <div class="explainer-card">
+                        <h3>What is CER?</h3>
+                        <p><strong>Claim-Evidence-Reasoning</strong> is a framework for scientific explanations. You make a claim, provide evidence from observations or data, then explain your reasoning connecting them.</p>
+                    </div>
+                    <div class="explainer-card">
+                        <h3>Interactive Practice</h3>
+                        <p>Answer questions with instant feedback. See model answers after submitting to learn from examples and improve your scientific writing skills.</p>
+                    </div>
+                    <div class="explainer-card">
+                        <h3>Track Your Progress</h3>
+                        <p>Parents can monitor student progress, see completed questions, and track improvement over time through the dashboard.</p>
+                    </div>
+                    <div class="explainer-card">
+                        <h3>Multiple Topics</h3>
+                        <p>Questions cover various science topics including Heat, Light, Matter, Forces, and more - aligned with Primary 3-6 curriculum.</p>
+                    </div>
+                    <div class="explainer-card">
+                        <h3>Save & Review</h3>
+                        <p>Save worksheets for later review. Flag questions you want to revisit. All your work is saved to your account automatically.</p>
+                    </div>
+                    <div class="explainer-card">
+                        <h3>Ask for Help</h3>
+                        <p>Stuck on a question? Use the built-in messaging system to ask your teacher for clarification or guidance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="landing-cta">
+            <h2>Ready to Start Learning?</h2>
+            <p>Create a free account to access all questions and track your progress.</p>
+            <button class="landing-cta-btn" onclick="showAuthOverlay(); isSignUpMode = false; toggleAuthMode();">Sign Up Now</button>
+        </div>
+    </div>
+
     <!-- Auth Overlay -->
-    <div id="auth-overlay">
+    <div id="auth-overlay" style="display: none;">
         <div class="auth-box">
             <button class="modal-close-btn" onclick="closeAuthOverlay()" title="Close">&times;</button>
             <div class="auth-logo-container">
@@ -19565,6 +19950,97 @@
             document.getElementById('auth-overlay').style.display = 'flex';
         };
 
+        // Landing page functions
+        window.switchTrialTab = (tab) => {
+            document.querySelectorAll('.landing-trial-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.landing-trial-content').forEach(c => c.classList.remove('active'));
+
+            if (tab === 'cer') {
+                document.querySelector('.landing-trial-tab:first-child').classList.add('active');
+                document.getElementById('trial-cer').classList.add('active');
+            } else {
+                document.querySelector('.landing-trial-tab:last-child').classList.add('active');
+                document.getElementById('trial-mcq').classList.add('active');
+            }
+        };
+
+        window.checkTrialCER = () => {
+            const claim = document.getElementById('trial-claim').value.trim();
+            const evidence = document.getElementById('trial-evidence').value.trim();
+            const reasoning = document.getElementById('trial-reasoning').value.trim();
+            const feedback = document.getElementById('trial-cer-feedback');
+
+            if (!claim || !evidence || !reasoning) {
+                feedback.style.display = 'block';
+                feedback.style.background = '#fff3cd';
+                feedback.style.color = '#856404';
+                feedback.innerHTML = '<strong>Please fill in all three fields:</strong> Claim, Evidence, and Reasoning.';
+                return;
+            }
+
+            feedback.style.display = 'block';
+            feedback.style.background = '#d4edda';
+            feedback.style.color = '#155724';
+            feedback.innerHTML = `
+                <strong>Good attempt!</strong> Here's a model answer to compare:<br><br>
+                <strong>Claim:</strong> Metal is a better conductor of heat than plastic.<br><br>
+                <strong>Evidence:</strong> The metal spoon feels hot after 2 minutes while the plastic spoon remains cool.<br><br>
+                <strong>Reasoning:</strong> Heat from the hot water transfers through the metal spoon quickly because metal is a good conductor of heat. The plastic spoon stays cool because plastic is a poor conductor (insulator) that does not allow heat to pass through easily.<br><br>
+                <em>Sign up to access more questions and get detailed feedback!</em>
+            `;
+        };
+
+        window.checkTrialMCQ = () => {
+            const selected = document.querySelector('input[name="trial-mcq"]:checked');
+            const feedback = document.getElementById('trial-mcq-feedback');
+
+            if (!selected) {
+                feedback.style.display = 'block';
+                feedback.style.background = '#fff3cd';
+                feedback.style.color = '#856404';
+                feedback.innerHTML = '<strong>Please select an answer.</strong>';
+                return;
+            }
+
+            const answer = selected.value;
+            const isCorrect = answer === 'C';
+
+            // Reset all option styles
+            document.querySelectorAll('.mcq-option').forEach(opt => {
+                opt.style.background = '#f5f5f5';
+                opt.style.border = 'none';
+            });
+
+            // Highlight the selected option
+            const selectedLabel = selected.closest('.mcq-option');
+            if (isCorrect) {
+                selectedLabel.style.background = '#d4edda';
+                selectedLabel.style.border = '2px solid #28a745';
+                feedback.style.display = 'block';
+                feedback.style.background = '#d4edda';
+                feedback.style.color = '#155724';
+                feedback.innerHTML = '<strong>Correct!</strong> Copper is a metal and metals are good conductors of heat. Wood, plastic, and rubber are poor conductors (insulators).<br><br><em>Sign up to access hundreds more questions!</em>';
+            } else {
+                selectedLabel.style.background = '#f8d7da';
+                selectedLabel.style.border = '2px solid #dc3545';
+                // Highlight correct answer
+                document.querySelectorAll('.mcq-option')[2].style.background = '#d4edda';
+                document.querySelectorAll('.mcq-option')[2].style.border = '2px solid #28a745';
+                feedback.style.display = 'block';
+                feedback.style.background = '#f8d7da';
+                feedback.style.color = '#721c24';
+                feedback.innerHTML = '<strong>Not quite.</strong> The correct answer is <strong>C. Copper</strong>. Copper is a metal and metals are good conductors of heat. Wood, plastic, and rubber are poor conductors (insulators).<br><br><em>Sign up to practice more and improve!</em>';
+            }
+        };
+
+        window.hideLandingPage = () => {
+            document.getElementById('landing-page').style.display = 'none';
+        };
+
+        window.showLandingPage = () => {
+            document.getElementById('landing-page').style.display = 'block';
+        };
+
         window.closeModal = (modalId) => {
             const modal = document.getElementById(modalId);
             if (modal) {
@@ -19837,8 +20313,10 @@
 
         onAuthStateChanged(auth, (user) => {
             const overlay = document.getElementById('auth-overlay');
+            const landingPage = document.getElementById('landing-page');
             if (user) {
                 overlay.style.display = 'none';
+                if (landingPage) landingPage.style.display = 'none';
                 trackLoginDays(user);
 
                 // Reset question loading state on login to ensure fresh data
@@ -20795,7 +21273,9 @@
                     window.trackLoginAndShowWelcome(user);
                 }, 200);
             } else {
-                overlay.style.display = 'flex';
+                // Show landing page instead of auth overlay when not logged in
+                if (landingPage) landingPage.style.display = 'block';
+                overlay.style.display = 'none';
             }
         });
 
