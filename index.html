@@ -1595,6 +1595,7 @@
             animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             margin: auto;
             flex-shrink: 0;
+            position: relative;
         }
 
         .auth-logo-container {
@@ -3307,6 +3308,34 @@
             transform: translateY(0);
         }
 
+        .modal-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .modal-close-btn:hover {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .modal-box {
+            position: relative;
+        }
+
         .modal-box h3 {
             margin: 0 0 1.5rem;
             color: var(--primary-blue);
@@ -4943,6 +4972,7 @@
     <!-- Auth Overlay -->
     <div id="auth-overlay">
         <div class="auth-box">
+            <button class="modal-close-btn" onclick="closeAuthOverlay()" title="Close">&times;</button>
             <div class="auth-logo-container">
                 <img src="https://www.dropbox.com/scl/fi/h40yjlyg8ldefwfaa3dib/polymath-logo-sticker.png?rlkey=o1ra4taqy79gt9t8u096v82zj&raw=1"
                     alt="Polymath Logo" class="auth-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -5013,6 +5043,7 @@
     <!-- First-time Google User Student Setup Modal -->
     <div id="google-setup-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 500px;">
+            <button class="modal-close-btn" onclick="closeModal('google-setup-modal')" title="Close">&times;</button>
             <div style="text-align: center; margin-bottom: 1.5rem;">
                 <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
                 <h3 style="color: #1976d2; margin: 0;">Welcome to Polymath!</h3>
@@ -5184,6 +5215,7 @@
         <!-- Save Worksheet Modal -->
         <div id="save-worksheet-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="save-worksheet-modal-title" aria-describedby="save-worksheet-modal-desc">
             <div class="modal-box">
+                <button class="modal-close-btn" onclick="closeModal('save-worksheet-modal')" title="Close">&times;</button>
                 <h3 id="save-worksheet-modal-title">💾 Save Worksheet</h3>
                 <p id="save-worksheet-modal-desc" class="visually-hidden" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">Save your current worksheet with a name and optional description</p>
                 <div class="form-group">
@@ -6502,9 +6534,9 @@
                 <!-- Student Progress Detail Modal -->
                 <div id="progress-detail-modal" class="modal-overlay">
                     <div class="modal-box" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+                        <button class="modal-close-btn" onclick="closeModal('progress-detail-modal')" title="Close">&times;</button>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 1rem;">
                             <h3 style="margin: 0; color: #1976d2;">📋 Detailed Results</h3>
-                            <button class="btn" style="background: #666; color: white;" onclick="hideProgressDetailModal()">✕ Close</button>
                         </div>
                         
                         <!-- Student Info -->
@@ -6706,12 +6738,12 @@
     <!-- Worksheet Attempt Modal -->
     <div id="worksheet-attempt-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 900px; max-height: 95vh; overflow-y: auto;">
+            <button class="modal-close-btn" onclick="cancelWorksheetAttempt()" title="Close">&times;</button>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #667eea; padding-bottom: 1rem;">
                 <div>
                     <h3 style="margin: 0; color: #667eea;" id="attempt-worksheet-title">📝 Worksheet</h3>
                     <div style="font-size: 0.85rem; color: #666; margin-top: 5px;" id="attempt-worksheet-progress">Question 1 of 5</div>
                 </div>
-                <button class="btn" style="background: #666; color: white;" onclick="cancelWorksheetAttempt()">✕ Exit</button>
             </div>
             
             <!-- Progress Bar -->
@@ -6738,6 +6770,7 @@
     <!-- Consult Mr Chung Modal -->
     <div id="consult-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 600px;">
+            <button class="modal-close-btn" onclick="closeModal('consult-modal')" title="Close">&times;</button>
             <h3 style="color: #0288d1; margin-bottom: 1rem;">💬 Ask Mr Chung</h3>
             <div id="consult-question-preview" style="background: #f5f5f5; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; max-height: 150px; overflow-y: auto; font-size: 0.9rem; border-left: 4px solid #0288d1;">
                 <!-- Question preview will be inserted here -->
@@ -6756,6 +6789,7 @@
     <!-- New Message Modal (for admin to message students) -->
     <div id="new-message-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 600px;">
+            <button class="modal-close-btn" onclick="closeModal('new-message-modal')" title="Close">&times;</button>
             <h3 style="color: #0288d1; margin-bottom: 1rem;">✉️ New Message</h3>
             <div class="form-group" id="recipient-select-group">
                 <label for="message-recipient">To *</label>
@@ -6782,6 +6816,7 @@
     <!-- View Message Modal -->
     <div id="view-message-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 650px;">
+            <button class="modal-close-btn" onclick="closeModal('view-message-modal')" title="Close">&times;</button>
             <div id="view-message-content"></div>
             <div class="modal-buttons" style="margin-top: 1.5rem; flex-wrap: wrap;">
                 <button class="btn-cancel" onclick="hideViewMessageModal()">Close</button>
@@ -6794,6 +6829,7 @@
     <!-- Flag Question Modal -->
     <div id="flag-question-modal" class="modal-overlay">
         <div class="modal-box flag-modal-content">
+            <button class="modal-close-btn" onclick="closeModal('flag-question-modal')" title="Close">&times;</button>
             <h3>🚩 Flag Question</h3>
             <div id="flag-question-preview" class="flag-question-preview">
                 <strong>Question:</strong> <span id="flag-question-title"></span>
@@ -6812,9 +6848,10 @@
     <!-- Question Popup Modal -->
     <div id="question-popup-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 800px; max-height: 85vh; overflow-y: auto;">
+            <button class="modal-close-btn" onclick="closeModal('question-popup-modal')" title="Close">&times;</button>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 1rem;">
                 <h3 style="margin: 0; color: #1976d2;">📋 Original Question</h3>
-                <button class="btn" style="background: #666; color: white; padding: 8px 16px;" onclick="hideQuestionPopup()">✕ Close</button>
+            </div>
             </div>
             <div id="question-popup-content" style="padding: 1rem 0;"></div>
         </div>
@@ -6823,6 +6860,7 @@
     <!-- Account Settings Modal -->
     <div id="account-settings-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 500px;">
+            <button class="modal-close-btn" onclick="closeModal('account-settings-modal')" title="Close">&times;</button>
             <h3 style="color: #1976d2; margin-bottom: 1.5rem;">⚙️ Account Settings</h3>
             
             <!-- Account Info Section -->
@@ -6865,6 +6903,7 @@
     <!-- Welcome Back / New Questions Modal -->
     <div id="welcome-back-modal" class="modal-overlay">
         <div class="modal-box" style="max-width: 450px; text-align: center;">
+            <button class="modal-close-btn" onclick="closeModal('welcome-back-modal')" title="Close">&times;</button>
             <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
             <h3 style="color: #667eea; margin-bottom: 0.5rem;" id="welcome-back-title">Welcome Back!</h3>
             <p style="color: #666; margin-bottom: 1.5rem;" id="welcome-back-subtitle">Good to see you again</p>
@@ -19517,6 +19556,21 @@
         const googleProvider = new GoogleAuthProvider();
 
         let isSignUpMode = false;
+
+        window.closeAuthOverlay = () => {
+            document.getElementById('auth-overlay').style.display = 'none';
+        };
+
+        window.showAuthOverlay = () => {
+            document.getElementById('auth-overlay').style.display = 'flex';
+        };
+
+        window.closeModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('visible');
+            }
+        };
 
         window.toggleAuthMode = () => {
             isSignUpMode = !isSignUpMode;
