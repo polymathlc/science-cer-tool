@@ -729,6 +729,112 @@
             display: flex;
         }
 
+        .img-refresh-btn {
+            margin-top: 0.75rem;
+            padding: 0.5rem 1.25rem;
+            border: none;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+        }
+
+        .img-refresh-btn:hover {
+            background: linear-gradient(135deg, #0056b3 0%, #004094 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        }
+
+        .img-refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .img-refresh-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .img-refresh-icon {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .img-refresh-btn:not(:disabled):hover .img-refresh-icon {
+            transform: rotate(180deg);
+        }
+
+        .img-refresh-btn.loading .img-refresh-icon {
+            animation: refreshSpin 1s linear infinite;
+        }
+
+        @keyframes refreshSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .img-refresh-progress {
+            width: 100%;
+            max-width: 250px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .img-refresh-progress.visible {
+            display: block;
+        }
+
+        .img-refresh-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-refresh-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff, #00d4ff, #007bff);
+            background-size: 200% 100%;
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: progressShimmer 1.5s ease-in-out infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .img-refresh-progress-text {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .img-error-placeholder .error-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .img-error-placeholder .error-message {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #856404;
+        }
+
         .results-table {
             width: 100%;
             max-width: 700px;
@@ -8743,6 +8849,142 @@
         // =====================================================
 
         /**
+         * Refresh/reload a failed image with progress bar
+         * @param {HTMLElement} container - The img-loading-container element
+         */
+        window.refreshImage = function(container) {
+            const img = container.querySelector('img');
+            const errorPlaceholder = container.querySelector('.img-error-placeholder');
+            const progressContainer = container.querySelector('.img-refresh-progress');
+            const progressFill = container.querySelector('.img-refresh-progress-fill');
+            const progressText = container.querySelector('.img-refresh-progress-text');
+            const refreshBtn = container.querySelector('.img-refresh-btn');
+            const placeholder = container.querySelector('.img-loading-placeholder');
+
+            if (!img || !img.dataset.src) return;
+
+            // Disable button and show loading state
+            refreshBtn.disabled = true;
+            refreshBtn.classList.add('loading');
+            refreshBtn.querySelector('span').textContent = 'Loading...';
+
+            // Show progress bar
+            progressContainer.classList.add('visible');
+            progressFill.style.width = '0%';
+            progressText.textContent = 'Starting download...';
+
+            // Create a new image to track loading progress
+            const testImg = new Image();
+            let startTime = Date.now();
+            let progressInterval;
+            let currentProgress = 0;
+
+            // Simulate progress updates (since actual XHR progress isn't available for images)
+            const updateProgress = () => {
+                const elapsed = Date.now() - startTime;
+                // Progress curve: starts fast, slows down as it approaches 90%
+                // Max out at 90% - the final 10% happens on actual load
+                const targetProgress = Math.min(90, (1 - Math.exp(-elapsed / 3000)) * 95);
+
+                if (currentProgress < targetProgress) {
+                    currentProgress += (targetProgress - currentProgress) * 0.1;
+                    progressFill.style.width = currentProgress + '%';
+
+                    if (currentProgress < 30) {
+                        progressText.textContent = 'Connecting to server...';
+                    } else if (currentProgress < 60) {
+                        progressText.textContent = 'Downloading image...';
+                    } else if (currentProgress < 85) {
+                        progressText.textContent = 'Almost there...';
+                    } else {
+                        progressText.textContent = 'Finalizing...';
+                    }
+                }
+            };
+
+            progressInterval = setInterval(updateProgress, 100);
+
+            // Force bypass cache by adding timestamp
+            const originalUrl = img.dataset.src;
+            const cacheBuster = 't=' + Date.now();
+            const refreshUrl = originalUrl.includes('?')
+                ? originalUrl + '&' + cacheBuster
+                : originalUrl + '?' + cacheBuster;
+
+            testImg.onload = function() {
+                clearInterval(progressInterval);
+
+                // Complete the progress bar
+                progressFill.style.width = '100%';
+                progressText.textContent = 'Complete!';
+
+                // Short delay to show completion, then update the actual image
+                setTimeout(() => {
+                    img.src = refreshUrl;
+                    img.classList.add('loaded');
+                    errorPlaceholder.classList.remove('visible');
+                    progressContainer.classList.remove('visible');
+                    container.style.minHeight = 'auto';
+
+                    // Reset button state
+                    refreshBtn.disabled = false;
+                    refreshBtn.classList.remove('loading');
+                    refreshBtn.querySelector('span').textContent = 'Refresh Image';
+                }, 500);
+            };
+
+            testImg.onerror = function() {
+                clearInterval(progressInterval);
+
+                // Show error state
+                progressFill.style.width = '100%';
+                progressFill.style.background = 'linear-gradient(90deg, #dc3545, #c82333)';
+                progressText.textContent = 'Failed to load. Please try again.';
+
+                // Reset after delay
+                setTimeout(() => {
+                    progressContainer.classList.remove('visible');
+                    progressFill.style.width = '0%';
+                    progressFill.style.background = '';
+
+                    // Reset button state
+                    refreshBtn.disabled = false;
+                    refreshBtn.classList.remove('loading');
+                    refreshBtn.querySelector('span').textContent = 'Refresh Image';
+                }, 2000);
+            };
+
+            // Set timeout for very slow connections
+            const timeout = setTimeout(() => {
+                if (!testImg.complete) {
+                    testImg.src = ''; // Cancel the request
+                    clearInterval(progressInterval);
+
+                    progressFill.style.width = '100%';
+                    progressFill.style.background = 'linear-gradient(90deg, #ffc107, #e0a800)';
+                    progressText.textContent = 'Request timed out. Please try again.';
+
+                    setTimeout(() => {
+                        progressContainer.classList.remove('visible');
+                        progressFill.style.width = '0%';
+                        progressFill.style.background = '';
+
+                        refreshBtn.disabled = false;
+                        refreshBtn.classList.remove('loading');
+                        refreshBtn.querySelector('span').textContent = 'Refresh Image';
+                    }, 2000);
+                }
+            }, 30000); // 30 second timeout
+
+            // Clear timeout if image loads successfully
+            testImg.addEventListener('load', () => clearTimeout(timeout));
+            testImg.addEventListener('error', () => clearTimeout(timeout));
+
+            // Start loading
+            testImg.src = refreshUrl;
+        };
+
+        /**
          * Initialize image loading indicators for all question images
          */
         window.initImageLoadingIndicators = function() {
@@ -8778,16 +9020,26 @@
                     </div>
                 `;
 
-                // Create error placeholder
+                // Create error placeholder with refresh button and progress bar
                 const errorPlaceholder = document.createElement('div');
                 errorPlaceholder.className = 'img-error-placeholder';
                 errorPlaceholder.innerHTML = `
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📷</div>
-                    <div>Image failed to load</div>
-                    <button onclick="this.closest('.img-loading-container').querySelector('img').src = this.closest('.img-loading-container').querySelector('img').dataset.src"
-                            style="margin-top: 0.5rem; padding: 0.25rem 0.75rem; border: 1px solid #856404; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
-                        Retry
+                    <div class="error-icon">📷</div>
+                    <div class="error-message">Image failed to load</div>
+                    <button class="img-refresh-btn" onclick="window.refreshImage(this.closest('.img-loading-container'))">
+                        <svg class="img-refresh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        <span>Refresh Image</span>
                     </button>
+                    <div class="img-refresh-progress">
+                        <div class="img-refresh-progress-bar">
+                            <div class="img-refresh-progress-fill"></div>
+                        </div>
+                        <div class="img-refresh-progress-text">Loading...</div>
+                    </div>
                 `;
 
                 // Insert container before image
