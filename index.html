@@ -628,6 +628,107 @@
             margin-right: auto;
         }
 
+        /* Image Loading Indicator Styles */
+        .img-loading-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            min-height: 150px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .img-loading-container img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .img-loading-container img.loaded {
+            opacity: 1;
+        }
+
+        .img-loading-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            z-index: 1;
+        }
+
+        .img-loading-placeholder.hidden {
+            display: none;
+        }
+
+        .img-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e0e0e0;
+            border-top-color: #007bff;
+            border-radius: 50%;
+            animation: imgSpin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes imgSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        .img-loading-text {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .img-loading-bar {
+            width: 80%;
+            max-width: 200px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .img-loading-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            border-radius: 2px;
+            animation: imgLoadPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes imgLoadPulse {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        .img-error-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #fff3cd;
+            color: #856404;
+            z-index: 1;
+            border-radius: 8px;
+        }
+
+        .img-error-placeholder.visible {
+            display: flex;
+        }
+
         .results-table {
             width: 100%;
             max-width: 700px;
@@ -8635,6 +8736,144 @@
             document.addEventListener('DOMContentLoaded', window.initLazyLoading);
         } else {
             window.initLazyLoading();
+        }
+
+        // =====================================================
+        // IMAGE LOADING MANAGER
+        // =====================================================
+
+        /**
+         * Initialize image loading indicators for all question images
+         */
+        window.initImageLoadingIndicators = function() {
+            // Find all question diagram images that don't have loading containers yet
+            const images = document.querySelectorAll('.question-diagram:not(.img-processed), .question-container img:not(.img-processed)');
+
+            images.forEach(img => {
+                // Skip if already processed or is inside a loading container
+                if (img.classList.contains('img-processed') || img.closest('.img-loading-container')) {
+                    return;
+                }
+
+                // Mark as processed
+                img.classList.add('img-processed');
+
+                // Create loading container
+                const container = document.createElement('div');
+                container.className = 'img-loading-container';
+
+                // Copy any inline styles from the image
+                if (img.style.maxWidth) {
+                    container.style.maxWidth = img.style.maxWidth;
+                }
+
+                // Create loading placeholder
+                const placeholder = document.createElement('div');
+                placeholder.className = 'img-loading-placeholder';
+                placeholder.innerHTML = `
+                    <div class="img-loading-spinner"></div>
+                    <div class="img-loading-text">Loading image...</div>
+                    <div class="img-loading-bar">
+                        <div class="img-loading-bar-fill"></div>
+                    </div>
+                `;
+
+                // Create error placeholder
+                const errorPlaceholder = document.createElement('div');
+                errorPlaceholder.className = 'img-error-placeholder';
+                errorPlaceholder.innerHTML = `
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📷</div>
+                    <div>Image failed to load</div>
+                    <button onclick="this.closest('.img-loading-container').querySelector('img').src = this.closest('.img-loading-container').querySelector('img').dataset.src"
+                            style="margin-top: 0.5rem; padding: 0.25rem 0.75rem; border: 1px solid #856404; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
+                        Retry
+                    </button>
+                `;
+
+                // Insert container before image
+                img.parentNode.insertBefore(container, img);
+
+                // Move image into container
+                container.appendChild(placeholder);
+                container.appendChild(errorPlaceholder);
+                container.appendChild(img);
+
+                // Store original src for retry
+                img.dataset.src = img.src;
+
+                // Handle image load
+                img.onload = function() {
+                    this.classList.add('loaded');
+                    placeholder.classList.add('hidden');
+                    errorPlaceholder.classList.remove('visible');
+                    // Adjust container height to match image
+                    container.style.minHeight = 'auto';
+                };
+
+                // Handle image error
+                img.onerror = function() {
+                    placeholder.classList.add('hidden');
+                    errorPlaceholder.classList.add('visible');
+                };
+
+                // If image is already loaded (from cache)
+                if (img.complete && img.naturalHeight !== 0) {
+                    img.classList.add('loaded');
+                    placeholder.classList.add('hidden');
+                    container.style.minHeight = 'auto';
+                }
+            });
+        };
+
+        /**
+         * Preload all images on the page to start loading immediately
+         */
+        window.preloadAllImages = function() {
+            const images = document.querySelectorAll('.question-diagram, .question-container img');
+            images.forEach(img => {
+                // Force the browser to start loading the image
+                if (img.src && !img.complete) {
+                    const preloader = new Image();
+                    preloader.src = img.src;
+                }
+            });
+        };
+
+        // Initialize image loading indicators when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                window.initImageLoadingIndicators();
+                window.preloadAllImages();
+            });
+        } else {
+            window.initImageLoadingIndicators();
+            window.preloadAllImages();
+        }
+
+        // Also reinitialize when new content is loaded (for dynamic questions)
+        const imageLoadingObserver = new MutationObserver(function(mutations) {
+            let hasNewImages = false;
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1 && (node.querySelector && node.querySelector('img') || node.tagName === 'IMG')) {
+                            hasNewImages = true;
+                        }
+                    });
+                }
+            });
+            if (hasNewImages) {
+                setTimeout(window.initImageLoadingIndicators, 100);
+            }
+        });
+
+        // Start observing when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                imageLoadingObserver.observe(document.body, { childList: true, subtree: true });
+            });
+        } else {
+            imageLoadingObserver.observe(document.body, { childList: true, subtree: true });
         }
 
         /**
