@@ -14,7 +14,7 @@
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <!-- APP VERSION - Update this when making changes -->
-    <meta name="app-version" content="2026.01.26.7">
+    <meta name="app-version" content="2026.01.26.8">
     <title>CER Interactive Questions</title>
     <!-- Preconnect for faster resource loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5524,28 +5524,27 @@
         });
     });
     
+    // Fix all images on page - call this after any content change
+    window.fixAllImages = function() {
+        document.querySelectorAll('img').forEach(function(img) {
+            var src = img.getAttribute('src') || '';
+            if (src && (src.includes('dropbox.com') || src.includes('dropboxusercontent.com')) && !src.includes('wsrv.nl')) {
+                img.src = window.convertDropboxUrl(src);
+            }
+        });
+    };
+    
     // Also observe for dynamically added images
     var imgObserver = new MutationObserver(function(mutations) {
+        var hasNewContent = false;
         mutations.forEach(function(mutation) {
-            mutation.addedNodes.forEach(function(node) {
-                if (node.nodeType === 1) {
-                    if (node.tagName === 'IMG') {
-                        var src = node.getAttribute('src') || '';
-                        if (src.includes('dropbox.com')) {
-                            node.src = window.convertDropboxUrl(src);
-                        }
-                    }
-                    if (node.querySelectorAll) {
-                        node.querySelectorAll('img').forEach(function(img) {
-                            var src = img.getAttribute('src') || '';
-                            if (src.includes('dropbox.com')) {
-                                img.src = window.convertDropboxUrl(src);
-                            }
-                        });
-                    }
-                }
-            });
+            if (mutation.addedNodes.length > 0) hasNewContent = true;
         });
+        if (hasNewContent) {
+            // Debounce - wait 100ms then fix all images
+            clearTimeout(window._imgFixTimeout);
+            window._imgFixTimeout = setTimeout(window.fixAllImages, 100);
+        }
     });
     document.addEventListener('DOMContentLoaded', function() {
         imgObserver.observe(document.body, { childList: true, subtree: true });
@@ -8413,6 +8412,9 @@
             
             // Save preference
             localStorage.setItem('selectedLevel', level);
+            
+            // Fix images after content refresh
+            setTimeout(function() { if (window.fixAllImages) window.fixAllImages(); }, 200);
         };
 
         // Initialize level from localStorage
@@ -8628,6 +8630,9 @@
                     targetTopic.classList.remove('hidden');
                 }
             }
+            
+            // Fix Dropbox images
+            setTimeout(function() { if (window.fixAllImages) window.fixAllImages(); }, 200);
         };
 
         // =====================================================
@@ -17106,6 +17111,9 @@
             if (type === 'vetting') {
                 loadVettingList();
             }
+            
+            // Fix Dropbox images after content loads
+            setTimeout(function() { if (window.fixAllImages) window.fixAllImages(); }, 300);
         };
         
         // Helper function to adjust color brightness
@@ -17267,6 +17275,9 @@
             }
             
             renderMcqQuestionList();
+            
+            // Fix Dropbox images
+            setTimeout(function() { if (window.fixAllImages) window.fixAllImages(); }, 200);
         };
 
         window.renderMcqQuestionList = function () {
