@@ -608,35 +608,22 @@
             wrapper.appendChild(img);
         }
         
-        // Load the image
-        const doLoad = async () => {
-            try {
-                // Try fetch-based loading first (better caching)
-                const objectUrl = await loadImage(fixedSrc);
-                
-                // Create new image to decode
-                const tempImg = new Image();
-                tempImg.src = objectUrl;
-                
-                try {
-                    await tempImg.decode();
-                } catch (e) {
-                    // Decode failed but continue
-                }
-                
-                // Update the visible image
-                img.src = objectUrl;
+        // Load the image - simplified, direct approach
+        const doLoad = () => {
+            let loadAttempt = 0;
+            const maxAttempts = 3;
+            
+            const showSuccess = () => {
                 img.style.opacity = '1';
                 placeholder.style.opacity = '0';
-                
                 setTimeout(() => {
-                    placeholder.remove();
+                    if (placeholder.parentNode) placeholder.remove();
                     wrapper.style.minHeight = 'auto';
                     wrapper.style.background = 'none';
                 }, 300);
-                
-            } catch (error) {
-                // Show error state
+            };
+            
+            const showError = () => {
                 placeholder.innerHTML = `
                     <div style="text-align: center; padding: 20px; cursor: pointer;" onclick="window.ImageLoader.retry(this.closest('.img-loader-wrapper').querySelector('img'))">
                         <div style="font-size: 32px; margin-bottom: 8px;">⚠️</div>
@@ -645,9 +632,48 @@
                     </div>
                 `;
                 placeholder.style.background = '#ffebee';
+                placeholder.style.opacity = '1';
+            };
+            
+            const attemptLoad = () => {
+                loadAttempt++;
                 
-                img.style.opacity = '0.2';
-            }
+                // Set up event handlers BEFORE setting src
+                img.onload = function() {
+                    this.onload = null;
+                    this.onerror = null;
+                    showSuccess();
+                };
+                
+                img.onerror = function() {
+                    this.onload = null;
+                    this.onerror = null;
+                    
+                    if (loadAttempt < maxAttempts) {
+                        // Retry with cache buster
+                        setTimeout(() => {
+                            const retrySrc = fixedSrc + (fixedSrc.includes('?') ? '&' : '?') + '_r=' + Date.now();
+                            img.src = retrySrc;
+                            attemptLoad();
+                        }, 1000 * loadAttempt);
+                    } else {
+                        showError();
+                    }
+                };
+                
+                // Check if already loaded (from cache)
+                if (img.complete && img.naturalHeight > 0) {
+                    showSuccess();
+                    return;
+                }
+                
+                // Set src to start loading (only on first attempt)
+                if (loadAttempt === 1) {
+                    img.src = fixedSrc;
+                }
+            };
+            
+            attemptLoad();
         };
         
         // Use IntersectionObserver if available, otherwise load immediately
