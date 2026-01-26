@@ -5484,6 +5484,226 @@
             }
         }
     </style>
+    
+    <!-- Improved Image Loading System -->
+    <script>
+    (function() {
+        'use strict';
+        
+        // Configuration
+        const CONFIG = {
+            MAX_RETRIES: 3,
+            RETRY_DELAY: 1000,
+            LOAD_TIMEOUT: 15000
+        };
+        
+        // Image tracking
+        window.imageLoadingState = window.imageLoadingState || {
+            cache: new Map(),
+            loading: new Set(),
+            failed: new Map()
+        };
+        
+        /**
+         * Convert Dropbox URL for direct image display
+         */
+        window.convertDropboxUrl = function(url) {
+            if (!url) return url;
+            url = url.replace(/&amp;/g, '&');
+            
+            if (url.includes('dl.dropboxusercontent.com')) return url;
+            
+            if (url.includes('dropbox.com/scl/')) {
+                url = url.replace(/[?&]dl=[01]/g, '');
+                if (!url.includes('raw=1')) {
+                    url += (url.includes('?') ? '&' : '?') + 'raw=1';
+                }
+                return url;
+            }
+            
+            if (url.includes('dropbox.com/s/')) {
+                return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+                          .replace(/\?dl=[01]/g, '');
+            }
+            
+            return url;
+        };
+        
+        /**
+         * Normalize all image URLs in HTML string
+         */
+        window.normalizeImageUrls = function(html) {
+            if (!html) return html;
+            html = html.replace(/&amp;/g, '&');
+            html = html.replace(/src=["']([^"']*dropbox\.com[^"']*)["']/gi, (match, url) => {
+                return 'src="' + window.convertDropboxUrl(url) + '"';
+            });
+            return html;
+        };
+        
+        /**
+         * Load an image with retry logic
+         */
+        window.loadImageWithRetry = function(url, retries = CONFIG.MAX_RETRIES) {
+            const state = window.imageLoadingState;
+            
+            return new Promise((resolve, reject) => {
+                // Check cache
+                if (state.cache.has(url)) {
+                    resolve(state.cache.get(url));
+                    return;
+                }
+                
+                // Already loading
+                if (state.loading.has(url)) {
+                    const check = setInterval(() => {
+                        if (!state.loading.has(url)) {
+                            clearInterval(check);
+                            resolve(state.cache.get(url));
+                        }
+                    }, 100);
+                    setTimeout(() => { clearInterval(check); resolve(null); }, 15000);
+                    return;
+                }
+                
+                state.loading.add(url);
+                
+                const attemptLoad = (attemptsLeft) => {
+                    const img = new Image();
+                    let timeout;
+                    
+                    const cleanup = () => {
+                        clearTimeout(timeout);
+                        img.onload = null;
+                        img.onerror = null;
+                    };
+                    
+                    timeout = setTimeout(() => {
+                        cleanup();
+                        if (attemptsLeft > 1) {
+                            setTimeout(() => attemptLoad(attemptsLeft - 1), CONFIG.RETRY_DELAY);
+                        } else {
+                            state.loading.delete(url);
+                            state.failed.set(url, Date.now());
+                            reject(new Error('Timeout'));
+                        }
+                    }, CONFIG.LOAD_TIMEOUT);
+                    
+                    img.onload = () => {
+                        cleanup();
+                        state.loading.delete(url);
+                        state.cache.set(url, img);
+                        state.failed.delete(url);
+                        resolve(img);
+                    };
+                    
+                    img.onerror = () => {
+                        cleanup();
+                        if (attemptsLeft > 1) {
+                            setTimeout(() => attemptLoad(attemptsLeft - 1), CONFIG.RETRY_DELAY);
+                        } else {
+                            state.loading.delete(url);
+                            state.failed.set(url, Date.now());
+                            reject(new Error('Load failed'));
+                        }
+                    };
+                    
+                    const finalUrl = attemptsLeft < CONFIG.MAX_RETRIES 
+                        ? url + (url.includes('?') ? '&' : '?') + '_r=' + Date.now()
+                        : url;
+                    img.src = finalUrl;
+                };
+                
+                attemptLoad(retries);
+            });
+        };
+        
+        /**
+         * Process images in an element with loading states
+         */
+        window.processImagesInElement = function(element) {
+            if (!element) return;
+            
+            element.querySelectorAll('img').forEach(img => {
+                if (img.dataset.processed === 'true') return;
+                img.dataset.processed = 'true';
+                
+                let src = img.getAttribute('src') || '';
+                if (!src || src.startsWith('data:')) return;
+                
+                const fixedSrc = window.convertDropboxUrl(src.replace(/&amp;/g, '&'));
+                img.dataset.originalSrc = fixedSrc;
+                
+                // Add loading state
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.3s ease';
+                
+                // Load with retry
+                window.loadImageWithRetry(fixedSrc)
+                    .then(() => {
+                        img.src = fixedSrc;
+                        img.style.opacity = '1';
+                    })
+                    .catch(() => {
+                        img.style.opacity = '0.3';
+                        img.title = 'Click to retry';
+                        img.style.cursor = 'pointer';
+                        
+                        const retry = () => {
+                            img.style.opacity = '0.5';
+                            window.imageLoadingState.failed.delete(fixedSrc);
+                            window.loadImageWithRetry(fixedSrc)
+                                .then(() => {
+                                    img.src = fixedSrc + (fixedSrc.includes('?') ? '&' : '?') + '_r=' + Date.now();
+                                    img.style.opacity = '1';
+                                    img.style.cursor = '';
+                                    img.removeEventListener('click', retry);
+                                })
+                                .catch(() => img.style.opacity = '0.3');
+                        };
+                        img.addEventListener('click', retry);
+                    });
+            });
+        };
+        
+        /**
+         * Clear image cache
+         */
+        window.clearImageCache = function() {
+            window.imageLoadingState.cache.clear();
+            window.imageLoadingState.failed.clear();
+            window.imageLoadingState.loading.clear();
+        };
+        
+        // Observe DOM for new question containers
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) {
+                        if (node.classList?.contains('question-container') || 
+                            node.classList?.contains('custom-question')) {
+                            setTimeout(() => window.processImagesInElement(node), 50);
+                        } else if (node.querySelectorAll) {
+                            node.querySelectorAll('.question-container, .custom-question').forEach(c => {
+                                setTimeout(() => window.processImagesInElement(c), 50);
+                            });
+                        }
+                    }
+                });
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            observer.observe(document.body, { childList: true, subtree: true });
+            // Process existing images
+            document.querySelectorAll('.question-container').forEach(c => {
+                window.processImagesInElement(c);
+            });
+        });
+        
+        console.log('Enhanced image loading initialized');
+    })();
+    </script>
 </head>
 
 <body>
