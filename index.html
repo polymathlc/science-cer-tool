@@ -14,7 +14,7 @@
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <!-- APP VERSION - Update this when making changes -->
-    <meta name="app-version" content="2026.01.13.2">
+    <meta name="app-version" content="2026.01.26.1">
     <title>CER Interactive Questions</title>
     <!-- Preconnect for faster resource loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5485,225 +5485,8 @@
         }
     </style>
     
-    <!-- Improved Image Loading System -->
-    <script>
-    (function() {
-        'use strict';
-        
-        // Configuration
-        const CONFIG = {
-            MAX_RETRIES: 3,
-            RETRY_DELAY: 1000,
-            LOAD_TIMEOUT: 15000
-        };
-        
-        // Image tracking
-        window.imageLoadingState = window.imageLoadingState || {
-            cache: new Map(),
-            loading: new Set(),
-            failed: new Map()
-        };
-        
-        /**
-         * Convert Dropbox URL for direct image display
-         */
-        window.convertDropboxUrl = function(url) {
-            if (!url) return url;
-            url = url.replace(/&amp;/g, '&');
-            
-            if (url.includes('dl.dropboxusercontent.com')) return url;
-            
-            if (url.includes('dropbox.com/scl/')) {
-                url = url.replace(/[?&]dl=[01]/g, '');
-                if (!url.includes('raw=1')) {
-                    url += (url.includes('?') ? '&' : '?') + 'raw=1';
-                }
-                return url;
-            }
-            
-            if (url.includes('dropbox.com/s/')) {
-                return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
-                          .replace(/\?dl=[01]/g, '');
-            }
-            
-            return url;
-        };
-        
-        /**
-         * Normalize all image URLs in HTML string
-         */
-        window.normalizeImageUrls = function(html) {
-            if (!html) return html;
-            html = html.replace(/&amp;/g, '&');
-            html = html.replace(/src=["']([^"']*dropbox\.com[^"']*)["']/gi, (match, url) => {
-                return 'src="' + window.convertDropboxUrl(url) + '"';
-            });
-            return html;
-        };
-        
-        /**
-         * Load an image with retry logic
-         */
-        window.loadImageWithRetry = function(url, retries = CONFIG.MAX_RETRIES) {
-            const state = window.imageLoadingState;
-            
-            return new Promise((resolve, reject) => {
-                // Check cache
-                if (state.cache.has(url)) {
-                    resolve(state.cache.get(url));
-                    return;
-                }
-                
-                // Already loading
-                if (state.loading.has(url)) {
-                    const check = setInterval(() => {
-                        if (!state.loading.has(url)) {
-                            clearInterval(check);
-                            resolve(state.cache.get(url));
-                        }
-                    }, 100);
-                    setTimeout(() => { clearInterval(check); resolve(null); }, 15000);
-                    return;
-                }
-                
-                state.loading.add(url);
-                
-                const attemptLoad = (attemptsLeft) => {
-                    const img = new Image();
-                    let timeout;
-                    
-                    const cleanup = () => {
-                        clearTimeout(timeout);
-                        img.onload = null;
-                        img.onerror = null;
-                    };
-                    
-                    timeout = setTimeout(() => {
-                        cleanup();
-                        if (attemptsLeft > 1) {
-                            setTimeout(() => attemptLoad(attemptsLeft - 1), CONFIG.RETRY_DELAY);
-                        } else {
-                            state.loading.delete(url);
-                            state.failed.set(url, Date.now());
-                            reject(new Error('Timeout'));
-                        }
-                    }, CONFIG.LOAD_TIMEOUT);
-                    
-                    img.onload = () => {
-                        cleanup();
-                        state.loading.delete(url);
-                        state.cache.set(url, img);
-                        state.failed.delete(url);
-                        resolve(img);
-                    };
-                    
-                    img.onerror = () => {
-                        cleanup();
-                        if (attemptsLeft > 1) {
-                            setTimeout(() => attemptLoad(attemptsLeft - 1), CONFIG.RETRY_DELAY);
-                        } else {
-                            state.loading.delete(url);
-                            state.failed.set(url, Date.now());
-                            reject(new Error('Load failed'));
-                        }
-                    };
-                    
-                    const finalUrl = attemptsLeft < CONFIG.MAX_RETRIES 
-                        ? url + (url.includes('?') ? '&' : '?') + '_r=' + Date.now()
-                        : url;
-                    img.src = finalUrl;
-                };
-                
-                attemptLoad(retries);
-            });
-        };
-        
-        /**
-         * Process images in an element with loading states
-         */
-        window.processImagesInElement = function(element) {
-            if (!element) return;
-            
-            element.querySelectorAll('img').forEach(img => {
-                if (img.dataset.processed === 'true') return;
-                img.dataset.processed = 'true';
-                
-                let src = img.getAttribute('src') || '';
-                if (!src || src.startsWith('data:')) return;
-                
-                const fixedSrc = window.convertDropboxUrl(src.replace(/&amp;/g, '&'));
-                img.dataset.originalSrc = fixedSrc;
-                
-                // Add loading state
-                img.style.opacity = '0';
-                img.style.transition = 'opacity 0.3s ease';
-                
-                // Load with retry
-                window.loadImageWithRetry(fixedSrc)
-                    .then(() => {
-                        img.src = fixedSrc;
-                        img.style.opacity = '1';
-                    })
-                    .catch(() => {
-                        img.style.opacity = '0.3';
-                        img.title = 'Click to retry';
-                        img.style.cursor = 'pointer';
-                        
-                        const retry = () => {
-                            img.style.opacity = '0.5';
-                            window.imageLoadingState.failed.delete(fixedSrc);
-                            window.loadImageWithRetry(fixedSrc)
-                                .then(() => {
-                                    img.src = fixedSrc + (fixedSrc.includes('?') ? '&' : '?') + '_r=' + Date.now();
-                                    img.style.opacity = '1';
-                                    img.style.cursor = '';
-                                    img.removeEventListener('click', retry);
-                                })
-                                .catch(() => img.style.opacity = '0.3');
-                        };
-                        img.addEventListener('click', retry);
-                    });
-            });
-        };
-        
-        /**
-         * Clear image cache
-         */
-        window.clearImageCache = function() {
-            window.imageLoadingState.cache.clear();
-            window.imageLoadingState.failed.clear();
-            window.imageLoadingState.loading.clear();
-        };
-        
-        // Observe DOM for new question containers
-        const observer = new MutationObserver(mutations => {
-            mutations.forEach(mutation => {
-                mutation.addedNodes.forEach(node => {
-                    if (node.nodeType === 1) {
-                        if (node.classList?.contains('question-container') || 
-                            node.classList?.contains('custom-question')) {
-                            setTimeout(() => window.processImagesInElement(node), 50);
-                        } else if (node.querySelectorAll) {
-                            node.querySelectorAll('.question-container, .custom-question').forEach(c => {
-                                setTimeout(() => window.processImagesInElement(c), 50);
-                            });
-                        }
-                    }
-                });
-            });
-        });
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            observer.observe(document.body, { childList: true, subtree: true });
-            // Process existing images
-            document.querySelectorAll('.question-container').forEach(c => {
-                window.processImagesInElement(c);
-            });
-        });
-        
-        console.log('Enhanced image loading initialized');
-    })();
-    </script>
+    <!-- Advanced Image Loading System v2.0 -->
+    <script src="image-loader.js"></script>
 </head>
 
 <body>
@@ -7982,10 +7765,9 @@
                 console.log('Refreshing question data...');
 
                 // Clear image cache to force fresh images
-                if (window.imageCache) {
-                    window.imageCache.clear();
+                if (window.clearImageCache) {
+                    window.clearImageCache();
                 }
-                window.preloadingImages = new Set();
 
                 // Update session cache buster for new images
                 window.sessionCacheBuster = Date.now();
@@ -8045,8 +7827,8 @@
             // Clear stale data on initial page load
             window.addEventListener('load', function() {
                 // Clear image cache on fresh page load
-                if (window.imageCache) {
-                    window.imageCache.clear();
+                if (window.clearImageCache) {
+                    window.clearImageCache();
                 }
 
                 // Reset custom questions loaded flag to ensure fresh load
@@ -8982,160 +8764,43 @@
         // =====================================================
         // IMAGE LAZY LOADING AND PRELOADING
         // =====================================================
-
-        // Image cache to store preloaded images
-        window.imageCache = new Map();
-        window.preloadingImages = new Set();
-
+        // Note: Core image loading is now handled by image-loader.js (ImageLoader)
+        // The following are compatibility wrappers for existing code
+        
         /**
-         * Preload an image and cache it
-         * @param {string} url - Image URL to preload
-         * @returns {Promise} - Resolves when image is loaded
+         * Preload an image and cache it (wrapper for ImageLoader)
          */
         window.preloadImage = function(url) {
             if (!url) return Promise.resolve();
-
-            // Already cached
-            if (window.imageCache.has(url)) {
-                return Promise.resolve(window.imageCache.get(url));
+            if (window.ImageLoader) {
+                return window.ImageLoader.loadImage(url).catch(() => null);
             }
-
-            // Already preloading
-            if (window.preloadingImages.has(url)) {
-                return new Promise((resolve) => {
-                    const checkCache = setInterval(() => {
-                        if (window.imageCache.has(url)) {
-                            clearInterval(checkCache);
-                            resolve(window.imageCache.get(url));
-                        }
-                    }, 50);
-                    // Timeout after 10s
-                    setTimeout(() => { clearInterval(checkCache); resolve(); }, 10000);
-                });
-            }
-
-            window.preloadingImages.add(url);
-
+            // Fallback for before ImageLoader loads
             return new Promise((resolve) => {
                 const img = new Image();
-                img.onload = () => {
-                    window.imageCache.set(url, img);
-                    window.preloadingImages.delete(url);
-                    resolve(img);
-                };
-                img.onerror = () => {
-                    window.preloadingImages.delete(url);
-                    resolve();
-                };
-                img.src = url;
+                img.onload = () => resolve(img);
+                img.onerror = () => resolve(null);
+                img.src = window.convertDropboxUrl ? window.convertDropboxUrl(url) : url;
             });
         };
-
-        /**
-         * Preload images from question blocks
-         * @param {Array} questions - Array of questions with blocks
-         */
-        window.preloadQuestionImages = function(questions) {
-            if (!questions || !Array.isArray(questions)) return;
-
-            const imageUrls = [];
-            questions.forEach(q => {
-                if (q.blocks && Array.isArray(q.blocks)) {
-                    q.blocks.forEach(block => {
-                        if (block.type === 'image' && block.value) {
-                            const url = window.convertDropboxUrl ?
-                                window.convertDropboxUrl(block.value) : block.value;
-                            imageUrls.push(url);
-                        }
-                    });
-                }
-            });
-
-            // Preload all images in parallel
-            imageUrls.forEach(url => window.preloadImage(url));
-        };
-
-        /**
-         * Create image element - simple version
-         */
-        window.createOptimizedImage = function(src, className = '', style = '') {
-            const fixedSrc = window.convertDropboxUrl(src);
-            return `<img src="${fixedSrc}" class="${className}" style="max-width: 100%; border-radius: 8px; display: block; margin: 0 auto; ${style}" onerror="this.style.opacity='0.3'; this.title='Image failed to load';">`;
-        };
-
-
 
         /**
          * Extract and preload images from HTML string
-         * @param {string} html - HTML string containing images
          */
         window.preloadImagesFromHtml = function(html) {
             if (!html) return;
-
-            // Extract image URLs from src attributes
             const imgRegex = /src=["']([^"']+\.(?:jpg|jpeg|png|gif|webp|svg)[^"']*)["']/gi;
+            const urls = [];
             let match;
             while ((match = imgRegex.exec(html)) !== null) {
-                let url = match[1];
-                // Convert Dropbox URLs if needed
-                if (window.convertDropboxUrl) {
-                    url = window.convertDropboxUrl(url);
-                }
-                window.preloadImage(url);
+                urls.push(match[1]);
+            }
+            if (window.ImageLoader) {
+                window.ImageLoader.prefetchImages(urls);
+            } else {
+                urls.forEach(url => window.preloadImage(url));
             }
         };
-
-        /**
-         * Initialize lazy loading for images
-         * Uses native loading="lazy" with IntersectionObserver fallback
-         */
-        window.initLazyLoading = function() {
-            // Add loading="lazy" to all images without it (except optimized ones)
-            document.querySelectorAll('img:not([loading]):not(.img-loading-wrapper img)').forEach(img => {
-                img.setAttribute('loading', 'lazy');
-            });
-
-            // For browsers that don't support native lazy loading, use IntersectionObserver
-            if (!('loading' in HTMLImageElement.prototype)) {
-                const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-
-                if ('IntersectionObserver' in window) {
-                    const imageObserver = new IntersectionObserver((entries, observer) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                const img = entry.target;
-                                if (img.dataset.src) {
-                                    img.src = img.dataset.src;
-                                    img.removeAttribute('data-src');
-                                }
-                                observer.unobserve(img);
-                            }
-                        });
-                    }, {
-                        rootMargin: '200px 0px', // Increased for earlier loading
-                        threshold: 0.01
-                    });
-
-                    lazyImages.forEach(img => {
-                        // Store original src in data-src for lazy loading
-                        if (img.src && !img.dataset.src) {
-                            img.dataset.src = img.src;
-                            img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"%3E%3C/svg%3E';
-                        }
-                        imageObserver.observe(img);
-                    });
-                }
-            }
-
-            console.log('Lazy loading initialized');
-        };
-
-        // Initialize lazy loading when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', window.initLazyLoading);
-        } else {
-            window.initLazyLoading();
-        }
 
         // =====================================================
         // IMAGE LOADING MANAGER
@@ -21369,8 +21034,8 @@
                 window.customQuestionsLoaded = false;
 
                 // Clear image cache to force fresh images on login
-                if (window.imageCache) {
-                    window.imageCache.clear();
+                if (window.clearImageCache) {
+                    window.clearImageCache();
                 }
                 window.sessionCacheBuster = Date.now();
 
