@@ -14,7 +14,7 @@
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <!-- APP VERSION - Update this when making changes -->
-    <meta name="app-version" content="2026.01.26.5">
+    <meta name="app-version" content="2026.01.26.6">
     <title>CER Interactive Questions</title>
     <!-- Preconnect for faster resource loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5485,8 +5485,63 @@
         }
     </style>
     
-    <!-- Advanced Image Loading System v2.0 -->
-    <script src="image-loader.js"></script>
+    <!-- Simple Dropbox URL fixer - no complex overlays -->
+    <script>
+    // Simple Dropbox URL converter
+    window.convertDropboxUrl = function(url) {
+        if (!url) return url;
+        url = url.replace(/&amp;/g, '&');
+        if (url.includes('dl.dropboxusercontent.com')) return url;
+        if (url.includes('dropbox.com/scl/')) {
+            url = url.replace(/[?&]dl=[01]/g, '');
+            if (!url.includes('raw=1')) {
+                url += (url.includes('?') ? '&' : '?') + 'raw=1';
+            }
+            return url;
+        }
+        if (url.includes('dropbox.com/s/')) {
+            return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace(/\?dl=[01]/g, '');
+        }
+        return url;
+    };
+    
+    // Fix all Dropbox images on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('img').forEach(function(img) {
+            var src = img.getAttribute('src') || '';
+            if (src.includes('dropbox.com')) {
+                img.src = window.convertDropboxUrl(src);
+            }
+        });
+    });
+    
+    // Also observe for dynamically added images
+    var imgObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1) {
+                    if (node.tagName === 'IMG') {
+                        var src = node.getAttribute('src') || '';
+                        if (src.includes('dropbox.com')) {
+                            node.src = window.convertDropboxUrl(src);
+                        }
+                    }
+                    if (node.querySelectorAll) {
+                        node.querySelectorAll('img').forEach(function(img) {
+                            var src = img.getAttribute('src') || '';
+                            if (src.includes('dropbox.com')) {
+                                img.src = window.convertDropboxUrl(src);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        imgObserver.observe(document.body, { childList: true, subtree: true });
+    });
+    </script>
 </head>
 
 <body>
@@ -9141,20 +9196,23 @@
         };
 
         /**
-         * Initialize image loading indicators for all question images
-         * DEPRECATED: Now handled by image-loader.js (ImageLoader)
-         * This function is kept as a no-op for backwards compatibility
+         * Initialize image loading - SIMPLIFIED
+         * Just fixes Dropbox URLs, no overlays or fancy loading states
          */
         window.initImageLoadingIndicators = function() {
-            // Defer to new ImageLoader system if available
-            if (window.ImageLoader && window.ImageLoader.processImagesInElement) {
-                document.querySelectorAll('.question-container, .custom-question').forEach(container => {
-                    window.ImageLoader.processImagesInElement(container);
-                });
-                return;
-            }
+            // Simple: just fix Dropbox URLs on all images
+            document.querySelectorAll('img').forEach(img => {
+                const src = img.getAttribute('src') || '';
+                if (src && (src.includes('dropbox.com') || src.includes('dropboxusercontent.com'))) {
+                    const fixedSrc = window.convertDropboxUrl(src);
+                    if (fixedSrc !== src) {
+                        img.src = fixedSrc;
+                    }
+                }
+            });
+            return; // Skip all the complex overlay stuff below
             
-            // Legacy fallback - find all question diagram images that don't have loading containers yet
+            // DISABLED - Legacy fallback code below
             const images = document.querySelectorAll('.question-diagram:not(.img-processed):not([data-enhanced]), .question-container img:not(.img-processed):not([data-enhanced])');
 
             images.forEach(img => {
@@ -14598,7 +14656,9 @@
         
         window.newQuestionsForPractice = [];
         
+        // DISABLED - no more welcome popups
         window.showWelcomeModal = function(newQuestionsCount, lastLoginDate, userStats) {
+            return; // Disabled for simplicity
             const modal = document.getElementById('welcome-back-modal');
             const isNewUser = userStats?.isNewUser || false;
             const reviewCount = userStats?.reviewCount || 0;
@@ -14872,79 +14932,16 @@
             return versionMeta ? versionMeta.content : '0';
         };
 
-        // Check for updates from Firestore
-        window.checkForUpdates = async function() {
-            try {
-                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
-                
-                const currentVersion = getCurrentAppVersion();
-                const lastCheckedVersion = localStorage.getItem('app_last_version');
-                const lastRefreshAttempt = localStorage.getItem('app_last_refresh_attempt');
-                const refreshAttemptTime = parseInt(localStorage.getItem('app_refresh_attempt_time') || '0');
-                
-                // Prevent infinite refresh loop: if we already tried to refresh to this version recently, skip
-                const fiveMinutes = 5 * 60 * 1000;
-                const recentlyAttemptedRefresh = lastRefreshAttempt && (Date.now() - refreshAttemptTime < fiveMinutes);
-                
-                // Check Firestore for the latest version
-                const versionDoc = await getDoc(doc(window.db_fs, "app_settings", "version"));
-                
-                if (versionDoc.exists()) {
-                    const serverVersion = versionDoc.data().current;
-                    const forceRefresh = versionDoc.data().forceRefresh || false;
-                    
-                    console.log(`Current: ${currentVersion}, Server: ${serverVersion}, Last: ${lastCheckedVersion}, LastRefreshAttempt: ${lastRefreshAttempt}`);
-                    
-                    // If server version is newer than current version
-                    if (serverVersion && serverVersion !== currentVersion) {
-                        // Check if we already tried to refresh to this version (prevents infinite loop)
-                        if (lastRefreshAttempt === serverVersion && recentlyAttemptedRefresh) {
-                            console.log('Already attempted refresh to this version recently, skipping auto-refresh');
-                            // Still show manual update option but don't auto-refresh
-                            showUpdateBanner(serverVersion, false);
-                            return;
-                        }
-                        
-                        if (forceRefresh) {
-                            // Mark that we're attempting to refresh to this version
-                            localStorage.setItem('app_last_refresh_attempt', serverVersion);
-                            localStorage.setItem('app_refresh_attempt_time', Date.now().toString());
-                            // Force refresh immediately
-                            showUpdateBanner(serverVersion, true);
-                        } else {
-                            // Show update notification
-                            showUpdateBanner(serverVersion, false);
-                        }
-                    } else {
-                        // Versions match, clear the refresh attempt tracker
-                        localStorage.removeItem('app_last_refresh_attempt');
-                        localStorage.removeItem('app_refresh_attempt_time');
-                    }
-                }
-                
-                // Update last checked version
-                localStorage.setItem('app_last_version', currentVersion);
-                
-            } catch (e) {
-                console.log("Update check skipped:", e.message);
-            }
+        // Check for updates - DISABLED for simplicity
+        window.checkForUpdates = function() {
+            // Disabled - no more update popups
+            console.log('Update check disabled');
         };
 
-        // Show update notification banner
+        // Show update notification banner - DISABLED for simplicity
         window.showUpdateBanner = function(newVersion, autoRefresh = false) {
-            // Check if user dismissed this session
-            if (sessionStorage.getItem('update_dismissed') === 'true' && !autoRefresh) {
-                return;
-            }
-            
-            // Remove existing banner if any
-            const existingBanner = document.getElementById('update-banner');
-            if (existingBanner) existingBanner.remove();
-            
-            const banner = document.createElement('div');
-            banner.id = 'update-banner';
-            banner.className = 'update-banner';
-            banner.dataset.version = newVersion; // Store version for forceRefresh
+            // Disabled - no more update banners
+            return;
             
             if (autoRefresh) {
                 banner.innerHTML = `
