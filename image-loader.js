@@ -661,16 +661,18 @@
                     }
                 };
                 
-                // Check if already loaded (from cache)
-                if (img.complete && img.naturalHeight > 0) {
-                    showSuccess();
-                    return;
-                }
-                
                 // Set src to start loading (only on first attempt)
                 if (loadAttempt === 1) {
                     img.src = fixedSrc;
                 }
+                
+                // Check if already loaded (from cache) - MUST be after setting src
+                // Use setTimeout to let browser process cached image
+                setTimeout(() => {
+                    if (img.complete && img.naturalHeight > 0) {
+                        showSuccess();
+                    }
+                }, 0);
             };
             
             attemptLoad();
