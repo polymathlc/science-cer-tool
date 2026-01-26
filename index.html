@@ -14,7 +14,7 @@
     <meta http-equiv="Expires" content="-1">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <!-- APP VERSION - Update this when making changes -->
-    <meta name="app-version" content="2026.01.26.1">
+    <meta name="app-version" content="2026.01.26.2">
     <title>CER Interactive Questions</title>
     <!-- Preconnect for faster resource loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7146,10 +7146,22 @@
                                     <option value="P6">Primary 6</option>
                                 </select>
                             </div>
-                            <div style="flex: 1; min-width: 200px;">
-                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Search:</label>
-                                <input type="text" id="question-list-search" class="auth-input" style="width: 100%; padding: 10px; border-radius: 8px;" placeholder="Search questions..." oninput="debouncedFilterQuestionList()" aria-label="Search questions">
+                            <div style="flex: 2; min-width: 280px;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">🔍 Full-Text Search:</label>
+                                <div style="position: relative;">
+                                    <input type="text" id="question-list-search" class="auth-input" style="width: 100%; padding: 10px 80px 10px 10px; border-radius: 8px;" placeholder="Search title, content, answers..." oninput="debouncedFilterQuestionList()" aria-label="Search questions">
+                                    <button id="clear-search-btn" onclick="clearQuestionSearch()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: #e0e0e0; border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 0.8rem; display: none;" title="Clear search">✕ Clear</button>
+                                </div>
+                                <div id="search-tips" style="font-size: 0.75rem; color: #888; margin-top: 4px;">
+                                    💡 Tip: Search for keywords like "photosynthesis", "circuit", "digestion"
+                                </div>
                             </div>
+                        </div>
+
+                        <!-- Search Results Summary -->
+                        <div id="search-results-summary" style="display: none; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                            <span id="search-results-text" style="color: #2e7d32; font-weight: 500;"></span>
+                            <button onclick="clearQuestionSearch()" style="background: #4CAF50; color: white; border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 0.85rem;">Clear Search</button>
                         </div>
 
                         <div id="question-list-container">
@@ -12593,6 +12605,11 @@
                 const ratingColor = question.rating >= 1500 ? '#4CAF50' : question.rating >= 1200 ? '#FF9800' : '#9E9E9E';
                 const categoryIcon = question.category === 'mcq' ? '📝 MCQ' : '✍️ OEQ';
                 const sourceBadge = question.fromFirestore ? '<span style="font-size: 0.7rem; background: #e3f2fd; color: #1976d2; padding: 2px 6px; border-radius: 4px; margin-left: 6px;">Custom</span>' : '';
+                
+                // Get current search term for highlighting
+                const currentSearch = document.getElementById('question-list-search')?.value.trim() || '';
+                const displayTitle = currentSearch ? window.highlightSearchTerms(question.title, currentSearch) : question.title;
+                const displayTopic = currentSearch ? window.highlightSearchTerms(question.topic, currentSearch) : question.topic;
 
                 html += `
                     <tr style="border-bottom: 1px solid #eee; transition: background 0.2s;" 
@@ -12603,12 +12620,12 @@
                         </td>
                         <td style="padding: 0.75rem 0.5rem; color: #333; cursor: pointer; font-size: 0.85rem;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             <div style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
-                                ${question.title}${sourceBadge}
+                                ${displayTitle}${sourceBadge}
                             </div>
                         </td>
                         <td style="padding: 0.75rem 0.5rem; color: #666; cursor: pointer; font-size: 0.85rem;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
                             <span style="background: #f5f5f5; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; white-space: nowrap;">
-                                📚 ${question.topic}
+                                📚 ${displayTopic}
                             </span>
                         </td>
                         <td style="padding: 0.75rem 0.5rem; text-align: center; color: #1976d2; cursor: pointer; font-size: 0.85rem;" onclick="showQuestionPopup('${question.id.replace(/'/g, "\\'")}', ${index})">
@@ -12891,30 +12908,189 @@
             performSort();
         };
 
-        // Filter question list
+        /**
+         * Highlight search terms in text
+         * @param {string} text - Text to highlight
+         * @param {string} searchInput - Search query
+         * @returns {string} HTML with highlighted terms
+         */
+        window.highlightSearchTerms = function(text, searchInput) {
+            if (!text || !searchInput) return text;
+            
+            const terms = searchInput.toLowerCase().split(/\s+/).filter(t => t.length > 1);
+            if (terms.length === 0) return text;
+            
+            // Escape special regex characters in search terms
+            const escapedTerms = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            const regex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
+            
+            return text.replace(regex, '<mark style="background: #fff59d; padding: 0 2px; border-radius: 2px;">$1</mark>');
+        };
+
+        /**
+         * Extract searchable text from a question object
+         * Searches: title, topic, level, HTML content, blocks, answers, tags
+         */
+        window.extractSearchableText = function(question) {
+            const parts = [];
+            
+            // Basic fields
+            if (question.title) parts.push(question.title);
+            if (question.topic) parts.push(question.topic);
+            if (question.level) parts.push(question.level);
+            if (question.category) parts.push(question.category);
+            
+            // HTML content - strip tags to get just text
+            if (question.html) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = question.html;
+                parts.push(tempDiv.textContent || tempDiv.innerText || '');
+            }
+            
+            // Blocks content
+            if (question.blocks && Array.isArray(question.blocks)) {
+                question.blocks.forEach(block => {
+                    if (block.value) parts.push(block.value);
+                    if (block.text) parts.push(block.text);
+                    if (block.label) parts.push(block.label);
+                    
+                    // MCQ options
+                    if (block.options && Array.isArray(block.options)) {
+                        block.options.forEach(opt => {
+                            if (typeof opt === 'string') parts.push(opt);
+                            else if (opt.text) parts.push(opt.text);
+                            else if (opt.value) parts.push(opt.value);
+                        });
+                    }
+                });
+            }
+            
+            // Answers/explanations
+            if (question.answer) parts.push(question.answer);
+            if (question.explanation) parts.push(question.explanation);
+            if (question.modelAnswer) parts.push(question.modelAnswer);
+            
+            // CER components
+            if (question.claim) parts.push(question.claim);
+            if (question.evidence) parts.push(question.evidence);
+            if (question.reasoning) parts.push(question.reasoning);
+            
+            // Tags
+            if (question.tags && Array.isArray(question.tags)) {
+                parts.push(question.tags.join(' '));
+            }
+            
+            return parts.join(' ').toLowerCase();
+        };
+
+        /**
+         * Filter question list with full-text search
+         */
         window.filterQuestionList = function() {
             if (!window.allQuestionsList) return;
 
             const topicFilter = document.getElementById('question-list-filter-topic')?.value || '';
             const levelFilter = document.getElementById('question-list-filter-level')?.value || '';
-            const searchInput = document.getElementById('question-list-search')?.value.toLowerCase() || '';
+            const searchInput = document.getElementById('question-list-search')?.value.trim() || '';
+            const searchTerms = searchInput.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+            
+            // Update UI elements
+            const clearBtn = document.getElementById('clear-search-btn');
+            const searchSummary = document.getElementById('search-results-summary');
+            const searchTips = document.getElementById('search-tips');
+            
+            if (clearBtn) clearBtn.style.display = searchInput ? 'block' : 'none';
+            if (searchTips) searchTips.style.display = searchInput ? 'none' : 'block';
 
+            // Filter questions
             window.filteredQuestionsList = window.allQuestionsList.filter(question => {
+                // Topic and level filters
                 const matchesTopic = !topicFilter || question.topic === topicFilter;
                 const matchesLevel = !levelFilter || question.level === levelFilter;
-                const matchesSearch = !searchInput ||
-                    question.title.toLowerCase().includes(searchInput) ||
-                    question.topic.toLowerCase().includes(searchInput);
+                
+                // Full-text search - all terms must match (AND logic)
+                let matchesSearch = true;
+                if (searchTerms.length > 0) {
+                    const searchableText = window.extractSearchableText(question);
+                    matchesSearch = searchTerms.every(term => searchableText.includes(term));
+                }
 
                 return matchesTopic && matchesLevel && matchesSearch;
             });
+
+            // Show search results summary
+            if (searchSummary) {
+                if (searchInput) {
+                    const totalCount = window.allQuestionsList.length;
+                    const filteredCount = window.filteredQuestionsList.length;
+                    const searchResultsText = document.getElementById('search-results-text');
+                    
+                    if (searchResultsText) {
+                        if (filteredCount === 0) {
+                            searchResultsText.innerHTML = `🔍 No results found for "<strong>${searchInput}</strong>"`;
+                            searchSummary.style.background = 'linear-gradient(135deg, #ffebee, #ffcdd2)';
+                            searchResultsText.style.color = '#c62828';
+                        } else {
+                            searchResultsText.innerHTML = `🔍 Found <strong>${filteredCount}</strong> of ${totalCount} questions matching "<strong>${searchInput}</strong>"`;
+                            searchSummary.style.background = 'linear-gradient(135deg, #e8f5e9, #c8e6c9)';
+                            searchResultsText.style.color = '#2e7d32';
+                        }
+                    }
+                    searchSummary.style.display = 'flex';
+                } else {
+                    searchSummary.style.display = 'none';
+                }
+            }
 
             // Apply current sort
             performSort();
         };
 
+        /**
+         * Clear search input and reset filter
+         */
+        window.clearQuestionSearch = function() {
+            const searchInput = document.getElementById('question-list-search');
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.focus();
+            }
+            window.filterQuestionList();
+        };
+
         // Debounced version of filterQuestionList for search input
         window.debouncedFilterQuestionList = window.debounce(window.filterQuestionList, 300);
+
+        /**
+         * Initialize search keyboard shortcuts
+         */
+        window.initSearchKeyboardShortcuts = function() {
+            const searchInput = document.getElementById('question-list-search');
+            if (!searchInput || searchInput.dataset.keyboardInit === 'true') return;
+            
+            searchInput.dataset.keyboardInit = 'true';
+            
+            searchInput.addEventListener('keydown', (e) => {
+                // Escape - clear search
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    window.clearQuestionSearch();
+                }
+            });
+            
+            // Global keyboard shortcut: Ctrl/Cmd + F to focus search when in Question Bank view
+            document.addEventListener('keydown', (e) => {
+                const isQuestionBankView = document.getElementById('view-question-list')?.classList.contains('hidden') === false;
+                if (isQuestionBankView && (e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    e.preventDefault();
+                    searchInput.focus();
+                    searchInput.select();
+                }
+            });
+        };
+        
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', window.initSearchKeyboardShortcuts);
 
         // Show question popup
         window.showQuestionPopup = function(questionId, listIndex) {
