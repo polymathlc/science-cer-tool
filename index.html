@@ -5549,6 +5549,17 @@
     document.addEventListener('DOMContentLoaded', function() {
         imgObserver.observe(document.body, { childList: true, subtree: true });
     });
+    
+    // Create optimized image HTML - used when adding questions with images
+    window.createOptimizedImage = function(src, className, style) {
+        className = className || '';
+        style = style || '';
+        var fixedSrc = window.convertDropboxUrl(src);
+        return '<img src="' + fixedSrc + '" class="' + className + '" ' +
+               'style="max-width: 100%; border-radius: 8px; display: block; margin: 0 auto; ' + style + '" ' +
+               'loading="lazy" decoding="async" ' +
+               'onerror="this.style.opacity=\'0.3\'; this.title=\'Image failed to load - tap to retry\';">';
+    };
     </script>
 </head>
 
