@@ -13897,9 +13897,38 @@
                 alert("Please select an answer!");
                 return;
             }
-            
+
+            // Check if this question has a valid correct answer marked
+            const allRadios = container.querySelectorAll('input[type="radio"]');
+            const hasCorrectAnswer = Array.from(allRadios).some(r => r.dataset.correct === 'true');
+
+            if (!hasCorrectAnswer) {
+                // Question data is corrupted - no correct answer marked
+                console.error("Question has no correct answer marked:", question.id);
+                alert("There appears to be an issue with this question. The correct answer is not properly marked. Please report this to the teacher. Rating will not be affected.");
+
+                // Still show visual feedback but skip rating update
+                container.querySelectorAll('.mcq-option, label').forEach(opt => {
+                    opt.style.background = '#fff3e0';
+                    opt.style.borderColor = '#ff9800';
+                });
+                container.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+
+                const explanation = container.querySelector('.explanation-box');
+                if (explanation) explanation.style.display = 'block';
+
+                // Show next button without rating update
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'btn btn-primary';
+                nextBtn.textContent = 'Next Question →';
+                nextBtn.style.cssText = 'margin-top: 1rem; width: 100%;';
+                nextBtn.onclick = () => nextPracticeQuestion();
+                container.appendChild(nextBtn);
+                return;
+            }
+
             const isCorrect = selected.dataset.correct === 'true';
-            
+
             // Show feedback on options
             container.querySelectorAll('.mcq-option, label').forEach(opt => {
                 const radio = opt.querySelector('input');
@@ -16929,18 +16958,32 @@
                     // Add MCQ options if MCQ category
                     if (category === 'mcq') {
                         const opts = [
-                            document.getElementById('mcq-opt-1').value,
-                            document.getElementById('mcq-opt-2').value,
-                            document.getElementById('mcq-opt-3').value,
-                            document.getElementById('mcq-opt-4').value
+                            document.getElementById('mcq-opt-1').value.trim(),
+                            document.getElementById('mcq-opt-2').value.trim(),
+                            document.getElementById('mcq-opt-3').value.trim(),
+                            document.getElementById('mcq-opt-4').value.trim()
                         ];
                         const correct = document.getElementById('mcq-correct').value;
+
+                        // Validate MCQ: at least 2 options and valid correct answer
+                        const filledOptions = opts.filter(opt => opt.length > 0);
+                        if (filledOptions.length < 2) {
+                            alert("MCQ questions require at least 2 options. Please fill in more options.");
+                            return;
+                        }
+
+                        const correctIndex = parseInt(correct, 10);
+                        if (isNaN(correctIndex) || correctIndex < 1 || correctIndex > 4 || !opts[correctIndex - 1]) {
+                            alert("Please select a valid correct answer. The selected correct answer option must have content.");
+                            return;
+                        }
+
                         finalHtml += `<div class="mcq-container" style="margin-top: 1rem;">`;
                         opts.forEach((opt, i) => {
                             if (opt) {
                                 finalHtml += `
                                     <label class="mcq-option">
-                                        <input type="radio" name="mcq-answer" value="${i + 1}" data-correct="${correct == i + 1}">
+                                        <input type="radio" name="mcq-answer" value="${i + 1}" data-correct="${correctIndex === i + 1}">
                                         <span>${opt}</span>
                                     </label>
                                 `;
@@ -17320,8 +17363,23 @@
             const selected = container.querySelector('input[type="radio"]:checked');
             if (!selected) return alert("Please select an option!");
 
+            // Check if this question has a valid correct answer marked
+            const allRadios = container.querySelectorAll('input[type="radio"]');
+            const hasCorrectAnswer = Array.from(allRadios).some(r => r.dataset.correct === 'true');
+
+            if (!hasCorrectAnswer) {
+                console.error("Question has no correct answer marked:", containerId);
+                alert("There appears to be an issue with this question. The correct answer is not properly marked. Please report this to the teacher.");
+                // Highlight all options in warning color
+                container.querySelectorAll('.mcq-option').forEach(opt => {
+                    opt.style.background = '#fff3e0';
+                    opt.style.borderColor = '#ff9800';
+                });
+                return;
+            }
+
             const isCorrect = selected.dataset.correct === 'true';
-            
+
             const allOptions = container.querySelectorAll('.mcq-option');
             allOptions.forEach(opt => {
                 const radio = opt.querySelector('input');
@@ -19656,18 +19714,34 @@
                     // Add MCQ options if MCQ category
                     if (category === 'mcq') {
                         const opts = [
-                            document.getElementById('mcq-opt-1').value,
-                            document.getElementById('mcq-opt-2').value,
-                            document.getElementById('mcq-opt-3').value,
-                            document.getElementById('mcq-opt-4').value
+                            document.getElementById('mcq-opt-1').value.trim(),
+                            document.getElementById('mcq-opt-2').value.trim(),
+                            document.getElementById('mcq-opt-3').value.trim(),
+                            document.getElementById('mcq-opt-4').value.trim()
                         ];
                         const correct = document.getElementById('mcq-correct').value;
+
+                        // Validate MCQ: at least 2 options and valid correct answer
+                        const filledOptions = opts.filter(opt => opt.length > 0);
+                        if (filledOptions.length < 2) {
+                            window.isSavingQuestion = false;
+                            alert("MCQ questions require at least 2 options. Please fill in more options.");
+                            return;
+                        }
+
+                        const correctIndex = parseInt(correct, 10);
+                        if (isNaN(correctIndex) || correctIndex < 1 || correctIndex > 4 || !opts[correctIndex - 1]) {
+                            window.isSavingQuestion = false;
+                            alert("Please select a valid correct answer. The selected correct answer option must have content.");
+                            return;
+                        }
+
                         finalHtml += `<div class="mcq-container" style="margin-top: 1rem;">`;
                         opts.forEach((opt, i) => {
                             if (opt) {
                                 finalHtml += `
                                     <label class="mcq-option">
-                                        <input type="radio" name="mcq-answer" value="${i + 1}" data-correct="${correct == i + 1}">
+                                        <input type="radio" name="mcq-answer" value="${i + 1}" data-correct="${correctIndex === i + 1}">
                                         <span>${opt}</span>
                                     </label>
                                 `;
@@ -19675,7 +19749,7 @@
                         });
                         finalHtml += `</div>`;
                     }
-                    
+
                     // Add explanation and video at the very end
                     finalHtml += afterAnswerHtml;
                 }
