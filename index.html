@@ -6855,11 +6855,35 @@
                                 <select id="admin-topic" class="auth-input"
                                     style="width: 100%; height: 50px; cursor: pointer; margin-bottom: 0.5rem;"
                                     onchange="handleTopicChange(this.value)">
-                                    <option value="heat">Heat</option>
-                                    <option value="light">Light</option>
-                                    <option value="materials">Materials</option>
-                                    <option value="air">Air</option>
-                                    <option value="water">Water</option>
+                                    <optgroup label="— P3 —">
+                                        <option value="living-and-non-living-things">Living and non-living things</option>
+                                        <option value="materials">Materials</option>
+                                        <option value="life-cycles">Life Cycles</option>
+                                        <option value="magnets">Magnets</option>
+                                    </optgroup>
+                                    <optgroup label="— P4 —">
+                                        <option value="plant-systems">Plant Systems</option>
+                                        <option value="human-body-systems">Human Body Systems</option>
+                                        <option value="matter-and-its-3-states">Matter and its 3 States</option>
+                                        <option value="light">Light</option>
+                                        <option value="heat">Heat</option>
+                                    </optgroup>
+                                    <optgroup label="— P5 —">
+                                        <option value="water-and-its-3-states">Water and its 3 States</option>
+                                        <option value="plant-reproduction">Plant Reproduction</option>
+                                        <option value="human-reproduction">Human Reproduction</option>
+                                        <option value="human-and-plant-respiration">Human and Plant Respiration</option>
+                                        <option value="human-and-plant-transport">Human and Plant Transport</option>
+                                        <option value="electrical-systems">Electrical Systems</option>
+                                    </optgroup>
+                                    <optgroup label="— P6 —">
+                                        <option value="forces">Forces</option>
+                                        <option value="energy-in-food">Energy in Food</option>
+                                        <option value="energy-conversion">Energy Conversion</option>
+                                        <option value="living-together">Living Together</option>
+                                        <option value="food-chains-and-webs">Food Chains and Webs</option>
+                                        <option value="humans-and-the-environment">Humans and the Environment</option>
+                                    </optgroup>
                                     <option value="new-topic">-- Add Custom Topic --</option>
                                 </select>
                                 <input type="text" id="admin-new-topic" class="auth-input hidden"
@@ -17454,12 +17478,25 @@
             }
         };
 
+        // Generate all curriculum topics grouped by level (P3-P6) as optgroups
+        window.getAllCurriculumTopicsHTML = function () {
+            const levels = ['P3', 'P4', 'P5', 'P6'];
+            let html = '';
+            levels.forEach(level => {
+                const topics = window.mcqCurriculum[level] || [];
+                if (topics.length > 0) {
+                    html += `<optgroup label="— ${level} —">`;
+                    html += topics.map(t => `<option value="${t.toLowerCase().replace(/\s+/g, '-')}">${t}</option>`).join('');
+                    html += `</optgroup>`;
+                }
+            });
+            html += `<option value="new-topic">-- Add Custom Topic --</option>`;
+            return html;
+        };
+
         window.updateAdminTopicsByLevel = function (level) {
             const topicSelect = document.getElementById('admin-topic');
-            const topics = window.mcqCurriculum[level] || [];
-            let html = topics.map(t => `<option value="${t.toLowerCase().replace(/\s+/g, '-')}">${t}</option>`).join('');
-            html += `<option value="new-topic">-- Add Custom Topic --</option>`;
-            topicSelect.innerHTML = html;
+            topicSelect.innerHTML = window.getAllCurriculumTopicsHTML();
         };
 
         window.handleCategoryChange = function (value) {
@@ -17479,14 +17516,7 @@
                 levelContainer.classList.add('hidden');
                 if (processBtn) processBtn.classList.remove('hidden');
                 const topicSelect = document.getElementById('admin-topic');
-                topicSelect.innerHTML = `
-                    <option value="heat">Heat</option>
-                    <option value="light">Light</option>
-                    <option value="materials">Materials</option>
-                    <option value="air">Air</option>
-                    <option value="water">Water</option>
-                    <option value="new-topic">-- Add Custom Topic --</option>
-                `;
+                topicSelect.innerHTML = window.getAllCurriculumTopicsHTML();
                 if (previewInstructions) previewInstructions.classList.remove('hidden');
             }
         };
