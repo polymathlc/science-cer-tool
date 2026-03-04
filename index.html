@@ -22276,7 +22276,7 @@
                 // Check admin status
                 const emailParts = user.email.toLowerCase().split('@');
                 const handle = emailParts[1] === 'gmail.com' ? emailParts[0].replace(/\./g, '') : emailParts[0];
-                const adminHandles = ['zhikaichung', 'chungzhikai'];
+                const adminHandles = ['zhikaichung', 'chungzhikai', 'abigail.yew'];
                 const isAdmin = adminHandles.includes(handle) || user.email.toLowerCase().includes('admin');
 
                 if (isAdmin) {
