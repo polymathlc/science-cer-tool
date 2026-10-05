@@ -7580,6 +7580,7 @@
             </div>
             
             <!-- Navigation Buttons -->
+            <p id="attempt-save-status" role="status" aria-live="polite" hidden></p>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
                 <button id="attempt-prev-btn" class="btn" style="background: #666; color: white;" onclick="prevAttemptQuestion()">← Previous</button>
                 <div style="display: flex; gap: 10px;">
@@ -10384,6 +10385,9 @@
         // WORKSHEET ATTEMPT SYSTEM
         // =====================================================
         
+        // Keep unsaved drafts reachable if another worksheet is opened during a save.
+        window.worksheetAttemptDrafts = new Map();
+        let worksheetAttemptRequest = 0;
         window.currentAttempt = {
             worksheetId: null,
             worksheetName: null,
@@ -10394,49 +10398,87 @@
 
         // Start attempting a worksheet
         window.attemptWorksheet = async function(worksheetId) {
+            const request = ++worksheetAttemptRequest;
             try {
-                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
-                
-                const docRef = doc(window.db_fs, "user_worksheets", worksheetId);
-                const docSnap = await getDoc(docRef);
-                
-                if (!docSnap.exists()) {
-                    alert("Worksheet not found.");
-                    return;
+                let attempt = window.worksheetAttemptDrafts.get(worksheetId);
+                if (!attempt) {
+                    const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+
+                    const docRef = doc(window.db_fs, "user_worksheets", worksheetId);
+                    const docSnap = await getDoc(docRef);
+                    if (request !== worksheetAttemptRequest) return;
+
+                    if (!docSnap.exists()) {
+                        alert("Worksheet not found.");
+                        return;
+                    }
+
+                    const data = docSnap.data();
+
+                    // Initialize attempt state
+                    attempt = {
+                        worksheetId: worksheetId,
+                        worksheetName: data.name,
+                        saving: false,
+                        saved: false,
+                        saveState: {},
+                        saveError: '',
+                        questions: data.questions || [],
+                        currentIndex: 0,
+                        answers: data.questions.map((q, i) => ({
+                            questionId: q.id || `q-${i}`,
+                            questionTitle: q.title || `Question ${i + 1}`,
+                            topic: q.topic || 'N/A',
+                            type: q.type || 'unknown',
+                            studentAnswer: null,
+                            correctAnswer: null,
+                            correct: false
+                        }))
+                    };
+                    window.worksheetAttemptDrafts.set(worksheetId, attempt);
                 }
-                
-                const data = docSnap.data();
-                
-                // Initialize attempt state
-                window.currentAttempt = {
-                    worksheetId: worksheetId,
-                    worksheetName: data.name,
-                    questions: data.questions || [],
-                    currentIndex: 0,
-                    answers: data.questions.map((q, i) => ({
-                        questionId: q.id || `q-${i}`,
-                        questionTitle: q.title || `Question ${i + 1}`,
-                        topic: q.topic || 'N/A',
-                        type: q.type || 'unknown',
-                        studentAnswer: null,
-                        correctAnswer: null,
-                        correct: false
-                    }))
-                };
+                // MCQ selections may still live only in the outgoing question's DOM.
+                saveCurrentAttemptAnswer();
+                window.currentAttempt = attempt;
                 
                 // Update UI
-                document.getElementById('attempt-worksheet-title').textContent = `📝 ${data.name}`;
+                document.getElementById('attempt-worksheet-title').textContent = `📝 ${attempt.worksheetName}`;
                 
                 // Show modal
                 document.getElementById('worksheet-attempt-modal').classList.add('visible');
                 
-                // Show first question
-                showAttemptQuestion(0);
+                // Resume a retained draft, including its save/retry state.
+                showAttemptQuestion(attempt.currentIndex);
+                updateWorksheetAttemptControls();
                 
             } catch (e) {
                 console.error("Error loading worksheet for attempt:", e);
+                if (request !== worksheetAttemptRequest) return;
                 alert("Error loading worksheet: " + e.message);
             }
+        };
+
+        // Controls belong to the displayed attempt, never to an older save callback.
+        window.updateWorksheetAttemptControls = function() {
+            const attempt = window.currentAttempt;
+            const modal = document.getElementById('worksheet-attempt-modal');
+            modal.setAttribute('aria-busy', String(!!attempt.saving));
+            modal.querySelectorAll('button, input, textarea, select').forEach(control => {
+                if (attempt.saving) {
+                    if (control.dataset.attemptWasDisabled === undefined) {
+                        control.dataset.attemptWasDisabled = String(control.disabled);
+                    }
+                    control.disabled = true;
+                } else if (control.dataset.attemptWasDisabled !== undefined) {
+                    control.disabled = control.dataset.attemptWasDisabled === 'true';
+                    delete control.dataset.attemptWasDisabled;
+                }
+            });
+            document.getElementById('attempt-submit-btn').textContent = attempt.saving
+                ? 'Saving…' : attempt.saveError ? 'Retry Save' : '✓ Submit Worksheet';
+            const status = document.getElementById('attempt-save-status');
+            status.textContent = attempt.saving ? 'Saving your answers…' : attempt.saveError || '';
+            status.hidden = !status.textContent;
         };
 
         // Show a specific question in the attempt
@@ -10515,6 +10557,7 @@
 
         // Save answer for a question
         window.saveAttemptAnswer = function(index, answer) {
+            if (window.currentAttempt.saving || window.currentAttempt.saved) return;
             if (window.currentAttempt.answers[index]) {
                 window.currentAttempt.answers[index].studentAnswer = answer;
             }
@@ -10522,6 +10565,7 @@
 
         // Navigate to previous question
         window.prevAttemptQuestion = function() {
+            if (window.currentAttempt.saving || window.currentAttempt.saved) return;
             const index = window.currentAttempt.currentIndex;
             if (index > 0) {
                 // Save current answer first
@@ -10533,6 +10577,7 @@
         // Navigate to next question
         window.nextAttemptQuestion = function() {
             const attempt = window.currentAttempt;
+            if (attempt.saving || attempt.saved) return;
             const index = attempt.currentIndex;
             
             // Save current answer first
@@ -10548,6 +10593,7 @@
             const attempt = window.currentAttempt;
             const index = attempt.currentIndex;
             const question = attempt.questions[index];
+            if (!question || attempt.saving || attempt.saved) return;
             
             if (question.type === 'mcq') {
                 // Find selected MCQ option
@@ -10571,10 +10617,11 @@
 
         // Submit the worksheet attempt
         window.submitWorksheetAttempt = async function() {
+            const attempt = window.currentAttempt;
+            if (!attempt.worksheetId || !attempt.questions.length || attempt.saving || attempt.saved) return;
+
             // Save last answer
             saveCurrentAttemptAnswer();
-            
-            const attempt = window.currentAttempt;
             
             // Check if all questions answered
             const unanswered = attempt.answers.filter(a => !a.studentAnswer || a.studentAnswer.trim() === '').length;
@@ -10584,6 +10631,11 @@
                 }
             }
             
+            // Lock before the first await, including programmatic/double submissions.
+            attempt.saving = true;
+            attempt.saveError = '';
+            attempt.saveState = attempt.saveState || {};
+            updateWorksheetAttemptControls();
             try {
                 // Calculate results for MCQ questions
                 let correctCount = 0;
@@ -10602,12 +10654,26 @@
                 });
                 
                 // Save the attempt to Firestore
-                await saveWorksheetAttempt(
+                // Snapshot the answers so an in-flight write cannot pick up later edits.
+                const questionResults = attempt.answers.map(answer => ({ ...answer }));
+                const result = await saveWorksheetAttempt(
                     attempt.worksheetId,
                     attempt.worksheetName,
-                    attempt.answers,
-                    'completed'
+                    questionResults,
+                    'completed',
+                    attempt.saveState
                 );
+                if (!result?.ok || !result.attemptId || result.attemptId !== attempt.saveState.id) {
+                    attempt.saveError = result?.message || 'Saving was not confirmed. Your answers are still here. Please retry.';
+                    return;
+                }
+
+                attempt.saved = true;
+                if (window.worksheetAttemptDrafts.get(attempt.worksheetId) === attempt) {
+                    window.worksheetAttemptDrafts.delete(attempt.worksheetId);
+                }
+                // A late acknowledgement must not close or clear a newer worksheet.
+                if (window.currentAttempt !== attempt) return;
                 
                 // Show completion message
                 const score = Math.round((correctCount / attempt.answers.length) * 100);
@@ -10626,16 +10692,27 @@
                     currentIndex: 0,
                     answers: []
                 };
+                updateWorksheetAttemptControls();
                 
             } catch (e) {
                 console.error("Error submitting worksheet:", e);
-                alert("Error submitting worksheet: " + e.message);
+                attempt.saveError = 'Saving was not confirmed. Your answers are still here. Please retry.';
+            } finally {
+                attempt.saving = false;
+                if (window.currentAttempt === attempt) {
+                    updateWorksheetAttemptControls();
+                }
             }
         };
 
         // Cancel worksheet attempt
         window.cancelWorksheetAttempt = function() {
+            const attempt = window.currentAttempt;
+            if (attempt.saving) return;
             if (confirm("Are you sure you want to exit? Your progress will be lost.")) {
+                if (window.worksheetAttemptDrafts.get(attempt.worksheetId) === attempt) {
+                    window.worksheetAttemptDrafts.delete(attempt.worksheetId);
+                }
                 document.getElementById('worksheet-attempt-modal').classList.remove('visible');
                 window.currentAttempt = {
                     worksheetId: null,
@@ -15484,15 +15561,27 @@
         };
 
         // Save worksheet attempt when student completes/submits
-        window.saveWorksheetAttempt = async function(worksheetId, worksheetName, questionResults, status = 'completed') {
+        // The caller retains saveState for the lifetime of the draft. Retrying setDoc
+        // with the same ID also covers a committed write whose acknowledgement was lost.
+        window.saveWorksheetAttempt = async function(worksheetId, worksheetName, questionResults, status = 'completed', saveState = {}) {
+            let stage = 'initialization';
             try {
                 const user = window.auth?.currentUser;
-                if (!user) return;
-                
-                const { collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
-                const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                if (!user) {
+                    return { ok: false, code: 'auth-required', message: 'Please sign in, then retry saving. Your answers are still here.' };
+                }
+                if (saveState.userId && saveState.userId !== user.uid) {
+                    return { ok: false, code: 'auth-changed', message: 'Please sign in with the original account, then retry saving. Your answers are still here.' };
+                }
+                saveState.userId = user.uid;
+                const results = questionResults.map(answer => ({ ...answer }));
+                const { collection, doc, getDoc, setDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                if (!saveState.id) {
+                    saveState.id = doc(collection(window.db_fs, "worksheet_attempts")).id;
+                }
                 
                 // Get student info
+                stage = 'profile-read';
                 const userDoc = await getDoc(doc(window.db_fs, "users", user.uid));
                 let studentName = 'Unknown';
                 let studentLevel = 'N/A';
@@ -15509,27 +15598,38 @@
                 }
                 
                 // Calculate score
-                const correctCount = questionResults.filter(q => q.correct).length;
-                const totalCount = questionResults.length;
+                const correctCount = results.filter(q => q.correct).length;
+                const totalCount = results.length;
                 const score = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+
+                // Authentication may change while the profile read is pending.
+                if (window.auth?.currentUser?.uid !== user.uid) {
+                    return { ok: false, code: 'auth-changed', message: 'Please sign in with the original account, then retry saving. Your answers are still here.' };
+                }
                 
-                await addDoc(collection(window.db_fs, "worksheet_attempts"), {
+                stage = 'write';
+                await setDoc(doc(window.db_fs, "worksheet_attempts", saveState.id), {
                     worksheetId: worksheetId,
                     worksheetName: worksheetName,
                     userId: user.uid,
                     userEmail: user.email,
                     studentName: studentName,
                     studentLevel: studentLevel,
-                    questionResults: questionResults,
+                    questionResults: results,
                     score: score,
                     status: status,
                     completedAt: serverTimestamp()
                 });
                 
-                console.log("Worksheet attempt saved successfully");
+                return { ok: true, attemptId: saveState.id };
                 
             } catch (e) {
                 console.error("Error saving worksheet attempt:", e);
+                return {
+                    ok: false,
+                    code: stage,
+                    message: 'Saving was not confirmed. Your answers are still here. Please retry.'
+                };
             }
         };
 
